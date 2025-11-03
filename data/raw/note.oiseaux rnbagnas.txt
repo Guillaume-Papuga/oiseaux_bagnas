@@ -1,0 +1,11 @@
+﻿Bonjour Guillaume,
+
+Tu trouveras ci-joint l'ensemble des données Blongios, Talève et Butor qui ont été collectées sur la réserve.
+616 observations protocolées :
+{'RELV_NOM': 'SuiviBlongiosTalève'} 245
+{'RELV_NOM': 'SuiviButor'} 371
+Les autres 617 données peuvent être considérées comme des observations aléatoires/opportunistes.
+N'hésite pas à revenir vers nous si besoin.
+
+Bien cordialement,
+Benjamin
