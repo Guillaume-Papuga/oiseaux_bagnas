@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
+
+```{r}
+data("iris")
+cor(iris$Sepal.Length, iris$Sepal.Width)
+```
+
