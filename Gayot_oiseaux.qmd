@@ -7,3 +7,60 @@ editor: visual
 ## Test
 
 Hello : ) !
+
+library(tidyverse) library(lubridate) library(readxl) library(lubridate) library(spatstat.geom) library(spatstat.explore) library(ggplot2) library(ggspatial) library(ggmap) library(sf)
+
+raw_data \<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") View(raw_data)
+
+# Aperçu des especes
+
+head(raw_data) str(raw_data) glimpse(raw_data)
+
+occ_par_espece \<- raw_data %\>% group_by(nom_vernaculaire) %\>% summarise(id_synthese= n()) %\>% arrange(desc(id_synthese))
+
+head(occ_par_espece)
+
+#Aperçu des années
+
+occ_par_annee\<-raw_data %\>% mutate( date_parsed = ymd(date_debut),\
+annee = year(date_parsed) ) %\>% group_by(annee) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee))
+
+print(occ_par_annee, n = Inf)
+
+ggplot(raw_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + geom_point(alpha = 0.6 , size = 1) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+
+# Par espece
+
+### Butor étoilé
+
+Butor_etoile\<-raw_data %\>% filter( nom_vernaculaire == "Butor étoilé")
+
+Butor_etoile
+
+#Aperçu des années du butor etoile
+
+occ_par_annee_butor_etoile\<-Butor_etoile %\>% mutate( date_parsed = ymd(date_debut),\
+annee_butor_etoile = year(date_parsed) ) %\>% group_by(annee_butor_etoile) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc( annee_butor_etoile))
+
+print(occ_par_annee_butor_etoile, n = Inf)
+
+ggplot(occ_par_annee_butor_etoile, aes(x = annee_butor_etoile, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Butor etoile", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(Buto_etoile, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+
+### Blongios nain, Butor blongios
+
+Blongios_nain\<-raw_data %\>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Blongios_nain
+
+#Aperçu des années Blongios nain, Butor blongios
+
+occ_par_annee_Blongios_nain\<-Blongios_nain %\>% mutate( date_parsed = ymd(date_debut),\
+annee_Blongios_nain = year(date_parsed) ) %\>% group_by(annee_Blongios_nain) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee_Blongios_nain))
+
+print(occ_par_annee_Blongios_nain, n = Inf)
+
+ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
