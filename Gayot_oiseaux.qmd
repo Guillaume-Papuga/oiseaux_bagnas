@@ -64,3 +64,5 @@ print(occ_par_annee_Blongios_nain, n = Inf)
 ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
 
 ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+
+
