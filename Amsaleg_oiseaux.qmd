@@ -4,6 +4,7 @@ format: html
 editor: visual
 ---
 
-## test 
+Importation + clean du tableau
 
-sos
+```{r}
+
