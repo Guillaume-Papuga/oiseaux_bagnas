@@ -6,5 +6,156 @@ editor: visual
 
 Importation + clean du tableau
 
+```{r setup, include=FALSE}
+library(readxl)
+library(tidyr)
+library(ggplot2)
+library(lubridate)
+library(dplyr)
+library(tidyverse)
+
+###### Clean tableau######
+raw_data<- read_excel("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
+
+
+#clean
+
+process_data<- raw_data %>% select(id_synthese,date_debut,date_fin,heure_debut,heure_fin, nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326, y_centroid_4326,nom_lieu,champs_additionnels)
+
+write.csv(process_data, file = "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/data_process/process_data.csv", row.names = FALSE)
+```
+
 ```{r}
 
+#### graphique : visites des especes par semaine ####
+process_data <- read_csv("data/data_process/process_data.csv",show_col_types = FALSE)
+
+annees <- format(process_data$date_debut, "%Y")
+annees <- as.numeric(annees)
+
+# Trouver les années min et max
+annee_min <- min(annees, na.rm = TRUE)
+annee_max <- max(annees, na.rm = TRUE)
+duree_annees <- annee_max - annee_min +1
+```
+
+```{r}
+## blongios ##
+esp_blongios <- "Blongios nain, Butor blongios"
+data_blongios <- process_data %>% filter(nom_vernaculaire == esp_blongios)
+
+
+data_blongios <- process_data %>%
+  filter(nom_vernaculaire == esp_blongios) %>%
+  mutate(
+    annee_suivi = year(date_debut) - annee_min + 1,
+    annee_reelle = year(date_debut),
+    semaine = isoweek(date_debut)
+  )
+
+# --- Résumer les semaines pour gérer les sorties multiples ---
+data_blongios_summarized <- data_blongios %>%
+  group_by(annee_suivi, semaine) %>%
+  summarize(
+    statut = case_when(
+      any(nombre_min > 0) ~ "observation",             # au moins une observation
+      any(nombre_min == 0) ~ "sortie_sans_observation" # au moins une sortie mais pas d'observation
+    ),
+    .groups = "drop"
+  )
+
+# --- Créer la grille complète (année x semaine) ---
+grille <- expand.grid(
+  annee_suivi = 1:duree_annees,
+  semaine = 1:53
+) %>%
+  mutate(annee_reelle = annee_min + annee_suivi - 1) %>%
+  left_join(
+    data_blongios_summarized,
+    by = c("annee_suivi", "semaine")
+  ) %>%
+  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+
+# --- Graphique calendrier des semaines ---
+ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
+  geom_tile(color = "white", size = 0.2) +
+  scale_y_reverse() +
+  scale_fill_manual(
+    values = c(
+      "observation" = "#0072B2",         
+      "sortie_sans_observation" = "#E69F00", 
+      "pas_de_sortie" = "lightgrey"       
+    )
+  ) +
+  labs(
+    title = paste("Observations de", esp_blongios),
+    subtitle = paste("Suivi de", annee_min, "à", annee_max),
+    x = "Semaine de l'année",
+    y = "Année"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+```
+
+graphique qui montre l'observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
+
+```{r}
+## Butor étoilé
+esp_butor<- "Butor étoilé"
+data_butor <- process_data %>% filter(nom_vernaculaire == esp_butor)
+
+
+data_butor <- process_data %>%
+  filter(nom_vernaculaire == esp_butor) %>%
+  mutate(
+    annee_suivi = year(date_debut) - annee_min + 1,
+    annee_reelle = year(date_debut),
+    semaine = isoweek(date_debut)
+  )
+
+# --- Résumer les semaines pour gérer les sorties multiples ---
+data_butor_summarized <- data_butor %>%
+  group_by(annee_suivi, semaine) %>%
+  summarize(
+    statut = case_when(
+      any(nombre_min > 0) ~ "observation",             # au moins une observation
+      any(nombre_min == 0) ~ "sortie_sans_observation" # au moins une sortie mais pas d'observation
+    ),
+    .groups = "drop"
+  )
+
+# --- Créer la grille complète (année x semaine) ---
+grille <- expand.grid(
+  annee_suivi = 1:duree_annees,
+  semaine = 1:53
+) %>%
+  mutate(annee_reelle = annee_min + annee_suivi - 1) %>%
+  left_join(
+    data_butor_summarized,
+    by = c("annee_suivi", "semaine")
+  ) %>%
+  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+
+# --- Graphique calendrier des semaines ---
+ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
+  geom_tile(color = "white", size = 0.2) +
+  scale_y_reverse() +
+  scale_fill_manual(
+    values = c(
+      "observation" = "#0072B2",         
+      "sortie_sans_observation" = "#E69F00", 
+      "pas_de_sortie" = "lightgrey"       
+    )
+  ) +
+  labs(
+    title = paste("Observations de", esp_butor),
+    subtitle = paste("Suivi de", annee_min, "à", annee_max),
+    x = "Semaine de l'année",
+    y = "Année"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+
+```
+
+graphique qui montre l'observation des butors par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
