@@ -24,3 +24,332 @@ You can add options to executable code like this
 ```
 
 The `echo: false` option disables the printing of code (only output is displayed).
+
+## Test
+
+Hello : ) !
+
+```{r}
+library(tidyverse); library(lubridate); library(readxl); library(lubridate); library(spatstat.geom); library(spatstat.explore); library(ggplot2); library(ggspatial); library(ggmap); library(sf)
+```
+
+```{r}
+raw_data<- read_excel("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx"); View(raw_data)
+```
+
+#clean
+
+```{r}
+process_data<- raw_data %>% select(id_synthese,date_debut,date_fin,heure_debut,heure_fin, nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326, y_centroid_4326,nom_lieu,champs_additionnels)
+
+write.csv(process_data, file = "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv", row.names = FALSE)
+```
+
+# Aperçu des especes
+
+```{r}
+head(raw_data); str(raw_data); glimpse(raw_data)
+
+occ_par_espece <- raw_data %>% group_by(nom_vernaculaire) %>% summarise(id_synthese= n()) %>% arrange(desc(id_synthese))
+
+head(occ_par_espece)
+```
+
+#Aperçu des années
+
+```{r}
+occ_par_annee<-raw_data %>% mutate( date_parsed = ymd(date_debut),
+annee = year(date_parsed) ) %>% group_by(annee) %>% summarise(total_individus = n(), .groups = "drop") %>% arrange(desc(annee))
+
+print(occ_par_annee, n = Inf)
+
+ggplot(raw_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + geom_point(alpha = 0.6 , size = 1) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+```
+
+# Par espece
+
+### Butor étoilé
+
+```{r}
+Butor_etoile<-raw_data %>% filter( nom_vernaculaire == "Butor étoilé")
+
+Butor_etoile
+```
+
+#Aperçu des années du butor etoile
+
+```{r}
+
+occ_par_annee_butor_etoile<-Butor_etoile %>% mutate( date_parsed = ymd(date_debut),
+annee_butor_etoile = year(date_parsed) ) %>% group_by(annee_butor_etoile) %>% summarise(total_individus = n(), .groups = "drop") %>% arrange(desc( annee_butor_etoile))
+
+print(occ_par_annee_butor_etoile, n = Inf)
+
+ggplot(occ_par_annee_butor_etoile, aes(x = annee_butor_etoile, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Butor etoile", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(Butor_etoile, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+```
+
+### Blongios nain, Butor blongios
+
+```{r}
+Blongios_nain<-raw_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Blongios_nain
+```
+
+#Aperçu des années Blongios nain, Butor blongios
+
+```{r}
+
+occ_par_annee_Blongios_nain<-Blongios_nain %>% mutate( date_parsed = ymd(date_debut),
+annee_Blongios_nain = year(date_parsed) ) %>% group_by(annee_Blongios_nain) %>% summarise(total_individus = n(), .groups = "drop") %>% arrange(desc(annee_Blongios_nain))
+
+print(occ_par_annee_Blongios_nain, n = Inf)
+
+ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+```
+
+# Effort d'échantillonnage
+
+## Effort journalier toutes espèces 
+
+## Données d'heure brutes
+
+### Extraire l'heure
+
+```{r}
+
+process_data <- process_data %>%
+  mutate(
+    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+```
+
+### Frequence horaire
+
+```{r}
+# ---- 3. Calcul de la fréquence horaire ----
+
+freq_heure <- process_data %>%
+  group_by(heure_debut_arrond) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+```
+
+### Diagramme circulaire
+
+```{r}
+
+ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
+  geom_col(fill = "darkcyan", color = "white", width = 1) +
+  coord_polar(start = -pi/2) +  # minuit en haut du graphique
+  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
+  labs(
+    title = "Effort journalier",
+    x = "Heure de la journée",
+    y = "Fréquence relative"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(size = 10)
+  )
+
+```
+```{r}
+ggplot(process_data, mapping = aes(x=heure_debut)) + 
+  geom_histogram(bins = 24, color = "white", fill = "blue")
+```
+
+bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
+
+## Données d'heure sans les 00:00:00 et les absence d'heure
+
+### enlever les heures indésirables 
+
+```{r}
+process_data <- process_data %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (process_data)
+
+
+```
+
+### Extraire l'heure
+
+```{r}
+
+process_data <- process_data %>%
+  mutate(
+    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+```
+
+### Frequence horaire
+
+```{r}
+# ---- 3. Calcul de la fréquence horaire ----
+
+freq_heure <- process_data %>%
+  group_by(heure_debut_arrond) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+```
+
+### Diagramme circulaire
+
+```{r}
+
+ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
+  geom_col(fill = "darkcyan", color = "white", width = 1) +
+  coord_polar(start = -pi/2) +  
+  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
+  labs(
+    title = "Effort journalier",
+    x = "Heure de la journée",
+    y = "Fréquence relative"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(size = 10)
+  )
+
+```
+```{r}
+ggplot(process_data, mapping = aes(x=heure_debut)) + 
+  geom_histogram(bins = 24, color = "white", fill = "blue")
+```
+
+
+     
+##Effort journalier Butor 
+
+### enlever les heures indésirables 
+
+```{r}
+Butor_etoile <- Butor_etoile %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (Butor_etoile)
+
+
+```
+
+### Extraire l'heure
+
+```{r}
+
+Butor_etoile <- Butor_etoile %>%
+  mutate(
+    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+```
+
+### Frequence horaire
+
+```{r}
+# ---- 3. Calcul de la fréquence horaire ----
+
+freq_heure <- Butor_etoile %>%
+  group_by(heure_debut_arrond) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+```
+
+### Diagramme circulaire
+
+```{r}
+
+ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
+  geom_col(fill = "darkcyan", color = "white", width = 1) +
+  coord_polar(start = -pi/2) +  
+  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
+  labs(
+    title = "Effort journalier Butor",
+    x = "Heure de la journée",
+    y = "Fréquence relative"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(size = 10)
+  )
+
+```
+```{r}
+ggplot(Butor_etoile, mapping = aes(x=heure_debut)) + 
+  geom_histogram(bins = 24, color = "white", fill = "blue") + labs(
+    title = "Effort journalier Butor",
+    x = "Heure de la journée",
+    y = "Fréquence"
+  )
+```
+##Effort journalier Blongios 
+
+### enlever les heures indésirables 
+
+```{r}
+Blongios_nain <- Blongios_nain %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (Blongios_nain)
+
+```
+
+### Extraire l'heure
+
+```{r}
+
+Blongios_nain <- Blongios_nain %>%
+  mutate(
+    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+```
+
+### Frequence horaire
+
+```{r}
+# ---- 3. Calcul de la fréquence horaire ----
+
+freq_heure <- Blongios_nain %>%
+  group_by(heure_debut_arrond) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+```
+
+### Diagramme circulaire
+
+```{r}
+
+ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
+  geom_col(fill = "darkcyan", color = "white", width = 1) +
+  coord_polar(start = -pi/2) +  
+  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
+  labs(
+    title = "Effort journalier Blongios",
+    x = "Heure de la journée",
+    y = "Fréquence relative"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.grid = element_blank(),
+    axis.text.x = element_text(size = 10)
+  )
+
+```
+```{r}
+ggplot(Blongios_nain, mapping = aes(x=heure_debut)) + 
+  geom_histogram(bins = 24, color = "white", fill = "blue") + labs(
+    title = "Effort journalier Blongios",
+    x = "Heure de la journée",
+    y = "Fréquence"
+  )
+```
