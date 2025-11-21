@@ -4,27 +4,6 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
-
 ## Test
 
 Hello : ) !
@@ -114,7 +93,7 @@ ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_poin
 
 # Effort d'échantillonnage
 
-## Effort journalier toutes espèces 
+## Effort journalier toutes espèces
 
 ## Données d'heure brutes
 
@@ -124,54 +103,52 @@ ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_poin
 
 process_data <- process_data %>%
   mutate(
-    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
     date = as.Date(heure_debut)
   )
+process_data$heure_debut_tronc = as.factor(process_data$heure_debut_tronc)
+```
+
+### Sommer les obs par heure
+
+```{r}
+
+obs_heure <- process_data %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
 ```
 
 ### Frequence horaire
 
 ```{r}
-# ---- 3. Calcul de la fréquence horaire ----
 
-freq_heure <- process_data %>%
-  group_by(heure_debut_arrond) %>%
-  summarise(freq = n()) %>%
-  mutate(freq_rel = freq / sum(freq))
+
+freq_heure <- process_data %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
 ```
 
-### Diagramme circulaire
+### Barplot
 
 ```{r}
 
-ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
-  geom_col(fill = "darkcyan", color = "white", width = 1) +
-  coord_polar(start = -pi/2) +  # minuit en haut du graphique
-  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
-  labs(
-    title = "Effort journalier",
-    x = "Heure de la journée",
-    y = "Fréquence relative"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    panel.grid = element_blank(),
-    axis.text.x = element_text(size = 10)
-  )
 
-```
-```{r}
-ggplot(process_data, mapping = aes(x=heure_debut)) + 
-  geom_histogram(bins = 24, color = "white", fill = "blue")
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
+
+
+
 ```
 
 bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
 
 ## Données d'heure sans les 00:00:00 et les absence d'heure
 
-### enlever les heures indésirables 
+### enlever les heures indésirables
 
 ```{r}
 process_data <- process_data %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (process_data)
@@ -185,54 +162,44 @@ process_data <- process_data %>% filter(heure_debut> as.Date("1899-12-31 00:00:0
 
 process_data <- process_data %>%
   mutate(
-    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
     date = as.Date(heure_debut)
   )
+process_data$heure_debut_tronc = as.factor(process_data$heure_debut_tronc)
+```
+
+### Sommer les obs par heure
+
+```{r}
+
+obs_heure <- process_data %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
 ```
 
 ### Frequence horaire
 
-```{r}
-# ---- 3. Calcul de la fréquence horaire ----
 
-freq_heure <- process_data %>%
-  group_by(heure_debut_arrond) %>%
-  summarise(freq = n()) %>%
-  mutate(freq_rel = freq / sum(freq))
-```
-
-### Diagramme circulaire
 
 ```{r}
-
-ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
-  geom_col(fill = "darkcyan", color = "white", width = 1) +
-  coord_polar(start = -pi/2) +  
-  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
-  labs(
-    title = "Effort journalier",
-    x = "Heure de la journée",
-    y = "Fréquence relative"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    panel.grid = element_blank(),
-    axis.text.x = element_text(size = 10)
-  )
-
+freq_heure <- process_data %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 ```
+
+### Barplot
+
 ```{r}
-ggplot(process_data, mapping = aes(x=heure_debut)) + 
-  geom_histogram(bins = 24, color = "white", fill = "blue")
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
+## Effort journalier Butor
 
-     
-##Effort journalier Butor 
-
-### enlever les heures indésirables 
+### enlever les heures indésirables
 
 ```{r}
 Butor_etoile <- Butor_etoile %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (Butor_etoile)
@@ -246,55 +213,48 @@ Butor_etoile <- Butor_etoile %>% filter(heure_debut> as.Date("1899-12-31 00:00:0
 
 Butor_etoile <- Butor_etoile %>%
   mutate(
-    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
     date = as.Date(heure_debut)
   )
+Butor_etoile$heure_debut_tronc = as.factor(Butor_etoile$heure_debut_tronc)
+```
+
+### Sommer les obs par heure
+
+```{r}
+
+obs_heure <- Butor_etoile %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
 ```
 
 ### Frequence horaire
 
-```{r}
-# ---- 3. Calcul de la fréquence horaire ----
-
-freq_heure <- Butor_etoile %>%
-  group_by(heure_debut_arrond) %>%
-  summarise(freq = n()) %>%
-  mutate(freq_rel = freq / sum(freq))
-```
-
-### Diagramme circulaire
 
 ```{r}
 
-ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
-  geom_col(fill = "darkcyan", color = "white", width = 1) +
-  coord_polar(start = -pi/2) +  
-  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
-  labs(
-    title = "Effort journalier Butor",
-    x = "Heure de la journée",
-    y = "Fréquence relative"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    panel.grid = element_blank(),
-    axis.text.x = element_text(size = 10)
-  )
+freq_heure <- Butor_etoile %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 
 ```
+
+
+
+
+### Barplot
+
 ```{r}
-ggplot(Butor_etoile, mapping = aes(x=heure_debut)) + 
-  geom_histogram(bins = 24, color = "white", fill = "blue") + labs(
-    title = "Effort journalier Butor",
-    x = "Heure de la journée",
-    y = "Fréquence"
-  )
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
-##Effort journalier Blongios 
 
-### enlever les heures indésirables 
+## Effort journalier Blongios
+
+### enlever les heures indésirables
 
 ```{r}
 Blongios_nain <- Blongios_nain %>% filter(heure_debut> as.Date("1899-12-31 00:00:00")) ; View (Blongios_nain)
@@ -307,49 +267,40 @@ Blongios_nain <- Blongios_nain %>% filter(heure_debut> as.Date("1899-12-31 00:00
 
 Blongios_nain <- Blongios_nain %>%
   mutate(
-    heure_debut_arrond = hour(heure_debut),   # heure de la journée (0-23)
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
     date = as.Date(heure_debut)
   )
+Blongios_nain$heure_debut_tronc = as.factor(Blongios_nain$heure_debut_tronc)
+```
+
+### Sommer les obs par heure
+
+```{r}
+
+obs_heure <- Blongios_nain %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
 ```
 
 ### Frequence horaire
 
 ```{r}
-# ---- 3. Calcul de la fréquence horaire ----
 
 freq_heure <- Blongios_nain %>%
-  group_by(heure_debut_arrond) %>%
+  group_by(heure_debut_tronc) %>%
   summarise(freq = n()) %>%
   mutate(freq_rel = freq / sum(freq))
 ```
 
-### Diagramme circulaire
+
+### Barplot
 
 ```{r}
-
-ggplot(freq_heure, aes(x = factor(heure_debut_arrond), y = freq_rel)) +
-  geom_col(fill = "darkcyan", color = "white", width = 1) +
-  coord_polar(start = -pi/2) +  
-  scale_x_discrete(breaks = seq(0, 23, by = 3)) +
-  labs(
-    title = "Effort journalier Blongios",
-    x = "Heure de la journée",
-    y = "Fréquence relative"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.title.y = element_blank(),
-    axis.text.y = element_blank(),
-    panel.grid = element_blank(),
-    axis.text.x = element_text(size = 10)
-  )
-
-```
-```{r}
-ggplot(Blongios_nain, mapping = aes(x=heure_debut)) + 
-  geom_histogram(bins = 24, color = "white", fill = "blue") + labs(
-    title = "Effort journalier Blongios",
-    x = "Heure de la journée",
-    y = "Fréquence"
-  )
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
