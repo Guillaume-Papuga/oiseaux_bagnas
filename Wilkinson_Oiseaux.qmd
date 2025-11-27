@@ -1,7 +1,80 @@
----
-title: "Untitled"
-format: html
-editor: visual
----
+```{r}
+library(ggplot2)
+library(dplyr)
+getwd()
+
+# Import data
+options(encoding = "latin1")
+raw_data <- read.csv("data/raw/synthese_observations_oiseaux.csv", sep = ";")
+
+# Convert raw_data into processed_data
+
+# select necessary columns
+process_data <- raw_data %>% select(id_synthese, date_debut, date_fin,heure_debut, heure_fin, nom_vernaculaire, nombre_min,observateurs,determinateur,x_centroid_4326, y_centroid_4326,nom_lieu,champs_additionnels)
+
+# write new file
+write.csv(process_data, file = "C:/Users/rapha/Desktop/MASTER 2 RAINET/UE Projet entreprise/oiseaux_bagnas/data/processed/process_data.csv", row.names = FALSE)
+
+bird_data <- read.csv("data/processed/process_data.csv", sep = ",")
+
+bird_data$nom_lieu <- as.factor(bird_data$nom_lieu)
+levels(bird_data$nom_lieu)
+# il y a 55 lieux différents
+
+
+coord_summary <- bird_data %>%
+  group_by(x_centroid_4326, y_centroid_4326) %>%                 
+  summarise(
+    n_sites = n_distinct(nom_lieu),                              
+    site_names = paste(unique(nom_lieu), collapse = ", "),       
+    coord_unique = n_sites == 1                                   
+  ) %>%
+  ungroup() %>%
+  arrange(desc(n_sites)) 
+
+
+bird_data <- bird_data %>%
+  mutate(nom_lieu = ifelse(is.na(nom_lieu) | nom_lieu == "",
+                           paste0("unnamedSite", row_number()), 
+                           as.character(nom_lieu)))
+
+bird_data <- bird_data %>%
+  mutate(nom_lieu = as.character(nom_lieu)) %>%
+  mutate(nom_lieu = ifelse(nom_lieu %in% c("Portiragnes", "RNNbagnas", "Bessan"),
+                           "SudEtangBagnas",
+                           nom_lieu)) %>%
+  mutate(nom_lieu = as.factor(nom_lieu))
+
+bird_data$nom_lieu <- as.factor(bird_data$nom_lieu)
+
+levels(bird_data$nom_lieu)
+
+coord_summary <- bird_data %>%
+  group_by(x_centroid_4326, y_centroid_4326) %>%                 
+  summarise(
+    n_sites = n_distinct(nom_lieu),                              
+    site_names = paste(unique(nom_lieu), collapse = ", "),      
+    coord_unique = n_sites == 1                                  
+  ) %>%
+  ungroup() %>%
+  arrange(desc(n_sites))
+
+library(ggplot2)
+library(ggmap)   
+library(dplyr)
+
+library(ggplot2)
+
+ggplot(bird_data, aes(x = x_centroid_4326, y = y_centroid_4326)) +
+  geom_point(aes(color = nom_lieu), size = 3) +         
+  geom_text(aes(label = nom_lieu), vjust = -1, size = 3) + 
+  coord_quickmap() +                                     
+  labs(title = "Sites in Réserve du Bagnas") +
+  theme_classic() +
+  theme(legend.position = "none")
+
+
+
+```
 
 
