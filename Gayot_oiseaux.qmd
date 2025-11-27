@@ -6,12 +6,20 @@ editor: visual
 
 ## Test
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,        # montre le code — mettre FALSE si tu veux tout cacher
+  message = FALSE,    # enlève les messages tidyverse
+  warning = FALSE,    # enlève les warnings
+  results = "asis"    # optionnel
+)
+```
 
 ### Les packages nécessaires
 
 ```{r}
-#| label: A
-#| echo: false
+#| label: Packages necessaire
+#| include: false
 library(tidyverse) 
 library(lubridate) 
 library(readxl) 
@@ -19,22 +27,26 @@ library(ggplot2)
 library(dplyr)
 library(gridExtra)
 ```
--------------------------------------------------
-# 1.Netoyage de données
--------------------------------------------------
-Nous allons mettre au propre le tableau 1 et le tableau 2 afin de vérifier s’il y a des différences entre les deux tableaux, corriger ces différences, et créer un nouveau tableau qui sera composé des trois espèces.
+
+# 1. Nettoyage des données
+
+::: {note}
+ous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
+:::
 
 ```{r}
 #| label: B
 setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
 raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
 ```
-###############################################
-###Mise au propre du tableau 1 
-###############################################
 
-Nous gardons seulement les colonnes qui nous semblent pertinentes pour la suite de l'analyse
+## 1.2Mise au propre du tableau
 
+:::: callout-note
+::: {style="blue"}
+Nous conservons uniquement les colonnes pertinentes pour la suite de l’analyse, en supprimant les colonnes vides ainsi que celles dont l’information est redondante, notamment les noms latins.
+:::
+::::
 
 ```{r}
 #| label: C
@@ -60,12 +72,12 @@ process_data_1 <- process_data_1 %>%
   mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
           date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
 
+
 ```
 
-###############################################
-### Import et sélection du second tableau brut
-###############################################
+## 1.3 Import et sélection du second tableau brut
 
+############################################### 
 
 ```{r}
 #| label: D
@@ -130,22 +142,29 @@ process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <-
 
 ```
 
-###############################################
-###Vérification que les données sensibles correspondent
-###############################################
+############################################### 
 
-Nous allons vérifier, après modification de la nature de certaines colonnes, si les jeux de données sont maintenant égaux. Nous les testerons espèce par espèce.
+# 2. Vérification que les données sensibles correspondent
+
+::: callout-important
+Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l’individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l’ensemble des valeurs corresponde.
+:::
 
 ```{r}
-#| label: E
 #| echo: false
+#| message: false
+#| warning: false
 # Comparaison BUTOR ÉTOILÉ
 Butor_etoile_1 <- process_data_1   %>% filter(nom_vernaculaire == "Butor étoilé")
 Butor_etoile_2 <- process_data_2 %>% filter(nom_vernaculaire == "Butor étoilé")
 
 all.equal(Butor_etoile_1, Butor_etoile_2)
+```
 
-
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
 # Comparaison BLONGIOS
 Blongios_1 <- process_data_1 %>%
   filter(nom_vernaculaire == "Blongios nain, Butor blongios")
@@ -157,11 +176,13 @@ all.equal(Blongios_1, Blongios_2)
 
 ```
 
-###############################################
-###Ajout de la taleve sultane au tableau final
-###############################################
+############################################### 
 
-Nous prenons la nouvelle table qui est identique à l'autre avec une espece supplémentaire 
+# 3. Ajout de la taleve sultane au tableau final 
+
+::: callout-note
+Nous prenons la nouvelle table qui est identique à l'autre avec une espece supplémentaire
+:::
 
 ```{r}
 #| label: F
@@ -171,13 +192,15 @@ write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagn
 
 ```
 
--------------------------------------------------
-# 1.Jeux de données nécessaires (par espece, par protocole...)
--------------------------------------------------
+|     |
+|-----|
+|     |
 
-###############################################
-###Par espece
-###############################################
+|                                                                   |
+|-------------------------------------------------------------------|
+|  \# 4..Jeux de données nécessaires (par espece, par protocole...) |
+
+## 4.1 Par especes
 
 ```{r}
 #| label: G
@@ -188,9 +211,9 @@ Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Buto
 Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "taleve sultane, Poule sultane, Porphyrion bleu")
 ```
 
-###############################################
-###Par protocole
-###############################################
+############################################### 
+
+###Par protocole \###############################################
 
 ```{r}
 #| label: H
@@ -245,13 +268,13 @@ Opportuniste_Taleve<- process_data %>%
 
 ```
 
--------------------------------------------------
-# 3.Analyses exploratoires
--------------------------------------------------
+|                             |
+|:----------------------------|
+| \# 3.Analyses exploratoires |
 
-###############################################
-###continuité des protocoles sur les sites 
-###############################################
+############################################### 
+
+###continuité des protocoles sur les sites \###############################################
 
 ##### Pour le Butor
 
@@ -326,7 +349,6 @@ grid.arrange(grobs = tous_les_graphes, ncol = 4)
 
 ```
 
-
 ##### Pour le Blongiostaleve
 
 ```{r fig.height=25, fig.width=30}
@@ -386,33 +408,17 @@ grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)
 
 ```
 
-**Interprétation**
-sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
+**Interprétation** sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
 
-- blongios/taleve :  petit_bassin R3.2
-              petit_bassin R2.9
-              petit_bassin R3.1
-              GB6
-              chemin_animation
-              
-- butor :     GB
-              GB5
-              s
-              66
-              44
-              55
-              11
-              99
-              33
-              domaineGrandClavalet
-              
-sites avec protocole régulier : 
-- blongios/taleve : début en 2014 
-- butor : début en 2013 
+-   blongios/taleve : petit_bassin R3.2 petit_bassin R2.9 petit_bassin R3.1 GB6 chemin_animation
 
-###############################################
-###effort d'observation journalier : toutes sorties (obs ou pas obs)
-###############################################
+-   butor : GB GB5 s 66 44 55 11 99 33 domaineGrandClavalet
+
+sites avec protocole régulier : - blongios/taleve : début en 2014 - butor : début en 2013
+
+############################################### 
+
+###effort d'observation journalier : toutes sorties (obs ou pas obs) \###############################################
 
 ```{r}
 #| label: K
@@ -449,12 +455,12 @@ ggplot(mapping = aes(x, y)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
 ```
 
-
 #bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
 
 #Données d'heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d'heure
 
 #####Enlever les heures indésirables
+
 ```{undefined}
 #| label: L
 
@@ -553,10 +559,9 @@ ggplot(mapping = aes(x, y)) +
 
 ```
 
-
 #####Effort journalier Blongios
 
-````{r}
+```{r}
 #| label: blongios_heure
 
 # Nettoyage et création de datetime
@@ -600,32 +605,28 @@ ggplot(mapping = aes(x, y)) +
   ylab("Nombre de prospections (en gris) et d'observations (en noir)") +
   ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 
-````
-**Interpretation**
-- tout confondu : max au  crépuscule (20h) et au levé du soleil (4-5h) 
-- butor : max au  crépuscule (20h-22h) et au levé du soleil (4-6h) 
+```
 
-- blongios : de 21h-23h  et 5h à 9h 
+**Interpretation** - tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
 
+-   blongios : de 21h-23h et 5h à 9h
 
-###############################################
-###obs par heures de la journée  A FAIRE 
-###############################################
-
-###############################################
-###correspondance des coordonnées et des sites 
-###############################################
-
-
-**Interpretation** 
-3 sites sans noms 
-3 sites avec des noms différents mais mêmes coordonnées : portignagne ; RNN_bagnas ; B100 
-
-###############################################
-###observation des espèces chaque semaine depuis le début des relevés 
 ############################################### 
 
+###obs par heures de la journée A FAIRE \###############################################
+
+############################################### 
+
+###correspondance des coordonnées et des sites \###############################################
+
+**Interpretation** 3 sites sans noms 3 sites avec des noms différents mais mêmes coordonnées : portignagne ; RNN_bagnas ; B100
+
+############################################### 
+
+###observation des espèces chaque semaine depuis le début des relevés \###############################################
+
 #####Pour le Blongios
+
 ```{r}
 #| label: O
 
@@ -753,78 +754,51 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 graphique qui montre l'observation des butors par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
 
+**Interpretation** - butor : observations depuis le début, depuis \~2018 plus vraiment d'observations. observations les premières semaines de l'années et dernières semaines sorties sans observations à partir de \~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) les periodes où observations ne sont plus faites même en non observation
 
-**Interpretation**
-- butor : observations depuis le début, depuis ~2018 plus vraiment d'observations. 
-          observations les premières semaines de l'années et dernières semaines 
-          sorties sans observations à partir de ~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) 
-          les periodes où observations ne sont plus faites même en non observation
+-   blongios : même pattern de semaines depuis \~1998 . qq sorties sans observation à l'air de coller avec les patterns de protocoles
 
-- blongios : même pattern de semaines depuis ~1998 . qq sorties sans observation 
-             à l'air de coller avec les patterns de protocoles 
-
-###############################################
-###nombre d'observation par observateur depuis le début des données
 ############################################### 
 
+###nombre d'observation par observateur depuis le début des données \###############################################
 
 **Interpretation**
 
- ADENA : nom de l'asso , tout le temps présent depuis 1990 
+ADENA : nom de l'asso , tout le temps présent depuis 1990
 
-sans ADENA : obs commencent à 2011/13? 
-obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
+sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
 
-````
+\`\`\`\`
 
-___________________________________________________________________________
+------------------------------------------------------------------------
+
 BROUILLON LUCIEN
 
-head(process_data) 
+head(process_data)
 
+str(process_data) glimpse(process_data)
 
-str(process_data) 
-glimpse(process_data)
-
-occ_par_espece <- process_data %>% 
-  group_by(nom_vernaculaire) %>% 
-  summarise(id_synthese= n()) %>% 
-  arrange(desc(id_synthese))
+occ_par_espece \<- process_data %\>% group_by(nom_vernaculaire) %\>% summarise(id_synthese= n()) %\>% arrange(desc(id_synthese))
 
 head(occ_par_espece)
 
-
 #### Aperçu des années
 
-
-occ_par_annee<-process_data %>% mutate( date_parsed = ymd(date_debut),
-                                      annee = year(date_parsed) ) %>% 
-  group_by(annee) %>% 
-  summarise(total_individus = n(), .groups = "drop") %>% 
-  arrange(desc(annee))
+occ_par_annee\<-process_data %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed) ) %\>% group_by(annee) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee))
 
 print(occ_par_annee, n = Inf)
 
-ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + 
-  geom_point(alpha = 0.6 , size = 1) +
-  coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
-
+ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + geom_point(alpha = 0.6 , size = 1) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
 
 ## Butor étoilé
 
-
-Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
+Butor_etoile\<-process_data %\>% filter( nom_vernaculaire == "Butor étoilé")
 
 Butor_etoile
 
-
 #### Aperçu des années du butor etoile
 
-
-occ_par_annee_butor_etoile<-Butor_etoile %>% 
-  mutate( date_parsed = ymd(date_debut),
- annee_butor_etoile = year(date_parsed) ) %>% 
-  group_by(annee_butor_etoile) %>% summarise(total_individus = n(), .groups = "drop") %>% arrange(desc( annee_butor_etoile))
+occ_par_annee_butor_etoile\<-Butor_etoile %\>% mutate( date_parsed = ymd(date_debut), annee_butor_etoile = year(date_parsed) ) %\>% group_by(annee_butor_etoile) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc( annee_butor_etoile))
 
 print(occ_par_annee_butor_etoile, n = Inf)
 
@@ -832,61 +806,39 @@ ggplot(occ_par_annee_butor_etoile, aes(x = annee_butor_etoile, y = total_individ
 
 ggplot(Butor_etoile, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
 
-
-
 ## Blongios nain, Butor blongios
 
-
-Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+Blongios_nain\<-process_data %\>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
 Blongios_nain
 
-
 #### Aperçu des années Blongios nain, Butor blongios
 
-
-occ_par_annee_Blongios_nain<-Blongios_nain %>% mutate( date_parsed = ymd(date_debut),
-                                                         annee_Blongios_nain = year(date_parsed) ) %>% group_by(annee_Blongios_nain) %>% summarise(total_individus = n(), .groups = "drop") %>% arrange(desc(annee_Blongios_nain))
+occ_par_annee_Blongios_nain\<-Blongios_nain %\>% mutate( date_parsed = ymd(date_debut), annee_Blongios_nain = year(date_parsed) ) %\>% group_by(annee_Blongios_nain) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee_Blongios_nain))
 
 print(occ_par_annee_Blongios_nain, n = Inf)
 
-ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
-ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
-
-
+ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1)) ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
 
 ##PAr protocole
 
 #### Protocole scientifique
 
-Protocole_Scientifique <- process_data %>%
-  filter( champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
+Protocole_Scientifique \<- process_data %\>% filter( champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
 
 #### Protocole Opportuniste
 
-
-Protocole_opportuniste <- process_data %>%
-  filter( !champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
-
-
+Protocole_opportuniste \<- process_data %\>% filter( !champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
 
 # Analyses explo
 
 ## Question 1 : Est ce que les protocoles sont réalisés de façon linéaire le temps
 
+#Nous avons besoin de prendre seulement les données qui proviennent des protocoles
 
-#Nous avons besoin de prendre seulement les données qui proviennent des protocoles 
+Protocole_SuiviButor\<- Protocole_Scientifique %\>% filter( champs_additionnels == "{'RELV_NOM': 'SuiviButor'}")
 
-
-
-
-Protocole_SuiviButor<- Protocole_Scientifique %>%
-  filter( champs_additionnels == "{'RELV_NOM': 'SuiviButor'}")
-
-Protocole_SuiviBlongiostaleve<- Protocole_Scientifique %>%
-  filter( champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}")
-
-
+Protocole_SuiviBlongiostaleve\<- Protocole_Scientifique %\>% filter( champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}")
 
 ```{note}
 #Étape 2 : nous devons diviser les données par site et par espèce,
@@ -900,130 +852,63 @@ Protocole_SuiviBlongiostaleve<- Protocole_Scientifique %>%
 {r, fig.width=30, fig.height=25}
 
 # Liste des noms de sites
-sites <- c(unique(Protocole_SuiviButor$nom_lieu))
+
+sites \<- c(unique(Protocole_SuiviButor\$nom_lieu))
 
 # Définir toutes les semaines attendues pour la période de suivi (reste hors de la boucle)
-annees <- 1996:2025
-semaines <- 1:53  # Certaines années ont 53 semaines ISO
+
+annees \<- 1996:2025 semaines \<- 1:53 \# Certaines années ont 53 semaines ISO
 
 # Générer un data frame complet avec toutes les semaines de toutes les années
-calendrier <- expand.grid(annee = annees, semaine = semaines) %>%
-  arrange(annee, semaine)
 
-# creation liste pour la boucle 
+calendrier \<- expand.grid(annee = annees, semaine = semaines) %\>% arrange(annee, semaine)
 
-tous_les_graphes <- list()
-# --- 2. Boucle pour l'Analyse et le Graphique de Chaque Site ---
+# creation liste pour la boucle
+
+tous_les_graphes \<- list() \# --- 2. Boucle pour l'Analyse et le Graphique de Chaque Site ---
 
 # Nous itérons directement sur la liste des noms de sites
+
 for(site_nom in sites) {
-  
-  # a) Filtrer les données pour le site actuel (site_nom)
-  df_site <- Protocole_SuiviButor %>%
-    filter(nom_lieu == site_nom)
-  
-  # b) Préparation des données: convertir la date et extraire année + semaine
-  # Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join
-  data_semaines_site <- df_site %>%
-    mutate(
-      date_parsed = ymd(date_debut),
-      annee = year(date_parsed),
-      semaine = isoweek(date_parsed)
-    )
-  
-  # c) Calculer le suivi (compte et jointure avec le calendrier)
-  suivi <- data_semaines_site %>%
-    group_by(annee, semaine) %>%
-    summarise(nb = n(), .groups = "drop") %>%
-    right_join(calendrier, by = c("annee", "semaine")) %>%
-    mutate(
-      fait = ifelse(is.na(nb), "Non", "Oui"),
-      annee_fct = factor(annee) 
-    )
-  
-  # d) Créer le graphique
-  g <- ggplot(suivi, aes(x = semaine, y = annee_fct, fill = fait)) +
-    geom_tile(color = "black") +
-    scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) +
-    labs(
-      title = paste("Site", site_nom), # Titre raccourci pour la vue combinée
-      x = "Semaine ISO",
-      y = "Année",
-      fill = "Protocole fait ?"
-    ) +
-    theme_minimal() +
-    theme(
-      panel.grid = element_blank(),
-      axis.text.y = element_text(size = 6),
-      axis.text.x = element_text(size = 6),
-      plot.title = element_text(size = 8, hjust = 0.5) 
-    ) 
 
-  tous_les_graphes[[site_nom]] <- g
-}
+\# a) Filtrer les données pour le site actuel (site_nom) df_site \<- Protocole_SuiviButor %\>% filter(nom_lieu == site_nom)
+
+\# b) Préparation des données: convertir la date et extraire année + semaine \# Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join data_semaines_site \<- df_site %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )
+
+\# c) Calculer le suivi (compte et jointure avec le calendrier) suivi \<- data_semaines_site %\>% group_by(annee, semaine) %\>% summarise(nb = n(), .groups = "drop") %\>% right_join(calendrier, by = c("annee", "semaine")) %\>% mutate( fait = ifelse(is.na(nb), "Non", "Oui"), annee_fct = factor(annee) )
+
+\# d) Créer le graphique g \<- ggplot(suivi, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = "black") + scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) + labs( title = paste("Site", site_nom), \# Titre raccourci pour la vue combinée x = "Semaine ISO", y = "Année", fill = "Protocole fait ?" ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )
+
+tous_les_graphes\[\[site_nom\]\] \<- g }
 
 grid.arrange(grobs = tous_les_graphes, ncol = 4)
 
-
-
-
-
 grid.arrange(grobs = tous_les_graphes, ncol = 4)
-
 
 #### Pour le Blongiostaleve
 
-{r}
-site_Blongios = sites <- c(unique(Protocole_SuiviBlongiostaleve$nom_lieu))
+{r} site_Blongios = sites \<- c(unique(Protocole_SuiviBlongiostaleve\$nom_lieu))
 
 tous_les_graphes_Blongios = list()
 
-for(site_nom in sites) {
-df_site <- Protocole_SuiviBlongiostaleve %>%
-  filter(nom_lieu == site_nom)
+for(site_nom in sites) { df_site \<- Protocole_SuiviBlongiostaleve %\>% filter(nom_lieu == site_nom)
 
 # b) Préparation des données: convertir la date et extraire année + semaine
+
 # Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join
-data_semaines_site <- df_site %>%
-  mutate(
-    date_parsed = ymd(date_debut),
-    annee = year(date_parsed),
-    semaine = isoweek(date_parsed)
-  )
+
+data_semaines_site \<- df_site %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )
 
 # c) Calculer le suivi (compte et jointure avec le calendrier)
-suivi_Blongios <- data_semaines_site %>%
-  group_by(annee, semaine) %>%
-  summarise(nb = n(), .groups = "drop") %>%
-  right_join(calendrier, by = c("annee", "semaine")) %>%
-  mutate(
-    fait = ifelse(is.na(nb), "Non", "Oui"),
-    annee_fct = factor(annee) 
-  )
+
+suivi_Blongios \<- data_semaines_site %\>% group_by(annee, semaine) %\>% summarise(nb = n(), .groups = "drop") %\>% right_join(calendrier, by = c("annee", "semaine")) %\>% mutate( fait = ifelse(is.na(nb), "Non", "Oui"), annee_fct = factor(annee) )
 
 # d) Créer le graphique
-g <- ggplot(suivi_Blongios, aes(x = semaine, y = annee_fct, fill = fait)) +
-  geom_tile(color = "black") +
-  scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) +
-  labs(
-    title = paste("Site", site_nom), # Titre raccourci pour la vue combinée
-    x = "Semaine ISO",
-    y = "Année",
-    fill = "Protocole fait ?"
-  ) +
-  theme_minimal() +
-  theme(
-    panel.grid = element_blank(),
-    axis.text.y = element_text(size = 6), 
-    axis.text.x = element_text(size = 6),
-    plot.title = element_text(size = 8, hjust = 0.5) 
-  ) 
 
-tous_les_graphes_Blongios[[site_nom]] <- g
-}
+g \<- ggplot(suivi_Blongios, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = "black") + scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) + labs( title = paste("Site", site_nom), \# Titre raccourci pour la vue combinée x = "Semaine ISO", y = "Année", fill = "Protocole fait ?" ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )
+
+tous_les_graphes_Blongios\[\[site_nom\]\] \<- g }
 
 #Combiner tous les graphiques sur une seule page
 
-{r, fig.width=30, fig.height=25}
-grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)
-
+{r, fig.width=30, fig.height=25} grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)
