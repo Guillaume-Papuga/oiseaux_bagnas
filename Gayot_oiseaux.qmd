@@ -30,8 +30,8 @@ library(gridExtra)
 
 # 1. Nettoyage des données
 
-::: {note}
-ous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
+::: {.callout-note style="blue"}
+Nous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
 :::
 
 ```{r}
@@ -50,6 +50,8 @@ Nous conservons uniquement les colonnes pertinentes pour la suite de l’analyse
 
 ```{r}
 #| label: C
+#| message: false
+#| warning: false
 process_data_1= raw_data %>%
   select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
          nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
@@ -131,9 +133,9 @@ process_data_2 <- process_data_2 %>%
 # Certaines heures arrivent comme objets POSIX → on convertit en caractère
 
 
-###############################################
-### 5. Correction de la ligne manquante dans champs_additionnels
-###############################################
+
+# Correction de la ligne manquante dans champs_additionnels
+
 
 # La ligne 132 de process_data_2 avait un NA
 # On remplace par la valeur correspondante dans process_data_1 (ligne 720)
@@ -146,7 +148,7 @@ process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <-
 
 # 2. Vérification que les données sensibles correspondent
 
-::: callout-important
+::: {.callout-important style="red"}
 Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l’individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l’ensemble des valeurs corresponde.
 :::
 
@@ -178,9 +180,9 @@ all.equal(Blongios_1, Blongios_2)
 
 ############################################### 
 
-# 3. Ajout de la taleve sultane au tableau final 
+# 3. Ajout de la taleve sultane au tableau final
 
-::: callout-note
+::: {.callout-note style="blue"}
 Nous prenons la nouvelle table qui est identique à l'autre avec une espece supplémentaire
 :::
 
@@ -192,13 +194,7 @@ write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagn
 
 ```
 
-|     |
-|-----|
-|     |
-
-|                                                                   |
-|-------------------------------------------------------------------|
-|  \# 4..Jeux de données nécessaires (par espece, par protocole...) |
+# 4. Jeux de données nécessaires ( par especes, par protocole....)
 
 ## 4.1 Par especes
 
@@ -213,7 +209,7 @@ Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "taleve sultane, Po
 
 ############################################### 
 
-###Par protocole \###############################################
+## 4.2 Par protocole
 
 ```{r}
 #| label: H
@@ -268,15 +264,11 @@ Opportuniste_Taleve<- process_data %>%
 
 ```
 
-|                             |
-|:----------------------------|
-| \# 3.Analyses exploratoires |
+# 5. Analyses exploratoires
 
-############################################### 
+## 5.1continuité des protocoles sur les sites
 
-###continuité des protocoles sur les sites \###############################################
-
-##### Pour le Butor
+### 5.1.a Pour le Butor
 
 ```{r fig.height=25, fig.width=30}
 #| label: I
@@ -349,7 +341,7 @@ grid.arrange(grobs = tous_les_graphes, ncol = 4)
 
 ```
 
-##### Pour le Blongiostaleve
+### 5.1.b Pour le Blongios et le Taleve
 
 ```{r fig.height=25, fig.width=30}
 #| label: J
@@ -408,17 +400,21 @@ grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)
 
 ```
 
-**Interprétation** sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
+::: {.callout-note style="green"}
+## Interpretation
+
+Sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
 
 -   blongios/taleve : petit_bassin R3.2 petit_bassin R2.9 petit_bassin R3.1 GB6 chemin_animation
 
 -   butor : GB GB5 s 66 44 55 11 99 33 domaineGrandClavalet
 
 sites avec protocole régulier : - blongios/taleve : début en 2014 - butor : début en 2013
+:::
 
 ############################################### 
 
-###effort d'observation journalier : toutes sorties (obs ou pas obs) \###############################################
+## 5.2 effort d'observation journalier : toutes sorties (obs ou pas obs)
 
 ```{r}
 #| label: K
@@ -455,16 +451,18 @@ ggplot(mapping = aes(x, y)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
 ```
 
-#bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
+::: {.callout-note style="green"}
+## Interpretation
+
+bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
 
 #Données d'heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d'heure
+:::
 
-#####Enlever les heures indésirables
+### 5.2.a. Enlever les heures indésirables
 
-```{undefined}
-#| label: L
+```{r}
 
-process_data <- process_data %>% filter(heure_debut> as.POSIXct("1899-12-31 00:00:00")) ; 
 ### Extraire l'heure
 
 process_data <- process_data %>%
@@ -507,10 +505,9 @@ ggplot(mapping = aes(x, y)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-#####Effort journalier Butor
+### 5.2.b. Effort journalier Butor
 
 ```{r}
-#| label: M
 ### enlever les heures indésirables
 
 Butor_etoile <- Butor_etoile %>%
@@ -559,7 +556,7 @@ ggplot(mapping = aes(x, y)) +
 
 ```
 
-#####Effort journalier Blongios
+### 5.2.c. Effort journalier Blongios
 
 ```{r}
 #| label: blongios_heure
@@ -607,25 +604,35 @@ ggplot(mapping = aes(x, y)) +
 
 ```
 
-**Interpretation** - tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
+::: {.callout-note style="green"}
+## Interpretation
+
+Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
 
 -   blongios : de 21h-23h et 5h à 9h
+:::
 
 ############################################### 
 
-###obs par heures de la journée A FAIRE \###############################################
+::: {.callout-warning style="red"}
+**obs par heures de la journée A FAIRE**
+:::
 
 ############################################### 
 
-###correspondance des coordonnées et des sites \###############################################
+### 5.3 Correspondance des coordonnées et des sites
 
-**Interpretation** 3 sites sans noms 3 sites avec des noms différents mais mêmes coordonnées : portignagne ; RNN_bagnas ; B100
+::: {.callout-note style="green"}
+## Interpretation
+
+3 sites sans noms 3 sites avec des noms différents mais mêmes coordonnées : portignagne ; RNN_bagnas ; B100
+:::
 
 ############################################### 
 
-###observation des espèces chaque semaine depuis le début des relevés \###############################################
+## 5.4 observation des espèces chaque semaine depuis le début des relevés
 
-#####Pour le Blongios
+### 5.4.a Pour le Blongios
 
 ```{r}
 #| label: O
@@ -691,7 +698,13 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   theme(panel.grid = element_blank())
 ```
 
+::: callout-note
+## Interpretation
+
 graphique qui montre l'observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
+:::
+
+### 5.4.b Pour le Blongios
 
 ```{r}
 #| echo: false
@@ -752,23 +765,94 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   theme(panel.grid = element_blank())
 ```
 
+::: {.callout-note style="green"}
+## Interpretation
+
 graphique qui montre l'observation des butors par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
 
 **Interpretation** - butor : observations depuis le début, depuis \~2018 plus vraiment d'observations. observations les premières semaines de l'années et dernières semaines sorties sans observations à partir de \~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) les periodes où observations ne sont plus faites même en non observation
 
 -   blongios : même pattern de semaines depuis \~1998 . qq sorties sans observation à l'air de coller avec les patterns de protocoles
+:::
 
-############################################### 
+### 5.4.c Pour le Taleve
 
-###nombre d'observation par observateur depuis le début des données \###############################################
+```{r}
+# Taleve 
+#On redefinis les annees
+annee_min <- min(year(process_data$date_debut), na.rm = TRUE)
+annee_max <- max(year(process_data$date_debut), na.rm = TRUE)
+duree_annees <- annee_max - annee_min + 1
 
-**Interpretation**
+
+data_taleve <- process_data %>%
+  filter(nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  mutate(
+    annee_suivi  = year(date_debut) - annee_min + 1,
+    annee_reelle = year(date_debut),
+    semaine      = isoweek(date_debut)
+  )
+
+# --- Résumer les semaines (gestion des observations / sorties) ---
+data_taleve_summarized <- data_taleve %>%
+  group_by(annee_suivi, semaine) %>%
+  summarize(
+    statut = case_when(
+      any(nombre_min > 0)  ~ "observation",
+      any(nombre_min == 0) ~ "sortie_sans_observation"
+    ),
+    .groups = "drop"
+  )
+
+# --- Grille complète année x semaine ---
+grille <- expand.grid(
+  annee_suivi = 1:duree_annees,
+  semaine     = 1:53
+) %>%
+  mutate(
+    annee_reelle = annee_min + annee_suivi - 1
+  ) %>%
+  left_join(
+    data_taleve_summarized,
+    by = c("annee_suivi", "semaine")
+  ) %>%
+  mutate(
+    statut = ifelse(is.na(statut), "pas_de_sortie", statut)
+  )
+
+# --- Graphique calendrier ---
+ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
+  geom_tile(color = "white", size = 0.2) +
+  scale_y_reverse() +
+  scale_fill_manual(
+    values = c(
+      "observation"              = "#0072B2",
+      "sortie_sans_observation"  = "#E69F00",
+      "pas_de_sortie"            = "lightgrey"
+    )
+  ) +
+  labs(
+    title    = paste("Observations de", data_taleve),
+    subtitle = paste("Suivi de", annee_min, "à", annee_max),
+    x = "Semaine de l'année",
+    y = "Année"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+````
+
+# 5.5nombre d'observation par observateur depuis le début des données
+
+
+::: {.callout-note style="green"}
+## Interpretation
 
 ADENA : nom de l'asso , tout le temps présent depuis 1990
 
 sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
+:::
 
-\`\`\`\`
+````
 
 ------------------------------------------------------------------------
 
