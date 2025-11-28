@@ -5,6 +5,9 @@ editor: visual
 ---
 
 ```{r}
+#| message: false
+#| warning: false
+
 #| label: Packages necessaire
 library(tidyverse) 
 library(lubridate) 
@@ -15,6 +18,16 @@ library(gridExtra)
 library(readr)
 library(knitr)
 ```
+
+::: {.callout-warning style="border-left: 5px solid red; background-color: #fdd; padding: 1em;"}
+## Attention
+
+Pour les analyses à venir, vous devez utiliser le **nouveau jeu de données** créé après vérification qu’il est **complet et nettoyé** (voir les sections suivantes).
+
+Il est important de commencer toutes les nouvelles analyses avec ce jeu de données afin que **tout le monde travaille sur la même base**.
+
+Si vous avez besoin de **sous-jeux de données**, par exemple uniquement le **Butor étoilé** ou uniquement les données **opportunistes**, rendez-vous dans la **section 4** pour les récupérer, afin de **préserver la typologie correcte du jeu de données**.
+:::
 
 # 1. Nettoyage des données
 
@@ -72,6 +85,8 @@ process_data_1 <- process_data_1 %>%
 
 ```{r}
 #| label: Appel data 2
+#| message: false
+#| warning: false
 setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
 
 # read_delim + encoding Latin1 = corrige les accents
@@ -140,7 +155,7 @@ Nous allons vérifier, après modification du type de certaines colonnes, si les
 :::
 
 ```{r}
-#| label: Comparaison des data
+#| label: Comparaison des data Butor
 #| echo: false
 #| message: false
 #| warning: false
@@ -152,7 +167,7 @@ all.equal(Butor_etoile_1, Butor_etoile_2)
 ```
 
 ```{r}
-#| label: Comparaison des data
+#| label: Comparaison des data Blongios
 #| echo: false
 #| message: false
 #| warning: false
@@ -183,17 +198,22 @@ write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagn
 
 # 4. Jeux de données nécessaires ( par especes, par protocole....)
 
-```{undefined}
+```{r}
 #| label: DATA A UTILISER
+#| echo: true
+#| message: false
+#| warning: false
  process_data <- read_csv("data/pro/process_data.csv")
-## 4.1 Par especes
+```
 
-#| label: G
+```{r}
+## 4.1 Par especes
 Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
 
 Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
-Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "taleve sultane, Poule sultane, Porphyrion bleu")
+Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
+
 ```
 
 ## 4.2 Par protocole
@@ -246,7 +266,7 @@ Opportuniste_Blongios<- process_data %>%
 Opportuniste_Taleve<- process_data %>%
   filter(
     !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "taleve sultane, Poule sultane, Porphyrion bleu"
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
 
 ```
@@ -428,7 +448,7 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure nen conservant les heures inconnues (0), tout protocole confondu")
 
 ```
 
@@ -467,7 +487,7 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure nsans les heures inconnues, tout protocole confondu")
 ```
 
 ### 5.2.c Effort journalier Butor
@@ -506,7 +526,7 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure \nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure nsans les heures inconnues, tout protocole confondu")
 
 ```
 
@@ -545,7 +565,7 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure nsans les heures inconnues, tout protocole confondu")
 ```
 
 ::: {.callout-note style="green"}
@@ -563,14 +583,6 @@ Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : 
 
 -   blongios : de 21h-23h et 5h à 9h
 :::
-
-############################################### 
-
-::: {.callout-warning style="red"}
-**obs par heures de la journée A FAIRE**
-:::
-
-############################################### 
 
 ### 5.3 Correspondance des coordonnées et des sites
 
@@ -855,7 +867,108 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   theme(panel.grid = element_blank())
 ```
 
-# 5.5nombre d'observation par observateur depuis le début des données
+# 5.5 nombre d'observation par observateur depuis le début des données
+
+##5.5.a Nombre d'observation par observateur
+
+```{r}
+
+#0) Diagnostic : afficher un aperçu de process_data ---
+
+cat("Aperçu de process_data (5 premières lignes) :\n")
+print(utils::head(process_data, 5))
+cat("\nStructure de process_data :\n")
+print(str(process_data))
+
+# --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---
+data_filtered <- process_data %>%
+  # s'assurer que la colonne existe et est en caractère
+  mutate(observateurs = as.character(observateurs)) %>%
+  # nettoyer espaces début/fin et remplacer NA par "NA_obs" si besoin (optionnel)
+  mutate(observateurs = str_trim(observateurs)) %>%
+  # exclusion insensible à la casse de "ADENA" (gère "Adena", " ADENA ", etc.)
+  filter(!is.na(observateurs) & !(str_to_upper(observateurs) == "ADENA"))
+
+cat("\nVérification data_filtered (5 premières lignes) :\n")
+print(utils::head(data_filtered, 5))
+cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
+
+# --- 2) Agrégation : somme de nombre_min par observateur ---
+
+data_summarized <- data_filtered %>%
+  # s'assurer que nombre_min est numérique
+  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  group_by(observateurs) %>%
+  summarise(
+    total_min = sum(nombre_min, na.rm = TRUE),
+    n_rows = n(),
+    .groups = "drop"
+  )
+
+cat("\nTable agrégée (top 20) :\n")
+print(utils::head(arrange(data_summarized, desc(total_min)), 20))
+
+# Vérification d'éventuels problèmes
+if (nrow(data_summarized) == 0) {
+  stop("data_summarized est vide — vérifie que data_filtered contient des lignes et que la colonne nombre_min est numérique.")
+}
+if (all(is.na(data_summarized$total_min))) {
+  stop("Toutes les sommes sont NA — vérifie la colonne nombre_min (valeurs non numériques).")
+}
+
+# --- 3) Réordonner les observateurs pour un affichage clair (optionnel) ---
+data_summarized <- data_summarized %>%
+  arrange(desc(total_min)) %>%
+  mutate(observateurs = factor(observateurs, levels = observateurs))
+
+# --- 4) Tracer le barplot avec geom_col() et valeurs au-dessus des barres ---
+p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+  geom_col() +                           # geom_col() = geom_bar(stat="identity")
+  geom_text(aes(label = round(total_min, 1)), 
+            vjust = -0.3, size = 3) +    # afficher la valeur au-dessus
+  labs(
+    title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
+    x = "Observateur",
+    y = "Total nombre_min"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(p)
+
+```
+
+## 5.5.b Coontinuité dans le temps des observateurs
+
+```{r}
+ process_data <- process_data %>%
+  mutate(date_debut = as.Date(date_debut))  # transforme si c'était du texte
+
+# Optionnel : enlever "ADENA" si tu ne veux pas la voir
+process_data <- process_data %>%
+  filter(observateurs != "")
+
+# Optionnel : trier les observateurs par fréquence
+process_data <- process_data %>%
+  mutate(observateurs = forcats::fct_infreq(observateurs))
+
+# --- Graphe de présence ---
+ggplot(process_data, aes(x = date_debut, y = observateurs)) +
+  geom_point(alpha = 0.7, color = "steelblue", size = 3) +
+  labs(
+    title = "Présence des observateurs dans le temps",
+    x = "Date de début",
+    y = "Observateurs"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
 
 ::: {.callout-note style="green"}
 ## Interpretation
@@ -864,3 +977,19 @@ ADENA : nom de l'asso , tout le temps présent depuis 1990
 
 sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
 :::
+
+# 6 Que faire pour la suite ????????????
+
+[**Objectif**]{.underline} :
+
+-Étudier l’évolution des populations par espèce dans le temps.
+
+---\> I**dentifier les tendances** : augmentation, diminution ou stabilité.
+
+---\> **Tester l’influence des variables climatiques** sur la fluctuation des populations. ---\> modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).
+
+[**Questions méthodologiques**]{.underline}
+
+---\>**Quelles années inclure** ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années “moins fiables”.
+
+---\>**Données opportunistes** : garder ou séparer ?
