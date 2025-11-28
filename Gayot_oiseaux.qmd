@@ -450,7 +450,6 @@ process_data <- process_data %>%
 process_data$heure_debut_tronc = as.factor(process_data$heure_debut_tronc)
 ### Sommer les obs par heure
 
-
 obs_heure <- process_data %>%
       group_by(heure_debut_tronc) %>%
       summarize(sum(nombre_min)) 
