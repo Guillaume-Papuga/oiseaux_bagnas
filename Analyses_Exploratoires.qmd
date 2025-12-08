@@ -43,11 +43,11 @@ raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
 
 ## 1.2Mise au propre du tableau
 
-:::: callout-note
+::: callout-note
 ::: {style="blue"}
 Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 :::
-::::
+:::
 
 ```{r}
 #| label: Selection variables utiles
@@ -786,12 +786,7 @@ ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326)) +
 
 ```{r}
 #| label: O
-
-# --- Définir la période de suivi ---
-annee_min <- min(year(process_data$date_debut), na.rm = TRUE)
-annee_max <- max(year(process_data$date_debut), na.rm = TRUE)
-duree_annees <- annee_max - annee_min + 1
-
+## blongios ##
 esp_blongios <- "Blongios nain, Butor blongios"
 data_blongios <- process_data %>% filter(nom_vernaculaire == esp_blongios)
 
@@ -913,6 +908,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
+
 ```
 
 ::: {.callout-note style="green"}
@@ -1130,16 +1126,10 @@ Il y a eu au moins 2 changements de "protocoles" sur les 30 ans. Un protocole é
 
 #7 Idées plus poussées
 
-on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 
-1. quelle est la probabilité de détection ? 
-- Occupancy (binomial) : est ce que proba varie selon climat. 
-+ biais opservateur 
+on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 1. quelle est la probabilité de détection ? - Occupancy (binomial) : est ce que proba varie selon climat. + biais opservateur
 
-2. Quelle est la présence espèce dans le temps ? 
-- GLMM (poisson) : population varie dans le temps ? (modèle Null) 
-Pop˚ varie selon climat ? 
-attention : population ouverte ou fermée ? -> on peut faire l'hypothèse de fermeture ponctuelle (pendant les migrations)? 
-si ouvert : on peut aussi regarder la date d'arrivée selon le temps et le climat. 
+2.  Quelle est la présence espèce dans le temps ?
 
-tri données : avant 2014 -> pas de protocole ? donc on commence nos modèles en 2014 ? 
-est ce qu'on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents  entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.
+-   GLMM (poisson) : population varie dans le temps ? (modèle Null) Pop˚ varie selon climat ? attention : population ouverte ou fermée ? -\> on peut faire l'hypothèse de fermeture ponctuelle (pendant les migrations)? si ouvert : on peut aussi regarder la date d'arrivée selon le temps et le climat.
+
+tri données : avant 2014 -\> pas de protocole ? donc on commence nos modèles en 2014 ? est ce qu'on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.
