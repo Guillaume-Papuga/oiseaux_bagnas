@@ -37,17 +37,17 @@ Nous allons mettre au propre le tableau 1 et le tableau 2 afin d'identifier les 
 
 ```{r}
 #| label: Appel data 1
-setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw")
+setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
 raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
 ```
 
 ## 1.2Mise au propre du tableau
 
-::: callout-note
+:::: callout-note
 ::: {style="blue"}
 Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 :::
-:::
+::::
 
 ```{r}
 #| label: Selection variables utiles
@@ -87,7 +87,7 @@ process_data_1 <- process_data_1 %>%
 #| label: Appel data 2
 #| message: false
 #| warning: false
-setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw")
+setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
 
 # read_delim + encoding Latin1 = corrige les accents
 raw_data_2 <- read_delim(
@@ -192,7 +192,7 @@ Nous prenons la nouvelle table qui est identique à l'autre avec une espece supp
 #| label: creation du data final
 process_data = process_data_2
 
-write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
 ```
 
@@ -210,7 +210,7 @@ write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/d
 ## 4.1 Par especes
 Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
 
-Protocole_SuiviButor<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
 Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
 
