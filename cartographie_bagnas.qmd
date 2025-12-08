@@ -38,7 +38,7 @@ sites_sf <- st_as_sf(process_data, coords = c("x_centroid_4326", "y_centroid_432
 
 ```
 
-## .... avec les points d'observation des oiseaux 
+## .... avec les points d'observation des oiseaux
 
 carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms d'espèces
 
@@ -66,9 +66,10 @@ leaflet() %>%
 
 ```
 
-## .... avec les les sites d'observation (protocole ou non?) des oiseaux 
+## .... avec les les sites d'observation (protocole ou non?) des oiseaux
 
 carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms d'espèces
+
 ```{r}
 leaflet() %>%
   addTiles() %>%     # fond OSM
@@ -91,4 +92,3 @@ leaflet() %>%
 
 
 ```
-
