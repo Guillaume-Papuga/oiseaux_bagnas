@@ -1128,10 +1128,10 @@ ATTENTION presque la moitiés des observations sont faites par une multitude de 
 
 Il y a eu au moins 2 changements de "protocoles" sur les 30 ans. Un protocole établis en 2014 qui contraste avec les données d'avant qui étaient surement rigoureuse (**poser la question aux gens de la reserve**)? Et une reduction du temps d'écoute par site en 2018 au moins pour blongios Talève (quid du butor). Donc si on veut faire des suivies rigoureux statistiquement entre le fait qu'on peut moyen prendre les données autre que protocolées + il y a différents protocoles + il y a différents observateur.ices (moindre mesure) ça semble tendu du slip pour avoir assez de points sur assez de temps.
 
-#7 idees plus poussées
+#7 Idées plus poussées
 
 on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 
-1. quelle est la probabilité de détéction ? 
+1. quelle est la probabilité de détection ? 
 - Occupancy (binomial) : est ce que proba varie selon climat. 
 + biais opservateur 
 
@@ -1140,3 +1140,6 @@ on compare les protocoles et les opportunistes : est ce que protocoles vraiments
 Pop˚ varie selon climat ? 
 attention : population ouverte ou fermée ? -> on peut faire l'hypothèse de fermeture ponctuelle (pendant les migrations)? 
 si ouvert : on peut aussi regarder la date d'arrivée selon le temps et le climat. 
+
+tri données : avant 2014 -> pas de protocole ? donc on commence nos modèles en 2014 ? 
+est ce qu'on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents  entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.
