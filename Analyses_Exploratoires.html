@@ -389,10 +389,10 @@ Interpretation
 </div>
 </section>
 </section>
-<section id="effort-dobservation-journalier-toutes-sorties-obs-ou-pas-obs" class="level2">
-<h2 class="anchored" data-anchor-id="effort-dobservation-journalier-toutes-sorties-obs-ou-pas-obs">5.2 effort d’observation journalier : toutes sorties (obs ou pas obs)</h2>
-<section id="a-effort-journalier-toutes-espèces" class="level3">
-<h3 class="anchored" data-anchor-id="a-effort-journalier-toutes-espèces">5.2.a Effort journalier toutes espèces</h3>
+<section id="effort-dobservation-journalier" class="level2">
+<h2 class="anchored" data-anchor-id="effort-dobservation-journalier">5.2 effort d’observation journalier</h2>
+<section id="a-effort-journalier-toutes-espèces-tout-protocole" class="level3">
+<h3 class="anchored" data-anchor-id="a-effort-journalier-toutes-espèces-tout-protocole">5.2.a Effort journalier toutes espèces tout protocole</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -440,7 +440,7 @@ Interpretation
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure nen conservant les heures inconnues (0), tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure </span><span class="sc">\n</span><span class="st">en conservant les heures inconnues (0), tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -450,8 +450,8 @@ Interpretation
 </div>
 </div>
 </section>
-<section id="b-données-dheure-sans-les-000000-et-les-absence-dheure" class="level3">
-<h3 class="anchored" data-anchor-id="b-données-dheure-sans-les-000000-et-les-absence-dheure">5.2.b Données d’heure sans les 00:00:00 et les absence d’heure</h3>
+<section id="b-données-dheure-sans-les-000000-et-les-absence-dheure-tout-espece-tout-protocole" class="level3">
+<h3 class="anchored" data-anchor-id="b-données-dheure-sans-les-000000-et-les-absence-dheure-tout-espece-tout-protocole">5.2.b Données d’heure sans les 00:00:00 et les absence d’heure tout espece tout protocole</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>) </span>
@@ -505,7 +505,7 @@ Interpretation
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure nsans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -515,8 +515,8 @@ Interpretation
 </div>
 </div>
 </section>
-<section id="c-effort-journalier-butor" class="level3">
-<h3 class="anchored" data-anchor-id="c-effort-journalier-butor">5.2.c Effort journalier Butor</h3>
+<section id="c-effort-journalier-butor-tout-protocole" class="level3">
+<h3 class="anchored" data-anchor-id="c-effort-journalier-butor-tout-protocole">5.2.c Effort journalier Butor tout protocole</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Butor_etoile <span class="ot">&lt;-</span> Butor_etoile <span class="sc">%&gt;%</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
@@ -571,7 +571,7 @@ Interpretation
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
 <span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure nsans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -581,8 +581,8 @@ Interpretation
 </div>
 </div>
 </section>
-<section id="d-effort-journalier-blongios" class="level3">
-<h3 class="anchored" data-anchor-id="d-effort-journalier-blongios">5.2.d Effort journalier Blongios</h3>
+<section id="d-effort-journalier-blongios-tout-protocole" class="level3">
+<h3 class="anchored" data-anchor-id="d-effort-journalier-blongios-tout-protocole">5.2.d Effort journalier Blongios tout protocole</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Blongios_nain <span class="ot">&lt;-</span> Blongios_nain  <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
@@ -633,11 +633,188 @@ Interpretation
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure nsans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="e-effort-journalier-taleve-tout-protocole" class="level3">
+<h3 class="anchored" data-anchor-id="e-effort-journalier-taleve-tout-protocole">5.2.e Effort journalier Taleve tout protocole</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Taleve_sultane <span class="ot">&lt;-</span> Taleve_sultane  <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>Taleve_sultane <span class="ot">&lt;-</span> Taleve_sultane <span class="sc">%&gt;%</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>Taleve_sultane<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(Taleve_sultane<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> Taleve_sultane <span class="sc">%&gt;%</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   heure_debut_tronc `sum(nombre_min)`
+   &lt;fct&gt;                         &lt;dbl&gt;
+ 1 4                                 1
+ 2 5                                28
+ 3 6                                61
+ 4 7                                46
+ 5 8                               180
+ 6 9                                29
+ 7 10                                3
+ 8 11                                4
+ 9 19                                3
+10 20                               58
+11 21                               30</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> Taleve_sultane <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Talève sultane) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="f-effort-journalier-protocole-butor" class="level3">
+<h3 class="anchored" data-anchor-id="f-effort-journalier-protocole-butor">5.2.f Effort journalier protocole Butor</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviButor <span class="ot">&lt;-</span> Protocole_SuiviButor  <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviButor <span class="ot">&lt;-</span> Protocole_SuiviButor <span class="sc">%&gt;%</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviButor<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(Protocole_SuiviButor<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> Protocole_SuiviButor <span class="sc">%&gt;%</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   heure_debut_tronc `sum(nombre_min)`
+   &lt;fct&gt;                         &lt;dbl&gt;
+ 1 3                                 0
+ 2 4                                 0
+ 3 5                                 0
+ 4 6                                 0
+ 5 10                                0
+ 6 11                                1
+ 7 18                                0
+ 8 19                                0
+ 9 20                                0
+10 21                                0
+11 22                                0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> Protocole_SuiviButor <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations protocolées (Butor étoilé) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="g-effort-journalier-protocole-blongios-talève" class="level3">
+<h3 class="anchored" data-anchor-id="g-effort-journalier-protocole-blongios-talève">5.2.g Effort journalier protocole Blongios-Talève</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviBlongiosTaleve <span class="ot">&lt;-</span> Protocole_SuiviBlongiosTaleve  <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviBlongiosTaleve <span class="ot">&lt;-</span> Protocole_SuiviBlongiosTaleve <span class="sc">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviBlongiosTaleve<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(Protocole_SuiviBlongiosTaleve<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> Protocole_SuiviBlongiosTaleve <span class="sc">%&gt;%</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  heure_debut_tronc `sum(nombre_min)`
+  &lt;fct&gt;                         &lt;dbl&gt;
+1 5                                 7
+2 6                                53
+3 7                                26
+4 8                                 2
+5 19                                4
+6 20                               55
+7 21                               38
+8 22                                1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> Protocole_SuiviBlongiosTaleve <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations protocolées </span><span class="sc">\n</span><span class="st">(Blongios et Talève) par heure sans les heures inconnues"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -652,7 +829,7 @@ Interpretation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c’est pas écrit donc IG il considère que c’est minuit</p>
+<p>Beaucoup d’obs pour lesquelles l’heure est inconnue.</p>
 <p>#Données d’heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d’heure</p>
 </div>
 </div>
@@ -666,9 +843,14 @@ Interpretation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)</p>
+<p>Tout confondu : max au crépuscule (20h) et avant le levé du soleil (4-5h)</p>
+<p>- butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)</p>
 <ul>
-<li>blongios : de 21h-23h et 5h à 9h</li>
+<li><p>blongios : de 21h-23h et 5h à 9h</p></li>
+<li><p>Taleve : de 5h à 9h avec GROS PIC à 8h puis de 20 à 21.</p></li>
+<li><p>protocole blongios taleve = obs a 6h et 7h et 20h et 21h.</p>
+<p>=&gt; globalement tout correspond aux protocoles mis en place SAUF</p></li>
+<li><p>protocole butor: UNE SEULE OBS PROTOCOLEE DONT ON CONNAIS L’HEURE et elle date de 1998 (j’ai verif les données brutes et effectivement c’est le cas)</p></li>
 </ul>
 </div>
 </div>
@@ -676,9 +858,9 @@ Interpretation
 <section id="correspondance-des-coordonnées-et-des-sites" class="level3">
 <h3 class="anchored" data-anchor-id="correspondance-des-coordonnées-et-des-sites">5.3 Correspondance des coordonnées et des sites</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "10"                       "11"                      
  [3] "12"                       "7"                       
@@ -703,39 +885,39 @@ Interpretation
 [41] "PetitBassin-R3.2"         "PontKoch"                
 [43] "S"                        "SaintMichel"             </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 65 sites de coordonées (protocole et opportunistes melanges)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Résumé des coordonnées</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                         <span class="co"># nombre de lieux distincts</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),  <span class="co"># liste des noms</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>,                             <span class="co"># TRUE si une seule espèce</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))<span class="sc">%&gt;%</span></span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_sites <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(nom_lieu) <span class="sc">|</span> nom_lieu <span class="sc">==</span> <span class="st">""</span>,</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">paste0</span>(<span class="st">"unnamedSite"</span>, <span class="fu">row_number</span>()), </span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">as.character</span>(nom_lieu)))</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.character</span>(nom_lieu)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(nom_lieu <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Portiragnes"</span>, <span class="st">"RNNbagnas"</span>, <span class="st">"Bessan"</span>),</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"SudEtangBagnas"</span>,</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>                           nom_lieu)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.factor</span>(nom_lieu))</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 65 sites de coordonées (protocole et opportunistes melanges)</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Résumé des coordonnées</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                         <span class="co"># nombre de lieux distincts</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),  <span class="co"># liste des noms</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>,                             <span class="co"># TRUE si une seule espèce</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))<span class="sc">%&gt;%</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_sites <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(nom_lieu) <span class="sc">|</span> nom_lieu <span class="sc">==</span> <span class="st">""</span>,</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">paste0</span>(<span class="st">"unnamedSite"</span>, <span class="fu">row_number</span>()), </span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">as.character</span>(nom_lieu)))</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.character</span>(nom_lieu)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(nom_lieu <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Portiragnes"</span>, <span class="st">"RNNbagnas"</span>, <span class="st">"Bessan"</span>),</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"SudEtangBagnas"</span>,</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>                           nom_lieu)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.factor</span>(nom_lieu))</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "10"                       "11"                      
  [3] "12"                       "7"                       
@@ -761,33 +943,33 @@ Interpretation
 [43] "S"                        "SaintMichel"             
 [45] "unnamedSite323"           "unnamedSite608"          </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span>                 </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                              </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),      </span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>                                  </span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span>                 </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                              </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),      </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>                                  </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'x_centroid_4326'. You can override using
 the `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> x_centroid_4326, <span class="at">y =</span> y_centroid_4326)) <span class="sc">+</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> nom_lieu), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>         </span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> nom_lieu), <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span>                                     </span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sites in Réserve du Bagnas"</span>) <span class="sc">+</span></span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> x_centroid_4326, <span class="at">y =</span> y_centroid_4326)) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> nom_lieu), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>         </span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> nom_lieu), <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span>                                     </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sites in Réserve du Bagnas"</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -815,65 +997,65 @@ Interpretation
 <section id="a-pour-le-blongios" class="level3">
 <h3 class="anchored" data-anchor-id="a-pour-le-blongios">5.4.a Pour le Blongios</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Définir la période de suivi ---</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>esp_blongios <span class="ot">&lt;-</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios) <span class="sc">%&gt;%</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine =</span> <span class="fu">isoweek</span>(date_debut)</span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines pour gérer les sorties multiples ---</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>data_blongios_summarized <span class="ot">&lt;-</span> data_blongios <span class="sc">%&gt;%</span></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"observation"</span>,             <span class="co"># au moins une observation</span></span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span> <span class="co"># au moins une sortie mais pas d'observation</span></span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Créer la grille complète (année x semaine) ---</span></span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>    data_blongios_summarized,</span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)) <span class="co"># semaines sans sortie</span></span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier des semaines ---</span></span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>,         </span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, </span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>       </span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, esp_blongios),</span>
-<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
-<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
-<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
-<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Définir la période de suivi ---</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>esp_blongios <span class="ot">&lt;-</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios) <span class="sc">%&gt;%</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine =</span> <span class="fu">isoweek</span>(date_debut)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines pour gérer les sorties multiples ---</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>data_blongios_summarized <span class="ot">&lt;-</span> data_blongios <span class="sc">%&gt;%</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"observation"</span>,             <span class="co"># au moins une observation</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span> <span class="co"># au moins une sortie mais pas d'observation</span></span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Créer la grille complète (année x semaine) ---</span></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>    data_blongios_summarized,</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)) <span class="co"># semaines sans sortie</span></span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier des semaines ---</span></span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>,         </span>
+<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, </span>
+<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>       </span>
+<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, esp_blongios),</span>
+<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
+<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
+<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
+<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.</code></pre>
@@ -900,13 +1082,13 @@ Interpretation
 </div>
 </div>
 </section>
-<section id="b-pour-le-blongios" class="level3">
-<h3 class="anchored" data-anchor-id="b-pour-le-blongios">5.4.b Pour le Blongios</h3>
+<section id="b-pour-le-butor" class="level3">
+<h3 class="anchored" data-anchor-id="b-pour-le-butor">5.4.b Pour le Butor</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -926,77 +1108,78 @@ Interpretation
 <ul>
 <li>blongios : même pattern de semaines depuis ~1998 . qq sorties sans observation à l’air de coller avec les patterns de protocoles</li>
 </ul>
+<p>=&gt; en 2018 le protocole blongios taleve est passé de 30min part point d’ecoute à 15min parce que moins de gens donc ça explique qu’il y ait moins d’obs !</p>
 </div>
 </div>
 </section>
 <section id="c-pour-le-taleve" class="level3">
 <h3 class="anchored" data-anchor-id="c-pour-le-taleve">5.4.c Pour le Taleve</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taleve </span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#On redefinis les annees</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>data_taleve <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> <span class="st">"Talève sultane, Poule sultane, Porphyrion bleu"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi  =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine      =</span> <span class="fu">isoweek</span>(date_debut)</span>
-<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines (gestion des observations / sorties) ---</span></span>
-<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>data_taleve_summarized <span class="ot">&lt;-</span> data_taleve <span class="sc">%&gt;%</span></span>
-<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
-<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
-<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="sc">~</span> <span class="st">"observation"</span>,</span>
-<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span></span>
-<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Grille complète année x semaine ---</span></span>
-<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
-<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine     =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
-<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>    data_taleve_summarized,</span>
-<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
-<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)</span>
-<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier ---</span></span>
-<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
-<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span>              <span class="ot">=</span> <span class="st">"#0072B2"</span>,</span>
-<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span>  <span class="ot">=</span> <span class="st">"#E69F00"</span>,</span>
-<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span>            <span class="ot">=</span> <span class="st">"lightgrey"</span></span>
-<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, data_taleve),</span>
-<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
-<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
-<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
-<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taleve </span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#On redefinis les annees</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>data_taleve <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> <span class="st">"Talève sultane, Poule sultane, Porphyrion bleu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi  =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine      =</span> <span class="fu">isoweek</span>(date_debut)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines (gestion des observations / sorties) ---</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>data_taleve_summarized <span class="ot">&lt;-</span> data_taleve <span class="sc">%&gt;%</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="sc">~</span> <span class="st">"observation"</span>,</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Grille complète année x semaine ---</span></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine     =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a>    data_taleve_summarized,</span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)</span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier ---</span></span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb40-49"><a href="#cb40-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span>              <span class="ot">=</span> <span class="st">"#0072B2"</span>,</span>
+<span id="cb40-50"><a href="#cb40-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span>  <span class="ot">=</span> <span class="st">"#E69F00"</span>,</span>
+<span id="cb40-51"><a href="#cb40-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span>            <span class="ot">=</span> <span class="st">"lightgrey"</span></span>
+<span id="cb40-52"><a href="#cb40-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb40-53"><a href="#cb40-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-54"><a href="#cb40-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb40-55"><a href="#cb40-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, data_taleve),</span>
+<span id="cb40-56"><a href="#cb40-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
+<span id="cb40-57"><a href="#cb40-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
+<span id="cb40-58"><a href="#cb40-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
+<span id="cb40-59"><a href="#cb40-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-60"><a href="#cb40-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb40-61"><a href="#cb40-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1008,13 +1191,13 @@ Interpretation
 <h1>5.5 nombre d’observation par observateur depuis le début des données</h1>
 <p>##5.5.a Nombre d’observation par observateur</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#0) Diagnostic : afficher un aperçu de process_data ---</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Aperçu de process_data (5 premières lignes) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#0) Diagnostic : afficher un aperçu de process_data ---</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Aperçu de process_data (5 premières lignes) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Aperçu de process_data (5 premières lignes) :</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(process_data, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(process_data, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 15
   id_synthese date_debut date_fin   heure_debut         heure_fin
@@ -1029,12 +1212,12 @@ Interpretation
 #   y_centroid_4326 &lt;dbl&gt;, nom_lieu &lt;fct&gt;, champs_additionnels &lt;chr&gt;,
 #   heure_debut_tronc &lt;fct&gt;, date &lt;date&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Structure de process_data :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Structure de process_data :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Structure de process_data :</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">str</span>(process_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">str</span>(process_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>tibble [1,064 × 15] (S3: tbl_df/tbl/data.frame)
  $ id_synthese        : num [1:1064] 124920 124921 124922 124924 124925 ...
@@ -1055,21 +1238,21 @@ Structure de process_data :</code></pre>
  $ date               : Date[1:1064], format: "1970-01-01" "1970-01-01" ...
 NULL</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>data_filtered <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># s'assurer que la colonne existe et est en caractère</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">as.character</span>(observateurs)) <span class="sc">%&gt;%</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># nettoyer espaces début/fin et remplacer NA par "NA_obs" si besoin (optionnel)</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">str_trim</span>(observateurs)) <span class="sc">%&gt;%</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># exclusion insensible à la casse de "ADENA" (gère "Adena", " ADENA ", etc.)</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(observateurs) <span class="sc">&amp;</span> <span class="sc">!</span>(<span class="fu">str_to_upper</span>(observateurs) <span class="sc">==</span> <span class="st">"ADENA"</span>))</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Vérification data_filtered (5 premières lignes) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>data_filtered <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># s'assurer que la colonne existe et est en caractère</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">as.character</span>(observateurs)) <span class="sc">%&gt;%</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># nettoyer espaces début/fin et remplacer NA par "NA_obs" si besoin (optionnel)</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">str_trim</span>(observateurs)) <span class="sc">%&gt;%</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># exclusion insensible à la casse de "ADENA" (gère "Adena", " ADENA ", etc.)</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(observateurs) <span class="sc">&amp;</span> <span class="sc">!</span>(<span class="fu">str_to_upper</span>(observateurs) <span class="sc">==</span> <span class="st">"ADENA"</span>))</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Vérification data_filtered (5 premières lignes) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Vérification data_filtered (5 premières lignes) :</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(data_filtered, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(data_filtered, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 15
   id_synthese date_debut date_fin   heure_debut         heure_fin
@@ -1084,29 +1267,29 @@ Vérification data_filtered (5 premières lignes) :</code></pre>
 #   y_centroid_4326 &lt;dbl&gt;, nom_lieu &lt;fct&gt;, champs_additionnels &lt;chr&gt;,
 #   heure_debut_tronc &lt;fct&gt;, date &lt;date&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Nombre de lignes après filtre :"</span>, <span class="fu">nrow</span>(data_filtered), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Nombre de lignes après filtre :"</span>, <span class="fu">nrow</span>(data_filtered), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Nombre de lignes après filtre : 860 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2) Agrégation : somme de nombre_min par observateur ---</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>data_summarized <span class="ot">&lt;-</span> data_filtered <span class="sc">%&gt;%</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># s'assurer que nombre_min est numérique</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nombre_min =</span> <span class="fu">as.numeric</span>(nombre_min)) <span class="sc">%&gt;%</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(observateurs) <span class="sc">%&gt;%</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_min =</span> <span class="fu">sum</span>(nombre_min, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_rows =</span> <span class="fu">n</span>(),</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Table agrégée (top 20) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 2) Agrégation : somme de nombre_min par observateur ---</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>data_summarized <span class="ot">&lt;-</span> data_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># s'assurer que nombre_min est numérique</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nombre_min =</span> <span class="fu">as.numeric</span>(nombre_min)) <span class="sc">%&gt;%</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(observateurs) <span class="sc">%&gt;%</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_min =</span> <span class="fu">sum</span>(nombre_min, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_rows =</span> <span class="fu">n</span>(),</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">Table agrégée (top 20) :</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Table agrégée (top 20) :</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(<span class="fu">arrange</span>(data_summarized, <span class="fu">desc</span>(total_min)), <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(utils<span class="sc">::</span><span class="fu">head</span>(<span class="fu">arrange</span>(data_summarized, <span class="fu">desc</span>(total_min)), <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 × 3
    observateurs                   total_min n_rows
@@ -1132,39 +1315,39 @@ Table agrégée (top 20) :</code></pre>
 19 Vibarel Benoit                         1      4
 20 Benjamin Salvarelli                    0     10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification d'éventuels problèmes</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(data_summarized) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"data_summarized est vide — vérifie que data_filtered contient des lignes et que la colonne nombre_min est numérique."</span>)</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(data_summarized<span class="sc">$</span>total_min))) {</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Toutes les sommes sont NA — vérifie la colonne nombre_min (valeurs non numériques)."</span>)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3) Réordonner les observateurs pour un affichage clair (optionnel) ---</span></span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>data_summarized <span class="ot">&lt;-</span> data_summarized <span class="sc">%&gt;%</span></span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_min)) <span class="sc">%&gt;%</span></span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">factor</span>(observateurs, <span class="at">levels =</span> observateurs))</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4) Tracer le barplot avec geom_col() et valeurs au-dessus des barres ---</span></span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_summarized, <span class="fu">aes</span>(<span class="at">x =</span> observateurs, <span class="at">y =</span> total_min)) <span class="sc">+</span></span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span>                           <span class="co"># geom_col() = geom_bar(stat="identity")</span></span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(total_min, <span class="dv">1</span>)), </span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>    <span class="co"># afficher la valeur au-dessus</span></span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Nombre total (nombre_min) par observateur</span><span class="sc">\n</span><span class="st">(sans ADENA)"</span>,</span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Observateur"</span>,</span>
-<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total nombre_min"</span></span>
-<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
-<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérification d'éventuels problèmes</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(data_summarized) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"data_summarized est vide — vérifie que data_filtered contient des lignes et que la colonne nombre_min est numérique."</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">is.na</span>(data_summarized<span class="sc">$</span>total_min))) {</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Toutes les sommes sont NA — vérifie la colonne nombre_min (valeurs non numériques)."</span>)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 3) Réordonner les observateurs pour un affichage clair (optionnel) ---</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>data_summarized <span class="ot">&lt;-</span> data_summarized <span class="sc">%&gt;%</span></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_min)) <span class="sc">%&gt;%</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> <span class="fu">factor</span>(observateurs, <span class="at">levels =</span> observateurs))</span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 4) Tracer le barplot avec geom_col() et valeurs au-dessus des barres ---</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data_summarized, <span class="fu">aes</span>(<span class="at">x =</span> observateurs, <span class="at">y =</span> total_min)) <span class="sc">+</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span>                           <span class="co"># geom_col() = geom_bar(stat="identity")</span></span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">round</span>(total_min, <span class="dv">1</span>)), </span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>    <span class="co"># afficher la valeur au-dessus</span></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Nombre total (nombre_min) par observateur</span><span class="sc">\n</span><span class="st">(sans ADENA)"</span>,</span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Observateur"</span>,</span>
+<span id="cb59-22"><a href="#cb59-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Total nombre_min"</span></span>
+<span id="cb59-23"><a href="#cb59-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb59-24"><a href="#cb59-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb59-25"><a href="#cb59-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb59-26"><a href="#cb59-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb59-27"><a href="#cb59-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb59-28"><a href="#cb59-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-29"><a href="#cb59-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1172,34 +1355,34 @@ Table agrégée (top 20) :</code></pre>
 <section id="b-coontinuité-dans-le-temps-des-observateurs" class="level2">
 <h2 class="anchored" data-anchor-id="b-coontinuité-dans-le-temps-des-observateurs">5.5.b Coontinuité dans le temps des observateurs</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a> process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_debut =</span> <span class="fu">as.Date</span>(date_debut))  <span class="co"># transforme si c'était du texte</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionnel : enlever "ADENA" si tu ne veux pas la voir</span></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(observateurs <span class="sc">!=</span> <span class="st">""</span>)</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionnel : trier les observateurs par fréquence</span></span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> forcats<span class="sc">::</span><span class="fu">fct_infreq</span>(observateurs))</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphe de présence ---</span></span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> date_debut, <span class="at">y =</span> observateurs)) <span class="sc">+</span></span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Présence des observateurs dans le temps"</span>,</span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date de début"</span>,</span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Observateurs"</span></span>
-<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
-<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a> process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_debut =</span> <span class="fu">as.Date</span>(date_debut))  <span class="co"># transforme si c'était du texte</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionnel : enlever "ADENA" si tu ne veux pas la voir</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(observateurs <span class="sc">!=</span> <span class="st">""</span>)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionnel : trier les observateurs par fréquence</span></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observateurs =</span> forcats<span class="sc">::</span><span class="fu">fct_infreq</span>(observateurs))</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphe de présence ---</span></span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> date_debut, <span class="at">y =</span> observateurs)) <span class="sc">+</span></span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Présence des observateurs dans le temps"</span>,</span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Date de début"</span>,</span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Observateurs"</span></span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Analyses_Exploratoires_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1216,17 +1399,23 @@ Interpretation
 <div class="callout-body-container callout-body">
 <p>ADENA : nom de l’asso , tout le temps présent depuis 1990</p>
 <p>sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu’à 2022?) et Nathalie Guenel</p>
+<p>ATTENTION presque la moitiés des observations sont faites par une multitude de personnes conséquences sur le biais observateur</p>
 </div>
 </div>
 </section>
 </section>
 <section id="que-faire-pour-la-suite" class="level1">
 <h1>6 Que faire pour la suite ????????????</h1>
-<p>Objectif : -Étudier l’évolution des populations par espèce dans le temps.</p>
-<p>—&gt; Identifier les tendances : augmentation, diminution ou stabilité. —&gt; Tester l’influence des variables climatiques sur la fluctuation des populations. —&gt; modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).</p>
-<p>Questions méthodologiques</p>
-<p>—&gt;Quelles années inclure ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années “moins fiables”.</p>
-<p>—&gt;Données opportunistes : garder ou séparer ?</p>
+<p><u><strong>Objectif</strong></u> :</p>
+<p>-Étudier l’évolution des populations par espèce dans le temps.</p>
+<p>—&gt; I<strong>dentifier les tendances</strong> : augmentation, diminution ou stabilité.</p>
+<p>—&gt; <strong>Tester l’influence des variables climatiques</strong> sur la fluctuation des populations. —&gt; modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).</p>
+<p><u><strong>Questions méthodologiques</strong></u></p>
+<p>—&gt;<strong>Quelles années inclure</strong> ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années “moins fiables”.</p>
+<p>—&gt;<strong>Données opportunistes</strong> : garder ou séparer ?</p>
+<p><u><strong>Constat</strong> :</u> les obervations en terme d’effort journaliers, de changement des obs en 2014 et 2018 correspondent à ce qu’on peut lire dans les fiches protocoles ce qui est plutôt rassurant. Que 4 obs protocolees de Butor toutes anciennes dont 3 dont on connait pas l’heure ????</p>
+<p><u><strong>Problème :</strong></u></p>
+<p>Il y a eu au moins 2 changements de “protocoles” sur les 30 ans. Un protocole établis en 2014 qui contraste avec les données d’avant qui étaient surement rigoureuse (<strong>poser la question aux gens de la reserve</strong>)? Et une reduction du temps d’écoute par site en 2018 au moins pour blongios Talève (quid du butor). Donc si on veut faire des suivies rigoureux statistiquement entre le fait qu’on peut moyen prendre les données autre que protocolées + il y a différents protocoles + il y a différents observateur.ices (moindre mesure) ça semble tendu du slip pour avoir assez de points sur assez de temps.</p>
 </section>
 
 </main>
