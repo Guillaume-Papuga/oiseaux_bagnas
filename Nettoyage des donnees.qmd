@@ -1,0 +1,172 @@
+---
+title: "Nettoyage des données"
+format: html
+editor: visual
+---
+
+# 1. Nettoyage des données
+
+::: {.callout-note style="blue"}
+Nous allons mettre au propre le tableau 1 et le tableau 2 afin d'identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
+:::
+
+```{r}
+#| label: Appel data 1
+setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
+raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
+```
+
+## 1.2Mise au propre du tableau
+
+:::: callout-note
+::: {style="blue"}
+Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+:::
+::::
+
+```{r}
+#| label: Selection variables utiles
+#| message: false
+#| warning: false
+#| include: false
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+         
+# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
+# car le fichier original contenait une date + une heure
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+# Petit contrôle pour vérifier que les heures sont cohérentes
+process_data_1 %>% count(heure_debut)
+
+# on v a mettre en format date les dates de debut et de fin 
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+
+```
+
+## 1.3 Import et sélection du second tableau brut
+
+############################################### 
+
+```{r}
+#| label: Appel data 2
+#| message: false
+#| warning: false
+setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
+
+# read_delim + encoding Latin1 = corrige les accents
+raw_data_2 <- read_delim(
+  "synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+# On sélectionne seulement les colonnes nécessaires et dans le même ordre
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+# Le fichier brut est en format "dd/mm/YYYY"
+# On convertit proprement en Date (format standard YYYY-MM-DD)
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+ #verification des données soit identiques pour le butor et le taleve
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+# Certaines heures arrivent comme objets POSIX → on convertit en caractère
+
+
+
+# Correction de la ligne manquante dans champs_additionnels
+
+
+# La ligne 132 de process_data_2 avait un NA
+# On remplace par la valeur correspondante dans process_data_1 (ligne 720)
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+```
+
+# 2. Vérification que les données sensibles correspondent
+
+::: {.callout-important style="red"}
+Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l'individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l'ensemble des valeurs corresponde.
+:::
+
+```{r}
+#| label: Comparaison des data Butor
+#| echo: false
+#| message: false
+#| warning: false
+# Comparaison BUTOR ÉTOILÉ
+Butor_etoile_1 <- process_data_1   %>% filter(nom_vernaculaire == "Butor étoilé")
+Butor_etoile_2 <- process_data_2 %>% filter(nom_vernaculaire == "Butor étoilé")
+
+all.equal(Butor_etoile_1, Butor_etoile_2)
+```
+
+```{r}
+#| label: Comparaison des data Blongios
+#| echo: false
+#| message: false
+#| warning: false
+# Comparaison BLONGIOS
+Blongios_1 <- process_data_1 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Blongios_2 <- process_data_2 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+all.equal(Blongios_1, Blongios_2)
+
+```
+
+# 3. Ajout de la taleve sultane au tableau final
+
+::: {.callout-note style="blue"}
+Nous prenons la nouvelle table qui est identique à l'autre avec une espece supplémentaire
+:::
+
+```{r}
+#| label: creation du data final
+process_data = process_data_2
+
+write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+
+```
