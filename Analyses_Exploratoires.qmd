@@ -22,7 +22,7 @@ library(knitr)
 ::: {.callout-warning style="border-left: 5px solid red; background-color: #fdd; padding: 1em;"}
 ## Attention
 
-Pour les analyses à venir, vous devez utiliser le **nouveau jeu de données** créé après vérification qu’il est **complet et nettoyé** (voir les sections suivantes).
+Pour les analyses à venir, vous devez utiliser le **nouveau jeu de données** créé après vérification qu'il est **complet et nettoyé** (voir les sections suivantes).
 
 Il est important de commencer toutes les nouvelles analyses avec ce jeu de données afin que **tout le monde travaille sur la même base**.
 
@@ -32,22 +32,22 @@ Si vous avez besoin de **sous-jeux de données**, par exemple uniquement le **Bu
 # 1. Nettoyage des données
 
 ::: {.callout-note style="blue"}
-Nous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
+Nous allons mettre au propre le tableau 1 et le tableau 2 afin d'identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
 :::
 
 ```{r}
 #| label: Appel data 1
-setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw")
 raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
 ```
 
 ## 1.2Mise au propre du tableau
 
-:::: callout-note
+::: callout-note
 ::: {style="blue"}
-Nous conservons uniquement les colonnes pertinentes pour la suite de l’analyse, en supprimant les colonnes vides ainsi que celles dont l’information est redondante, notamment les noms latins.
+Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 :::
-::::
+:::
 
 ```{r}
 #| label: Selection variables utiles
@@ -87,7 +87,7 @@ process_data_1 <- process_data_1 %>%
 #| label: Appel data 2
 #| message: false
 #| warning: false
-setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw")
 
 # read_delim + encoding Latin1 = corrige les accents
 raw_data_2 <- read_delim(
@@ -151,7 +151,7 @@ process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <-
 # 2. Vérification que les données sensibles correspondent
 
 ::: {.callout-important style="red"}
-Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l’individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l’ensemble des valeurs corresponde.
+Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l'individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l'ensemble des valeurs corresponde.
 :::
 
 ```{r}
@@ -192,7 +192,7 @@ Nous prenons la nouvelle table qui est identique à l'autre avec une espece supp
 #| label: creation du data final
 process_data = process_data_2
 
-write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
 
 ```
 
@@ -210,7 +210,7 @@ write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagn
 ## 4.1 Par especes
 Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
 
-Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+Protocole_SuiviButor<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
 Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
 
@@ -419,9 +419,9 @@ Sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
 sites avec protocole régulier : - blongios/taleve : début en 2014 - butor : début en 2013
 :::
 
-## 5.2 effort d'observation journalier : toutes sorties (obs ou pas obs)
+## 5.2 effort d'observation journalier
 
-### 5.2.a Effort journalier toutes espèces
+### 5.2.a Effort journalier toutes espèces tout protocole
 
 ```{r}
 
@@ -448,11 +448,11 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations par heure nen conservant les heures inconnues (0), tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
 
 ```
 
-### 5.2.b Données d'heure sans les 00:00:00 et les absence d'heure
+### 5.2.b Données d'heure sans les 00:00:00 et les absence d'heure tout espece tout protocole
 
 ```{r}
 process_data <-process_data %>%
@@ -487,10 +487,10 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations par heure nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-### 5.2.c Effort journalier Butor
+### 5.2.c Effort journalier Butor tout protocole
 
 ```{r}
 Butor_etoile <- Butor_etoile %>%
@@ -526,11 +526,11 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure \nsans les heures inconnues, tout protocole confondu")
 
 ```
 
-### 5.2.d Effort journalier Blongios
+### 5.2.d Effort journalier Blongios tout protocole
 
 ```{r}
 Blongios_nain <- Blongios_nain  %>%
@@ -565,13 +565,127 @@ ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure nsans les heures inconnues, tout protocole confondu")
+ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
+```
+
+### 5.2.e Effort journalier Taleve tout protocole
+
+```{r}
+Taleve_sultane <- Taleve_sultane  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Taleve_sultane <- Taleve_sultane %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Taleve_sultane$heure_debut_tronc = as.factor(Taleve_sultane$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Taleve_sultane %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Taleve_sultane %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations (Talève sultane) par heure \nsans les heures inconnues, tout protocole confondu")
+```
+
+### 5.2.f Effort journalier protocole Butor
+
+```{r}
+Protocole_SuiviButor <- Protocole_SuiviButor  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Protocole_SuiviButor <- Protocole_SuiviButor %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Protocole_SuiviButor$heure_debut_tronc = as.factor(Protocole_SuiviButor$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_SuiviButor %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Protocole_SuiviButor %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations protocolées (Butor étoilé) par heure \nsans les heures inconnues")
+```
+
+### 5.2.g Effort journalier protocole Blongios-Talève
+
+```{r}
+Protocole_SuiviBlongiosTaleve <- Protocole_SuiviBlongiosTaleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Protocole_SuiviBlongiosTaleve <- Protocole_SuiviBlongiosTaleve %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Protocole_SuiviBlongiosTaleve$heure_debut_tronc = as.factor(Protocole_SuiviBlongiosTaleve$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_SuiviBlongiosTaleve %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Protocole_SuiviBlongiosTaleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations protocolées \n(Blongios et Talève) par heure sans les heures inconnues")
 ```
 
 ::: {.callout-note style="green"}
 ## Interpretation
 
-bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
+Beaucoup d'obs pour lesquelles l'heure est inconnue.
 
 #Données d'heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d'heure
 :::
@@ -579,9 +693,19 @@ bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écri
 ::: {.callout-note style="green"}
 ## Interpretation
 
-Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
+Tout confondu : max au crépuscule (20h) et avant le levé du soleil (4-5h)
+
+\- butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
 
 -   blongios : de 21h-23h et 5h à 9h
+
+-   Taleve : de 5h à 9h avec GROS PIC à 8h puis de 20 à 21.
+
+-   protocole blongios taleve = obs a 6h et 7h et 20h et 21h.
+
+    =\> globalement tout correspond aux protocoles mis en place SAUF
+
+-   protocole butor: UNE SEULE OBS PROTOCOLEE DONT ON CONNAIS L'HEURE et elle date de 1998 (j'ai verif les données brutes et effectivement c'est le cas)
 :::
 
 ### 5.3 Correspondance des coordonnées et des sites
@@ -730,7 +854,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 graphique qui montre l'observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
 :::
 
-### 5.4.b Pour le Blongios
+### 5.4.b Pour le Butor
 
 ```{r}
 #| echo: false
@@ -799,6 +923,8 @@ graphique qui montre l'observation des butors par semaine sur toute la periode d
 **Interpretation** - butor : observations depuis le début, depuis \~2018 plus vraiment d'observations. observations les premières semaines de l'années et dernières semaines sorties sans observations à partir de \~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) les periodes où observations ne sont plus faites même en non observation
 
 -   blongios : même pattern de semaines depuis \~1998 . qq sorties sans observation à l'air de coller avec les patterns de protocoles
+
+=\> en 2018 le protocole blongios taleve est passé de 30min part point d'ecoute à 15min parce que moins de gens donc ça explique qu'il y ait moins d'obs !
 :::
 
 ### 5.4.c Pour le Taleve
@@ -976,20 +1102,28 @@ ggplot(process_data, aes(x = date_debut, y = observateurs)) +
 ADENA : nom de l'asso , tout le temps présent depuis 1990
 
 sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
+
+ATTENTION presque la moitiés des observations sont faites par une multitude de personnes conséquences sur le biais observateur
 :::
 
 # 6 Que faire pour la suite ????????????
 
 [**Objectif**]{.underline} :
 
--Étudier l’évolution des populations par espèce dans le temps.
+-Étudier l'évolution des populations par espèce dans le temps.
 
 ---\> I**dentifier les tendances** : augmentation, diminution ou stabilité.
 
----\> **Tester l’influence des variables climatiques** sur la fluctuation des populations. ---\> modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).
+---\> **Tester l'influence des variables climatiques** sur la fluctuation des populations. ---\> modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).
 
 [**Questions méthodologiques**]{.underline}
 
----\>**Quelles années inclure** ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années “moins fiables”.
+---\>**Quelles années inclure** ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années "moins fiables".
 
 ---\>**Données opportunistes** : garder ou séparer ?
+
+[**Constat** :]{.underline} les obervations en terme d'effort journaliers, de changement des obs en 2014 et 2018 correspondent à ce qu'on peut lire dans les fiches protocoles ce qui est plutôt rassurant. Que 4 obs protocolees de Butor toutes anciennes dont 3 dont on connait pas l'heure ????
+
+[**Problème :**]{.underline}
+
+Il y a eu au moins 2 changements de "protocoles" sur les 30 ans. Un protocole établis en 2014 qui contraste avec les données d'avant qui étaient surement rigoureuse (**poser la question aux gens de la reserve**)? Et une reduction du temps d'écoute par site en 2018 au moins pour blongios Talève (quid du butor). Donc si on veut faire des suivies rigoureux statistiquement entre le fait qu'on peut moyen prendre les données autre que protocolées + il y a différents protocoles + il y a différents observateur.ices (moindre mesure) ça semble tendu du slip pour avoir assez de points sur assez de temps.
