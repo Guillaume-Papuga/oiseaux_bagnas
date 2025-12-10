@@ -869,138 +869,122 @@ sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'�
 
 ------------------------------------------------------------------------
 
-BROUILLON LUCIEN
+# 6 Anlayses De la populatin de Taleve dans le temps et avec le climat
 
-head(process_data)
+# -----------------------
 
-str(process_data) glimpse(process_data)
+##  \## 6.1. Packages 
 
-occ_par_espece \<- process_data %\>% group_by(nom_vernaculaire) %\>% summarise(id_synthese= n()) %\>% arrange(desc(id_synthese))
+# --------------------------
 
-head(occ_par_espece)
+```{r}
+library(dplyr)
+library(lubridate)
+library(MASS)
+library(lme4)
+library(stats)
 
-#### Aperçu des années
+```
 
-occ_par_annee\<-process_data %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed) ) %\>% group_by(annee) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee))
+# --------------------------
 
-print(occ_par_annee, n = Inf)
+## 6.2. Charger les données
 
-ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + geom_point(alpha = 0.6 , size = 1) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+# --------------------------
 
-## Butor étoilé
+```{r}
+process_data <- readr::read_csv("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
-Butor_etoile\<-process_data %\>% filter( nom_vernaculaire == "Butor étoilé")
+# Filtrer les relevés pour Talève sultane
+Protocole_SuiviTaleve <- process_data %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
 
-Butor_etoile
+```
 
-#### Aperçu des années du butor etoile
+# --------------------------
 
-occ_par_annee_butor_etoile\<-Butor_etoile %\>% mutate( date_parsed = ymd(date_debut), annee_butor_etoile = year(date_parsed) ) %\>% group_by(annee_butor_etoile) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc( annee_butor_etoile))
+## 6.3. Préparer les variables temporelles
 
-print(occ_par_annee_butor_etoile, n = Inf)
+# --------------------------
 
-ggplot(occ_par_annee_butor_etoile, aes(x = annee_butor_etoile, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Butor etoile", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))
+```{r}
+Protocole_SuiviTaleve$date_debut <- as.Date(Protocole_SuiviTaleve$date_debut)
 
-ggplot(Butor_etoile, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+Protocole_SuiviTaleve <- Protocole_SuiviTaleve %>%
+  mutate(
+    annee = year(date_debut),
+    mois  = month(date_debut),
+    jour  = day(date_debut)
+  )
 
-## Blongios nain, Butor blongios
+Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
 
-Blongios_nain\<-process_data %\>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+# Transformer en facteurs
+Protocole_SuiviTaleve$annee <- factor(Protocole_SuiviTaleve$annee)
+Protocole_SuiviTaleve$mois  <- factor(Protocole_SuiviTaleve$mois)
+Protocole_SuiviTaleve$jour <- factor (Protocole_SuiviTaleve$jour)
+# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
 
-Blongios_nain
+```
 
-#### Aperçu des années Blongios nain, Butor blongios
+# --------------------------
 
-occ_par_annee_Blongios_nain\<-Blongios_nain %\>% mutate( date_parsed = ymd(date_debut), annee_Blongios_nain = year(date_parsed) ) %\>% group_by(annee_Blongios_nain) %\>% summarise(total_individus = n(), .groups = "drop") %\>% arrange(desc(annee_Blongios_nain))
+## 6.4. GLM Poisson
 
-print(occ_par_annee_Blongios_nain, n = Inf)
+# --------------------------
 
-ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = "identity", fill = "#2c7fb8") + labs( title = "Observations annuelles du Blongios nain", x = "Année", y = "Nombre d'individus observés" ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1)) ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = "Distribution spatiale des occurrences", x = "Longitude", y = "Latitude")
+```{r}
+# 4a. Modèle par année
 
-##PAr protocole
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviTaleve)
+summary(modele_annee)
 
-#### Protocole scientifique
+# 4b. Modèle par mois (4 niveaux seulement)
+modele_mois <- glm(nombre_min ~ mois, 
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+# 4b. Modèle par jour (4 niveaux seulement)
+modele_jour <- glm(nombre_min ~ jour, 
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
 
-Protocole_Scientifique \<- process_data %\>% filter( champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
+# 4c. Modèle combiné année + mois
+modele_annee_mois <- glm(nombre_min ~ annee2 + mois, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
 
-#### Protocole Opportuniste
+modele_annee_jour <- glm(nombre_min ~ annee2 + jour, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
+modele_mois_jour <- glm(nombre_min ~ mois + jour, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
+modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
 
-Protocole_opportuniste \<- process_data %\>% filter( !champs_additionnels %in% c("{'RELV_NOM': 'SuiviButor'}", "{'RELV_NOM': 'SuiviBlongiostaleve'}"))
 
-# Analyses explo
-
-## Question 1 : Est ce que les protocoles sont réalisés de façon linéaire le temps
-
-#Nous avons besoin de prendre seulement les données qui proviennent des protocoles
-
-Protocole_SuiviButor\<- Protocole_Scientifique %\>% filter( champs_additionnels == "{'RELV_NOM': 'SuiviButor'}")
-
-Protocole_SuiviBlongiostaleve\<- Protocole_Scientifique %\>% filter( champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}")
-
-#Étape 2 : nous devons diviser les données par site et par espèce, \# afin d'obtenir un jeu de données distinct pour chaque combinaison. \# Nous réalisons ensuite une boucle qui permet de générer un schéma de vie hebdomadaire pour chaque site, \# afin de vérifier si les protocoles ont été réalisés chaque année et à la même période ou non. \`\`\`
-
-#### Pour le Butor
-
-{r, fig.width=30, fig.height=25}
-
-# Liste des noms de sites
-
-sites \<- c(unique(Protocole_SuiviButor\$nom_lieu))
-
-# Définir toutes les semaines attendues pour la période de suivi (reste hors de la boucle)
-
-annees \<- 1996:2025 semaines \<- 1:53 \# Certaines années ont 53 semaines ISO
-
-# Générer un data frame complet avec toutes les semaines de toutes les années
-
-calendrier \<- expand.grid(annee = annees, semaine = semaines) %\>% arrange(annee, semaine)
-
-# creation liste pour la boucle
-
-tous_les_graphes \<- list() \# --- 2. Boucle pour l'Analyse et le Graphique de Chaque Site ---
-
-# Nous itérons directement sur la liste des noms de sites
-
-for(site_nom in sites) {
-
-\# a) Filtrer les données pour le site actuel (site_nom) df_site \<- Protocole_SuiviButor %\>% filter(nom_lieu == site_nom)
-
-\# b) Préparation des données: convertir la date et extraire année + semaine \# Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join data_semaines_site \<- df_site %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )
-
-\# c) Calculer le suivi (compte et jointure avec le calendrier) suivi \<- data_semaines_site %\>% group_by(annee, semaine) %\>% summarise(nb = n(), .groups = "drop") %\>% right_join(calendrier, by = c("annee", "semaine")) %\>% mutate( fait = ifelse(is.na(nb), "Non", "Oui"), annee_fct = factor(annee) )
-
-\# d) Créer le graphique g \<- ggplot(suivi, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = "black") + scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) + labs( title = paste("Site", site_nom), \# Titre raccourci pour la vue combinée x = "Semaine ISO", y = "Année", fill = "Protocole fait ?" ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )
-
-tous_les_graphes\[\[site_nom\]\] \<- g }
-
-grid.arrange(grobs = tous_les_graphes, ncol = 4)
-
-grid.arrange(grobs = tous_les_graphes, ncol = 4)
-
-#### Pour le Blongiostaleve
-
-{r} site_Blongios = sites \<- c(unique(Protocole_SuiviBlongiostaleve\$nom_lieu))
-
-tous_les_graphes_Blongios = list()
-
-for(site_nom in sites) { df_site \<- Protocole_SuiviBlongiostaleve %\>% filter(nom_lieu == site_nom)
-
-# b) Préparation des données: convertir la date et extraire année + semaine
-
-# Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join
-
-data_semaines_site \<- df_site %\>% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )
-
-# c) Calculer le suivi (compte et jointure avec le calendrier)
-
-suivi_Blongios \<- data_semaines_site %\>% group_by(annee, semaine) %\>% summarise(nb = n(), .groups = "drop") %\>% right_join(calendrier, by = c("annee", "semaine")) %\>% mutate( fait = ifelse(is.na(nb), "Non", "Oui"), annee_fct = factor(annee) )
-
-# d) Créer le graphique
-
-g \<- ggplot(suivi_Blongios, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = "black") + scale_fill_manual(values = c("Oui" = "forestgreen", "Non" = "red")) + labs( title = paste("Site", site_nom), \# Titre raccourci pour la vue combinée x = "Semaine ISO", y = "Année", fill = "Protocole fait ?" ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )
-
-tous_les_graphes_Blongios\[\[site_nom\]\] \<- g }
-
-#Combiner tous les graphiques sur une seule page
-
-{r, fig.width=30, fig.height=25} grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)
+summary(modele_annee)
+summary(modele_mois)
+summary(modele_annee_mois)
+summary(modele_annee_jour)
+summary(modele_mois_jour)
+summary(modele_annee_mois_jours)
+summary(modele_jour)
+```
+
+# --------------------------
+
+## 6.5. Comparaison par AIC
+
+# --------------------------
+
+```{r}
+AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
+                 modele_annee_mois_jours, modele_mois_jour, modele_annee_jour)
+```
