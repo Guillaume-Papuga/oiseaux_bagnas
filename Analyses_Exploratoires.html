@@ -997,65 +997,68 @@ Interpretation
 <section id="a-pour-le-blongios" class="level3">
 <h3 class="anchored" data-anchor-id="a-pour-le-blongios">5.4.a Pour le Blongios</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Définir la période de suivi ---</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>esp_blongios <span class="ot">&lt;-</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios) <span class="sc">%&gt;%</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine =</span> <span class="fu">isoweek</span>(date_debut)</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines pour gérer les sorties multiples ---</span></span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>data_blongios_summarized <span class="ot">&lt;-</span> data_blongios <span class="sc">%&gt;%</span></span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"observation"</span>,             <span class="co"># au moins une observation</span></span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span> <span class="co"># au moins une sortie mais pas d'observation</span></span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Créer la grille complète (année x semaine) ---</span></span>
-<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
-<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
-<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
-<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
-<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>    data_blongios_summarized,</span>
-<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
-<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)) <span class="co"># semaines sans sortie</span></span>
-<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier des semaines ---</span></span>
-<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
-<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
-<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
-<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>,         </span>
-<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, </span>
-<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>       </span>
-<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, esp_blongios),</span>
-<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
-<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
-<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
-<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>annees <span class="ot">&lt;-</span> <span class="fu">format</span>(process_data<span class="sc">$</span>date_debut, <span class="st">"%Y"</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>annees <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(annees)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(annees, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(annees, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="do">## blongios ##</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>esp_blongios <span class="ot">&lt;-</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data<span class="sc">%&gt;%</span> <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios) <span class="sc">%&gt;%</span></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine =</span> <span class="fu">isoweek</span>(date_debut)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines pour gérer les sorties multiples ---</span></span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>data_blongios_summarized <span class="ot">&lt;-</span> data_blongios <span class="sc">%&gt;%</span></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"observation"</span>,             <span class="co"># au moins une observation</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span> <span class="co"># au moins une sortie mais pas d'observation</span></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Créer la grille complète (année x semaine) ---</span></span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>    data_blongios_summarized,</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)) <span class="co"># semaines sans sortie</span></span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier des semaines ---</span></span>
+<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
+<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb38-50"><a href="#cb38-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>,         </span>
+<span id="cb38-51"><a href="#cb38-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, </span>
+<span id="cb38-52"><a href="#cb38-52" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>       </span>
+<span id="cb38-53"><a href="#cb38-53" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-54"><a href="#cb38-54" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-55"><a href="#cb38-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb38-56"><a href="#cb38-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, esp_blongios),</span>
+<span id="cb38-57"><a href="#cb38-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
+<span id="cb38-58"><a href="#cb38-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
+<span id="cb38-59"><a href="#cb38-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
+<span id="cb38-60"><a href="#cb38-60" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-61"><a href="#cb38-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb38-62"><a href="#cb38-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.</code></pre>
@@ -1416,6 +1419,15 @@ Interpretation
 <p><u><strong>Constat</strong> :</u> les obervations en terme d’effort journaliers, de changement des obs en 2014 et 2018 correspondent à ce qu’on peut lire dans les fiches protocoles ce qui est plutôt rassurant. Que 4 obs protocolees de Butor toutes anciennes dont 3 dont on connait pas l’heure ????</p>
 <p><u><strong>Problème :</strong></u></p>
 <p>Il y a eu au moins 2 changements de “protocoles” sur les 30 ans. Un protocole établis en 2014 qui contraste avec les données d’avant qui étaient surement rigoureuse (<strong>poser la question aux gens de la reserve</strong>)? Et une reduction du temps d’écoute par site en 2018 au moins pour blongios Talève (quid du butor). Donc si on veut faire des suivies rigoureux statistiquement entre le fait qu’on peut moyen prendre les données autre que protocolées + il y a différents protocoles + il y a différents observateur.ices (moindre mesure) ça semble tendu du slip pour avoir assez de points sur assez de temps.</p>
+<p>#7 Idées plus poussées</p>
+<p>on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 1. quelle est la probabilité de détection ? - Occupancy (binomial) : est ce que proba varie selon climat. + biais opservateur</p>
+<ol start="2" type="1">
+<li>Quelle est la présence espèce dans le temps ?</li>
+</ol>
+<ul>
+<li>GLMM (poisson) : population varie dans le temps ? (modèle Null) Pop˚ varie selon climat ? attention : population ouverte ou fermée ? -&gt; on peut faire l’hypothèse de fermeture ponctuelle (pendant les migrations)? si ouvert : on peut aussi regarder la date d’arrivée selon le temps et le climat.</li>
+</ul>
+<p>tri données : avant 2014 -&gt; pas de protocole ? donc on commence nos modèles en 2014 ? est ce qu’on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.</p>
 </section>
 
 </main>
