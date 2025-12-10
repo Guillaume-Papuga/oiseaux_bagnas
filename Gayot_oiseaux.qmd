@@ -925,9 +925,9 @@ Protocole_SuiviTaleve <- Protocole_SuiviTaleve %>%
 Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
 
 # Transformer en facteurs
-Protocole_SuiviTaleve$annee <- factor(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$mois  <- factor(Protocole_SuiviTaleve$mois)
-Protocole_SuiviTaleve$jour <- factor (Protocole_SuiviTaleve$jour)
+Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
+Protocole_SuiviTaleve$mois  <- as.numeric(Protocole_SuiviTaleve$mois)
+Protocole_SuiviTaleve$jour <- as.numeric(Protocole_SuiviTaleve$jour)
 # Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
 
 ```
@@ -1028,9 +1028,9 @@ Opportuniste_Taleve <- Opportuniste_Taleve%>%
   filter(annee >= 2014)
 Opportuniste_Taleve$annee2 <- as.numeric(as.character(Opportuniste_Taleve$annee)) - 2013
 # Transformer en facteurs
-Opportuniste_Taleve$annee <- factor(Opportuniste_Taleve$annee)
-Opportuniste_Taleve$mois  <- factor(Opportuniste_Taleve$mois)
-Opportuniste_Taleve$jour <- factor (Opportuniste_Taleve$jour)
+Opportuniste_Taleve$annee <- as.numeric(Opportuniste_Taleve$annee)
+Opportuniste_Taleve$mois  <- as.numeric(Opportuniste_Taleve$mois)
+Opportuniste_Taleve$jour <- as.numeric (Opportuniste_Taleve$jour)
 # Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
 ```
 
