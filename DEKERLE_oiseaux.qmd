@@ -181,8 +181,6 @@ obs_heure
 
 ### Frequence horaire
 
-
-
 ```{r}
 freq_heure <- process_data %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 ```
@@ -232,15 +230,11 @@ obs_heure
 
 ### Frequence horaire
 
-
 ```{r}
 
 freq_heure <- Butor_etoile %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 
 ```
-
-
-
 
 ### Barplot
 
@@ -294,7 +288,6 @@ freq_heure <- Blongios_nain %>%
   mutate(freq_rel = freq / sum(freq))
 ```
 
-
 ### Barplot
 
 ```{r}
@@ -304,3 +297,291 @@ ggplot(mapping = aes(x, y)) +
   theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
+
+
+# GLMM observation du butor en fonction du temps 
+
+## charger les packages 
+
+```{r}
+library(dplyr)
+library(lubridate)
+library(MASS)
+library(lme4)
+library(stats)
+```
+
+## charger les données 
+
+```{r}
+process_data <- readr::read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+
+### Obs Butor tout protocoles
+Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
+
+### Données butor protocolées  
+Protocole_SuiviButor <- process_data %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
+      nom_vernaculaire == "Butor étoilé"
+  )
+
+###Données butor opportuniste 
+
+Opportuniste_Butor <- process_data %>%
+  filter(
+    !champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
+      nom_vernaculaire == "Butor étoilé"
+  )
+
+```
+
+## Préparer les variables temporelles
+
+
+### Obs Butor tout protocoles
+```{r}
+Butor_etoile$date_debut <- as.Date(Butor_etoile$date_debut)
+
+Butor_etoile <- Butor_etoile %>%
+  mutate(
+    annee = year(date_debut),
+    mois  = month(date_debut),
+    jour  = day(date_debut)
+  )
+Butor_etoile <- Butor_etoile%>%
+  filter(annee >= 2014)
+Butor_etoile$annee2 <- as.numeric(as.character(Butor_etoile$annee)) - 2013
+
+# Transformer en facteurs
+Butor_etoile$annee <- as.numeric(Butor_etoile$annee)
+Butor_etoile$mois  <- as.numeric(Butor_etoile$mois)
+Butor_etoile$jour <- as.numeric(Butor_etoile$jour)
+# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
+```
+
+
+### Données butor protocolées  
+
+```{r}
+Protocole_SuiviButor$date_debut <- as.Date(Protocole_SuiviButor$date_debut)
+
+Protocole_SuiviButor <- Protocole_SuiviButor %>%
+  mutate(
+    annee = year(date_debut),
+    mois  = month(date_debut),
+    jour  = day(date_debut)
+  )
+
+Protocole_SuiviButor <- Protocole_SuiviButor%>%
+  filter(annee >= 2014)
+Protocole_SuiviButor$annee2 <- as.numeric(as.character(Protocole_SuiviButor$annee)) - 2013
+
+# Transformer en facteurs
+Protocole_SuiviButor$annee <- as.numeric(Protocole_SuiviButor$annee)
+Protocole_SuiviButor$mois  <- as.numeric(Protocole_SuiviButor$mois)
+Protocole_SuiviButor$jour <- as.numeric(Protocole_SuiviButor$jour)
+# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
+```
+
+
+
+### Données butor opportuniste  
+
+```{r}
+Opportuniste_Butor$date_debut <- as.Date(Opportuniste_Butor$date_debut)
+
+Opportuniste_Butor <- Opportuniste_Butor %>%
+  mutate(
+    annee = year(date_debut),
+    mois  = month(date_debut),
+    jour  = day(date_debut)
+  )
+
+Opportuniste_Butor <- Opportuniste_Butor%>%
+  filter(annee >= 2014)
+Opportuniste_Butor$annee2 <- as.numeric(as.character(Opportuniste_Butor$annee)) - 2013
+
+# Transformer en facteurs
+Opportuniste_Butor$annee <- as.numeric(Opportuniste_Butor$annee)
+Opportuniste_Butor$mois  <- as.numeric(Opportuniste_Butor$mois)
+Opportuniste_Butor$jour <- as.numeric(Opportuniste_Butor$jour)
+# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
+```
+
+## GLM Poisson + comparaison de modèles 
+
+### GLM Obs Butor tout protocoles
+
+```{r}
+# Modèle par année
+
+modele_annee_butor_all <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Butor_etoile)
+summary(modele_annee_butor_all)
+
+# Modèle par mois (4 niveaux seulement)
+modele_mois_butor_all <- glm(nombre_min ~ mois, 
+                   data = Butor_etoile, 
+                   family = poisson)
+# Modèle par jour (4 niveaux seulement)
+modele_jour_butor_all <- glm(nombre_min ~ jour, 
+                   data = Butor_etoile, 
+                   family = poisson)
+
+# Modèle combiné année + mois
+modele_annee_mois_butor_all <- glm(nombre_min ~ annee2 + mois, 
+                         data = Butor_etoile, 
+                         family = poisson)
+
+modele_annee_jour_butor_all <- glm(nombre_min ~ annee2 + jour, 
+                         data = Butor_etoile, 
+                         family = poisson)
+modele_mois_jour_butor_all <- glm(nombre_min ~ mois + jour, 
+                        data = Butor_etoile, 
+                        family = poisson)
+modele_annee_mois_jours_butor_all <- glm(nombre_min ~ annee2 + mois+jour, 
+                               data = Butor_etoile, 
+                               family = poisson)
+
+
+summary(modele_annee_butor_all)
+summary(modele_mois_butor_all)
+summary(modele_annee_mois_butor_all)
+summary(modele_annee_jour_butor_all)
+summary(modele_mois_jour_butor_all)
+summary(modele_annee_mois_jours_butor_all)
+summary(modele_jour_butor_all)
+```
+
+#### Comparaison modèle butor  tout protocole 
+
+```{r}
+AIC(modele_annee_butor_all, modele_mois_butor_all, modele_annee_mois_butor_all, modele_jour_butor_all, 
+    modele_annee_mois_jours_butor_all, modele_mois_jour_butor_all, modele_annee_jour_butor_all)
+```
+##### AIC similaire entre modele_annee_mois_butor_all (AIC la plus petite) et modele_mois_butor_all (le moins de paramètre) donc par parcimonie modele_mois_butor_all est le meilleur. 
+
+#### Graphique modele temporelle butor tout protocole 
+
+```{r}
+boxplot(Butor_etoile$nombre_min~Butor_etoile$mois )
+```
+
+
+### modele temporel Données butor protocolées IL Y A PAS D'OBSERVATIONS MDRRRRRRRRRRRR DONC LE SCRIPT EST FAIT MAIS LES MODELES SERVENT A RIEN 
+
+```{r}
+# Modèle par année
+
+modele_annee_butor_prot <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviButor)
+summary(modele_annee_butor_prot)
+
+# 4b. Modèle par mois (4 niveaux seulement)
+modele_mois_butor_prot <- glm(nombre_min ~ mois, 
+                   data = Protocole_SuiviButor, 
+                   family = poisson)
+# 4b. Modèle par jour (4 niveaux seulement)
+modele_jour_butor_prot <- glm(nombre_min ~ jour, 
+                   data = Protocole_SuiviButor, 
+                   family = poisson)
+
+# 4c. Modèle combiné année + mois
+modele_annee_mois_butor_prot <- glm(nombre_min ~ annee2 + mois, 
+                         data = Protocole_SuiviButor, 
+                         family = poisson)
+
+modele_annee_jour_butor_prot <- glm(nombre_min ~ annee2 + jour, 
+                         data = Protocole_SuiviButor, 
+                         family = poisson)
+modele_mois_jour_butor_prot <- glm(nombre_min ~ mois + jour, 
+                        data = Protocole_SuiviButor, 
+                        family = poisson)
+modele_annee_mois_jours_butor_prot <- glm(nombre_min ~ annee2 + mois+jour, 
+                               data = Protocole_SuiviButor, 
+                               family = poisson)
+
+
+summary(modele_annee_butor_prot)
+summary(modele_mois_butor_prot)
+summary(modele_annee_mois_butor_prot)
+summary(modele_annee_jour_butor_prot)
+summary(modele_mois_jour_butor_prot)
+summary(modele_annee_mois_jours_butor_prot)
+summary(modele_jour_butor_prot)
+```
+
+#### Comparaison modèles butor données protocolées 
+
+```{r}
+AIC(modele_annee_butor_prot, modele_mois_butor_prot, modele_annee_mois_butor_prot, modele_jour_butor_prot, 
+    modele_annee_mois_jours_butor_prot, modele_mois_jour_butor_prot, modele_annee_jour_butor_prot)
+```
+
+#### Graphique modele temporel butor données protocolées 
+
+
+### Modèle temporel données butor opportuniste  
+
+```{r}
+# Modèle par année
+
+modele_annee_butor_opp <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Opportuniste_Butor)
+summary(modele_annee_butor_opp)
+
+# Modèle par mois (4 niveaux seulement)
+modele_mois_butor_opp <- glm(nombre_min ~ mois, 
+                   data = Opportuniste_Butor, 
+                   family = poisson)
+# Modèle par jour (4 niveaux seulement)
+modele_jour_butor_opp <- glm(nombre_min ~ jour, 
+                   data = Opportuniste_Butor, 
+                   family = poisson)
+
+# Modèle combiné année + mois
+modele_annee_mois_butor_opp <- glm(nombre_min ~ annee2 + mois, 
+                         data = Opportuniste_Butor, 
+                         family = poisson)
+
+modele_annee_jour_butor_opp <- glm(nombre_min ~ annee2 + jour, 
+                         data = Opportuniste_Butor, 
+                         family = poisson)
+modele_mois_jour_butor_opp <- glm(nombre_min ~ mois + jour, 
+                        data = Opportuniste_Butor, 
+                        family = poisson)
+modele_annee_mois_jours_butor_opp <- glm(nombre_min ~ annee2 + mois+jour, 
+                               data = Opportuniste_Butor, 
+                               family = poisson)
+
+
+summary(modele_annee_butor_opp)
+summary(modele_mois_butor_opp)
+summary(modele_annee_mois_butor_opp)
+summary(modele_annee_jour_butor_opp)
+summary(modele_mois_jour_butor_opp)
+summary(modele_annee_mois_jours_butor_opp)
+summary(modele_jour_butor_opp)
+```
+
+#### Comparaison modèles butor donnees opportunistes 
+
+```{r}
+AIC(modele_annee_butor_opp, modele_mois_butor_opp, modele_annee_mois_butor_opp, modele_jour_butor_opp, 
+    modele_annee_mois_jours_butor_opp, modele_mois_jour_butor_opp, modele_annee_jour_butor_opp)
+```
+
+##### qualité similaire entre les modeles annee mois et jour parce que bon il y a que 30 obs opportunistes jpp. 
+
+#### Graphique modele temporele butor données opportunistes 
+
+```{r}
+boxplot(Butor_etoile$nombre_min~Butor_etoile$annee2)
+boxplot(Butor_etoile$nombre_min~Butor_etoile$mois )
+boxplot(Butor_etoile$nombre_min~Butor_etoile$jour )
+```
+
