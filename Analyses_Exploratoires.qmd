@@ -971,10 +971,15 @@ Il y a eu au moins 2 changements de "protocoles" sur les 30 ans. Un protocole é
 
 #7 Idées plus poussées
 
+
 on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 1. quelle est la probabilité de détection ? - Occupancy (binomial) : est ce que proba varie selon climat. + biais opservateur
+
 
 2.  Quelle est la présence espèce dans le temps ?
 
 -   GLMM (poisson) : population varie dans le temps ? (modèle Null) Pop˚ varie selon climat ? attention : population ouverte ou fermée ? -\> on peut faire l'hypothèse de fermeture ponctuelle (pendant les migrations)? si ouvert : on peut aussi regarder la date d'arrivée selon le temps et le climat.
 
+
 tri données : avant 2014 -\> pas de protocole ? donc on commence nos modèles en 2014 ? est ce qu'on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.
+
+
