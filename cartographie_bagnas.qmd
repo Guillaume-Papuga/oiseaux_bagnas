@@ -105,6 +105,7 @@ write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pr
 ```
 
 à oublier pour le moment
+
 ```{r}
 library(leaflet)
 library(sf)
@@ -176,7 +177,7 @@ sites_sf<- sites_sf %>%
 
 sites_resume <- sites_sf %>%
   mutate(
-    is_protocole = grepl("Suivi|Comptage|Protocole", champs_additionnels)
+    is_protocole = grepl("SuiviBlongiosTalève|SuiviButor", champs_additionnels)
   ) %>%
   group_by(nom_lieu) %>%
   summarise(
