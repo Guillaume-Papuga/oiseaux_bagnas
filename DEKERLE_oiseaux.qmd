@@ -138,7 +138,7 @@ freq_heure <- process_data %>% group_by(heure_debut_tronc) %>% summarise(freq = 
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conservant les heures inconnues (0), tout protocole confondu")
 
 ```
@@ -177,7 +177,7 @@ freq_heure <- process_data %>% group_by(heure_debut_tronc) %>% summarise(freq = 
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
@@ -216,7 +216,7 @@ freq_heure <- Butor_etoile %>% group_by(heure_debut_tronc) %>% summarise(freq = 
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure \nsans les heures inconnues, tout protocole confondu")
 
 ```
@@ -255,7 +255,7 @@ freq_heure <- Blongios_nain %>%
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
@@ -293,7 +293,7 @@ freq_heure <- Taleve_sultane %>%
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Talève sultane) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
@@ -331,7 +331,7 @@ freq_heure <- Protocole_SuiviButor %>%
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations protocolées (Butor étoilé) par heure \nsans les heures inconnues")
 ```
 
@@ -369,7 +369,7 @@ freq_heure <- Protocole_SuiviBlongiosTaleve %>%
 ggplot(mapping = aes(x, y)) +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
   geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
 ggtitle("Effort d'échantillonnage et nombre d'observations protocolées \n(Blongios et Talève) par heure sans les heures inconnues")
 ```
 
@@ -730,7 +730,7 @@ ggplot() +
   theme_classic() +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Heure de la journée (tronquée à l'inférieur)") +
-  ylab("Nombre de prospections et d'observations") +
+  ylab("Nombre de prospections") +
   labs(fill = "Facteur") +
   ggtitle(
     "Effort d'échantillonnage en fonction des suivis (heures inconnues conservées)"
