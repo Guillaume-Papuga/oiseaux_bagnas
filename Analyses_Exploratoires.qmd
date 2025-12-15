@@ -181,7 +181,7 @@ grid.arrange(grobs = tous_les_graphes, ncol = 4)
 
 ```
 
-### 2.1.b Pour le Blongios et le Taleve
+### 2.1.b Pour le Blongios et la Taleve
 
 ```{r fig.height=25, fig.width=30}
 #| label: J
@@ -767,7 +767,7 @@ graphique qui montre l'observation des butors par semaine sur toute la periode d
 =\> en 2018 le protocole blongios taleve est passé de 30min part point d'ecoute à 15min parce que moins de gens donc ça explique qu'il y ait moins d'obs !
 :::
 
-### 2.4.c Pour le Taleve
+### 2.4.c Pour la Taleve
 
 ```{r}
 # Taleve 
