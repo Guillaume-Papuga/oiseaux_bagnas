@@ -37,7 +37,7 @@ process_data_1 <- process_data_1 %>%
           date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
 
 raw_data_2 <- read_delim(
-  "synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
   delim = ";",
   locale = locale(encoding = "Latin1", decimal_mark = ".")
 )
@@ -181,6 +181,7 @@ grille <- grille %>%
 
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   geom_tile(color = "white", linewidth = 0.2) +
+  geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
   scale_y_reverse() +
   scale_fill_manual(
     values = c(
@@ -265,6 +266,7 @@ grille <- grille %>%
 
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   geom_tile(color = "white", linewidth = 0.2) +
+  geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
   scale_y_reverse() +
   scale_fill_manual(
     values = c(
@@ -350,6 +352,7 @@ grille <- grille %>%
 
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   geom_tile(color = "white", linewidth = 0.2) +
+  geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
   scale_y_reverse() +
   scale_fill_manual(
     values = c(
