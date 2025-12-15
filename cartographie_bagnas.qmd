@@ -173,7 +173,7 @@ carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms 
 ```{r}
 sites_sf$annee<-year(floor_date(sites_sf$date_debut, "year"))
 sites_sf<- sites_sf %>%
-  filter(annee> 2014)  
+  filter(annee> 2013)  
 
 sites_resume <- sites_sf %>%
   mutate(
