@@ -7,6 +7,104 @@ editor: visual
 ## cartographie de la reserve....
 
 ```{r}
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw")
+#recuperer les données : 
+raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
+
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+process_data_1 %>% count(heure_debut)
+
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+raw_data_2 <- read_delim(
+  "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+#verification des données soit identiques pour le butor et le taleve
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+# Comparaison BUTOR ÉTOILÉ
+Butor_etoile_1 <- process_data_1   %>% filter(nom_vernaculaire == "Butor étoilé")
+Butor_etoile_2 <- process_data_2 %>% filter(nom_vernaculaire == "Butor étoilé")
+
+all.equal(Butor_etoile_1, Butor_etoile_2)
+
+# Comparaison BLONGIOS
+Blongios_1 <- process_data_1 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Blongios_2 <- process_data_2 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+all.equal(Blongios_1, Blongios_2)
+
+process_data = process_data_2
+
+write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+```
+
+```{r}
 library(leaflet)
 library(sf)
 library(RColorBrewer) 
@@ -32,7 +130,7 @@ clc12_wgs <- st_transform(clc12, 4326)
 clc12_bagnas <- st_intersection(clc12_wgs, bagnas_bbox)
 
 
-process_data <- read_csv("data/data_process/process_data.csv")
+process_data <- read_csv("data/pro/process_data.csv")
 
 sites_sf <- st_as_sf(process_data, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
 
@@ -68,23 +166,41 @@ leaflet() %>%
 
 ## .... avec les les sites d'observation (protocole ou non?) des oiseaux
 
-carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms d'espèces
+carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms des sites attention : que depuis 2014 (pour filtrer les vieilles données bancales)
 
 ```{r}
+sites_sf$annee<-year(floor_date(sites_sf$date_debut, "year"))
+sites_sf<- sites_sf %>%
+  filter(annee> 2014)  
+
+sites_resume <- sites_sf %>%
+  mutate(
+    is_protocole = grepl("Suivi|Comptage|Protocole", champs_additionnels)
+  ) %>%
+  group_by(nom_lieu) %>%
+  summarise(
+    geometry = first(geometry),   # ← IMPORTANT
+    has_protocole = any(is_protocole, na.rm = TRUE),
+    has_opportuniste = any(!is_protocole, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  st_as_sf() %>%                   # sécurisation
+  mutate(
+    couleur = case_when(
+      has_protocole & has_opportuniste ~ "purple",
+      has_protocole & !has_opportuniste ~ "red",
+      !has_protocole & has_opportuniste ~ "green",
+      TRUE ~ "grey"
+    )
+  )
+
 leaflet() %>%
   addTiles() %>%     # fond OSM
-  addPolygons(
-    data = clc12_bagnas,
-    fillColor = "green",
-    color = "darkgreen",
-    weight = 1,
-    fillOpacity = 0.4,
-    popup = ~as.character(CODE_12)   # nom de l'attribut habitat CLC
-  ) %>%
+
   addCircleMarkers(
-    data =sites_sf,
+    data =sites_resume,
     radius = 5,
-    color = "purple",
+    color = ~couleur,
     fillOpacity = 0.9,
     popup = ~nom_lieu
   ) %>%
