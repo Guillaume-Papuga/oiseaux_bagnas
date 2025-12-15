@@ -26,6 +26,7 @@ write.csv(process_data, file = "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 ```
 
 ```{r}
+# a faire : mettre une barre 2014, couleurs diff entre observation opp et protocole 
 
 #### graphique : visites des especes par semaine ####
 process_data <- read_csv("data/data_process/process_data.csv",show_col_types = FALSE)
@@ -159,3 +160,216 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 ```
 
 graphique qui montre l'observation des butors par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
+
+
+
+```{r}
+
+#essai d'analyse GLM 
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw")
+####clean données####
+raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
+
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+process_data_1 %>% count(heure_debut)
+
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+raw_data_2 <- read_delim(
+  "synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+#verification des données soit identiques pour le butor et le taleve
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+# Comparaison BUTOR ÉTOILÉ
+Butor_etoile_1 <- process_data_1   %>% filter(nom_vernaculaire == "Butor étoilé")
+Butor_etoile_2 <- process_data_2 %>% filter(nom_vernaculaire == "Butor étoilé")
+
+all.equal(Butor_etoile_1, Butor_etoile_2)
+
+# Comparaison BLONGIOS
+Blongios_1 <- process_data_1 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Blongios_2 <- process_data_2 %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
+
+all.equal(Blongios_1, Blongios_2)
+
+process_data = process_data_2
+
+write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+#####
+## ouvrir le doc : 
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
+process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+
+
+esp_blongios <- "Blongios nain, Butor blongios"
+data_blongios <- process_data %>% filter(nom_vernaculaire == esp_blongios)
+
+# il faut qu'on vire les sites sans protocole fixe
+
+
+#1 : donnees protocolaires
+
+data_blongios_protocole <- data_blongios %>% filter(champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}")
+#différents variables des  modeles : annee, mois, jour, meteo 
+
+####modele null : presence varie dans le temps ? #####
+
+
+#1. centrer réduire 
+
+
+
+#additionner les abondances par jour. 
+
+data_blongios_protocole$jour <- day(floor_date(data_blongios_protocole$date_debut, "day"))
+data_blongios_protocole$mois <- month(floor_date(data_blongios_protocole$date_debut, "month"))
+data_blongios_protocole$annee <- year(floor_date(data_blongios_protocole$date_debut, "year"))
+
+data_blongios_protocole$annee2 <- data_blongios_protocole$annee-2013
+
+# modeles temporels 
+
+glm_blongios_proto_day= glm(nombre_min ~ jour , family = poisson(), data= data_blongios_protocole)
+glm_blongios_proto_month = glm(nombre_min ~ mois , family = poisson(), data= data_blongios_protocole)
+glm_blongios_proto_year = glm(nombre_min ~ annee2 , family = poisson(), data= data_blongios_protocole)
+
+
+AIC(glm_blongios_proto_day, glm_blongios_proto_month , glm_blongios_proto_year )
+
+glm_blongios_proto_month_year = glm(nombre_min ~ annee2 + mois, family = poisson(), data= data_blongios_protocole)
+glm_blongios_proto_day_year = glm(nombre_min ~ annee2 + jour, family = poisson(), data= data_blongios_protocole)
+glm_blongios_proto_day_mois = glm(nombre_min ~ mois + jour, family = poisson(), data= data_blongios_protocole)
+
+AIC( glm_blongios_proto_day, glm_blongios_proto_month, glm_blongios_proto_year, glm_blongios_proto_month_year, glm_blongios_proto_day_year, glm_blongios_proto_day_mois)
+
+
+
+#2 : donnees opportunistes
+data_blongios_opportuniste <- data_blongios %>% filter(champs_additionnels != "{'RELV_NOM': 'SuiviBlongiosTalève'}")
+
+
+data_blongios_opportuniste$jour <- floor_date(data_blongios_opportuniste$date_debut, "day")
+data_blongios_opportuniste$mois <- floor_date(data_blongios_opportuniste$date_debut, "month")
+data_blongios_opportuniste$annee <- year(floor_date(data_blongios_opportuniste$date_debut, "year"))
+
+data_blongios_opportuniste<- data_blongios_opportuniste %>%
+  filter(annee> 2014)  
+
+data_blongios_opportuniste$annee2 <- data_blongios_opportuniste$annee-2013
+
+# modeles temporels 
+
+glm_blongios_opp_day= glm(nombre_min ~ jour , family = poisson(), data= data_blongios_opportuniste)
+glm_blongios_opp_month = glm(nombre_min ~ mois , family = poisson(), data= data_blongios_opportuniste)
+glm_blongios_opp_year = glm(nombre_min ~ annee2 , family = poisson(), data= data_blongios_opportuniste)
+
+
+AIC(glm_blongios_proto_day, glm_blongios_proto_month , glm_blongios_proto_year )
+
+glm_blongios_opp_month_year = glm(nombre_min ~ annee2 + mois, family = poisson(), data= data_blongios_opportuniste)
+glm_blongios_opp_day_year = glm(nombre_min ~ annee2 + jour, family = poisson(), data= data_blongios_opportuniste)
+glm_blongios_opp_day_mois = glm(nombre_min ~ mois + jour, family = poisson(), data= data_blongios_opportuniste)
+
+AIC( glm_blongios_opp_day, glm_blongios_opp_month, glm_blongios_opp_year, glm_blongios_opp_month_year, glm_blongios_opp_day_year, glm_blongios_opp_day_mois)
+
+
+
+
+# effet aleatoire
+
+# Transformer mois en facteur
+data_blongios_protocole$mois <- as.factor(data_blongios_protocole$mois)
+
+# Modèle avec effet fixe du mois et effet aléatoire de l'année
+modele_mois_effet_aléatoire <- glmer(nombre_min ~ mois + (1 | annee2), 
+                                     data = data_blongios_protocole, 
+                                     family = poisson)
+summary(modele_mois_effet_aléatoire)
+plot(modele_mois_effet_aléatoire)
+
+
+#jour 
+data_blongios_protocole$jour <- as.factor(data_blongios_protocole$jour)
+
+# Modèle avec effet fixe du mois et effet aléatoire de l'année
+modele_jour_effet_aléatoire <- glmer(nombre_min ~ jour + (1 | mois), 
+                                     data = data_blongios_protocole, 
+                                     family = poisson)
+summary(modele_jour_effet_aléatoire)
+plot(modele_jour_effet_aléatoire)
+
+
+AIC( glm_blongios_proto_day, glm_blongios_proto_month, glm_blongios_proto_year, glm_blongios_proto_month_year, glm_blongios_proto_day_year, glm_blongios_proto_day_mois, 
+   modele_jour_effet_aléatoire,modele_mois_effet_aléatoire)  
+
+
+
+
+```
+
