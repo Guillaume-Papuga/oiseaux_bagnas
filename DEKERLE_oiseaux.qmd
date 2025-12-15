@@ -585,3 +585,14 @@ boxplot(Butor_etoile$nombre_min~Butor_etoile$mois )
 boxplot(Butor_etoile$nombre_min~Butor_etoile$jour )
 ```
 
+
+# GLM poisson variable météo ? 
+
+## preparer les donnees 
+```{r}
+process_data <- readr::read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+
+env_data <- readr::read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/environnement_daily.csv")
+```
+
+### 
