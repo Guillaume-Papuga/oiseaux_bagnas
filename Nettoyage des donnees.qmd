@@ -170,3 +170,15 @@ process_data = process_data_2
 write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
 ```
+
+```{r}
+process_data$annee = year(floor_date(process_data$date_debut, "year"))
+process_protocole = process_data  %>%
+  filter(annee>= 2014) %>%
+  filter (nom_lieu  %in% paste0 ("ButorTalèveBlongios-", 1 : 9)) %>%
+  filter( champs_additionnels== "{'RELV_NOM': 'SuiviButor'}" |
+          champs_additionnels== "{'RELV_NOM': 'SuiviBlongiosTalève'}")
+write_csv(process_protocole, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+```
+

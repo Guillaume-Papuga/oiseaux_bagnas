@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Gayot_oiseaux</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Gayot_oiseaux_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Gayot_oiseaux_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Gayot_oiseaux_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Gayot_oiseaux_files/libs/quarto-html/popper.min.js"></script>
+<script src="Gayot_oiseaux_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Gayot_oiseaux_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Gayot_oiseaux_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Gayot_oiseaux_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Gayot_oiseaux_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Gayot_oiseaux_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Gayot_oiseaux_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Gayot_oiseaux</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="test" class="level2">
+<h2 class="anchored" data-anchor-id="test">Test</h2>
+<section id="les-packages-nécessaires" class="level3">
+<h3 class="anchored" data-anchor-id="les-packages-nécessaires">Les packages nécessaires</h3>
+</section>
+</section>
+<section id="nettoyage-des-données" class="level1">
+<h1>1. Nettoyage des données</h1>
+<div class="callout callout-style-default callout-note callout-titled" style="blue">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.</p>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>raw_data<span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"synthese_observations_2025-09-09T13_30_50.994Z.xlsx"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="mise-au-propre-du-tableau" class="level2">
+<h2 class="anchored" data-anchor-id="mise-au-propre-du-tableau">1.2Mise au propre du tableau</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div style="blue">
+<p>Nous conservons uniquement les colonnes pertinentes pour la suite de l’analyse, en supprimant les colonnes vides ainsi que celles dont l’information est redondante, notamment les noms latins.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="import-et-sélection-du-second-tableau-brut" class="level2">
+<h2 class="anchored" data-anchor-id="import-et-sélection-du-second-tableau-brut">1.3 Import et sélection du second tableau brut</h2>
+<section id="section" class="level47">
+<p class="heading"></p>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read_delim + encoding Latin1 = corrige les accents</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>raw_data_2 <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"synthese_observations_2025-11-24T07_38_00.302Z (2).csv"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">delim =</span> <span class="st">";"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">locale =</span> <span class="fu">locale</span>(<span class="at">encoding =</span> <span class="st">"Latin1"</span>, <span class="at">decimal_mark =</span> <span class="st">"."</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># On sélectionne seulement les colonnes nécessaires et dans le même ordre</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>process_data_2 <span class="ot">&lt;-</span> raw_data_2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id_synthese, date_debut, date_fin, heure_debut, heure_fin,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>         nom_vernaculaire, nombre_min, observateurs, determinateur,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>         x_centroid_4326, y_centroid_4326,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>         nom_lieu, champs_additionnels)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>process_data_2 <span class="ot">&lt;-</span> process_data_2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_centroid_4326 =</span> <span class="fu">as.character</span>(x_centroid_4326),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_centroid_4326 =</span> <span class="fu">as.character</span>(y_centroid_4326)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>process_data_1<span class="ot">&lt;-</span> process_data_1 <span class="sc">%&gt;%</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_centroid_4326 =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(x_centroid_4326), <span class="dv">6</span>),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_centroid_4326 =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(y_centroid_4326), <span class="dv">6</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>process_data_2 <span class="ot">&lt;-</span> process_data_2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_centroid_4326 =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(x_centroid_4326), <span class="dv">6</span>),</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_centroid_4326 =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(y_centroid_4326), <span class="dv">6</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Le fichier brut est en format "dd/mm/YYYY"</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># On convertit proprement en Date (format standard YYYY-MM-DD)</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>process_data_2 <span class="ot">&lt;-</span> process_data_2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>( <span class="at">date_debut =</span> <span class="fu">as.Date</span>(date_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y"</span>),</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>          <span class="at">date_fin =</span> <span class="fu">as.Date</span>(date_fin, <span class="at">format =</span> <span class="st">"%d/%m/%Y"</span>) )</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a> <span class="co">#verification des données soit identiques pour le butor et le taleve</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>process_data_2 <span class="ot">&lt;-</span> process_data_2 <span class="sc">%&gt;%</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut =</span> <span class="fu">as.character</span>(heure_debut),</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_fin   =</span> <span class="fu">as.character</span>(heure_fin)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Certaines heures arrivent comme objets POSIX → on convertit en caractère</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Correction de la ligne manquante dans champs_additionnels</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="co"># La ligne 132 de process_data_2 avait un NA</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co"># On remplace par la valeur correspondante dans process_data_1 (ligne 720)</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>process_data_2<span class="sc">$</span>champs_additionnels[ process_data_2<span class="sc">$</span>id_synthese <span class="sc">==</span> <span class="dv">124571</span> ] <span class="ot">&lt;-</span> </span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  process_data_1<span class="sc">$</span>champs_additionnels[<span class="dv">720</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="section-1" class="level47">
+<p class="heading"></p>
+</section>
+</section>
+</section>
+<section id="vérification-que-les-données-sensibles-correspondent" class="level1">
+<h1>2. Vérification que les données sensibles correspondent</h1>
+<div class="callout callout-style-default callout-important callout-titled" style="red">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction <code>all_equal()</code>, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l’individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l’ensemble des valeurs corresponde.</p>
+</div>
+</div>
+<p>[1] TRUE</p>
+<p>[1] TRUE</p>
+<section id="section-2" class="level47">
+<p class="heading"></p>
+</section>
+</section>
+<section id="ajout-de-la-taleve-sultane-au-tableau-final" class="level1">
+<h1>3. Ajout de la taleve sultane au tableau final</h1>
+<div class="callout callout-style-default callout-note callout-titled" style="blue">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nous prenons la nouvelle table qui est identique à l’autre avec une espece supplémentaire</p>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">=</span> process_data_2</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(process_data, <span class="st">"C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="jeux-de-données-nécessaires-par-especes-par-protocole." class="level1">
+<h1>4. Jeux de données nécessaires ( par especes, par protocole….)</h1>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a> process_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/pro/process_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="par-especes" class="level2">
+<h2 class="anchored" data-anchor-id="par-especes">4.1 Par especes</h2>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Butor_etoile<span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>( nom_vernaculaire <span class="sc">==</span> <span class="st">"Butor étoilé"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Blongios_nain<span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>( nom_vernaculaire <span class="sc">==</span> <span class="st">"Blongios nain, Butor blongios"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Taleve_sultane<span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>( nom_vernaculaire <span class="sc">==</span> <span class="st">"taleve sultane, Poule sultane, Porphyrion bleu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="section-3" class="level47">
+<p class="heading"></p>
+</section>
+</section>
+<section id="par-protocole" class="level2">
+<h2 class="anchored" data-anchor-id="par-protocole">4.2 Par protocole</h2>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>suivi<span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  champs_additionnels<span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{'RELV_NOM': 'SuiviBlongiostaleve'}"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{'RELV_NOM': 'SuiviButor'}"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>opportuniste <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>champs_additionnels <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"{'RELV_NOM': 'SuiviBlongiostaleve'}"</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"{'RELV_NOM': 'SuiviButor'}"</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviButor <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    champs_additionnels <span class="sc">==</span> <span class="st">"{'RELV_NOM': 'SuiviButor'}"</span> <span class="sc">&amp;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      nom_vernaculaire <span class="sc">==</span> <span class="st">"Butor étoilé"</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>Protocole_SuiviBlongiosTaleve <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    champs_additionnels <span class="sc">==</span> <span class="st">"{'RELV_NOM': 'SuiviBlongiosTalève'}"</span> <span class="sc">&amp;</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>      nom_vernaculaire <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Blongios nain, Butor blongios"</span>,</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Talève sultane, Poule sultane, Porphyrion bleu"</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>Opportuniste_Butor <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>champs_additionnels <span class="sc">==</span> <span class="st">"{'RELV_NOM': 'SuiviButor'}"</span> <span class="sc">&amp;</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>      nom_vernaculaire <span class="sc">==</span> <span class="st">"Butor étoilé"</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>Opportuniste_Blongios<span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>champs_additionnels <span class="sc">==</span> <span class="st">"{'RELV_NOM': 'SuiviBlongiostaleve'}"</span> <span class="sc">&amp;</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>      nom_vernaculaire <span class="sc">==</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>Opportuniste_Taleve<span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>champs_additionnels <span class="sc">==</span> <span class="st">"{'RELV_NOM': 'SuiviBlongiostaleve'}"</span> <span class="sc">&amp;</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>      nom_vernaculaire <span class="sc">==</span> <span class="st">"taleve sultane, Poule sultane, Porphyrion bleu"</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="analyses-exploratoires" class="level1">
+<h1>5. Analyses exploratoires</h1>
+<section id="continuité-des-protocoles-sur-les-sites" class="level2">
+<h2 class="anchored" data-anchor-id="continuité-des-protocoles-sur-les-sites">5.1continuité des protocoles sur les sites</h2>
+<section id="a-pour-le-butor" class="level3">
+<h3 class="anchored" data-anchor-id="a-pour-le-butor">5.1.a Pour le Butor</h3>
+<p><img src="Gayot_oiseaux_files/figure-html/I-1.png" class="img-fluid" width="2880"></p>
+</section>
+<section id="b-pour-le-blongios-et-le-taleve" class="level3">
+<h3 class="anchored" data-anchor-id="b-pour-le-blongios-et-le-taleve">5.1.b Pour le Blongios et le Taleve</h3>
+<p><img src="Gayot_oiseaux_files/figure-html/J-1.png" class="img-fluid" width="2880"></p>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :</p>
+<ul>
+<li><p>blongios/taleve : petit_bassin R3.2 petit_bassin R2.9 petit_bassin R3.1 GB6 chemin_animation</p></li>
+<li><p>butor : GB GB5 s 66 44 55 11 99 33 domaineGrandClavalet</p></li>
+</ul>
+<p>sites avec protocole régulier : - blongios/taleve : début en 2014 - butor : début en 2013</p>
+</div>
+</div>
+</section>
+</section>
+<section id="effort-dobservation-journalier-toutes-sorties-obs-ou-pas-obs" class="level2">
+<h2 class="anchored" data-anchor-id="effort-dobservation-journalier-toutes-sorties-obs-ou-pas-obs">5.2 effort d’observation journalier : toutes sorties (obs ou pas obs)</h2>
+<section id="a-effort-journalier-toutes-espèces" class="level3">
+<h3 class="anchored" data-anchor-id="a-effort-journalier-toutes-espèces">5.2.a Effort journalier toutes espèces</h3>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="a-tibble-19-2" class="level1">
+<h1>A tibble: 19 × 2</h1>
+<p>heure_debut_tronc <code>sum(nombre_min)</code> <int> <dbl> 1 0 2445 2 3 0 3 4 1 4 5 29 5 6 75 6 7 51 7 8 195 8 9 38 9 10 14 10 11 23 11 12 2 12 15 5 13 16 1 14 17 3 15 18 0 16 19 6 17 20 74 18 21 53 19 22 1</dbl></int></p>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure </span><span class="sc">\n</span><span class="st">en conservant les heures inconnues (0), tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<section id="b-données-dheure-sans-les-000000-et-les-absence-dheure" class="level3">
+<h3 class="anchored" data-anchor-id="b-données-dheure-sans-les-000000-et-les-absence-dheure">5.2.b Données d’heure sans les 00:00:00 et les absence d’heure</h3>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span>process_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>) </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="a-tibble-18-2" class="level1">
+<h1>A tibble: 18 × 2</h1>
+<p>heure_debut_tronc <code>sum(nombre_min)</code> <fct> <dbl> 1 3 0 2 4 1 3 5 29 4 6 75 5 7 51 6 8 195 7 9 38 8 10 14 9 11 23 10 12 2 11 15 5 12 16 1 13 17 3 14 18 0 15 19 6 16 20 74 17 21 53 18 22 1</dbl></fct></p>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<section id="c-effort-journalier-butor" class="level3">
+<h3 class="anchored" data-anchor-id="c-effort-journalier-butor">5.2.c Effort journalier Butor</h3>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Butor_etoile <span class="ot">&lt;-</span> Butor_etoile <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>Butor_etoile <span class="ot">&lt;-</span> Butor_etoile <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Butor_etoile<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(Butor_etoile<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> Butor_etoile <span class="sc">%&gt;%</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="a-tibble-17-2" class="level1">
+<h1>A tibble: 17 × 2</h1>
+<p>heure_debut_tronc <code>sum(nombre_min)</code> <fct> <dbl> 1 3 0 2 4 0 3 5 0 4 6 0 5 8 3 6 9 7 7 10 7 8 11 18 9 12 2 10 15 4 11 16 1 12 17 3 13 18 0 14 19 1 15 20 0 16 21 0 17 22 0</dbl></fct></p>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> Butor_etoile <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Butor étoilé) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<section id="d-effort-journalier-blongios" class="level3">
+<h3 class="anchored" data-anchor-id="d-effort-journalier-blongios">5.2.d Effort journalier Blongios</h3>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Blongios_nain <span class="ot">&lt;-</span> Blongios_nain  <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">heure_debut =</span> <span class="fu">as.POSIXct</span>(heure_debut, <span class="at">format =</span> <span class="st">"%d/%m/%Y %H:%M:%S"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">format</span>(heure_debut, <span class="st">"%H:%M:%S"</span>) <span class="sc">!=</span> <span class="st">"00:00:00"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">### Extraire l'heure</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>Blongios_nain <span class="ot">&lt;-</span> Blongios_nain <span class="sc">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">heure_debut_tronc =</span> <span class="fu">hour</span>(heure_debut),   <span class="co"># heure de la journée (0-23)</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(heure_debut)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>Blongios_nain<span class="sc">$</span>heure_debut_tronc <span class="ot">=</span> <span class="fu">as.factor</span>(Blongios_nain<span class="sc">$</span>heure_debut_tronc)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">### Sommer les obs par heure</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>obs_heure <span class="ot">&lt;-</span> Blongios_nain <span class="sc">%&gt;%</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarize</span>(<span class="fu">sum</span>(nombre_min)) </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>obs_heure</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="a-tibble-13-2" class="level1">
+<h1>A tibble: 13 × 2</h1>
+<p>heure_debut_tronc <code>sum(nombre_min)</code> <fct> <dbl> 1 4 0 2 5 1 3 6 14 4 7 5 5 8 12 6 9 2 7 10 4 8 11 1 9 15 1 10 19 2 11 20 16 12 21 23 13 22 1</dbl></fct></p>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">### Frequence horaire</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>freq_heure <span class="ot">&lt;-</span> Blongios_nain <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(heure_debut_tronc) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">freq_rel =</span> freq <span class="sc">/</span> <span class="fu">sum</span>(freq))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">### Barplot</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(x, y)) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> freq_heure<span class="sc">$</span>freq), <span class="at">width =</span> <span class="fl">0.8</span>, <span class="at">stat =</span> <span class="st">'identity'</span>) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> freq_heure<span class="sc">$</span>heure_debut_tronc, <span class="at">y =</span> obs_heure<span class="sc">$</span><span class="st">`</span><span class="at">sum(nombre_min)</span><span class="st">`</span>), <span class="at">width =</span> <span class="fl">0.4</span>, <span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill =</span> <span class="st">'black'</span>) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">"Heure de la journée tronquée à l'inférieur"</span>) <span class="sc">+</span> <span class="fu">ylab</span> (<span class="st">"Nombre de prospections (en gris) et d'observations (en noir)"</span> ) <span class="sc">+</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtitle</span>(<span class="st">"Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure </span><span class="sc">\n</span><span class="st">sans les heures inconnues, tout protocole confondu"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c’est pas écrit donc IG il considère que c’est minuit</p>
+<p>#Données d’heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d’heure</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)</p>
+<ul>
+<li>blongios : de 21h-23h et 5h à 9h</li>
+</ul>
+</div>
+</div>
+<section id="section-4" class="level47">
+<p class="heading"></p>
+<div class="callout callout-style-default callout-warning callout-titled" style="red">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>obs par heures de la journée A FAIRE</strong></p>
+</div>
+</div>
+</section>
+<section id="section-5" class="level47">
+<p class="heading"></p>
+</section>
+<section id="correspondance-des-coordonnées-et-des-sites" class="level3">
+<h3 class="anchored" data-anchor-id="correspondance-des-coordonnées-et-des-sites">5.3 Correspondance des coordonnées et des sites</h3>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>[1] “10” “11”<br>
+[3] “12” “7”<br>
+[5] “8” “9”<br>
+[7] “AireObservationRoseliere” “BaieKoch”<br>
+[9] “ButorTalèveBlongios-1” “ButorTalèveBlongios-11”<br>
+[11] “ButorTalèveBlongios-2” “ButorTalèveBlongios-3”<br>
+[13] “ButorTalèveBlongios-33” “ButorTalèveBlongios-4”<br>
+[15] “ButorTalèveBlongios-5” “ButorTalèveBlongios-55”<br>
+[17] “ButorTalèveBlongios-6” “ButorTalèveBlongios-66”<br>
+[19] “ButorTalèveBlongios-7” “ButorTalèveBlongios-8”<br>
+[21] “ButorTalèveBlongios-9” “ButorTalèveBlongios-99”<br>
+[23] “CanalCeinture” “CanalOuest”<br>
+[25] “CheminAnimation” “DemiLune”<br>
+[27] “DomaineGrandClavelet” “DortoirGB5”<br>
+[29] “GB” “GB1”<br>
+[31] “GB2” “GB3”<br>
+[33] “GB4” “GB5”<br>
+[35] “GB6” “GB7”<br>
+[37] “GB8” “Koch”<br>
+[39] “PetitBassin-R2.9” “PetitBassin-R3.1”<br>
+[41] “PetitBassin-R3.2” “PontKoch”<br>
+[43] “S” “SaintMichel”</p>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 65 sites de coordonées (protocole et opportunistes melanges)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Résumé des coordonnées</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                         <span class="co"># nombre de lieux distincts</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),  <span class="co"># liste des noms</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>,                             <span class="co"># TRUE si une seule espèce</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))<span class="sc">%&gt;%</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_sites <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(nom_lieu) <span class="sc">|</span> nom_lieu <span class="sc">==</span> <span class="st">""</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">paste0</span>(<span class="st">"unnamedSite"</span>, <span class="fu">row_number</span>()), </span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>                           <span class="fu">as.character</span>(nom_lieu)))</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>process_data <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.character</span>(nom_lieu)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">ifelse</span>(nom_lieu <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Portiragnes"</span>, <span class="st">"RNNbagnas"</span>, <span class="st">"Bessan"</span>),</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>                           <span class="st">"SudEtangBagnas"</span>,</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>                           nom_lieu)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nom_lieu =</span> <span class="fu">as.factor</span>(nom_lieu))</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>process_data<span class="sc">$</span>nom_lieu <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(process_data<span class="sc">$</span>nom_lieu)</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(process_data<span class="sc">$</span>nom_lieu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>[1] “10” “11”<br>
+[3] “12” “7”<br>
+[5] “8” “9”<br>
+[7] “AireObservationRoseliere” “BaieKoch”<br>
+[9] “ButorTalèveBlongios-1” “ButorTalèveBlongios-11”<br>
+[11] “ButorTalèveBlongios-2” “ButorTalèveBlongios-3”<br>
+[13] “ButorTalèveBlongios-33” “ButorTalèveBlongios-4”<br>
+[15] “ButorTalèveBlongios-5” “ButorTalèveBlongios-55”<br>
+[17] “ButorTalèveBlongios-6” “ButorTalèveBlongios-66”<br>
+[19] “ButorTalèveBlongios-7” “ButorTalèveBlongios-8”<br>
+[21] “ButorTalèveBlongios-9” “ButorTalèveBlongios-99”<br>
+[23] “CanalCeinture” “CanalOuest”<br>
+[25] “CheminAnimation” “DemiLune”<br>
+[27] “DomaineGrandClavelet” “DortoirGB5”<br>
+[29] “GB” “GB1”<br>
+[31] “GB2” “GB3”<br>
+[33] “GB4” “GB5”<br>
+[35] “GB6” “GB7”<br>
+[37] “GB8” “Koch”<br>
+[39] “PetitBassin-R2.9” “PetitBassin-R3.1”<br>
+[41] “PetitBassin-R3.2” “PontKoch”<br>
+[43] “S” “SaintMichel”<br>
+[45] “unnamedSite323” “unnamedSite608”</p>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>coord_summary <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(x_centroid_4326, y_centroid_4326) <span class="sc">%&gt;%</span>                 </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_sites =</span> <span class="fu">n_distinct</span>(nom_lieu),                              </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">site_names =</span> <span class="fu">paste</span>(<span class="fu">unique</span>(nom_lieu), <span class="at">collapse =</span> <span class="st">", "</span>),      </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">coord_unique =</span> n_sites <span class="sc">==</span> <span class="dv">1</span>                                  </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n_sites))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(coord_summary)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(process_data, <span class="fu">aes</span>(<span class="at">x =</span> x_centroid_4326, <span class="at">y =</span> y_centroid_4326)) <span class="sc">+</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> nom_lieu), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>         </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> nom_lieu), <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_quickmap</span>() <span class="sc">+</span>                                     </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Sites in Réserve du Bagnas"</span>) <span class="sc">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>3 sites sans noms 3 sites avec des noms différents mais mêmes coordonnées : portignagne ; RNN_bagnas ; B100</p>
+</div>
+</div>
+<section id="section-6" class="level47">
+<p class="heading"></p>
+</section>
+</section>
+<section id="observation-des-espèces-chaque-semaine-depuis-le-début-des-relevés" class="level2">
+<h2 class="anchored" data-anchor-id="observation-des-espèces-chaque-semaine-depuis-le-début-des-relevés">5.4 observation des espèces chaque semaine depuis le début des relevés</h2>
+<section id="a-pour-le-blongios" class="level3">
+<h3 class="anchored" data-anchor-id="a-pour-le-blongios">5.4.a Pour le Blongios</h3>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Définir la période de suivi ---</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>esp_blongios <span class="ot">&lt;-</span> <span class="st">"Blongios nain, Butor blongios"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>data_blongios <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> esp_blongios) <span class="sc">%&gt;%</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine =</span> <span class="fu">isoweek</span>(date_debut)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines pour gérer les sorties multiples ---</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>data_blongios_summarized <span class="ot">&lt;-</span> data_blongios <span class="sc">%&gt;%</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"observation"</span>,             <span class="co"># au moins une observation</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span> <span class="co"># au moins une sortie mais pas d'observation</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Créer la grille complète (année x semaine) ---</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    data_blongios_summarized,</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)) <span class="co"># semaines sans sortie</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier des semaines ---</span></span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span> <span class="ot">=</span> <span class="st">"#0072B2"</span>,         </span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span> <span class="ot">=</span> <span class="st">"#E69F00"</span>, </span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span> <span class="ot">=</span> <span class="st">"lightgrey"</span>       </span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, esp_blongios),</span>
+<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
+<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
+<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
+<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/O-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>graphique qui montre l’observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme “observation”</p>
+</div>
+</div>
+</section>
+<section id="b-pour-le-blongios" class="level3">
+<h3 class="anchored" data-anchor-id="b-pour-le-blongios">5.4.b Pour le Blongios</h3>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>graphique qui montre l’observation des butors par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme “observation”</p>
+<p><strong>Interpretation</strong> - butor : observations depuis le début, depuis ~2018 plus vraiment d’observations. observations les premières semaines de l’années et dernières semaines sorties sans observations à partir de ~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) les periodes où observations ne sont plus faites même en non observation</p>
+<ul>
+<li>blongios : même pattern de semaines depuis ~1998 . qq sorties sans observation à l’air de coller avec les patterns de protocoles</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="c-pour-le-taleve" class="level3">
+<h3 class="anchored" data-anchor-id="c-pour-le-taleve">5.4.c Pour le Taleve</h3>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Taleve </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#On redefinis les annees</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>annee_min <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>annee_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">year</span>(process_data<span class="sc">$</span>date_debut), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>duree_annees <span class="ot">&lt;-</span> annee_max <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>data_taleve <span class="ot">&lt;-</span> process_data <span class="sc">%&gt;%</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(nom_vernaculaire <span class="sc">==</span> <span class="st">"Talève sultane, Poule sultane, Porphyrion bleu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_suivi  =</span> <span class="fu">year</span>(date_debut) <span class="sc">-</span> annee_min <span class="sc">+</span> <span class="dv">1</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> <span class="fu">year</span>(date_debut),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">semaine      =</span> <span class="fu">isoweek</span>(date_debut)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Résumer les semaines (gestion des observations / sorties) ---</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>data_taleve_summarized <span class="ot">&lt;-</span> data_taleve <span class="sc">%&gt;%</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(annee_suivi, semaine) <span class="sc">%&gt;%</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">case_when</span>(</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">&gt;</span> <span class="dv">0</span>)  <span class="sc">~</span> <span class="st">"observation"</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">any</span>(nombre_min <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">~</span> <span class="st">"sortie_sans_observation"</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Grille complète année x semaine ---</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>grille <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">annee_suivi =</span> <span class="dv">1</span><span class="sc">:</span>duree_annees,</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">semaine     =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">53</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">annee_reelle =</span> annee_min <span class="sc">+</span> annee_suivi <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    data_taleve_summarized,</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"annee_suivi"</span>, <span class="st">"semaine"</span>)</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">statut =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(statut), <span class="st">"pas_de_sortie"</span>, statut)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Graphique calendrier ---</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grille, <span class="fu">aes</span>(<span class="at">x =</span> semaine, <span class="at">y =</span> annee_reelle, <span class="at">fill =</span> statut)) <span class="sc">+</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"observation"</span>              <span class="ot">=</span> <span class="st">"#0072B2"</span>,</span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>      <span class="st">"sortie_sans_observation"</span>  <span class="ot">=</span> <span class="st">"#E69F00"</span>,</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pas_de_sortie"</span>            <span class="ot">=</span> <span class="st">"lightgrey"</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="fu">paste</span>(<span class="st">"Observations de"</span>, data_taleve),</span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Suivi de"</span>, annee_min, <span class="st">"à"</span>, annee_max),</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Semaine de l'année"</span>,</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Année"</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="Gayot_oiseaux_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</section>
+</section>
+</section>
+<section id="nombre-dobservation-par-observateur-depuis-le-début-des-données" class="level1">
+<h1>5.5nombre d’observation par observateur depuis le début des données</h1>
+<div class="callout callout-style-default callout-note callout-titled" style="green">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ADENA : nom de l’asso , tout le temps présent depuis 1990</p>
+<p>sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu’à 2022?) et Nathalie Guenel</p>
+</div>
+</div>
+<hr>
+<p>BROUILLON LUCIEN</p>
+<p>head(process_data)</p>
+<p>str(process_data) glimpse(process_data)</p>
+<p>occ_par_espece &lt;- process_data %&gt;% group_by(nom_vernaculaire) %&gt;% summarise(id_synthese= n()) %&gt;% arrange(desc(id_synthese))</p>
+<p>head(occ_par_espece)</p>
+<section id="aperçu-des-années" class="level4">
+<h4 class="anchored" data-anchor-id="aperçu-des-années">Aperçu des années</h4>
+<p>occ_par_annee&lt;-process_data %&gt;% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed) ) %&gt;% group_by(annee) %&gt;% summarise(total_individus = n(), .groups = “drop”) %&gt;% arrange(desc(annee))</p>
+<p>print(occ_par_annee, n = Inf)</p>
+<p>ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326, color = nom_vernaculaire)) + geom_point(alpha = 0.6 , size = 1) + coord_fixed() + labs(title = “Distribution spatiale des occurrences”, x = “Longitude”, y = “Latitude”)</p>
+</section>
+<section id="butor-étoilé" class="level2">
+<h2 class="anchored" data-anchor-id="butor-étoilé">Butor étoilé</h2>
+<p>Butor_etoile&lt;-process_data %&gt;% filter( nom_vernaculaire == “Butor étoilé”)</p>
+<p>Butor_etoile</p>
+<section id="aperçu-des-années-du-butor-etoile" class="level4">
+<h4 class="anchored" data-anchor-id="aperçu-des-années-du-butor-etoile">Aperçu des années du butor etoile</h4>
+<p>occ_par_annee_butor_etoile&lt;-Butor_etoile %&gt;% mutate( date_parsed = ymd(date_debut), annee_butor_etoile = year(date_parsed) ) %&gt;% group_by(annee_butor_etoile) %&gt;% summarise(total_individus = n(), .groups = “drop”) %&gt;% arrange(desc( annee_butor_etoile))</p>
+<p>print(occ_par_annee_butor_etoile, n = Inf)</p>
+<p>ggplot(occ_par_annee_butor_etoile, aes(x = annee_butor_etoile, y = total_individus)) + geom_bar(stat = “identity”, fill = “#2c7fb8”) + labs( title = “Observations annuelles du Butor etoile”, x = “Année”, y = “Nombre d’individus observés” ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1))</p>
+<p>ggplot(Butor_etoile, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = “Distribution spatiale des occurrences”, x = “Longitude”, y = “Latitude”)</p>
+</section>
+</section>
+<section id="blongios-nain-butor-blongios" class="level2">
+<h2 class="anchored" data-anchor-id="blongios-nain-butor-blongios">Blongios nain, Butor blongios</h2>
+<p>Blongios_nain&lt;-process_data %&gt;% filter( nom_vernaculaire == “Blongios nain, Butor blongios”)</p>
+<p>Blongios_nain</p>
+<section id="aperçu-des-années-blongios-nain-butor-blongios" class="level4">
+<h4 class="anchored" data-anchor-id="aperçu-des-années-blongios-nain-butor-blongios">Aperçu des années Blongios nain, Butor blongios</h4>
+<p>occ_par_annee_Blongios_nain&lt;-Blongios_nain %&gt;% mutate( date_parsed = ymd(date_debut), annee_Blongios_nain = year(date_parsed) ) %&gt;% group_by(annee_Blongios_nain) %&gt;% summarise(total_individus = n(), .groups = “drop”) %&gt;% arrange(desc(annee_Blongios_nain))</p>
+<p>print(occ_par_annee_Blongios_nain, n = Inf)</p>
+<p>ggplot(occ_par_annee_Blongios_nain, aes(x = annee_Blongios_nain, y = total_individus)) + geom_bar(stat = “identity”, fill = “#2c7fb8”) + labs( title = “Observations annuelles du Blongios nain”, x = “Année”, y = “Nombre d’individus observés” ) + theme_minimal() + theme( axis.text.x = element_text(angle = 45, hjust = 1)) ggplot(Blongios_nain, aes(x = x_centroid_4326, y = y_centroid_4326)) + geom_point(alpha = 0.6) + coord_fixed() + labs(title = “Distribution spatiale des occurrences”, x = “Longitude”, y = “Latitude”)</p>
+<p>##PAr protocole</p>
+</section>
+<section id="protocole-scientifique" class="level4">
+<h4 class="anchored" data-anchor-id="protocole-scientifique">Protocole scientifique</h4>
+<p>Protocole_Scientifique &lt;- process_data %&gt;% filter( champs_additionnels %in% c(“{‘RELV_NOM’: ‘SuiviButor’}”, “{‘RELV_NOM’: ‘SuiviBlongiostaleve’}”))</p>
+</section>
+<section id="protocole-opportuniste" class="level4">
+<h4 class="anchored" data-anchor-id="protocole-opportuniste">Protocole Opportuniste</h4>
+<p>Protocole_opportuniste &lt;- process_data %&gt;% filter( !champs_additionnels %in% c(“{‘RELV_NOM’: ‘SuiviButor’}”, “{‘RELV_NOM’: ‘SuiviBlongiostaleve’}”))</p>
+</section>
+</section>
+</section>
+<section id="analyses-explo" class="level1">
+<h1>Analyses explo</h1>
+<section id="question-1-est-ce-que-les-protocoles-sont-réalisés-de-façon-linéaire-le-temps" class="level2">
+<h2 class="anchored" data-anchor-id="question-1-est-ce-que-les-protocoles-sont-réalisés-de-façon-linéaire-le-temps">Question 1 : Est ce que les protocoles sont réalisés de façon linéaire le temps</h2>
+<p>#Nous avons besoin de prendre seulement les données qui proviennent des protocoles</p>
+<p>Protocole_SuiviButor&lt;- Protocole_Scientifique %&gt;% filter( champs_additionnels == “{‘RELV_NOM’: ‘SuiviButor’}”)</p>
+<p>Protocole_SuiviBlongiostaleve&lt;- Protocole_Scientifique %&gt;% filter( champs_additionnels == “{‘RELV_NOM’: ‘SuiviBlongiostaleve’}”)</p>
+<p>#Étape 2 : nous devons diviser les données par site et par espèce, # afin d’obtenir un jeu de données distinct pour chaque combinaison. # Nous réalisons ensuite une boucle qui permet de générer un schéma de vie hebdomadaire pour chaque site, # afin de vérifier si les protocoles ont été réalisés chaque année et à la même période ou non. ```</p>
+<section id="pour-le-butor" class="level4">
+<h4 class="anchored" data-anchor-id="pour-le-butor">Pour le Butor</h4>
+<p>{r, fig.width=30, fig.height=25}</p>
+</section>
+</section>
+</section>
+<section id="liste-des-noms-de-sites" class="level1">
+<h1>Liste des noms de sites</h1>
+<p>sites &lt;- c(unique(Protocole_SuiviButor$nom_lieu))</p>
+</section>
+<section id="définir-toutes-les-semaines-attendues-pour-la-période-de-suivi-reste-hors-de-la-boucle" class="level1">
+<h1>Définir toutes les semaines attendues pour la période de suivi (reste hors de la boucle)</h1>
+<p>annees &lt;- 1996:2025 semaines &lt;- 1:53 # Certaines années ont 53 semaines ISO</p>
+</section>
+<section id="générer-un-data-frame-complet-avec-toutes-les-semaines-de-toutes-les-années" class="level1">
+<h1>Générer un data frame complet avec toutes les semaines de toutes les années</h1>
+<p>calendrier &lt;- expand.grid(annee = annees, semaine = semaines) %&gt;% arrange(annee, semaine)</p>
+</section>
+<section id="creation-liste-pour-la-boucle" class="level1">
+<h1>creation liste pour la boucle</h1>
+<p>tous_les_graphes &lt;- list() # — 2. Boucle pour l’Analyse et le Graphique de Chaque Site —</p>
+</section>
+<section id="nous-itérons-directement-sur-la-liste-des-noms-de-sites" class="level1">
+<h1>Nous itérons directement sur la liste des noms de sites</h1>
+<p>for(site_nom in sites) {</p>
+<p># a) Filtrer les données pour le site actuel (site_nom) df_site &lt;- Protocole_SuiviButor %&gt;% filter(nom_lieu == site_nom)</p>
+<p># b) Préparation des données: convertir la date et extraire année + semaine # Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join data_semaines_site &lt;- df_site %&gt;% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )</p>
+<p># c) Calculer le suivi (compte et jointure avec le calendrier) suivi &lt;- data_semaines_site %&gt;% group_by(annee, semaine) %&gt;% summarise(nb = n(), .groups = “drop”) %&gt;% right_join(calendrier, by = c(“annee”, “semaine”)) %&gt;% mutate( fait = ifelse(is.na(nb), “Non”, “Oui”), annee_fct = factor(annee) )</p>
+<p># d) Créer le graphique g &lt;- ggplot(suivi, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = “black”) + scale_fill_manual(values = c(“Oui” = “forestgreen”, “Non” = “red”)) + labs( title = paste(“Site”, site_nom), # Titre raccourci pour la vue combinée x = “Semaine ISO”, y = “Année”, fill = “Protocole fait ?” ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )</p>
+<p>tous_les_graphes[[site_nom]] &lt;- g }</p>
+<p>grid.arrange(grobs = tous_les_graphes, ncol = 4)</p>
+<p>grid.arrange(grobs = tous_les_graphes, ncol = 4)</p>
+<section id="pour-le-blongiostaleve" class="level4">
+<h4 class="anchored" data-anchor-id="pour-le-blongiostaleve">Pour le Blongiostaleve</h4>
+<p>{r} site_Blongios = sites &lt;- c(unique(Protocole_SuiviBlongiostaleve$nom_lieu))</p>
+<p>tous_les_graphes_Blongios = list()</p>
+<p>for(site_nom in sites) { df_site &lt;- Protocole_SuiviBlongiostaleve %&gt;% filter(nom_lieu == site_nom)</p>
+</section>
+</section>
+<section id="b-préparation-des-données-convertir-la-date-et-extraire-année-semaine" class="level1">
+<h1>b) Préparation des données: convertir la date et extraire année + semaine</h1>
+</section>
+<section id="si-df_site-est-vide-le-reste-du-pipeline-fonctionnera-toujours-grâce-à-right_join" class="level1">
+<h1>Si df_site est vide, le reste du pipeline fonctionnera toujours grâce à right_join</h1>
+<p>data_semaines_site &lt;- df_site %&gt;% mutate( date_parsed = ymd(date_debut), annee = year(date_parsed), semaine = isoweek(date_parsed) )</p>
+</section>
+<section id="c-calculer-le-suivi-compte-et-jointure-avec-le-calendrier" class="level1">
+<h1>c) Calculer le suivi (compte et jointure avec le calendrier)</h1>
+<p>suivi_Blongios &lt;- data_semaines_site %&gt;% group_by(annee, semaine) %&gt;% summarise(nb = n(), .groups = “drop”) %&gt;% right_join(calendrier, by = c(“annee”, “semaine”)) %&gt;% mutate( fait = ifelse(is.na(nb), “Non”, “Oui”), annee_fct = factor(annee) )</p>
+</section>
+<section id="d-créer-le-graphique" class="level1">
+<h1>d) Créer le graphique</h1>
+<p>g &lt;- ggplot(suivi_Blongios, aes(x = semaine, y = annee_fct, fill = fait)) + geom_tile(color = “black”) + scale_fill_manual(values = c(“Oui” = “forestgreen”, “Non” = “red”)) + labs( title = paste(“Site”, site_nom), # Titre raccourci pour la vue combinée x = “Semaine ISO”, y = “Année”, fill = “Protocole fait ?” ) + theme_minimal() + theme( panel.grid = element_blank(), axis.text.y = element_text(size = 6), axis.text.x = element_text(size = 6), plot.title = element_text(size = 8, hjust = 0.5) )</p>
+<p>tous_les_graphes_Blongios[[site_nom]] &lt;- g }</p>
+<p>#Combiner tous les graphiques sur une seule page</p>
+<p>{r, fig.width=30, fig.height=25} grid.arrange(grobs = tous_les_graphes_Blongios, ncol = 4)</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
