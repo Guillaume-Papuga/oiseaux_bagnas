@@ -11,8 +11,16 @@ editor: visual
 library(tidyverse) 
 library(lubridate) 
 library(readxl) 
-library(ggplot2) 
+library(ggplot2)
+```
+
+
+```{r}
 library(dplyr)
+```
+
+
+```{r}
 library(gridExtra)
 library(readr)
 library(knitr)
@@ -895,12 +903,12 @@ library(stats)
 # --------------------------
 
 ```{r}
-process_data <- readr::read_csv("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+process_protocole <- readr::read_csv("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
 
+process_protocole$julian <- yday(process_protocole$date_debut) 
 # Filtrer les relevés pour Talève sultane
-Protocole_SuiviTaleve <- process_data %>%
+Protocole_SuiviTaleve <- process_protocole %>%
   filter(
-    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
 
@@ -913,22 +921,11 @@ Protocole_SuiviTaleve <- process_data %>%
 # --------------------------
 
 ```{r}
-Protocole_SuiviTaleve$date_debut <- as.Date(Protocole_SuiviTaleve$date_debut)
 
-Protocole_SuiviTaleve <- Protocole_SuiviTaleve %>%
-  mutate(
-    annee = year(date_debut),
-    mois  = month(date_debut),
-    jour  = day(date_debut)
-  )
 
-Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
-
-# Transformer en facteurs
 Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$mois  <- as.numeric(Protocole_SuiviTaleve$mois)
-Protocole_SuiviTaleve$jour <- as.numeric(Protocole_SuiviTaleve$jour)
-# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
+Protocole_SuiviTaleve$julian <- scale(as.numeric(Protocole_SuiviTaleve$julian))
+Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
 
 ```
 
@@ -944,51 +941,28 @@ Protocole_SuiviTaleve$jour <- as.numeric(Protocole_SuiviTaleve$jour)
 modele_annee <- glm(nombre_min ~ annee2, 
                     family = poisson, 
                     data = Protocole_SuiviTaleve)
-summary(modele_annee)
 
-# 4b. Modèle par mois (4 niveaux seulement)
-modele_mois <- glm(nombre_min ~ mois, 
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-# 4b. Modèle par jour (4 niveaux seulement)
-modele_jour <- glm(nombre_min ~ jour, 
+
+modele_jour <- glm(nombre_min ~ julian, 
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
 
-# 4c. Modèle combiné année + mois
-modele_annee_mois <- glm(nombre_min ~ annee2 + mois, 
+
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
-modele_annee_jour <- glm(nombre_min ~ annee2 + jour, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-modele_mois_jour <- glm(nombre_min ~ mois + jour, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour, 
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
-Protocole_SuiviTaleve$mois <- as.factor(Protocole_SuiviTaleve$mois)
-modele_mois_effet_annee <- glmer(nombre_min ~ mois + (1 | annee2), 
-                     data = Protocole_SuiviTaleve, 
-                     family = poisson)
 
-Protocole_SuiviTaleve$jour <- as.factor(Protocole_SuiviTaleve$jour)
-modele_jour_effet_mois<- glmer(nombre_min ~ jour + (1 | mois), 
-                                 data = Protocole_SuiviTaleve, 
-                                 family = poisson)
 
 summary(modele_annee)
-summary(modele_mois)
-summary(modele_annee_mois)
-summary(modele_annee_jour)
-summary(modele_mois_jour)
-summary(modele_annee_mois_jours)
 summary(modele_jour)
-summary(modele_mois_effet_annee)
-summary(modele_jour_effet_mois)
+summary(modele_annee_jour)
+summary(modele_anneejour)
+
 ```
 
 # --------------------------
@@ -998,110 +972,18 @@ summary(modele_jour_effet_mois)
 # --------------------------
 
 ```{r}
-AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
-                 modele_annee_mois_jours, modele_mois_jour, modele_annee_jour, modele_mois_effet_annee,
-modele_jour_effet_mois)
+AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 ```
 
 # ---------------------------------------------------------
 
-## 6.2 Analyse taleve Opportuniste
-
+## 6.2 Analyse taleve enviro
 #----------------------------------------------------------
 
 ```{r}
-Opportuniste_Taleve<- process_data %>%
-  filter(
-    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
-
-```
-
-# --------------------------
-
-### 6.2.1. Préparer les variables temporelles
-
-# --------------------------
-
-```{r}
-Opportuniste_Taleve$date_debut <- as.Date(Opportuniste_Taleve$date_debut)
-
-Opportuniste_Taleve <- Opportuniste_Taleve %>%
-  mutate(
-    annee = year(date_debut),
-    mois  = month(date_debut),
-    jour  = day(date_debut)
-  )
-
-
-
-Opportuniste_Taleve <- Opportuniste_Taleve%>%
-  filter(annee >= 2014)
-Opportuniste_Taleve$annee2 <- as.numeric(as.character(Opportuniste_Taleve$annee)) - 2013
-# Transformer en facteurs
-Opportuniste_Taleve$annee <- as.numeric(Opportuniste_Taleve$annee)
-Opportuniste_Taleve$mois  <- as.numeric(Opportuniste_Taleve$mois)
-Opportuniste_Taleve$jour <- as.numeric (Opportuniste_Taleve$jour)
-# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
-```
-
-# --------------------------
-
-### 6.2.2. GLM Poisson
-
-# --------------------------
-
-```{r}
-# 4a. Modèle par année
-
 modele_annee <- glm(nombre_min ~ annee2, 
                     family = poisson, 
-                    data = Opportuniste_Taleve)
-summary(modele_annee)
-
-# 4b. Modèle par mois (4 niveaux seulement)
-modele_mois <- glm(nombre_min ~ mois, 
-                   data = Opportuniste_Taleve, 
-                   family = poisson)
-# 4b. Modèle par jour (4 niveaux seulement)
-modele_jour <- glm(nombre_min ~ jour, 
-                   data = Opportuniste_Taleve, 
-                   family = poisson)
-
-# 4c. Modèle combiné année + mois
-modele_annee_mois <- glm(nombre_min ~ annee2 + mois, 
-                         data = Opportuniste_Taleve, 
-                         family = poisson)
-
-modele_annee_jour <- glm(nombre_min ~ annee2 + jour, 
-                         data = Opportuniste_Taleve, 
-                         family = poisson)
-modele_mois_jour <- glm(nombre_min ~ mois + jour, 
-                        data = Opportuniste_Taleve, 
-                        family = poisson)
-modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour, 
-                               data = Opportuniste_Taleve, 
-                               family = poisson)
-
-summary(modele_annee)
-summary(modele_mois)
-summary(modele_annee_mois)
-summary(modele_annee_jour)
-summary(modele_mois_jour)
-summary(modele_annee_mois_jours)
-summary(modele_jour)
+                    data = Protocole_SuiviTaleve)
 
 ```
 
-# --------------------------
-
-### 6.2.4 Comparaison par AIC
-
-# --------------------------
-
-```{r}
-AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
-    modele_annee_mois_jours, modele_mois_jour, modele_annee_jour)
-
-```
