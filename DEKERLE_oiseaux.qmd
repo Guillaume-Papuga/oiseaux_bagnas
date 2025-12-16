@@ -4,11 +4,6 @@ format: html
 editor: visual
 ---
 
----
-title: "Analyses_exploratoires"
-format: html
-editor: visual
----
 
 ```{r}
 #| message: false
@@ -59,7 +54,7 @@ Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, P
 
 ```{r}
 #| label: data par protocole
-suivi<-process_data %>%
+suivi<-process_protocole %>%
   filter(
   champs_additionnels%in% c(
     "{'RELV_NOM': 'SuiviBlongiostaleve'}",
@@ -75,13 +70,13 @@ opportuniste <- process_data %>%
     )
   )
 
-Protocole_SuiviButor <- process_data %>%
+Protocole_SuiviButor <- process_protocole %>%
   filter(
     champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
       nom_vernaculaire == "Butor étoilé"
   )
 
-Protocole_SuiviBlongiosTaleve <- process_data %>%
+Protocole_SuiviBlongiosTaleve <- process_protocole %>%
   filter(
     champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire %in% c(
@@ -112,7 +107,7 @@ Opportuniste_Taleve<- process_data %>%
 
 ## 2.2 effort d'observation journalier
 
-### 2.2.a Effort journalier toutes espèces tout protocole
+### FACULTATIF ET PAS A JOUR  Effort journalier toutes espèces tout protocole
 
 ```{r}
 
@@ -143,7 +138,7 @@ ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conse
 
 ```
 
-### 2.2.b Données d'heure sans les 00:00:00 et les absence d'heure tout espece tout protocole
+### FACULTATIF ET PAS A JOUR Données d'heure sans les 00:00:00 et les absence d'heure tout espece tout protocole
 
 ```{r}
 process_data <-process_data %>%
@@ -181,7 +176,7 @@ ggplot(mapping = aes(x, y)) +
 ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-### 2.2.c Effort journalier Butor tout protocole
+### FACULTATIF ET PAS A JOUR Effort journalier Butor tout protocole
 
 ```{r}
 Butor_etoile <- Butor_etoile %>%
@@ -221,7 +216,7 @@ ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par
 
 ```
 
-### 2.2.d Effort journalier Blongios tout protocole
+### FACULTATIF ET PAS A JOUR Effort journalier Blongios tout protocole
 
 ```{r}
 Blongios_nain <- Blongios_nain  %>%
@@ -259,7 +254,7 @@ ggplot(mapping = aes(x, y)) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-### 2.2.e Effort journalier Taleve tout protocole
+### FACULTATIF ET PAS A JOUR Effort journalier Taleve tout protocole
 
 ```{r}
 Taleve_sultane <- Taleve_sultane  %>%
@@ -297,43 +292,184 @@ ggplot(mapping = aes(x, y)) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Talève sultane) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-### 2.2.f Effort journalier protocole Butor
+### 2.2.a Effort journalier protocole Butor
 
 ```{r}
+
+# DOnnées 
+Protocole_SuiviButor <- Protocole_SuiviButor %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
 Protocole_SuiviButor <- Protocole_SuiviButor  %>%
   mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
   filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
 
+# Table des 24 heures
 
-### Extraire l'heure
-
-Protocole_SuiviButor <- Protocole_SuiviButor %>%
-  mutate(
-    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
-    date = as.Date(heure_debut)
-  )
-Protocole_SuiviButor$heure_debut_tronc = as.factor(Protocole_SuiviButor$heure_debut_tronc)
+heures_jour <- tibble(heure_debut_tronc = 0:23)
 
 ### Sommer les obs par heure
 
 obs_heure <- Protocole_SuiviButor %>%
-      group_by(heure_debut_tronc) %>%
-      summarize(sum(nombre_min)) 
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
 obs_heure
 
 ### Frequence horaire
+freq_heure <- Protocole_SuiviButor %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 
-freq_heure <- Protocole_SuiviButor %>%
-  group_by(heure_debut_tronc) %>%
-  summarise(freq = n()) %>%
-  mutate(freq_rel = freq / sum(freq))
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
 ### Barplot
-ggplot(mapping = aes(x, y)) +
-  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity', fill = 'orange') +
-  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'blue') +
-  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en orange) et d'observations (en bleu)" ) +
-ggtitle("Effort d'échantillonnage et nombre d'observations protocolées (Butor étoilé) par heure \nsans les heures inconnues")
+
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Butor (2014-2018)")
+
 ```
+
+### 2.2.b Effort journalier opportuniste Butor
+
+```{r}
+# DOnnées 
+Opportuniste_Butor <- Opportuniste_Butor %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+Opportuniste_Butor <- Opportuniste_Butor  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Opportuniste_Butor %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Opportuniste_Butor %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations \n opportuniste par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
+
+```
+
+### 2.2.c Effort journalier protocole Blongios
+
+```{r}
+# DOnnées 
+Protocole_Blongios <- Protocole_SuiviBlongiosTaleve %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+Protocole_Blongios <- Protocole_Blongios %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
+
+Protocole_Blongios <- Protocole_Blongios  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_Blongios %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Protocole_Blongios %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Blongios (2014-2018)")
+
+```
+
 
 ### 2.2.g Effort journalier protocole Blongios-Talève
 
