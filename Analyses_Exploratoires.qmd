@@ -43,11 +43,11 @@ raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
 
 ## 1.2Mise au propre du tableau
 
-::: callout-note
+:::: callout-note
 ::: {style="blue"}
 Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 :::
-:::
+::::
 
 ```{r}
 #| label: Selection variables utiles
