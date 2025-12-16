@@ -970,6 +970,15 @@ modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour,
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
+Protocole_SuiviTaleve$mois <- as.factor(Protocole_SuiviTaleve$mois)
+modele_mois_effet_annee <- glmer(nombre_min ~ mois + (1 | annee2), 
+                     data = Protocole_SuiviTaleve, 
+                     family = poisson)
+
+Protocole_SuiviTaleve$jour <- as.factor(Protocole_SuiviTaleve$jour)
+modele_jour_effet_mois<- glmer(nombre_min ~ jour + (1 | mois), 
+                                 data = Protocole_SuiviTaleve, 
+                                 family = poisson)
 
 summary(modele_annee)
 summary(modele_mois)
@@ -978,6 +987,8 @@ summary(modele_annee_jour)
 summary(modele_mois_jour)
 summary(modele_annee_mois_jours)
 summary(modele_jour)
+summary(modele_mois_effet_annee)
+summary(modele_jour_effet_mois)
 ```
 
 # --------------------------
@@ -988,7 +999,8 @@ summary(modele_jour)
 
 ```{r}
 AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
-                 modele_annee_mois_jours, modele_mois_jour, modele_annee_jour)
+                 modele_annee_mois_jours, modele_mois_jour, modele_annee_jour, modele_mois_effet_annee,
+modele_jour_effet_mois)
 ```
 
 # ---------------------------------------------------------

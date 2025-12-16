@@ -29,7 +29,6 @@ Il est important de commencer toutes les nouvelles analyses avec ce jeu de donn�
 Si vous avez besoin de **sous-jeux de données**, par exemple uniquement le **Butor étoilé** ou uniquement les données **opportunistes**, rendez-vous dans la **section 4** pour les récupérer, afin de **préserver la typologie correcte du jeu de données**.
 :::
 
-
 # 1. Jeux de données nécessaires ( par especes, par protocole....)
 
 ```{r}
