@@ -182,3 +182,46 @@ write_csv(process_protocole, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux
 
 ```
 
+
+```{r}
+#Nettoyage du tableau environnemental
+ environnement_daily <- read_csv("data/pro/environnement_daily.csv")
+```
+
+
+```{r}
+install.packages("zoo", type = "binary")
+library(zoo)
+```
+
+
+```{r}
+library(dplyr)
+library(zoo)
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%   # recommandé
+  mutate(
+    moy_temp_semaine = rollmean(temperature, k = 7, fill = NA, align = "right"),
+    moy_temp_mois    = rollmean(temperature, k = 30, fill = NA, align = "right")
+  ) %>%
+  select(Date, moy_temp_semaine, moy_temp_mois) %>%
+  filter(format(Date, "%Y") != "2013")
+
+
+
+```
+
+
+```{r}
+
+process_protocole_bis <- process_protocole %>%
+  left_join(
+    environnement_daily %>%
+      select(Date, moy_temp_semaine, moy_temp_mois),
+    by = c("date_debut" = "Date")
+  )
+```
+
+
+```{r}
