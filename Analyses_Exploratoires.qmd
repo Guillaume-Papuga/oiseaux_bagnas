@@ -1,12 +1,13 @@
 ---
-title: "Gayot_oiseaux"
+title: "Analyses_exploratoires"
 format: html
 editor: visual
 ---
 
-### Les packages nécessaires
-
 ```{r}
+#| message: false
+#| warning: false
+
 #| label: Packages necessaire
 library(tidyverse) 
 library(lubridate) 
@@ -18,187 +19,37 @@ library(readr)
 library(knitr)
 ```
 
-# 1. Nettoyage des données
+::: {.callout-warning style="border-left: 5px solid red; background-color: #fdd; padding: 1em;"}
+## Attention
 
-::: {.callout-note style="blue"}
-Nous allons mettre au propre le tableau 1 et le tableau 2 afin d’identifier les différences, les corriger et constituer un tableau final regroupant les trois espèces.
+Pour les analyses à venir, vous devez utiliser le **nouveau jeu de données** créé après vérification qu'il est **complet et nettoyé** (voir les sections suivantes).
+
+Il est important de commencer toutes les nouvelles analyses avec ce jeu de données afin que **tout le monde travaille sur la même base**. Le jeu de donnée se trouve dans le git commun dans le dossier data pro
+
+Si vous avez besoin de **sous-jeux de données**, par exemple uniquement le **Butor étoilé** ou uniquement les données **opportunistes**, rendez-vous dans la **section 4** pour les récupérer, afin de **préserver la typologie correcte du jeu de données**.
 :::
 
-```{r}
-#| label: Appel data 1
-setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
-raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
-```
-
-## 1.2Mise au propre du tableau
-
-:::: callout-note
-::: {style="blue"}
-Nous conservons uniquement les colonnes pertinentes pour la suite de l’analyse, en supprimant les colonnes vides ainsi que celles dont l’information est redondante, notamment les noms latins.
-:::
-::::
+# 1. Jeux de données nécessaires ( par especes, par protocole....)
 
 ```{r}
-#| label: Selection variables utiles
-#| message: false
-#| warning: false
-#| include: false
-process_data_1= raw_data %>%
-  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
-         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
-         y_centroid_4326,nom_lieu,champs_additionnels)
-         
-# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
-# car le fichier original contenait une date + une heure
-process_data_1 <- process_data_1 %>%
-  mutate(
-    heure_debut = format(heure_debut, "%H:%M:%S"),
-    heure_fin   = format(heure_fin,   "%H:%M:%S")
-  )
-
-# Petit contrôle pour vérifier que les heures sont cohérentes
-process_data_1 %>% count(heure_debut)
-
-# on v a mettre en format date les dates de debut et de fin 
-
-process_data_1 <- process_data_1 %>%
-  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
-          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
-
-
-```
-
-## 1.3 Import et sélection du second tableau brut
-
-############################################### 
-
-```{r}
-#| label: Appel data 2
-setwd("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/raw")
-
-# read_delim + encoding Latin1 = corrige les accents
-raw_data_2 <- read_delim(
-  "synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
-  delim = ";",
-  locale = locale(encoding = "Latin1", decimal_mark = ".")
-)
-
-# On sélectionne seulement les colonnes nécessaires et dans le même ordre
-process_data_2 <- raw_data_2 %>%
-  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
-         nom_vernaculaire, nombre_min, observateurs, determinateur,
-         x_centroid_4326, y_centroid_4326,
-         nom_lieu, champs_additionnels)
-
-process_data_2 <- process_data_2 %>%
-  mutate(
-    x_centroid_4326 = as.character(x_centroid_4326),
-    y_centroid_4326 = as.character(y_centroid_4326)
-  )
-
-process_data_1<- process_data_1 %>%
-  mutate(
-    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
-    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
-  )
-
-process_data_2 <- process_data_2 %>%
-  mutate(
-    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
-    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
-  )
-# Le fichier brut est en format "dd/mm/YYYY"
-# On convertit proprement en Date (format standard YYYY-MM-DD)
-process_data_2 <- process_data_2 %>%
-  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
-          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
-
- #verification des données soit identiques pour le butor et le taleve
-
-
-process_data_2 <- process_data_2 %>%
-  mutate(
-    heure_debut = as.character(heure_debut),
-    heure_fin   = as.character(heure_fin)
-  )
-# Certaines heures arrivent comme objets POSIX → on convertit en caractère
-
-
-
-# Correction de la ligne manquante dans champs_additionnels
-
-
-# La ligne 132 de process_data_2 avait un NA
-# On remplace par la valeur correspondante dans process_data_1 (ligne 720)
-process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
-  process_data_1$champs_additionnels[720]
-
-```
-
-# 2. Vérification que les données sensibles correspondent
-
-::: {.callout-important style="red"}
-Nous allons vérifier, après modification du type de certaines colonnes, si les jeux de données sont désormais identiques. Cette comparaison sera effectuée espèce par espèce. Lors de la première comparaison du tableau 1 et du tableau 2 avec la fonction `all_equal()`, nous avons constaté que plusieurs formats différaient (dates, heures, notations scientifiques, etc.). Nous avons également relevé une case vide pour l’individu 132 dans le tableau 2. Après avoir apporté les corrections nécessaires, nous avons vérifié espèce par espèce que l’ensemble des valeurs corresponde.
-:::
-
-```{r}
-#| label: Comparaison des data
-#| echo: false
-#| message: false
-#| warning: false
-# Comparaison BUTOR ÉTOILÉ
-Butor_etoile_1 <- process_data_1   %>% filter(nom_vernaculaire == "Butor étoilé")
-Butor_etoile_2 <- process_data_2 %>% filter(nom_vernaculaire == "Butor étoilé")
-
-all.equal(Butor_etoile_1, Butor_etoile_2)
-```
-
-```{r}
-#| label: Comparaison des data
-#| echo: false
-#| message: false
-#| warning: false
-# Comparaison BLONGIOS
-Blongios_1 <- process_data_1 %>%
-  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
-
-Blongios_2 <- process_data_2 %>%
-  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
-
-all.equal(Blongios_1, Blongios_2)
-
-```
-
-# 3. Ajout de la taleve sultane au tableau final
-
-::: {.callout-note style="blue"}
-Nous prenons la nouvelle table qui est identique à l'autre avec une espece supplémentaire
-:::
-
-```{r}
-#| label: creation du data final
-process_data = process_data_2
-
-write_csv(process_data, "C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
-
-```
-
-# 4. Jeux de données nécessaires ( par especes, par protocole....)
-
-```{undefined}
 #| label: DATA A UTILISER
+#| echo: true
+#| message: false
+#| warning: false
  process_data <- read_csv("data/pro/process_data.csv")
-## 4.1 Par especes
+```
 
-#| label: G
+```{r}
+## 4.1 Par especes
 Butor_etoile<-process_data %>% filter( nom_vernaculaire == "Butor étoilé")
 
 Blongios_nain<-process_data %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
-Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "taleve sultane, Poule sultane, Porphyrion bleu")
+Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
+
 ```
 
-## 4.2 Par protocole
+## 1.2 Par protocole
 
 ```{r}
 #| label: data par protocole
@@ -248,16 +99,16 @@ Opportuniste_Blongios<- process_data %>%
 Opportuniste_Taleve<- process_data %>%
   filter(
     !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "taleve sultane, Poule sultane, Porphyrion bleu"
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
 
 ```
 
-# 5. Analyses exploratoires
+# 2. Analyses exploratoires
 
-## 5.1continuité des protocoles sur les sites
+## 2.1continuité des protocoles sur les sites
 
-### 5.1.a Pour le Butor
+### 2.1.a Pour le Butor
 
 ```{r fig.height=25, fig.width=30}
 #| label: I
@@ -330,7 +181,7 @@ grid.arrange(grobs = tous_les_graphes, ncol = 4)
 
 ```
 
-### 5.1.b Pour le Blongios et le Taleve
+### 2.1.b Pour le Blongios et la Taleve
 
 ```{r fig.height=25, fig.width=30}
 #| label: J
@@ -401,9 +252,9 @@ Sites où pas de protocole suivi régulièrement (1 à 2 sorties en tout) :
 sites avec protocole régulier : - blongios/taleve : début en 2014 - butor : début en 2013
 :::
 
-## 5.2 effort d'observation journalier : toutes sorties (obs ou pas obs)
+## 2.2 effort d'observation journalier
 
-### 5.2.a Effort journalier toutes espèces
+### 2.2.a Effort journalier toutes espèces tout protocole
 
 ```{r}
 
@@ -434,7 +285,7 @@ ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nen conse
 
 ```
 
-### 5.2.b Données d'heure sans les 00:00:00 et les absence d'heure
+### 2.2.b Données d'heure sans les 00:00:00 et les absence d'heure tout espece tout protocole
 
 ```{r}
 process_data <-process_data %>%
@@ -472,7 +323,7 @@ ggplot(mapping = aes(x, y)) +
 ggtitle("Effort d'échantillonnage et nombre d'observations par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
-### 5.2.c Effort journalier Butor
+### 2.2.c Effort journalier Butor tout protocole
 
 ```{r}
 Butor_etoile <- Butor_etoile %>%
@@ -512,7 +363,7 @@ ggtitle("Effort d'échantillonnage et nombre d'observations (Butor étoilé) par
 
 ```
 
-### 5.2.d Effort journalier Blongios
+### 2.2.d Effort journalier Blongios tout protocole
 
 ```{r}
 Blongios_nain <- Blongios_nain  %>%
@@ -550,10 +401,124 @@ ggplot(mapping = aes(x, y)) +
 ggtitle("Effort d'échantillonnage et nombre d'observations (Blongios nain) par heure \nsans les heures inconnues, tout protocole confondu")
 ```
 
+### 2.2.e Effort journalier Taleve tout protocole
+
+```{r}
+Taleve_sultane <- Taleve_sultane  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Taleve_sultane <- Taleve_sultane %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Taleve_sultane$heure_debut_tronc = as.factor(Taleve_sultane$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Taleve_sultane %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Taleve_sultane %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations (Talève sultane) par heure \nsans les heures inconnues, tout protocole confondu")
+```
+
+### 2.2.f Effort journalier protocole Butor
+
+```{r}
+Protocole_SuiviButor <- Protocole_SuiviButor  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Protocole_SuiviButor <- Protocole_SuiviButor %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Protocole_SuiviButor$heure_debut_tronc = as.factor(Protocole_SuiviButor$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_SuiviButor %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Protocole_SuiviButor %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations protocolées (Butor étoilé) par heure \nsans les heures inconnues")
+```
+
+### 2.2.g Effort journalier protocole Blongios-Talève
+
+```{r}
+Protocole_SuiviBlongiosTaleve <- Protocole_SuiviBlongiosTaleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+
+### Extraire l'heure
+
+Protocole_SuiviBlongiosTaleve <- Protocole_SuiviBlongiosTaleve %>%
+  mutate(
+    heure_debut_tronc = hour(heure_debut),   # heure de la journée (0-23)
+    date = as.Date(heure_debut)
+  )
+Protocole_SuiviBlongiosTaleve$heure_debut_tronc = as.factor(Protocole_SuiviBlongiosTaleve$heure_debut_tronc)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_SuiviBlongiosTaleve %>%
+      group_by(heure_debut_tronc) %>%
+      summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+
+freq_heure <- Protocole_SuiviBlongiosTaleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarise(freq = n()) %>%
+  mutate(freq_rel = freq / sum(freq))
+### Barplot
+ggplot(mapping = aes(x, y)) +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = freq_heure$freq), width = 0.8, stat = 'identity') +
+  geom_bar(data = data.frame(x = freq_heure$heure_debut_tronc, y = obs_heure$`sum(nombre_min)`), width = 0.4, stat = 'identity', fill = 'black') +
+  theme_classic() + scale_y_continuous(expand = c(0, 0)) + xlab("Heure de la journée tronquée à l'inférieur") + ylab ("Nombre de prospections (en gris) et d'observations (en noir)" ) +
+ggtitle("Effort d'échantillonnage et nombre d'observations protocolées \n(Blongios et Talève) par heure sans les heures inconnues")
+```
+
 ::: {.callout-note style="green"}
 ## Interpretation
 
-bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écrit donc IG il considère que c'est minuit
+Beaucoup d'obs pour lesquelles l'heure est inconnue.
 
 #Données d'heure sans les 00:00:00 (les 00 sont encore la ?) et les absence d'heure
 :::
@@ -561,20 +526,22 @@ bcp à minuit parce que nsr il y a plein de 00:00:00 ou de juste c'est pas écri
 ::: {.callout-note style="green"}
 ## Interpretation
 
-Tout confondu : max au crépuscule (20h) et au levé du soleil (4-5h) - butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
+Tout confondu : max au crépuscule (20h) et avant le levé du soleil (4-5h)
+
+\- butor : max au crépuscule (20h-22h) et au levé du soleil (4-6h)
 
 -   blongios : de 21h-23h et 5h à 9h
+
+-   Taleve : de 5h à 9h avec GROS PIC à 8h puis de 20 à 21.
+
+-   protocole blongios taleve = obs a 6h et 7h et 20h et 21h.
+
+    =\> globalement tout correspond aux protocoles mis en place SAUF
+
+-   protocole butor: UNE SEULE OBS PROTOCOLEE DONT ON CONNAIS L'HEURE et elle date de 1998 (j'ai verif les données brutes et effectivement c'est le cas)
 :::
 
-############################################### 
-
-::: {.callout-warning style="red"}
-**obs par heures de la journée A FAIRE**
-:::
-
-############################################### 
-
-### 5.3 Correspondance des coordonnées et des sites
+### 2.3 Correspondance des coordonnées et des sites
 
 ```{r}
 
@@ -646,66 +613,66 @@ ggplot(process_data, aes(x = x_centroid_4326, y = y_centroid_4326)) +
 
 ############################################### 
 
-## 5.4 observation des espèces chaque semaine depuis le début des relevés
+## 2.4 observation des espèces chaque semaine depuis le début des relevés
 
-### 5.4.a Pour le Blongios
+### 2.4.a Pour le Blongios
 
 ```{r}
 #| label: O
 
-# --- Définir la période de suivi ---
 annee_min <- min(year(process_data$date_debut), na.rm = TRUE)
 annee_max <- max(year(process_data$date_debut), na.rm = TRUE)
 duree_annees <- annee_max - annee_min + 1
 
-esp_blongios <- "Blongios nain, Butor blongios"
-data_blongios <- process_data %>% filter(nom_vernaculaire == esp_blongios)
-
 
 data_blongios <- process_data %>%
-  filter(nom_vernaculaire == esp_blongios) %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
   mutate(
-    annee_suivi = year(date_debut) - annee_min + 1,
+    annee_suivi  = year(date_debut) - annee_min + 1,
     annee_reelle = year(date_debut),
-    semaine = isoweek(date_debut)
+    semaine      = isoweek(date_debut)
   )
 
-# --- Résumer les semaines pour gérer les sorties multiples ---
+# --- Résumer les semaines (gestion des observations / sorties) ---
 data_blongios_summarized <- data_blongios %>%
   group_by(annee_suivi, semaine) %>%
   summarize(
     statut = case_when(
-      any(nombre_min > 0) ~ "observation",             # au moins une observation
-      any(nombre_min == 0) ~ "sortie_sans_observation" # au moins une sortie mais pas d'observation
+      any(nombre_min > 0)  ~ "observation",
+      any(nombre_min == 0) ~ "sortie_sans_observation"
     ),
     .groups = "drop"
   )
 
-# --- Créer la grille complète (année x semaine) ---
+# --- Grille complète année x semaine ---
 grille <- expand.grid(
   annee_suivi = 1:duree_annees,
-  semaine = 1:53
+  semaine     = 1:53
 ) %>%
-  mutate(annee_reelle = annee_min + annee_suivi - 1) %>%
+  mutate(
+    annee_reelle = annee_min + annee_suivi - 1
+  ) %>%
   left_join(
     data_blongios_summarized,
     by = c("annee_suivi", "semaine")
   ) %>%
-  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+  mutate(
+    statut = ifelse(is.na(statut), "pas_de_sortie", statut)
+  )
 
-# --- Graphique calendrier des semaines ---
+# --- Graphique calendrier ---
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   geom_tile(color = "white", size = 0.2) +
   scale_y_reverse() +
   scale_fill_manual(
     values = c(
-      "observation" = "#0072B2",         
-      "sortie_sans_observation" = "#E69F00", 
-      "pas_de_sortie" = "lightgrey"       
+      "observation"              = "#0072B2",
+      "sortie_sans_observation"  = "#E69F00",
+      "pas_de_sortie"            = "lightgrey"
     )
   ) +
   labs(
-    title = paste("Observations de", esp_blongios),
+    title    = paste("Observations de", data_blongios),
     subtitle = paste("Suivi de", annee_min, "à", annee_max),
     x = "Semaine de l'année",
     y = "Année"
@@ -720,65 +687,72 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 graphique qui montre l'observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
 :::
 
-### 5.4.b Pour le Blongios
+### 2.4.b Pour le Butor
 
 ```{r}
 #| echo: false
 ## Butor étoilé
-esp_butor<- "Butor étoilé"
-data_butor <- process_data %>% filter(nom_vernaculaire == esp_butor)
+
+annee_min <- min(year(process_data$date_debut), na.rm = TRUE)
+annee_max <- max(year(process_data$date_debut), na.rm = TRUE)
+duree_annees <- annee_max - annee_min + 1
 
 
 data_butor <- process_data %>%
-  filter(nom_vernaculaire == esp_butor) %>%
+  filter(nom_vernaculaire == "Butor étoilé") %>%
   mutate(
-    annee_suivi = year(date_debut) - annee_min + 1,
+    annee_suivi  = year(date_debut) - annee_min + 1,
     annee_reelle = year(date_debut),
-    semaine = isoweek(date_debut)
+    semaine      = isoweek(date_debut)
   )
 
-# --- Résumer les semaines pour gérer les sorties multiples ---
+# --- Résumer les semaines (gestion des observations / sorties) ---
 data_butor_summarized <- data_butor %>%
   group_by(annee_suivi, semaine) %>%
   summarize(
     statut = case_when(
-      any(nombre_min > 0) ~ "observation",             # au moins une observation
-      any(nombre_min == 0) ~ "sortie_sans_observation" # au moins une sortie mais pas d'observation
+      any(nombre_min > 0)  ~ "observation",
+      any(nombre_min == 0) ~ "sortie_sans_observation"
     ),
     .groups = "drop"
   )
 
-# --- Créer la grille complète (année x semaine) ---
+# --- Grille complète année x semaine ---
 grille <- expand.grid(
   annee_suivi = 1:duree_annees,
-  semaine = 1:53
+  semaine     = 1:53
 ) %>%
-  mutate(annee_reelle = annee_min + annee_suivi - 1) %>%
+  mutate(
+    annee_reelle = annee_min + annee_suivi - 1
+  ) %>%
   left_join(
     data_butor_summarized,
     by = c("annee_suivi", "semaine")
   ) %>%
-  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+  mutate(
+    statut = ifelse(is.na(statut), "pas_de_sortie", statut)
+  )
 
-# --- Graphique calendrier des semaines ---
+# --- Graphique calendrier ---
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   geom_tile(color = "white", size = 0.2) +
   scale_y_reverse() +
   scale_fill_manual(
     values = c(
-      "observation" = "#0072B2",         
-      "sortie_sans_observation" = "#E69F00", 
-      "pas_de_sortie" = "lightgrey"       
+      "observation"              = "#0072B2",
+      "sortie_sans_observation"  = "#E69F00",
+      "pas_de_sortie"            = "lightgrey"
     )
   ) +
   labs(
-    title = paste("Observations de", esp_butor),
+    title    = paste("Observations de", data_butor),
     subtitle = paste("Suivi de", annee_min, "à", annee_max),
     x = "Semaine de l'année",
     y = "Année"
   ) +
   theme_minimal() +
   theme(panel.grid = element_blank())
+
 ```
 
 ::: {.callout-note style="green"}
@@ -789,9 +763,11 @@ graphique qui montre l'observation des butors par semaine sur toute la periode d
 **Interpretation** - butor : observations depuis le début, depuis \~2018 plus vraiment d'observations. observations les premières semaines de l'années et dernières semaines sorties sans observations à partir de \~2013. (si on se refère aux graphs protocoles on voit que ça suit le même pattern. est ce que protocole fait à un moment étrange ?) les periodes où observations ne sont plus faites même en non observation
 
 -   blongios : même pattern de semaines depuis \~1998 . qq sorties sans observation à l'air de coller avec les patterns de protocoles
+
+=\> en 2018 le protocole blongios taleve est passé de 30min part point d'ecoute à 15min parce que moins de gens donc ça explique qu'il y ait moins d'obs !
 :::
 
-### 5.4.c Pour le Taleve
+### 2.4.c Pour la Taleve
 
 ```{r}
 # Taleve 
@@ -857,7 +833,108 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
   theme(panel.grid = element_blank())
 ```
 
-# 5.5nombre d'observation par observateur depuis le début des données
+# 2.5 nombre d'observation par observateur depuis le début des données
+
+##2.5.a Nombre d'observation par observateur
+
+```{r}
+
+#0) Diagnostic : afficher un aperçu de process_data ---
+
+cat("Aperçu de process_data (5 premières lignes) :\n")
+print(utils::head(process_data, 5))
+cat("\nStructure de process_data :\n")
+print(str(process_data))
+
+# --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---
+data_filtered <- process_data %>%
+  # s'assurer que la colonne existe et est en caractère
+  mutate(observateurs = as.character(observateurs)) %>%
+  # nettoyer espaces début/fin et remplacer NA par "NA_obs" si besoin (optionnel)
+  mutate(observateurs = str_trim(observateurs)) %>%
+  # exclusion insensible à la casse de "ADENA" (gère "Adena", " ADENA ", etc.)
+  filter(!is.na(observateurs) & !(str_to_upper(observateurs) == "ADENA"))
+
+cat("\nVérification data_filtered (5 premières lignes) :\n")
+print(utils::head(data_filtered, 5))
+cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
+
+# --- 2) Agrégation : somme de nombre_min par observateur ---
+
+data_summarized <- data_filtered %>%
+  # s'assurer que nombre_min est numérique
+  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  group_by(observateurs) %>%
+  summarise(
+    total_min = sum(nombre_min, na.rm = TRUE),
+    n_rows = n(),
+    .groups = "drop"
+  )
+
+cat("\nTable agrégée (top 20) :\n")
+print(utils::head(arrange(data_summarized, desc(total_min)), 20))
+
+# Vérification d'éventuels problèmes
+if (nrow(data_summarized) == 0) {
+  stop("data_summarized est vide — vérifie que data_filtered contient des lignes et que la colonne nombre_min est numérique.")
+}
+if (all(is.na(data_summarized$total_min))) {
+  stop("Toutes les sommes sont NA — vérifie la colonne nombre_min (valeurs non numériques).")
+}
+
+# --- 3) Réordonner les observateurs pour un affichage clair (optionnel) ---
+data_summarized <- data_summarized %>%
+  arrange(desc(total_min)) %>%
+  mutate(observateurs = factor(observateurs, levels = observateurs))
+
+# --- 4) Tracer le barplot avec geom_col() et valeurs au-dessus des barres ---
+p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+  geom_col() +                           # geom_col() = geom_bar(stat="identity")
+  geom_text(aes(label = round(total_min, 1)), 
+            vjust = -0.3, size = 3) +    # afficher la valeur au-dessus
+  labs(
+    title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
+    x = "Observateur",
+    y = "Total nombre_min"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(p)
+
+```
+
+## 2.5.b Coontinuité dans le temps des observateurs
+
+```{r}
+ process_data <- process_data %>%
+  mutate(date_debut = as.Date(date_debut))  # transforme si c'était du texte
+
+# Optionnel : enlever "ADENA" si tu ne veux pas la voir
+process_data <- process_data %>%
+  filter(observateurs != "")
+
+# Optionnel : trier les observateurs par fréquence
+process_data <- process_data %>%
+  mutate(observateurs = forcats::fct_infreq(observateurs))
+
+# --- Graphe de présence ---
+ggplot(process_data, aes(x = date_debut, y = observateurs)) +
+  geom_point(alpha = 0.7, color = "steelblue", size = 3) +
+  labs(
+    title = "Présence des observateurs dans le temps",
+    x = "Date de début",
+    y = "Observateurs"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
 
 ::: {.callout-note style="green"}
 ## Interpretation
@@ -865,231 +942,38 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 ADENA : nom de l'asso , tout le temps présent depuis 1990
 
 sans ADENA : obs commencent à 2011/13? obs principaux : Mathier Lognos (jusqu'à 2022?) et Nathalie Guenel
+
+ATTENTION presque la moitiés des observations sont faites par une multitude de personnes conséquences sur le biais observateur
 :::
 
-------------------------------------------------------------------------
+# 6 Que faire pour la suite ????????????
 
-# 6 Anlayses De la populatin de Taleve dans le temps et avec le climat
+[**Objectif**]{.underline} :
 
-## Analyse protocole
+-Étudier l'évolution des populations par espèce dans le temps.
 
-# -----------------------
+---\> I**dentifier les tendances** : augmentation, diminution ou stabilité.
 
-### \## 6.1.1. Packages
+---\> **Tester l'influence des variables climatiques** sur la fluctuation des populations. ---\> modèles prédictifs (GLM ? model mutilevel (avec effet espece)?).
 
-# --------------------------
+[**Questions méthodologiques**]{.underline}
 
-```{r}
-library(dplyr)
-library(lubridate)
-library(MASS)
-library(lme4)
-library(stats)
+---\>**Quelles années inclure** ? -Peut-être se concentrer sur les années où le protocole a été rigoureusement suivi, par ex. à partir de 2013/2014. -Possibilité : comparer les résultats avec et sans les années "moins fiables".
 
-```
+---\>**Données opportunistes** : garder ou séparer ?
 
-# --------------------------
+[**Constat** :]{.underline} les obervations en terme d'effort journaliers, de changement des obs en 2014 et 2018 correspondent à ce qu'on peut lire dans les fiches protocoles ce qui est plutôt rassurant. Que 4 obs protocolees de Butor toutes anciennes dont 3 dont on connait pas l'heure ????
 
-### 6.1.2. Charger les données
+[**Problème :**]{.underline}
 
-# --------------------------
+Il y a eu au moins 2 changements de "protocoles" sur les 30 ans. Un protocole établis en 2014 qui contraste avec les données d'avant qui étaient surement rigoureuse (**poser la question aux gens de la reserve**)? Et une reduction du temps d'écoute par site en 2018 au moins pour blongios Talève (quid du butor). Donc si on veut faire des suivies rigoureux statistiquement entre le fait qu'on peut moyen prendre les données autre que protocolées + il y a différents protocoles + il y a différents observateur.ices (moindre mesure) ça semble tendu du slip pour avoir assez de points sur assez de temps.
 
-```{r}
-process_data <- readr::read_csv("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+#7 Idées plus poussées
 
-# Filtrer les relevés pour Talève sultane
-Protocole_SuiviTaleve <- process_data %>%
-  filter(
-    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
+on compare les protocoles et les opportunistes : est ce que protocoles vraiments utiles ? 1. quelle est la probabilité de détection ? - Occupancy (binomial) : est ce que proba varie selon climat. + biais opservateur
 
-```
+2.  Quelle est la présence espèce dans le temps ?
 
-# --------------------------
+-   GLMM (poisson) : population varie dans le temps ? (modèle Null) Pop˚ varie selon climat ? attention : population ouverte ou fermée ? -\> on peut faire l'hypothèse de fermeture ponctuelle (pendant les migrations)? si ouvert : on peut aussi regarder la date d'arrivée selon le temps et le climat.
 
-### 6.1.3. Préparer les variables temporelles
-
-# --------------------------
-
-```{r}
-Protocole_SuiviTaleve$date_debut <- as.Date(Protocole_SuiviTaleve$date_debut)
-
-Protocole_SuiviTaleve <- Protocole_SuiviTaleve %>%
-  mutate(
-    annee = year(date_debut),
-    mois  = month(date_debut),
-    jour  = day(date_debut)
-  )
-
-Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
-
-# Transformer en facteurs
-Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$mois  <- as.numeric(Protocole_SuiviTaleve$mois)
-Protocole_SuiviTaleve$jour <- as.numeric(Protocole_SuiviTaleve$jour)
-# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
-
-```
-
-# --------------------------
-
-### 6.1.4. GLM Poisson
-
-# --------------------------
-
-```{r}
-# 4a. Modèle par année
-
-modele_annee <- glm(nombre_min ~ annee2, 
-                    family = poisson, 
-                    data = Protocole_SuiviTaleve)
-summary(modele_annee)
-
-# 4b. Modèle par mois (4 niveaux seulement)
-modele_mois <- glm(nombre_min ~ mois, 
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-# 4b. Modèle par jour (4 niveaux seulement)
-modele_jour <- glm(nombre_min ~ jour, 
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-
-# 4c. Modèle combiné année + mois
-modele_annee_mois <- glm(nombre_min ~ annee2 + mois, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-
-modele_annee_jour <- glm(nombre_min ~ annee2 + jour, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-modele_mois_jour <- glm(nombre_min ~ mois + jour, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-
-
-summary(modele_annee)
-summary(modele_mois)
-summary(modele_annee_mois)
-summary(modele_annee_jour)
-summary(modele_mois_jour)
-summary(modele_annee_mois_jours)
-summary(modele_jour)
-```
-
-# --------------------------
-
-### 6.1.5 Comparaison par AIC
-
-# --------------------------
-
-```{r}
-AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
-                 modele_annee_mois_jours, modele_mois_jour, modele_annee_jour)
-```
-
-# ---------------------------------------------------------
-
-## 6.2 Analyse taleve Opportuniste
-
-#----------------------------------------------------------
-
-```{r}
-Opportuniste_Taleve<- process_data %>%
-  filter(
-    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
-
-```
-
-# --------------------------
-
-### 6.2.1. Préparer les variables temporelles
-
-# --------------------------
-
-```{r}
-Opportuniste_Taleve$date_debut <- as.Date(Opportuniste_Taleve$date_debut)
-
-Opportuniste_Taleve <- Opportuniste_Taleve %>%
-  mutate(
-    annee = year(date_debut),
-    mois  = month(date_debut),
-    jour  = day(date_debut)
-  )
-
-
-
-Opportuniste_Taleve <- Opportuniste_Taleve%>%
-  filter(annee >= 2014)
-Opportuniste_Taleve$annee2 <- as.numeric(as.character(Opportuniste_Taleve$annee)) - 2013
-# Transformer en facteurs
-Opportuniste_Taleve$annee <- as.numeric(Opportuniste_Taleve$annee)
-Opportuniste_Taleve$mois  <- as.numeric(Opportuniste_Taleve$mois)
-Opportuniste_Taleve$jour <- as.numeric (Opportuniste_Taleve$jour)
-# Ne pas mettre jour comme facteur si beaucoup de lignes pour éviter le crash
-```
-
-# --------------------------
-
-### 6.2.2. GLM Poisson
-
-# --------------------------
-
-```{r}
-# 4a. Modèle par année
-
-modele_annee <- glm(nombre_min ~ annee2, 
-                    family = poisson, 
-                    data = Opportuniste_Taleve)
-summary(modele_annee)
-
-# 4b. Modèle par mois (4 niveaux seulement)
-modele_mois <- glm(nombre_min ~ mois, 
-                   data = Opportuniste_Taleve, 
-                   family = poisson)
-# 4b. Modèle par jour (4 niveaux seulement)
-modele_jour <- glm(nombre_min ~ jour, 
-                   data = Opportuniste_Taleve, 
-                   family = poisson)
-
-# 4c. Modèle combiné année + mois
-modele_annee_mois <- glm(nombre_min ~ annee2 + mois, 
-                         data = Opportuniste_Taleve, 
-                         family = poisson)
-
-modele_annee_jour <- glm(nombre_min ~ annee2 + jour, 
-                         data = Opportuniste_Taleve, 
-                         family = poisson)
-modele_mois_jour <- glm(nombre_min ~ mois + jour, 
-                        data = Opportuniste_Taleve, 
-                        family = poisson)
-modele_annee_mois_jours <- glm(nombre_min ~ annee2 + mois+jour, 
-                               data = Opportuniste_Taleve, 
-                               family = poisson)
-
-summary(modele_annee)
-summary(modele_mois)
-summary(modele_annee_mois)
-summary(modele_annee_jour)
-summary(modele_mois_jour)
-summary(modele_annee_mois_jours)
-summary(modele_jour)
-
-```
-
-# --------------------------
-
-### 6.2.4 Comparaison par AIC
-
-# --------------------------
-
-```{r}
-AIC(modele_annee, modele_mois, modele_annee_mois, modele_jour, 
-    modele_annee_mois_jours, modele_mois_jour, modele_annee_jour)
-
-```
+tri données : avant 2014 -\> pas de protocole ? donc on commence nos modèles en 2014 ? est ce qu'on sépare les modèles selon les différents protocoles pour la même espèce ? ex: pour Butor deux protocoles différents entre 2014-2018 et 2018-2025. Pareil pour Blongios Talève.
