@@ -11,8 +11,7 @@ library(sf)
 
 getwd()
 
-raw_data<- read_excel("synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
-View(raw_data)
+raw_data<- read.csv("process_data.csv")
 
 #clean 
 
@@ -38,6 +37,41 @@ cat("Aperçu de process_data (5 premières lignes) :\n")
 print(utils::head(process_data, 5))
 cat("\nStructure de process_data :\n")
 print(str(process_data))
+
+library(stringi)
+library(stringr)
+library(dplyr)
+
+process_data <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  
+  # Séparer provisoirement sur "/"
+  mutate(observateurs = sapply(observateurs, function(x) {
+    
+    # si NA → NA
+    if (is.na(x)) return(NA)
+    
+    # séparer en plusieurs observateurs mais sans éclater les lignes
+    noms <- strsplit(x, "/")[[1]]
+    
+    # nettoyage individuel
+    noms_clean <- noms %>%
+      trimws() %>%                                # enlever espaces
+      tolower() %>%                               # minuscules
+      stringi::stri_trans_general("Latin-ASCII") %>%  # enlever accents
+      sapply(function(y) {
+        mots <- unlist(strsplit(y, " +"))         # séparer mots
+        mots <- sort(mots)                        # trier mots
+        paste(mots, collapse = " ")               # reconstruire
+      })
+    
+    # remettre les noms ensemble avec "/"
+    paste(noms_clean, collapse = " / ")
+  }))
+
+
+
+
 
 # --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---
 data_filtered <- process_data %>%
@@ -96,6 +130,68 @@ p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 
 print(p)
 
+
+
+
+
+
+
+
+
+
+
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(stringi)
+
+# 1) Nettoyage et séparation des observateurs
+data_clean <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  # Exclusion ADENA insensible à la casse
+  filter(!is.na(observateurs) & str_to_upper(str_trim(observateurs)) != "ADENA") %>%
+  # Séparer les observateurs sur "/"
+  separate_rows(observateurs, sep = "/") %>%
+  mutate(
+    observateurs = str_trim(observateurs),                     # enlever espaces
+    observateurs = tolower(observateurs),                     # minuscules
+    observateurs = stringi::stri_trans_general(observateurs, "Latin-ASCII"), # enlever accents
+    # trier les mots dans le nom
+    observateurs = sapply(observateurs, function(x) {
+      mots <- unlist(strsplit(x, " +"))
+      paste(sort(mots), collapse = " ")
+    })
+  )
+
+# 2) Agrégation
+data_summarized <- data_clean %>%
+  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  group_by(observateurs) %>%
+  summarise(total_min = sum(nombre_min, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(total_min)) %>%
+  mutate(observateurs = factor(observateurs, levels = observateurs))
+
+# 3) Barplot
+library(ggplot2)
+
+ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+  geom_col() +
+  geom_text(aes(label = total_min), vjust = -0.3, size = 3) +
+  labs(
+    title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
+    x = "Observateur",
+    y = "Total nombre_min"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
+
+
+
+
 ```
 
 ```{r}
@@ -120,7 +216,7 @@ ggplot(process_data, aes(x = date_debut, y = observateurs)) +
   geom_point(alpha = 0.7, color = "steelblue", size = 3) +
   labs(
     title = "Présence des observateurs dans le temps",
-    x = "Date de début",
+    x = "Date de début", 
     y = "Observateurs"
   ) +
   theme_minimal() +
@@ -130,4 +226,163 @@ ggplot(process_data, aes(x = date_debut, y = observateurs)) +
   )
 
 ```
+
+
+```{r}
+library(stringi)
+library(stringr)
+library(dplyr)
+
+process_data <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  
+  # 1) mettre en minuscules
+  mutate(observateurs = str_to_lower(observateurs)) %>%
+  
+  # 2) enlever accents
+  mutate(observateurs = stringi::stri_trans_general(observateurs, "Latin-ASCII")) %>%
+  
+  # 3) enlever ponctuation + espaces multiples
+  mutate(observateurs = str_replace_all(observateurs, "[^a-z ]", " ")) %>%
+  mutate(observateurs = str_squish(observateurs)) %>%
+  
+  # 4) réordonner les mots
+  mutate(observateurs = sapply(strsplit(observateurs, " "), function(x) {
+    paste(sort(x), collapse = " ")
+  }))
+
+```
+ 
+ 
+```{r}
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(stringi)
+
+# 1) Séparation et nettoyage des observateurs (comme tu as déjà fait)
+data_clean <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  filter(!is.na(observateurs) & str_to_upper(str_trim(observateurs)) != "ADENA") %>%
+  separate_rows(observateurs, sep = "/") %>%
+  mutate(
+    observateurs = str_trim(observateurs),
+    observateurs = tolower(observateurs),
+    observateurs = stringi::stri_trans_general(observateurs, "Latin-ASCII"),
+    observateurs = sapply(observateurs, function(x) {
+      mots <- unlist(strsplit(x, " +"))
+      paste(sort(mots), collapse = " ")
+    })
+  )
+
+# 2) Calcul du nombre d'observations par observateur
+observations_par_obs <- data_clean %>%
+  group_by(observateurs) %>%
+  summarise(
+    nb_observations = n(),
+    total_min = sum(as.numeric(nombre_min), na.rm = TRUE),
+    moyenne_par_obs = mean(as.numeric(nombre_min), na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(desc(nb_observations))
+
+# 3) Affichage
+print(observations_par_obs)
+
+```
+
+```{r}
+
+
+library(dplyr)
+library(tidyr)
+library(lubridate)
+
+# Convertir la date si besoin
+data <- data %>% 
+  mutate(date_debut = dmy(date_debut),   # si format JJ/MM/AAAA
+         presence = 1)                   # chaque ligne = présence
+
+# Créer la matrice espèces x dates
+mat_espece_date <- data %>%
+  select(nom_valide, date_debut, presence) %>%
+  pivot_wider(
+    names_from = date_debut,
+    values_from = presence,
+    values_fill = 0
+  )
+
+mat_espece_date
+
+
+
+
+
+
+
+
+
+# recuperer les comptages
+y<-data[,2:4]				
+yp<-y					# les transformer en présence-absence
+yp[yp>0]<-1   # si y > 0 on remplace par 1 => on transfrome data en 0 et 1 seulement
+
+# recuperer les covariables de sites
+covsite<-data[,5:16]	
+# recuperer les covariables de session (varient dans le temps)
+temp<-data[,17:19]			
+vent<-data[,20:22]
+mois<-data[,23:25]
+# faire une liste (dossier) avec les covariables de sessions "obscov"
+obscov<-list(temp=temp,vent=vent,mois=mois)	
+# constituer l'objet "lezard_single" pour le single-season
+lezard_single<-unmarkedFrameOccu(yp,siteCovs=covsite,obsCovs=obscov)	
+#resume
+summary(lezard_single)
+#visualisation
+
+plot(lezard_single)
+
+
+
+# ajuster un modele null, sans covariable
+null<-occu(~1 ~1,lezard_single)		# proba d'occupation constante sur tous les sites et detections sur tous les sites et dans le temps 
+# first = p, second = psi
+#' Les estimations sont sur l'échelle logit (pas entre 0 et 1).
+## ------------------------------------------------------------------------------------------------------
+null
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
