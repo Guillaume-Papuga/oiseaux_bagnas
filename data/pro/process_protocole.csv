@@ -1,0 +1,791 @@
+id_synthese,date_debut,date_fin,heure_debut,heure_fin,nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,y_centroid_4326,nom_lieu,champs_additionnels,annee
+122381,2014-05-12,2014-05-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+124749,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124750,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124751,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124752,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124753,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124754,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124755,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124756,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124757,2019-07-31,2019-07-31,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124758,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124759,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124760,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124761,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124762,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124763,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124764,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124765,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124766,2019-07-12,2019-07-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124767,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124768,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124769,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124770,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124771,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124772,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124773,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124774,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124775,2019-06-12,2019-06-12,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124776,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124777,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124778,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124779,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124780,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124781,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124782,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124783,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124784,2019-05-22,2019-05-22,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+124785,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124786,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124787,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124788,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124789,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124790,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124791,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124792,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124793,2018-05-30,2018-05-30,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124920,2021-05-20,2021-05-20,21:42:00,21:42:00,"Blongios nain, Butor blongios",3,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2021
+124921,2021-05-20,2021-05-20,20:54:00,20:54:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2021
+124922,2021-05-20,2021-05-20,21:18:00,21:18:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2021
+124924,2021-05-26,2021-05-26,06:12:00,06:12:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124925,2021-05-26,2021-05-26,06:12:00,06:12:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124926,2021-05-26,2021-05-26,06:32:00,06:32:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124927,2021-05-26,2021-05-26,07:01:00,07:01:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124928,2021-05-26,2021-05-26,07:29:00,07:29:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124929,2021-05-26,2021-05-26,07:15:00,07:15:00,"Blongios nain, Butor blongios",2,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124930,2021-05-26,2021-05-26,07:41:00,07:41:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124931,2021-05-26,2021-05-26,06:44:00,06:44:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124932,2021-05-26,2021-05-26,06:52:00,06:52:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124946,2021-06-16,2021-06-16,20:30:00,20:30:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124947,2021-06-16,2021-06-16,20:30:00,20:30:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124948,2021-06-16,2021-06-16,20:53:00,20:53:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124949,2021-06-16,2021-06-16,21:18:00,21:18:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124950,2021-06-16,2021-06-16,21:47:00,21:47:00,"Blongios nain, Butor blongios",3,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124951,2021-06-16,2021-06-16,21:29:00,21:29:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124952,2021-06-16,2021-06-16,21:53:00,21:53:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124953,2021-06-16,2021-06-16,20:49:00,20:49:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124954,2021-06-16,2021-06-16,21:07:00,21:07:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125101,2021-07-07,2021-07-07,06:16:00,06:16:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125102,2021-07-07,2021-07-07,06:23:00,06:23:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125103,2021-07-07,2021-07-07,06:48:00,06:48:00,"Blongios nain, Butor blongios",1,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125104,2021-07-07,2021-07-07,07:15:00,07:15:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125105,2021-07-07,2021-07-07,07:43:00,07:43:00,"Blongios nain, Butor blongios",0,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125106,2021-07-07,2021-07-07,07:49:00,07:49:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125107,2021-07-07,2021-07-07,07:42:00,07:42:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125108,2021-07-07,2021-07-07,06:04:00,06:04:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125109,2021-07-07,2021-07-07,07:00:00,07:00:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125242,2021-08-02,2021-08-02,19:38:00,19:38:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125243,2021-08-02,2021-08-02,19:36:00,19:36:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125244,2021-08-02,2021-08-02,19:57:00,19:57:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125245,2021-08-02,2021-08-02,20:17:00,20:17:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125246,2021-08-02,2021-08-02,20:36:00,20:36:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125247,2021-08-02,2021-08-02,20:43:00,20:43:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125248,2021-08-02,2021-08-02,21:09:00,21:09:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125249,2021-08-02,2021-08-02,20:00:00,20:00:00,"Blongios nain, Butor blongios",0,Fortuny Xavier,Fortuny Xavier,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125250,2021-08-02,2021-08-02,20:30:00,20:30:00,"Blongios nain, Butor blongios",1,Fortuny Xavier,Fortuny Xavier,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+127147,2022-04-22,2022-04-22,04:53:00,04:53:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127148,2022-04-22,2022-04-22,04:55:00,04:55:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127149,2022-04-22,2022-04-22,05:11:00,05:11:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127150,2022-04-22,2022-04-22,05:33:00,05:33:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127151,2022-04-22,2022-04-22,05:52:00,05:52:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127152,2022-04-22,2022-04-22,05:48:00,05:48:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127153,2022-04-22,2022-04-22,06:20:00,06:20:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127154,2022-04-22,2022-04-22,05:13:00,05:13:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127155,2022-04-22,2022-04-22,05:30:00,05:30:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+127174,2022-05-18,2022-05-18,20:36:00,20:36:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127175,2022-05-18,2022-05-18,20:35:00,20:35:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127176,2022-05-18,2022-05-18,20:54:00,20:54:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127177,2022-05-18,2022-05-18,21:18:00,21:18:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127178,2022-05-18,2022-05-18,21:45:00,21:45:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127179,2022-05-18,2022-05-18,21:36:00,21:36:00,"Blongios nain, Butor blongios",0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127180,2022-05-18,2022-05-18,21:58:00,21:58:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127181,2022-05-18,2022-05-18,20:56:00,20:56:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127182,2022-05-18,2022-05-18,21:16:00,21:16:00,"Blongios nain, Butor blongios",2,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+279045,2014-05-12,2014-05-12,20:49:00,20:49:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279046,2014-05-12,2014-05-12,19:52:00,19:52:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279047,2014-05-12,2014-05-12,20:13:00,20:13:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279048,2014-05-12,2014-05-12,20:35:00,20:35:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279049,2014-05-12,2014-05-12,19:31:00,19:31:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279050,2014-05-12,2014-05-12,20:16:00,20:16:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279051,2014-05-12,2014-05-12,20:58:00,20:58:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279052,2014-05-12,2014-05-12,19:41:00,19:41:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279053,2014-05-12,2014-05-12,20:04:00,20:04:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279054,2014-05-26,2014-05-26,07:41:00,07:41:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279055,2014-05-26,2014-05-26,06:06:00,06:06:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279056,2014-05-26,2014-05-26,06:42:00,06:42:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279057,2014-05-26,2014-05-26,07:11:00,07:11:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279058,2014-05-26,2014-05-26,06:25:00,06:25:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279059,2014-05-26,2014-05-26,07:07:00,07:07:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279060,2014-05-26,2014-05-26,07:45:00,07:45:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279061,2014-05-26,2014-05-26,06:53:00,06:53:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279062,2014-05-26,2014-05-26,07:41:00,07:41:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279074,2014-06-11,2014-06-11,06:05:00,06:05:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279076,2014-06-11,2014-06-11,06:50:00,06:50:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279078,2014-06-11,2014-06-11,07:30:00,07:30:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279081,2014-06-11,2014-06-11,06:34:00,06:34:00,"Blongios nain, Butor blongios",1,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279090,2014-06-11,2014-06-11,06:58:00,06:58:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279092,2014-06-11,2014-06-11,07:43:00,07:43:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279097,2014-06-11,2014-06-11,06:06:00,06:06:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279099,2014-06-11,2014-06-11,06:46:00,06:46:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279101,2014-06-11,2014-06-11,07:35:00,07:35:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279105,2014-06-05,2014-06-05,19:54:00,19:54:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279110,2014-06-05,2014-06-05,20:35:00,20:35:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279115,2014-06-05,2014-06-05,21:27:00,21:27:00,"Blongios nain, Butor blongios",1,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279119,2014-06-05,2014-06-05,20:11:00,20:11:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279122,2014-06-05,2014-06-05,20:14:00,20:14:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279123,2014-06-05,2014-06-05,20:30:00,20:30:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279129,2014-06-05,2014-06-05,21:12:00,21:12:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279131,2014-06-05,2014-06-05,19:52:00,19:52:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279132,2014-06-05,2014-06-05,20:04:00,20:04:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279136,2014-06-05,2014-06-05,20:57:00,20:57:00,"Blongios nain, Butor blongios",2,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279141,2014-06-05,2014-06-05,21:11:00,21:11:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279147,2014-06-18,2014-06-18,20:04:00,20:04:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279149,2014-06-18,2014-06-18,20:44:00,20:44:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279151,2014-06-18,2014-06-18,22:02:00,22:02:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279155,2014-06-18,2014-06-18,19:59:00,19:59:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279160,2014-06-18,2014-06-18,20:46:00,20:46:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279167,2014-06-18,2014-06-18,21:39:00,21:39:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279168,2014-06-18,2014-06-18,20:20:00,20:20:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279172,2014-06-18,2014-06-18,20:50:00,20:50:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279175,2014-06-18,2014-06-18,21:23:00,21:23:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279183,2014-06-23,2014-06-23,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279186,2014-06-23,2014-06-23,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279189,2014-06-23,2014-06-23,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279191,2014-06-23,2014-06-23,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279193,2014-06-23,2014-06-23,00:00:00,00:00:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279197,2014-06-23,2014-06-23,07:36:00,07:36:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279210,2014-06-23,2014-06-23,06:08:00,06:08:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279211,2014-06-23,2014-06-23,06:26:00,06:26:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279217,2014-06-23,2014-06-23,07:07:00,07:07:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279219,2014-06-23,2014-06-23,07:28:00,07:28:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279224,2014-07-18,2014-07-18,20:00:00,20:00:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279226,2014-07-18,2014-07-18,20:40:00,20:40:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279230,2014-07-18,2014-07-18,21:20:00,21:20:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279232,2014-07-18,2014-07-18,19:55:00,19:55:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279234,2014-07-18,2014-07-18,20:35:00,20:35:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279236,2014-07-18,2014-07-18,21:46:00,21:46:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279239,2014-07-18,2014-07-18,19:56:00,19:56:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279241,2014-07-18,2014-07-18,20:38:00,20:38:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279243,2014-07-18,2014-07-18,21:16:00,21:16:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279248,2014-06-30,2014-06-30,20:01:00,20:01:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279251,2014-06-30,2014-06-30,20:44:00,20:44:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279254,2014-06-30,2014-06-30,21:30:00,21:30:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279256,2014-06-30,2014-06-30,20:02:00,20:02:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279258,2014-06-30,2014-06-30,20:45:00,20:45:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279261,2014-06-30,2014-06-30,21:30:00,21:30:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279266,2014-06-30,2014-06-30,20:05:00,20:05:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279268,2014-06-30,2014-06-30,20:45:00,20:45:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279272,2014-06-30,2014-06-30,21:31:00,21:31:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279275,2014-08-01,2014-08-01,06:32:00,06:32:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279278,2014-08-01,2014-08-01,07:15:00,07:15:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279280,2014-08-01,2014-08-01,07:58:00,07:58:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279283,2014-08-01,2014-08-01,06:27:00,06:27:00,"Blongios nain, Butor blongios",1,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279285,2014-08-01,2014-08-01,07:04:00,07:04:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279287,2014-08-01,2014-08-01,07:46:00,07:46:00,"Blongios nain, Butor blongios",0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279290,2014-08-01,2014-08-01,06:30:00,06:30:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279297,2014-08-01,2014-08-01,07:12:00,07:12:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279301,2014-08-01,2014-08-01,07:54:00,07:54:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+285363,2016-06-21,2016-06-21,21:13:00,21:13:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285369,2016-06-21,2016-06-21,21:36:00,21:36:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285372,2016-06-21,2016-06-21,20:06:00,20:06:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285375,2016-06-21,2016-06-21,20:27:00,20:27:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285376,2016-06-21,2016-06-21,20:49:00,20:49:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285379,2016-06-21,2016-06-21,20:13:00,20:13:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285383,2016-06-21,2016-06-21,20:33:00,20:33:00,"Blongios nain, Butor blongios",1,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285390,2016-06-21,2016-06-21,20:55:00,20:55:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285392,2016-06-21,2016-06-21,21:36:00,21:36:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285398,2016-06-06,2016-06-06,20:15:00,20:15:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285403,2016-06-06,2016-06-06,20:38:00,20:38:00,"Blongios nain, Butor blongios",1,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285404,2016-06-06,2016-06-06,20:59:00,20:59:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285406,2016-06-06,2016-06-06,21:20:00,21:20:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285411,2016-06-06,2016-06-06,21:44:00,21:44:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285414,2016-06-06,2016-06-06,20:30:00,20:30:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285417,2016-06-06,2016-06-06,20:10:00,20:10:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285418,2016-06-06,2016-06-06,20:50:00,20:50:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285421,2016-06-06,2016-06-06,21:13:00,21:13:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285423,2016-06-03,2016-06-03,06:10:00,06:10:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285424,2016-06-03,2016-06-03,06:32:00,06:32:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285427,2016-06-03,2016-06-03,06:56:00,06:56:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285428,2016-06-03,2016-06-03,07:28:00,07:28:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285433,2016-06-03,2016-06-03,06:10:00,06:10:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285435,2016-06-03,2016-06-03,06:35:00,06:35:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285436,2016-06-03,2016-06-03,06:54:00,06:54:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285438,2016-06-03,2016-06-03,07:15:00,07:15:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285442,2016-06-03,2016-06-03,07:37:00,07:37:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285446,2016-05-24,2016-05-24,06:45:00,06:45:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285447,2016-05-24,2016-05-24,07:10:00,07:10:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285450,2016-05-24,2016-05-24,07:30:00,07:30:00,"Blongios nain, Butor blongios",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285452,2016-05-24,2016-05-24,07:30:00,07:30:00,"Blongios nain, Butor blongios",1,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285454,2016-05-24,2016-05-24,06:46:00,06:46:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285456,2016-05-24,2016-05-24,07:08:00,07:08:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285457,2016-05-24,2016-05-24,07:28:00,07:28:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285460,2016-05-24,2016-05-24,07:47:00,07:47:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285461,2016-05-24,2016-05-24,08:09:00,08:09:00,"Blongios nain, Butor blongios",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+289623,2023-06-01,2023-06-01,20:08:00,20:08:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289624,2023-06-01,2023-06-01,20:15:00,20:15:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289625,2023-06-01,2023-06-01,20:34:00,20:34:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289626,2023-06-01,2023-06-01,20:55:00,20:55:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289627,2023-06-01,2023-06-01,21:18:00,21:18:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289628,2023-06-01,2023-06-01,21:15:00,21:15:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289629,2023-06-01,2023-06-01,21:00:00,21:00:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289630,2023-06-01,2023-06-01,20:34:00,20:34:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289631,2023-06-01,2023-06-01,20:52:00,20:52:00,"Blongios nain, Butor blongios",1,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289641,2023-06-21,2023-06-21,20:30:00,20:30:00,"Blongios nain, Butor blongios",0,Xavier Fortuny,Xavier Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289642,2023-06-21,2023-06-21,20:30:00,20:30:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289643,2023-06-21,2023-06-21,20:50:00,20:50:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289644,2023-06-21,2023-06-21,21:15:00,21:15:00,"Blongios nain, Butor blongios",1,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289645,2023-06-21,2023-06-21,21:38:00,21:38:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289646,2023-06-21,2023-06-21,21:53:00,21:53:00,"Blongios nain, Butor blongios",0,Xavier Fortuny,Xavier Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289647,2023-06-21,2023-06-21,21:33:00,21:33:00,"Blongios nain, Butor blongios",0,Xavier Fortuny,Xavier Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289648,2023-06-21,2023-06-21,20:49:00,20:49:00,"Blongios nain, Butor blongios",0,Xavier Fortuny,Xavier Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289649,2023-06-21,2023-06-21,21:10:00,21:10:00,"Blongios nain, Butor blongios",0,Xavier Fortuny,Xavier Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289659,2023-07-04,2023-07-04,05:30:00,05:30:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289660,2023-07-04,2023-07-04,05:34:00,05:34:00,"Blongios nain, Butor blongios",1,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289661,2023-07-04,2023-07-04,05:55:00,05:55:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289662,2023-07-04,2023-07-04,06:14:00,06:14:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289663,2023-07-04,2023-07-04,06:33:00,06:33:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289664,2023-07-04,2023-07-04,06:30:00,06:30:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289665,2023-07-04,2023-07-04,07:50:00,07:50:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289666,2023-07-04,2023-07-04,05:50:00,05:50:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289667,2023-07-04,2023-07-04,06:09:00,06:09:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289677,2023-07-18,2023-07-18,06:00:00,06:00:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289678,2023-07-18,2023-07-18,06:10:00,06:10:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289679,2023-07-18,2023-07-18,06:30:00,06:30:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289680,2023-07-18,2023-07-18,06:53:00,06:53:00,"Blongios nain, Butor blongios",0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289681,2023-07-18,2023-07-18,07:14:00,07:14:00,"Blongios nain, Butor blongios",1,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289682,2023-07-18,2023-07-18,06:57:00,06:57:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289683,2023-07-18,2023-07-18,07:16:00,07:16:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289684,2023-07-18,2023-07-18,06:20:00,06:20:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289685,2023-07-18,2023-07-18,06:39:00,06:39:00,"Blongios nain, Butor blongios",0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+115548,2019-05-14,2019-05-14,20:30:00,20:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2019
+115549,2019-05-14,2019-05-14,20:46:00,20:46:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2019
+115550,2019-05-14,2019-05-14,21:00:00,21:00:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2019
+115551,2019-05-14,2019-05-14,21:17:00,21:17:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2019
+115552,2019-05-14,2019-05-14,21:37:00,21:37:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2019
+115553,2019-05-14,2019-05-14,20:32:00,20:32:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2019
+115554,2019-05-14,2019-05-14,20:45:00,20:45:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2019
+115555,2019-05-14,2019-05-14,21:01:00,21:01:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2019
+115556,2019-05-14,2019-05-14,21:21:00,21:21:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2019
+115557,2019-04-17,2019-04-17,05:02:00,05:02:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2019
+115558,2019-04-17,2019-04-17,05:18:00,05:18:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2019
+115559,2019-04-17,2019-04-17,05:32:00,05:32:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2019
+115560,2019-04-17,2019-04-17,05:50:00,05:50:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2019
+115561,2019-04-17,2019-04-17,06:12:00,06:12:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2019
+115562,2019-04-17,2019-04-17,05:02:00,05:02:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2019
+115563,2019-04-17,2019-04-17,05:16:00,05:16:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2019
+115564,2019-04-17,2019-04-17,05:33:00,05:33:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2019
+115565,2019-04-17,2019-04-17,05:56:00,05:56:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2019
+115588,2018-05-17,2018-05-17,20:30:00,20:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2018
+115589,2018-05-17,2018-05-17,20:50:00,20:50:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2018
+115590,2018-05-17,2018-05-17,21:09:00,21:09:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2018
+115591,2018-05-17,2018-05-17,21:30:00,21:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2018
+115592,2018-05-17,2018-05-17,21:54:00,21:54:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2018
+115593,2018-05-17,2018-05-17,20:30:00,20:30:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2018
+115594,2018-05-17,2018-05-17,20:48:00,20:48:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2018
+115595,2018-05-17,2018-05-17,21:12:00,21:12:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2018
+115596,2018-05-17,2018-05-17,21:34:00,21:34:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2018
+115599,2018-04-24,2018-04-24,05:15:00,05:15:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2018
+115600,2018-04-24,2018-04-24,05:36:00,05:36:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2018
+115601,2018-04-24,2018-04-24,05:56:00,05:56:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2018
+115602,2018-04-24,2018-04-24,06:21:00,06:21:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2018
+115603,2018-04-24,2018-04-24,05:15:00,05:15:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2018
+115604,2018-04-24,2018-04-24,05:37:00,05:37:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2018
+115605,2018-04-24,2018-04-24,05:57:00,05:57:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2018
+115606,2018-04-24,2018-04-24,06:18:00,06:18:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2018
+115607,2018-04-24,2018-04-24,06:40:00,06:40:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2018
+123348,2020-04-23,2020-04-23,20:08:00,20:08:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2020
+123349,2020-04-23,2020-04-23,20:26:00,20:26:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2020
+123350,2020-04-23,2020-04-23,20:44:00,20:44:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2020
+123351,2020-04-23,2020-04-23,21:02:00,21:02:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2020
+123352,2020-04-23,2020-04-23,21:28:00,21:28:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2020
+123353,2020-04-23,2020-04-23,20:15:00,20:15:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2020
+123354,2020-04-23,2020-04-23,20:30:00,20:30:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2020
+123355,2020-04-23,2020-04-23,20:45:00,20:45:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2020
+123356,2020-04-23,2020-04-23,21:00:00,21:00:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2020
+123357,2020-05-20,2020-05-20,04:25:00,04:25:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2020
+123358,2020-05-20,2020-05-20,04:47:00,04:47:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2020
+123359,2020-05-20,2020-05-20,05:12:00,05:12:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2020
+123360,2020-05-20,2020-05-20,05:39:00,05:39:00,Butor étoilé,0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2020
+123361,2020-05-20,2020-05-20,04:26:00,04:26:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2020
+123362,2020-05-20,2020-05-20,04:49:00,04:49:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2020
+123363,2020-05-20,2020-05-20,05:08:00,05:08:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2020
+123364,2020-05-20,2020-05-20,05:29:00,05:29:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2020
+123365,2020-05-20,2020-05-20,05:51:00,05:51:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2020
+124732,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2021
+124733,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2021
+124734,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2021
+124735,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2021
+124736,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2021
+124737,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2021
+124738,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2021
+124739,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2021
+124740,2021-04-20,2021-04-20,00:00:00,00:00:00,Butor étoilé,0,Lognos/Fortuny,Lognos/Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2021
+124911,2021-05-20,2021-05-20,20:30:00,20:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2021
+124912,2021-05-20,2021-05-20,20:33:00,20:33:00,Butor étoilé,0,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2021
+124913,2021-05-20,2021-05-20,20:55:00,20:55:00,Butor étoilé,0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2021
+124914,2021-05-20,2021-05-20,21:20:00,21:20:00,Butor étoilé,0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2021
+124915,2021-05-20,2021-05-20,21:47:00,21:47:00,Butor étoilé,0,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2021
+124916,2021-05-20,2021-05-20,21:42:00,21:42:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2021
+124917,2021-05-20,2021-05-20,22:09:00,22:09:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2021
+124918,2021-05-20,2021-05-20,20:54:00,20:54:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2021
+124919,2021-05-20,2021-05-20,21:18:00,21:18:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2021
+127138,2022-04-22,2022-04-22,04:53:00,04:53:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127139,2022-04-22,2022-04-22,04:55:00,04:55:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127140,2022-04-22,2022-04-22,05:11:00,05:11:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127141,2022-04-22,2022-04-22,05:33:00,05:33:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127142,2022-04-22,2022-04-22,05:52:00,05:52:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127143,2022-04-22,2022-04-22,05:48:00,05:48:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127144,2022-04-22,2022-04-22,06:20:00,06:20:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127145,2022-04-22,2022-04-22,05:13:00,05:13:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127146,2022-04-22,2022-04-22,05:30:00,05:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+127165,2022-05-18,2022-05-18,20:36:00,20:36:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127166,2022-05-18,2022-05-18,20:35:00,20:35:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127167,2022-05-18,2022-05-18,20:54:00,20:54:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127168,2022-05-18,2022-05-18,21:18:00,21:18:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127169,2022-05-18,2022-05-18,21:45:00,21:45:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127170,2022-05-18,2022-05-18,21:36:00,21:36:00,Butor étoilé,0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127171,2022-05-18,2022-05-18,21:58:00,21:58:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127172,2022-05-18,2022-05-18,20:56:00,20:56:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127173,2022-05-18,2022-05-18,21:16:00,21:16:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+278964,2014-04-15,2014-04-15,05:21:00,05:21:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2014
+278965,2014-04-15,2014-04-15,05:45:00,05:45:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2014
+278968,2014-04-15,2014-04-15,06:14:00,06:14:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2014
+278970,2014-04-15,2014-04-15,05:12:00,05:12:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2014
+278971,2014-04-15,2014-04-15,05:37:00,05:37:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278976,2014-04-15,2014-04-15,06:07:00,06:07:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2014
+278977,2014-04-15,2014-04-15,05:05:00,05:05:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2014
+278980,2014-04-15,2014-04-15,05:37:00,05:37:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2014
+278982,2014-04-15,2014-04-15,06:05:00,06:05:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2014
+278983,2014-04-23,2014-04-23,20:05:00,20:05:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2014
+278984,2014-04-23,2014-04-23,20:28:00,20:28:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2014
+278985,2014-04-23,2014-04-23,20:57:00,20:57:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2014
+278986,2014-04-23,2014-04-23,20:00:00,20:00:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2014
+278987,2014-04-23,2014-04-23,20:25:00,20:25:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278988,2014-04-23,2014-04-23,20:47:00,20:47:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2014
+278989,2014-04-23,2014-04-23,20:08:00,20:08:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2014
+278990,2014-04-23,2014-04-23,20:36:00,20:36:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2014
+278991,2014-04-23,2014-04-23,21:02:00,21:02:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2014
+278993,2014-04-29,2014-04-29,05:18:00,05:18:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2014
+278995,2014-04-29,2014-04-29,05:46:00,05:46:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278998,2014-04-29,2014-04-29,06:11:00,06:11:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2014
+278999,2014-04-29,2014-04-29,05:15:00,05:15:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2014
+279003,2014-04-29,2014-04-29,05:40:00,05:40:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2014
+279004,2014-04-29,2014-04-29,06:14:00,06:14:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2014
+279007,2014-04-29,2014-04-29,05:24:00,05:24:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2014
+279008,2014-04-29,2014-04-29,05:52:00,05:52:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2014
+279009,2014-04-29,2014-04-29,06:16:00,06:16:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2014
+279011,2014-05-05,2014-05-05,20:20:00,20:20:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2014
+279014,2014-05-05,2014-05-05,20:47:00,20:47:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+279015,2014-05-05,2014-05-05,21:12:00,21:12:00,Butor étoilé,0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2014
+279019,2014-05-05,2014-05-05,20:20:00,20:20:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2014
+279020,2014-05-05,2014-05-05,20:45:00,20:45:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2014
+279021,2014-05-05,2014-05-05,21:10:00,21:10:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2014
+279026,2014-05-05,2014-05-05,20:27:00,20:27:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2014
+279027,2014-05-05,2014-05-05,20:50:00,20:50:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2014
+279028,2014-05-05,2014-05-05,21:21:00,21:21:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2014
+279305,2015-04-15,2015-04-15,05:30:00,05:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2015
+279306,2015-04-15,2015-04-15,05:50:00,05:50:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2015
+279307,2015-04-15,2015-04-15,06:10:00,06:10:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2015
+279308,2015-04-15,2015-04-15,06:30:00,06:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2015
+279309,2015-04-15,2015-04-15,05:30:00,05:30:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2015
+279310,2015-04-15,2015-04-15,05:48:00,05:48:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2015
+279311,2015-04-15,2015-04-15,06:08:00,06:08:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2015
+279312,2015-04-15,2015-04-15,06:28:00,06:28:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2015
+279313,2015-04-15,2015-04-15,06:47:00,06:47:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2015
+279317,2015-04-22,2015-04-22,20:00:00,20:00:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2015
+279319,2015-04-22,2015-04-22,20:19:00,20:19:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2015
+279320,2015-04-22,2015-04-22,20:42:00,20:42:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2015
+279321,2015-04-22,2015-04-22,21:04:00,21:04:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2015
+279322,2015-04-22,2015-04-22,10:00:00,10:00:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2015
+279323,2015-04-22,2015-04-22,20:18:00,20:18:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2015
+279325,2015-04-22,2015-04-22,20:36:00,20:36:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2015
+279327,2015-04-22,2015-04-22,20:55:00,20:55:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2015
+279329,2015-04-22,2015-04-22,21:13:00,21:13:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2015
+279330,2015-05-12,2015-05-12,20:30:00,20:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2015
+279331,2015-05-12,2015-05-12,20:47:00,20:47:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2015
+279332,2015-05-12,2015-05-12,21:08:00,21:08:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2015
+279334,2015-05-12,2015-05-12,21:30:00,21:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2015
+279335,2015-05-12,2015-05-12,20:29:00,20:29:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2015
+279336,2015-05-12,2015-05-12,20:48:00,20:48:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2015
+279339,2015-05-12,2015-05-12,21:05:00,21:05:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2015
+279340,2015-05-12,2015-05-12,21:24:00,21:24:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2015
+279341,2015-05-12,2015-05-12,21:45:00,21:45:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2015
+285258,2017-04-21,2017-04-21,05:15:00,05:15:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2017
+285259,2017-04-21,2017-04-21,05:33:00,05:33:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2017
+285260,2017-04-21,2017-04-21,05:56:00,05:56:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2017
+285261,2017-04-21,2017-04-21,06:20:00,06:20:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2017
+285262,2017-04-21,2017-04-21,05:15:00,05:15:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2017
+285264,2017-04-21,2017-04-21,05:35:00,05:35:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2017
+285265,2017-04-21,2017-04-21,05:54:00,05:54:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2017
+285269,2017-04-21,2017-04-21,06:15:00,06:15:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2017
+285274,2017-04-21,2017-04-21,06:37:00,06:37:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2017
+285276,2016-05-18,2016-05-18,04:45:00,04:45:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2016
+285277,2016-05-18,2016-05-18,05:06:00,05:06:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2016
+285279,2016-05-18,2016-05-18,05:25:00,05:25:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285280,2016-05-18,2016-05-18,05:45:00,05:45:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2016
+285281,2016-05-18,2016-05-18,06:05:00,06:05:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2016
+285286,2016-05-18,2016-05-18,04:46:00,04:46:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2016
+285289,2016-05-18,2016-05-18,05:04:00,05:04:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2016
+285294,2016-05-18,2016-05-18,05:24:00,05:24:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2016
+285296,2016-05-18,2016-05-18,05:45:00,05:45:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2016
+285297,2016-05-04,2016-05-04,05:00:00,05:00:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2016
+285299,2016-05-04,2016-05-04,05:19:00,05:19:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2016
+285303,2016-05-04,2016-05-04,05:39:00,05:39:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2016
+285304,2016-05-04,2016-05-04,06:00:00,06:00:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2016
+285305,2016-05-04,2016-05-04,05:00:00,05:00:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2016
+285306,2016-05-04,2016-05-04,05:20:00,05:20:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2016
+285311,2016-05-04,2016-05-04,05:38:00,05:38:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285312,2016-05-04,2016-05-04,05:56:00,05:56:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2016
+285314,2016-05-04,2016-05-04,06:21:00,06:21:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2016
+285318,2016-04-27,2016-04-27,20:10:00,20:10:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2016
+285319,2016-04-27,2016-04-27,20:29:00,20:29:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2016
+285320,2016-04-27,2016-04-27,20:47:00,20:47:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285321,2016-04-27,2016-04-27,21:05:00,21:05:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2016
+285322,2016-04-27,2016-04-27,21:27:00,21:27:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2016
+285325,2016-04-27,2016-04-27,20:10:00,20:10:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2016
+285326,2016-04-27,2016-04-27,20:31:00,20:31:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2016
+285327,2016-04-27,2016-04-27,20:51:00,20:51:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2016
+285328,2016-04-27,2016-04-27,21:11:00,21:11:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2016
+285329,2016-04-20,2016-04-20,05:30:00,05:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2016
+285330,2016-04-20,2016-04-20,05:51:00,05:51:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2016
+285331,2016-04-20,2016-04-20,06:10:00,06:10:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285337,2016-04-20,2016-04-20,06:30:00,06:30:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2016
+285338,2016-04-20,2016-04-20,06:52:00,06:52:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2016
+285341,2016-04-20,2016-04-20,05:32:00,05:32:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2016
+285344,2016-04-20,2016-04-20,05:51:00,05:51:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2016
+285349,2016-04-20,2016-04-20,06:11:00,06:11:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2016
+285354,2016-04-20,2016-04-20,06:35:00,06:35:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2016
+285649,2017-05-03,2017-05-03,20:25:00,20:25:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2017
+285650,2017-05-03,2017-05-03,20:45:00,20:45:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2017
+285651,2017-05-03,2017-05-03,21:06:00,21:06:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2017
+285652,2017-05-03,2017-05-03,21:33:00,21:33:00,Butor étoilé,0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2017
+285661,2017-05-03,2017-05-03,20:20:00,20:20:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2017
+285662,2017-05-03,2017-05-03,20:40:00,20:40:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2017
+285663,2017-05-03,2017-05-03,20:59:00,20:59:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2017
+285664,2017-05-03,2017-05-03,21:19:00,21:19:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2017
+285665,2017-05-03,2017-05-03,21:45:00,21:45:00,Butor étoilé,0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2017
+289605,2023-05-24,2023-05-24,04:56:00,04:56:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2023
+289606,2023-05-24,2023-05-24,05:05:00,05:05:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2023
+289607,2023-05-24,2023-05-24,05:25:00,05:25:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2023
+289608,2023-05-24,2023-05-24,05:48:00,05:48:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2023
+289609,2023-05-24,2023-05-24,06:11:00,06:11:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2023
+289610,2023-05-24,2023-05-24,05:58:00,05:58:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2023
+289611,2023-05-24,2023-05-24,06:01:00,06:01:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2023
+289612,2023-05-24,2023-05-24,05:20:00,05:20:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2023
+289613,2023-05-24,2023-05-24,05:38:00,05:38:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2023
+289614,2023-04-19,2023-04-19,20:11:00,20:11:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2023
+289615,2023-04-19,2023-04-19,20:13:00,20:13:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2023
+289616,2023-04-19,2023-04-19,20:34:00,20:34:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2023
+289617,2023-04-19,2023-04-19,20:59:00,20:59:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2023
+289618,2023-04-19,2023-04-19,21:25:00,21:25:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2023
+289619,2023-04-19,2023-04-19,21:19:00,21:19:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2023
+289620,2023-04-19,2023-04-19,21:40:00,21:40:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2023
+289621,2023-04-19,2023-04-19,20:34:00,20:34:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2023
+289622,2023-04-19,2023-04-19,20:55:00,20:55:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2023
+312693,2024-05-17,2024-05-17,05:10:00,05:10:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2024
+312694,2024-05-17,2024-05-17,05:20:00,05:20:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2024
+312695,2024-05-17,2024-05-17,05:43:00,05:43:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2024
+312696,2024-05-17,2024-05-17,06:08:00,06:08:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2024
+312697,2024-05-17,2024-05-17,06:30:00,06:30:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2024
+312698,2024-05-17,2024-05-17,06:13:00,06:13:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2024
+312699,2024-05-17,2024-05-17,06:32:00,06:32:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2024
+312700,2024-05-17,2024-05-17,05:30:00,05:30:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2024
+312701,2024-05-17,2024-05-17,05:54:00,05:54:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2024
+312702,2024-04-26,2024-04-26,20:16:00,20:16:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2024
+312703,2024-04-26,2024-04-26,20:18:00,20:18:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2024
+312704,2024-04-26,2024-04-26,20:39:00,20:39:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2024
+312705,2024-04-26,2024-04-26,21:04:00,21:04:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2024
+312706,2024-04-26,2024-04-26,21:30:00,21:30:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2024
+312707,2024-04-26,2024-04-26,21:21:00,21:21:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2024
+312708,2024-04-26,2024-04-26,21:45:00,21:45:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2024
+312709,2024-04-26,2024-04-26,20:39:00,20:39:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2024
+312710,2024-04-26,2024-04-26,21:00:00,21:00:00,Butor étoilé,0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2024
+379872,2025-04-10,2025-04-10,19:48:00,19:48:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2025
+379873,2025-04-10,2025-04-10,19:52:00,19:52:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2025
+379874,2025-04-10,2025-04-10,20:15:00,20:15:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2025
+379875,2025-04-10,2025-04-10,20:41:00,20:41:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2025
+379876,2025-04-10,2025-04-10,21:05:00,21:05:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2025
+379877,2025-04-10,2025-04-10,20:51:00,20:51:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2025
+379878,2025-04-10,2025-04-10,21:15:00,21:15:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2025
+379879,2025-04-10,2025-04-10,20:09:00,20:09:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2025
+379880,2025-04-10,2025-04-10,20:29:00,20:29:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2025
+379881,2025-04-29,2025-04-29,19:37:00,19:37:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2025
+379882,2025-04-29,2025-04-29,19:42:00,19:42:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2025
+379883,2025-04-29,2025-04-29,20:07:00,20:07:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2025
+379884,2025-04-29,2025-04-29,20:32:00,20:32:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2025
+379885,2025-04-29,2025-04-29,20:55:00,20:55:00,Butor étoilé,0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2025
+379886,2025-04-29,2025-04-29,20:38:00,20:38:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2025
+379887,2025-04-29,2025-04-29,20:58:00,20:58:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2025
+379888,2025-04-29,2025-04-29,19:58:00,19:58:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2025
+379889,2025-04-29,2025-04-29,20:17:00,20:17:00,Butor étoilé,0,Benjamin Salvarelli,Benjamin Salvarelli,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2025
+115476,2019-05-22,2019-05-22,06:09:00,06:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115477,2019-05-22,2019-05-22,06:29:00,06:29:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115478,2019-05-22,2019-05-22,06:53:00,06:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",5,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115479,2019-05-22,2019-05-22,07:13:00,07:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115480,2019-05-22,2019-05-22,07:30:00,07:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115481,2019-05-22,2019-05-22,06:51:00,06:51:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115482,2019-05-22,2019-05-22,07:05:00,07:05:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115483,2019-05-22,2019-05-22,06:26:00,06:26:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115484,2019-05-22,2019-05-22,06:12:00,06:12:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115485,2019-06-12,2019-06-12,20:03:00,20:03:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115486,2019-06-12,2019-06-12,20:28:00,20:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115487,2019-06-12,2019-06-12,20:41:00,20:41:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115488,2019-06-12,2019-06-12,21:04:00,21:04:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115489,2019-06-12,2019-06-12,20:14:00,20:14:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115490,2019-06-12,2019-06-12,20:23:00,20:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115491,2019-06-12,2019-06-12,20:53:00,20:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115492,2019-06-12,2019-06-12,21:12:00,21:12:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115493,2019-06-12,2019-06-12,21:27:00,21:27:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115521,2019-07-12,2019-07-12,06:38:00,06:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115522,2019-07-12,2019-07-12,06:52:00,06:52:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115523,2019-07-12,2019-07-12,07:17:00,07:17:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115524,2019-07-12,2019-07-12,07:45:00,07:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115525,2019-07-12,2019-07-12,08:14:00,08:14:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115526,2019-07-12,2019-07-12,06:31:00,06:31:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115527,2019-07-12,2019-07-12,06:57:00,06:57:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115528,2019-07-12,2019-07-12,07:24:00,07:24:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115529,2019-07-12,2019-07-12,08:00:00,08:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115530,2019-07-31,2019-07-31,20:10:00,20:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115531,2019-07-31,2019-07-31,20:31:00,20:31:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115532,2019-07-31,2019-07-31,21:10:00,21:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115533,2019-07-31,2019-07-31,21:17:00,21:17:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115534,2019-07-31,2019-07-31,21:42:00,21:42:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115535,2019-07-31,2019-07-31,20:15:00,20:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Fortuny Xavier,Fortuny Xavier,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115536,2019-07-31,2019-07-31,20:27:00,20:27:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115537,2019-07-31,2019-07-31,20:48:00,20:48:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115538,2019-07-31,2019-07-31,21:11:00,21:11:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2019
+115570,2018-05-30,2018-05-30,06:32:00,06:32:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115571,2018-05-30,2018-05-30,06:55:00,06:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115572,2018-05-30,2018-05-30,07:17:00,07:17:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115573,2018-05-30,2018-05-30,07:45:00,07:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115574,2018-05-30,2018-05-30,06:28:00,06:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115575,2018-05-30,2018-05-30,06:49:00,06:49:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115576,2018-05-30,2018-05-30,07:09:00,07:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115577,2018-05-30,2018-05-30,07:33:00,07:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+115578,2018-05-30,2018-05-30,08:04:00,08:04:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2018
+124933,2021-05-26,2021-05-26,06:20:00,06:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124934,2021-05-26,2021-05-26,06:12:00,06:12:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124935,2021-05-26,2021-05-26,06:32:00,06:32:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124936,2021-05-26,2021-05-26,07:01:00,07:01:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124937,2021-05-26,2021-05-26,07:29:00,07:29:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124938,2021-05-26,2021-05-26,07:18:00,07:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124939,2021-05-26,2021-05-26,07:41:00,07:41:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124940,2021-05-26,2021-05-26,06:41:00,06:41:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124941,2021-05-26,2021-05-26,07:02:00,07:02:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124955,2021-06-16,2021-06-16,20:36:00,20:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124956,2021-06-16,2021-06-16,20:32:00,20:32:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124957,2021-06-16,2021-06-16,20:53:00,20:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124958,2021-06-16,2021-06-16,21:18:00,21:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124959,2021-06-16,2021-06-16,21:47:00,21:47:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124960,2021-06-16,2021-06-16,21:29:00,21:29:00,"Talève sultane, Poule sultane, Porphyrion bleu",4,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124961,2021-06-16,2021-06-16,21:53:00,21:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124962,2021-06-16,2021-06-16,20:57:00,20:57:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+124963,2021-06-16,2021-06-16,21:09:00,21:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125110,2021-07-07,2021-07-07,06:23:00,06:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125111,2021-07-07,2021-07-07,06:23:00,06:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",6,Blanquet Elodie,Blanquet Elodie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125112,2021-07-07,2021-07-07,06:48:00,06:48:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125113,2021-07-07,2021-07-07,07:15:00,07:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125114,2021-07-07,2021-07-07,07:43:00,07:43:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Blanquet Elodie,Blanquet Elodie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125115,2021-07-07,2021-07-07,07:49:00,07:49:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125116,2021-07-07,2021-07-07,07:42:00,07:42:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125117,2021-07-07,2021-07-07,06:50:00,06:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125118,2021-07-07,2021-07-07,07:00:00,07:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125251,2021-08-02,2021-08-02,19:38:00,19:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125252,2021-08-02,2021-08-02,19:42:00,19:42:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125253,2021-08-02,2021-08-02,19:57:00,19:57:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125254,2021-08-02,2021-08-02,20:17:00,20:17:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125255,2021-08-02,2021-08-02,20:36:00,20:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125256,2021-08-02,2021-08-02,21:51:00,21:51:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Fortuny Xavier,Fortuny Xavier,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125257,2021-08-02,2021-08-02,21:09:00,21:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125258,2021-08-02,2021-08-02,20:00:00,20:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+125259,2021-08-02,2021-08-02,20:22:00,20:22:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Fortuny Xavier,Fortuny Xavier,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2021
+127156,2022-04-22,2022-04-22,04:53:00,04:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127157,2022-04-22,2022-04-22,04:55:00,04:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127158,2022-04-22,2022-04-22,05:11:00,05:11:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127159,2022-04-22,2022-04-22,05:33:00,05:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127160,2022-04-22,2022-04-22,05:52:00,05:52:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127161,2022-04-22,2022-04-22,05:48:00,05:48:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127162,2022-04-22,2022-04-22,06:20:00,06:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127163,2022-04-22,2022-04-22,05:13:00,05:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127164,2022-04-22,2022-04-22,05:30:00,05:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+127183,2022-05-18,2022-05-18,20:36:00,20:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2022
+127184,2022-05-18,2022-05-18,20:35:00,20:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Rondeau Clara,Rondeau Clara,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2022
+127185,2022-05-18,2022-05-18,20:54:00,20:54:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviButor'},2022
+127186,2022-05-18,2022-05-18,21:18:00,21:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviButor'},2022
+127187,2022-05-18,2022-05-18,21:45:00,21:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviButor'},2022
+127188,2022-05-18,2022-05-18,21:36:00,21:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Rondeau Clara,Rondeau Clara,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2022
+127189,2022-05-18,2022-05-18,21:58:00,21:58:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviButor'},2022
+127190,2022-05-18,2022-05-18,20:56:00,20:56:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2022
+127191,2022-05-18,2022-05-18,21:16:00,21:16:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2022
+278963,2014-04-15,2014-04-15,05:22:00,05:22:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviButor'},2014
+278972,2014-04-15,2014-04-15,05:38:00,05:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278973,2014-04-15,2014-04-15,05:42:00,05:42:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278974,2014-04-15,2014-04-15,05:43:00,05:43:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2014
+278975,2014-04-15,2014-04-15,06:21:00,06:21:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2014
+279030,2014-05-12,2014-05-12,20:13:00,20:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279031,2014-05-12,2014-05-12,20:35:00,20:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279032,2014-05-12,2014-05-12,19:31:00,19:31:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279033,2014-05-12,2014-05-12,20:58:00,20:58:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279036,2014-05-12,2014-05-12,20:28:00,20:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279040,2014-05-12,2014-05-12,19:41:00,19:41:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279041,2014-05-12,2014-05-12,20:04:00,20:04:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279042,2014-05-12,2014-05-12,20:36:00,20:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279063,2014-05-26,2014-05-26,07:19:00,07:19:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279064,2014-05-26,2014-05-26,07:18:00,07:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279065,2014-05-26,2014-05-26,07:41:00,07:41:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279066,2014-05-26,2014-05-26,06:06:00,06:06:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279067,2014-05-26,2014-05-26,06:42:00,06:42:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279068,2014-05-26,2014-05-26,07:11:00,07:11:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279069,2014-05-26,2014-05-26,06:25:00,06:25:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279070,2014-05-26,2014-05-26,07:45:00,07:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279071,2014-05-26,2014-05-26,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279073,2014-06-11,2014-06-11,06:20:00,06:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279075,2014-06-11,2014-06-11,07:15:00,07:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279077,2014-06-11,2014-06-11,07:59:00,07:59:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279088,2014-06-11,2014-06-11,06:05:00,06:05:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279089,2014-06-11,2014-06-11,06:58:00,06:58:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279093,2014-06-11,2014-06-11,07:43:00,07:43:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279096,2014-06-11,2014-06-11,06:06:00,06:06:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279098,2014-06-11,2014-06-11,06:46:00,06:46:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279100,2014-06-11,2014-06-11,07:35:00,07:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279104,2014-06-05,2014-06-05,19:54:00,19:54:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279109,2014-06-05,2014-06-05,20:35:00,20:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279114,2014-06-05,2014-06-05,21:23:00,21:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279118,2014-06-05,2014-06-05,19:50:00,19:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279124,2014-06-05,2014-06-05,20:30:00,20:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279128,2014-06-05,2014-06-05,21:27:00,21:27:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279130,2014-06-05,2014-06-05,19:50:00,19:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279134,2014-06-05,2014-06-05,20:33:00,20:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279135,2014-06-05,2014-06-05,20:52:00,20:52:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279140,2014-06-05,2014-06-05,21:11:00,21:11:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279146,2014-06-18,2014-06-18,20:04:00,20:04:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279148,2014-06-18,2014-06-18,20:44:00,20:44:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279150,2014-06-18,2014-06-18,21:30:00,21:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279154,2014-06-18,2014-06-18,20:26:00,20:26:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279159,2014-06-18,2014-06-18,20:46:00,20:46:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279166,2014-06-18,2014-06-18,21:39:00,21:39:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279169,2014-06-18,2014-06-18,20:20:00,20:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279171,2014-06-18,2014-06-18,20:50:00,20:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279176,2014-06-18,2014-06-18,21:23:00,21:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279182,2014-06-23,2014-06-23,06:06:00,06:06:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279185,2014-06-23,2014-06-23,06:45:00,06:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279188,2014-06-23,2014-06-23,07:29:00,07:29:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279190,2014-06-23,2014-06-23,06:05:00,06:05:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279192,2014-06-23,2014-06-23,06:52:00,06:52:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279196,2014-06-23,2014-06-23,07:36:00,07:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279209,2014-06-23,2014-06-23,06:05:00,06:05:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279215,2014-06-23,2014-06-23,06:48:00,06:48:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279216,2014-06-23,2014-06-23,07:02:00,07:02:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279218,2014-06-23,2014-06-23,07:28:00,07:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279223,2014-07-18,2014-07-18,20:00:00,20:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279225,2014-07-18,2014-07-18,20:40:00,20:40:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279229,2014-07-18,2014-07-18,21:20:00,21:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279231,2014-07-18,2014-07-18,19:55:00,19:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279233,2014-07-18,2014-07-18,20:35:00,20:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279235,2014-07-18,2014-07-18,21:23:00,21:23:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279238,2014-07-18,2014-07-18,19:56:00,19:56:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279240,2014-07-18,2014-07-18,20:38:00,20:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279242,2014-07-18,2014-07-18,21:16:00,21:16:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279247,2014-06-30,2014-06-30,20:01:00,20:01:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279250,2014-06-30,2014-06-30,20:44:00,20:44:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279253,2014-06-30,2014-06-30,21:30:00,21:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279255,2014-06-30,2014-06-30,20:02:00,20:02:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279257,2014-06-30,2014-06-30,20:45:00,20:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279260,2014-06-30,2014-06-30,21:30:00,21:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279265,2014-06-30,2014-06-30,20:05:00,20:05:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279267,2014-06-30,2014-06-30,20:45:00,20:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279271,2014-06-30,2014-06-30,21:31:00,21:31:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279274,2014-08-01,2014-08-01,06:32:00,06:32:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279277,2014-08-01,2014-08-01,07:15:00,07:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279279,2014-08-01,2014-08-01,07:58:00,07:58:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279282,2014-08-01,2014-08-01,06:25:00,06:25:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279284,2014-08-01,2014-08-01,07:18:00,07:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Diraison Martin,Diraison Martin,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279286,2014-08-01,2014-08-01,07:46:00,07:46:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Diraison Martin,Diraison Martin,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279289,2014-08-01,2014-08-01,06:30:00,06:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279296,2014-08-01,2014-08-01,07:12:00,07:12:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279300,2014-08-01,2014-08-01,07:54:00,07:54:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2014
+279326,2015-04-22,2015-04-22,20:36:00,20:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2015
+285263,2017-04-21,2017-04-21,05:21:00,05:21:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviButor'},2017
+285266,2017-04-21,2017-04-21,05:55:00,05:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2017
+285267,2017-04-21,2017-04-21,05:55:00,05:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2017
+285270,2017-04-21,2017-04-21,06:16:00,06:16:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2017
+285334,2016-04-20,2016-04-20,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285335,2016-04-20,2016-04-20,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2016
+285336,2016-04-20,2016-04-20,06:30:00,06:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviButor'},2016
+285364,2016-06-21,2016-06-21,21:13:00,21:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285365,2016-06-21,2016-06-21,21:13:00,21:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285366,2016-06-21,2016-06-21,21:13:00,21:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285370,2016-06-21,2016-06-21,21:36:00,21:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285373,2016-06-21,2016-06-21,20:06:00,20:06:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285374,2016-06-21,2016-06-21,20:27:00,20:27:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285377,2016-06-21,2016-06-21,20:49:00,20:49:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285378,2016-06-21,2016-06-21,20:13:00,20:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285384,2016-06-21,2016-06-21,20:33:00,20:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285391,2016-06-21,2016-06-21,20:55:00,20:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285393,2016-06-21,2016-06-21,21:36:00,21:36:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285399,2016-06-06,2016-06-06,20:15:00,20:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285402,2016-06-06,2016-06-06,20:38:00,20:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285405,2016-06-06,2016-06-06,20:59:00,20:59:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285407,2016-06-06,2016-06-06,21:20:00,21:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285410,2016-06-06,2016-06-06,21:44:00,21:44:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285415,2016-06-06,2016-06-06,20:30:00,20:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285416,2016-06-06,2016-06-06,20:10:00,20:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285419,2016-06-06,2016-06-06,20:50:00,20:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285420,2016-06-06,2016-06-06,21:13:00,21:13:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285422,2016-06-03,2016-06-03,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285425,2016-06-03,2016-06-03,06:32:00,06:32:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285426,2016-06-03,2016-06-03,06:56:00,06:56:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285429,2016-06-03,2016-06-03,07:28:00,07:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285432,2016-06-03,2016-06-03,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285434,2016-06-03,2016-06-03,06:35:00,06:35:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285437,2016-06-03,2016-06-03,06:54:00,06:54:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285439,2016-06-03,2016-06-03,07:15:00,07:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285441,2016-06-03,2016-06-03,07:37:00,07:37:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285445,2016-05-24,2016-05-24,06:45:00,06:45:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285448,2016-05-24,2016-05-24,07:10:00,07:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285449,2016-05-24,2016-05-24,07:30:00,07:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285451,2016-05-24,2016-05-24,07:30:00,07:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Lognos Mathieu,Lognos Mathieu,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285453,2016-05-24,2016-05-24,06:46:00,06:46:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285455,2016-05-24,2016-05-24,07:08:00,07:08:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285458,2016-05-24,2016-05-24,07:28:00,07:28:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285459,2016-05-24,2016-05-24,07:47:00,07:47:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Guenel Nathalie,Guenel Nathalie,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285462,2016-05-24,2016-05-24,08:09:00,08:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Guenel Nathalie,Guenel Nathalie,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2016
+285666,2017-05-03,2017-05-03,20:39:00,20:39:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviButor'},2017
+285667,2017-05-03,2017-05-03,21:14:00,21:14:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Lognos Mathieu,Lognos Mathieu,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviButor'},2017
+289632,2023-06-01,2023-06-01,20:08:00,20:08:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289633,2023-06-01,2023-06-01,20:15:00,20:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289634,2023-06-01,2023-06-01,20:34:00,20:34:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289635,2023-06-01,2023-06-01,20:55:00,20:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289636,2023-06-01,2023-06-01,21:18:00,21:18:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289637,2023-06-01,2023-06-01,21:15:00,21:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289638,2023-06-01,2023-06-01,21:00:00,21:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289639,2023-06-01,2023-06-01,20:34:00,20:34:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289640,2023-06-01,2023-06-01,20:52:00,20:52:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289650,2023-06-21,2023-06-21,20:30:00,20:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Xavier Fortuny,Xavier Fortuny,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289651,2023-06-21,2023-06-21,20:30:00,20:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289652,2023-06-21,2023-06-21,20:50:00,20:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289653,2023-06-21,2023-06-21,21:15:00,21:15:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289654,2023-06-21,2023-06-21,21:38:00,21:38:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289655,2023-06-21,2023-06-21,21:53:00,21:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Xavier Fortuny,Xavier Fortuny,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289656,2023-06-21,2023-06-21,21:33:00,21:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Xavier Fortuny,Xavier Fortuny,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289657,2023-06-21,2023-06-21,20:49:00,20:49:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Xavier Fortuny,Xavier Fortuny,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289658,2023-06-21,2023-06-21,21:10:00,21:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Xavier Fortuny,Xavier Fortuny,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289668,2023-07-04,2023-07-04,05:30:00,05:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289669,2023-07-04,2023-07-04,05:34:00,05:34:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289670,2023-07-04,2023-07-04,05:55:00,05:55:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289671,2023-07-04,2023-07-04,06:14:00,06:14:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289672,2023-07-04,2023-07-04,06:33:00,06:33:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289673,2023-07-04,2023-07-04,06:30:00,06:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289674,2023-07-04,2023-07-04,07:50:00,07:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289675,2023-07-04,2023-07-04,05:50:00,05:50:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289676,2023-07-04,2023-07-04,06:09:00,06:09:00,"Talève sultane, Poule sultane, Porphyrion bleu",2,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289686,2023-07-18,2023-07-18,06:00:00,06:00:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Clara Rondeau,Clara Rondeau,3.524423,43.329853,ButorTalèveBlongios-1,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289687,2023-07-18,2023-07-18,06:10:00,06:10:00,"Talève sultane, Poule sultane, Porphyrion bleu",3,Antoine Cornet,Antoine Cornet,3.524187,43.322337,ButorTalèveBlongios-2,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289688,2023-07-18,2023-07-18,06:30:00,06:30:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Antoine Cornet,Antoine Cornet,3.519831,43.317739,ButorTalèveBlongios-3,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289689,2023-07-18,2023-07-18,06:53:00,06:53:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Antoine Cornet,Antoine Cornet,3.510314,43.314765,ButorTalèveBlongios-4,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289690,2023-07-18,2023-07-18,07:14:00,07:14:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Antoine Cornet,Antoine Cornet,3.503888,43.317255,ButorTalèveBlongios-5,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289691,2023-07-18,2023-07-18,06:57:00,06:57:00,"Talève sultane, Poule sultane, Porphyrion bleu",1,Clara Rondeau,Clara Rondeau,3.509005,43.320424,ButorTalèveBlongios-6,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289692,2023-07-18,2023-07-18,07:16:00,07:16:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Clara Rondeau,Clara Rondeau,3.503405,43.32293,ButorTalèveBlongios-7,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289693,2023-07-18,2023-07-18,06:20:00,06:20:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Clara Rondeau,Clara Rondeau,3.515507,43.331375,ButorTalèveBlongios-8,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
+289694,2023-07-18,2023-07-18,06:39:00,06:39:00,"Talève sultane, Poule sultane, Porphyrion bleu",0,Clara Rondeau,Clara Rondeau,3.510068,43.327324,ButorTalèveBlongios-9,{'RELV_NOM': 'SuiviBlongiosTalève'},2023
