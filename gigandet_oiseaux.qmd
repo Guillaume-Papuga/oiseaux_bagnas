@@ -440,66 +440,27 @@ m3 <- glm(presence ~ mois,
           data = process_data,
           family = binomial)
 
+# Effet par mois
+m4 <- glm(presence ~ nom_lieu,
+          data = process_data,
+          family = binomial)
+
 # Modèle jour² + jour + année + site
-m4 <- glm(presence ~ j_centre + j_centre2 + annee + nom_lieu,
+m5 <- glm(presence ~ j_centre + j_centre2 + annee + nom_lieu,
           data = process_data,
           family = binomial)
 
 #========================
 # COMPARAISON AIC
 #========================
-aic_tab <- AIC(m0, m1, m2, m3, m4)
+aic_tab <- AIC(m0, m1, m2, m3, m4, m5)
 print(aic_tab)
 
 #========================
 # MEILLEUR MODELE
 #========================
-best_model <- list(m0, m1, m2, m3, m4)[[which.min(aic_tab$AIC)]]
+best_model <- list(m0, m1, m2, m3, m4, m5)[[which.min(aic_tab$AIC)]]
 summary(best_model)
-
-
-
-
-
-
-library(ggplot2)
-library(dplyr)
-
-# Créer une séquence de jours centrés pour prédiction
-j_seq <- seq(min(process_data$j_centre),
-             max(process_data$j_centre),
-             length.out = 200)
-
-# Créer un nouveau jeu de données pour prédiction
-newdat <- data.frame(
-  j_centre = j_seq,
-  j_centre2 = j_seq^2,
-  annee = NA,        # on ignore les effets année et site pour la visualisation
-  nom_lieu = NA
-)
-
-# Prédiction de la probabilité de présence
-newdat$pred <- predict(
-  best_model,        # ton modèle glm avec j, j², année et site
-  newdata = newdat,
-  type = "response",
-  se.fit = TRUE
-)$fit
-
-# Tracer
-ggplot(newdat, aes(x = j_centre, y = pred)) +
-  geom_line(color = "blue", size = 1) +
-  labs(
-    x = "Jour julien (centré)",
-    y = "Probabilité de présence",
-    title = "Effet du jour et du jour² sur la présence de la Talève sultane"
-  ) +
-  theme_minimal()
-
-
-
-
-
 
 
 
