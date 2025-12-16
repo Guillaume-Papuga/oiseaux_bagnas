@@ -11,8 +11,16 @@ editor: visual
 library(tidyverse) 
 library(lubridate) 
 library(readxl) 
-library(ggplot2) 
+library(ggplot2)
+```
+
+
+```{r}
 library(dplyr)
+```
+
+
+```{r}
 library(gridExtra)
 library(readr)
 library(knitr)
@@ -969,6 +977,13 @@ AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
 # ---------------------------------------------------------
 
-## 6.2 Analyse taleve Opportuniste
-
+## 6.2 Analyse taleve enviro
 #----------------------------------------------------------
+
+```{r}
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviTaleve)
+
+```
+
