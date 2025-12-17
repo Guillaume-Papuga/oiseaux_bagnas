@@ -113,26 +113,8 @@ library(RColorBrewer)
 library(dplyr)
 library(readr)
 
-#carte de la region : 
-clc12 <- st_read("CLC_RLRMP_RGF_SHP/CLC12/CLC12_RLRMP_RGF.shp")
 
-
-#zone qui nous interesse : bagnas 
-bagnas_bbox <- st_as_sfc(st_bbox(c(
-  xmin = 3.47,
-  xmax = 3.58,
-  ymin = 43.36,
-  ymax = 43.43
-), crs = 4326))
-
-# Reprojeter la couche CLC en WGS84 si nécessaire
-clc12_wgs <- st_transform(clc12, 4326)
-
-# Découper
-clc12_bagnas <- st_intersection(clc12_wgs, bagnas_bbox)
-
-
-process_data <- read_csv("data/pro/process_data.csv")
+process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
 sites_sf <- st_as_sf(process_data, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
 
@@ -207,6 +189,8 @@ leaflet() %>%
     popup = ~nom_lieu
   ) %>%
   setView(lng = 3.3, lat = 43.6, zoom = 9)
+
+
 
 
 ```

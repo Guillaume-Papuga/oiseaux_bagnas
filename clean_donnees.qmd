@@ -202,8 +202,33 @@ library(readr)
 library(knitr)
 library(lme4)
 ```
+Cartographie des sites d'observation/écoute des 3 espèces. Tous types de données mélangées (protocole et hors protocole) depuis 2014
 
-a)  blongios
+```{r}
+
+#1 : tous les sites 
+#2 : les sites du protocole :
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+sites_protocole <- st_as_sf(process_protocole, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole,
+    radius = 5,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~nom_lieu
+  ) %>%
+  setView(lng = 3.3, lat = 43.6, zoom = 9)
+
+```
+
+
+b)  blongios
 
 ```{r}
 
@@ -237,7 +262,7 @@ leaflet() %>%
 
 ```
 
-b)  butor
+c)  butor
 
 ```{r}
 
@@ -272,7 +297,7 @@ leaflet() %>%
 
 ```
 
-c)  talève
+d)  talève
 
 ```{r}
 
