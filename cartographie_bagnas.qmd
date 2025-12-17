@@ -166,7 +166,7 @@ leaflet() %>%
 
 ```
 
-## .... avec les les sites d'observation (protocole ou non?) des oiseaux
+## .... avec les les sites d'observation (protocole ou opportuniste) des oiseaux
 
 carte interactive, on peut zoomer et cliquer sur les points pour avoir les noms des sites attention : que depuis 2014 (pour filtrer les vieilles données bancales)
 
@@ -210,3 +210,122 @@ leaflet() %>%
 
 
 ```
+## Cartographie des sites protocolés 
+
+```{r}
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+sites_protocole <- st_as_sf(process_protocole, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole,
+    radius = 5,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~nom_lieu
+  ) %>%
+  setView(lng = 3.3, lat = 43.6, zoom = 9)
+
+
+
+```
+
+## cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèces 
+
+```{r}
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_blongios <- process_protocole %>%
+  filter(nom_vernaculaire=="Blongios nain, Butor blongios")
+
+sites_protocole_blongios <- st_as_sf(process_protocole_blongios, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_blongios2 <- sites_protocole_blongios %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_blongios2,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Blongios entendus :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+
+```
+
+```{r}
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_taleve <- process_protocole %>%
+  filter(nom_vernaculaire=="Talève sultane, Poule sultane, Porphyrion bleu")
+
+sites_protocole_taleve <- st_as_sf(process_protocole_taleve, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_taleve <- sites_protocole_taleve %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_taleve,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Talèves entendues :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+
+```
+
+```{r}
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_butor <- process_protocole %>%
+  filter(nom_vernaculaire=="Butor étoilé")
+
+sites_protocole_butor <- st_as_sf(process_protocole_butor, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_butor <- sites_protocole_butor %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_butor,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Butor entendus :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+```
+
