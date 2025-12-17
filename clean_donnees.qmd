@@ -1,0 +1,308 @@
+---
+title: "clean_donnees"
+format: html
+editor: visual
+---
+
+## 1. Rassembler les deux tableaux de données
+
+a)  récupérer les tableaux de données brute.
+
+```{r}
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas")
+raw_data<- read_excel("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
+
+raw_data_2 <- read_delim(
+  "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+```
+
+Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+
+```{r}
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
+# car le fichier original contenait une date + une heure
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+# mettre en format date les dates de debut et de fin 
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+
+
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+#correction des formats de certaines colonnes
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+# Le fichier brut est en format "dd/mm/YYYY"
+# On convertit proprement en Date (format standard YYYY-MM-DD)
+
+
+#verification des données soit identiques pour le butor et le taleve
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+
+# La ligne 132 de process_data_2 avait un NA
+# On remplace par la valeur correspondante dans process_data_1 (ligne 720)
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+#création du tableau final avec les 3 espèces et les colonnes dans le bon format. C'est ce tableau qui est par la suite utilisé. 
+process_data = process_data_2
+
+write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+
+```
+
+## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+
+```{r}
+process_data$annee = year(floor_date(process_data$date_debut, "year"))
+process_protocole = process_data  %>%
+  filter(annee>= 2014) %>%
+  filter (nom_lieu  %in% paste0 ("ButorTalèveBlongios-", 1 : 9)) %>%
+  filter( champs_additionnels== "{'RELV_NOM': 'SuiviButor'}" |
+          champs_additionnels== "{'RELV_NOM': 'SuiviBlongiosTalève'}")
+
+
+write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+
+```
+
+##3. Les données environnementales
+
+```{r}
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro")
+
+#récuperer les csv pour chaque année 
+file_2013 <- read_delim("2013.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+
+file_2014 <- read_delim("2014.csv", delim = ";", 
+                       escape_double = FALSE, trim_ws = TRUE, 
+                       skip = 4)
+file_2015 <- read_delim("2015.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2016 <- read_delim("2016.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2017 <- read_delim("2017.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2018 <- read_delim("2016.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2019 <- read_delim("2017.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2020 <- read_delim("2020.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2021 <- read_delim("2021.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2022 <- read_delim("2022.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2023 <- read_delim("2023.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2024 <- read_delim("2024.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2025 <- read_delim("2025.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+#enlever la première ligne qui donne les unités des colonnes (toujours présent dans les données brut si besoin de les retrouver )
+file_2013 <- file_2013[-1, ]
+file_2014 <- file_2014[-1, ]
+file_2015 <- file_2015[-1, ]
+file_2016 <- file_2016[-1, ]
+file_2017 <- file_2017[-1, ]
+file_2018 <- file_2018[-1, ]
+file_2019 <- file_2019[-1, ]
+file_2020 <- file_2020[-1, ]
+file_2021 <- file_2021[-1, ]
+file_2022 <- file_2022[-1, ]
+file_2023 <- file_2023[-1, ]
+file_2024 <- file_2024[-1, ]
+file_2025 <- file_2025[-1, ]
+
+
+
+```
+
+##4. Les données hydro
+
+## 5. Analyses exploratoires
+
+#### A. les observateurs Script d'Émile
+
+#### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
+
+```{r}
+library(leaflet)
+library(sf)
+library(RColorBrewer) 
+library(dplyr)
+library(readr)
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+```
+
+a)  blongios
+
+```{r}
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_blongios <- process_protocole %>%
+  filter(nom_vernaculaire=="Blongios nain, Butor blongios")
+
+sites_protocole_blongios <- st_as_sf(process_protocole_blongios, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_blongios <- sites_protocole_blongios %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_blongios,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Blongios entendus :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+
+```
+
+b)  butor
+
+```{r}
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_butor <- process_protocole %>%
+  filter(nom_vernaculaire=="Butor étoilé")
+
+sites_protocole_butor <- st_as_sf(process_protocole_butor, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_butor <- sites_protocole_butor %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_butor,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Butor entendus :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+
+
+```
+
+c)  talève
+
+```{r}
+
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_taleve <- process_protocole %>%
+  filter(nom_vernaculaire=="Talève sultane, Poule sultane, Porphyrion bleu")
+
+sites_protocole_taleve <- st_as_sf(process_protocole_taleve, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+sites_protocole_taleve <- sites_protocole_taleve %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole_taleve,
+    radius = ~somme_nombre_min,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Talèves entendues :" ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+
+
+```
