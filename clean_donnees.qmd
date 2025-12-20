@@ -218,6 +218,53 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 
 ```
 
+```{r}
+##### création des lignes manquantes du tableau environnement_daily
+
+# etape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
+
+date_debut <- as.Date("2013-01-01")
+date_fin   <- as.Date("2025-12-31")
+
+toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
+
+données_2013_2025 <- data.frame(
+  Date = toutes_dates)
+
+données_2013_2025$julian = yday(données_2013_2025$Date)
+
+View(données_2013_2025)
+
+# etape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes 
+# du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+
+environnement_daily <- read_csv("data/pro/environnement_daily.csv")
+
+environnement_daily <- environnement_daily %>%
+  full_join(
+    données_2013_2025 %>% select(Date, julian),
+    by = "Date"
+  )
+
+# Etape 3 verification du jeu de données
+
+# Nombre de jours par année
+environnement_daily %>%
+  mutate(Annee = year(Date)) %>%
+  count(Annee)
+
+# les lignes manquantes si il y'en a
+résumé_jours_NA = environnement_daily %>%
+  filter(is.na(temperature)) %>%        
+  mutate(Annee = year(Date)) %>%        
+  group_by(Annee) %>%                   
+  summarise(
+    nb_lignes = n(),                     
+    nb_jours_uniques = n_distinct(Date)  
+  )
+
+```
+
 ##4. Les données hydro
 
 ## 5. Analyses exploratoires
@@ -243,6 +290,7 @@ library(readr)
 library(knitr)
 library(lme4)
 ```
+
 Cartographie des sites d'observation/écoute des 3 espèces. Tous types de données mélangées (protocole et hors protocole) depuis 2014
 
 ```{r}
@@ -270,7 +318,6 @@ leaflet() %>%
   setView(lng = 3.3, lat = 43.6, zoom = 9)
 
 ```
-
 
 b)  blongios
 
