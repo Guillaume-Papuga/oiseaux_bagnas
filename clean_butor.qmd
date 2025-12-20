@@ -151,3 +151,15 @@ leaflet() %>%
 
 ```
 
+#C Les heures de la journée où sont vu les Butors
+
+```{r}
+
+```
+
+#D évolution de l'abondance de butor dans le temps
+
+```{r}
+
+```
+
