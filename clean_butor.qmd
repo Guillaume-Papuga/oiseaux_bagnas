@@ -1,0 +1,153 @@
+---
+title: "Butor_clean"
+format: html
+editor: visual
+---
+#1 Charger les données et les library
+```{r}
+
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(leaflet)
+
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
+process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+
+```
+
+## 1. analyses exploratoires du Botor
+#A Graphique de présence des Butors par semaine depuis 1990
+```{r}
+## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
+
+
+esp_butor<- "Butor étoilé"
+
+annees <- format(process_data$date_debut, "%Y")
+annees <- as.numeric(annees)
+
+# Trouver les années min et max
+annee_min <- min(annees, na.rm = TRUE)
+annee_max <- max(annees, na.rm = TRUE)
+duree_annees <- annee_max - annee_min +1
+
+data_butor <- process_data %>%
+  filter(nom_vernaculaire == esp_butor) %>% #on filtre pour avoir uniquement les lignes du Butor dans le data frame
+  mutate(
+    annee_suivi = year(date_debut) - annee_min + 1, 
+    annee_reelle = year(date_debut),
+    semaine = isoweek(date_debut) # on crée les numéros des semaines
+  )
+
+# --- Résumer les semaines pour gérer les sorties multiples ---
+data_butor_summarized <- data_butor %>%
+  mutate(
+    is_obs = nombre_min > 0,
+    is_protocole = grepl("SuiviButor", champs_additionnels) #on définit ce qu'est une observation protocolée
+  ) %>%
+  group_by(annee_suivi, semaine) %>%
+  summarise(
+    statut = case_when(
+      # sorties avec observations 
+      any(is_obs) & any(is_protocole & is_obs) & any(!is_protocole & is_obs) ~ "obs_mixte", # si dans une semaine il y a eu au moins 1 observation protocole ET 1 opportuniste, alors on définit ça en observation mixte 
+      any(is_obs) & any(is_protocole & is_obs) ~ "obs_protocole",  #si dans 1 semaine il y a eu au moins 1 observation protocolée (et aucune opportuniste) on définit en observation protocolée 
+      any(is_obs) & any(!is_protocole & is_obs) ~ "obs_hors_protocole", #si dans 1 semaine il y a eu au moins 1 observation opportuniste (et aucune protocolée) on définit en observation hors protocole
+
+      # sorties sans observation = aucun oiseau vu
+      !any(is_obs) & any(nombre_min == 0) ~ "sortie_sans_observation",
+
+      TRUE ~ NA_character_
+    ),
+    .groups = "drop"
+  )
+# --- Créer la grille complète (année x semaine) ---
+grille <- expand.grid(
+  annee_suivi = 1:duree_annees,
+  semaine = 1:53
+) %>%
+  mutate(annee_reelle = annee_min + annee_suivi - 1) %>%
+  left_join(
+    data_butor_summarized,
+    by = c("annee_suivi", "semaine")
+  ) %>%
+  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+
+
+grille <- grille %>%
+  mutate(statut = factor(statut,
+                         levels = c("obs_protocole", "obs_hors_protocole", "obs_mixte",
+                                    "sortie_sans_observation", "pas_de_sortie")))
+
+#on fait le graphique 
+ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
+  geom_tile(color = "white", linewidth = 0.2) +
+  geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
+  scale_y_reverse() +
+  scale_fill_manual(
+    values = c(
+      "obs_protocole" = "red",
+      "obs_hors_protocole" = "green",
+      "obs_mixte" = "purple",
+      "sortie_sans_observation" = "black",
+      "pas_de_sortie" = "grey85"
+    ),
+    labels = c(
+      "Observation (protocole)",
+      "Observation (hors protocole)",
+      "Observation (mixte)",
+      "Sortie sans observation",
+      "Pas de sortie"
+    )
+  ) +
+  labs(
+    title = paste("Observations de", esp_butor),
+    subtitle = paste("Suivi de", annee_min, "à", annee_max),
+    x = "Semaine de l'année",
+    y = "Année"
+  ) +
+  theme_minimal() +
+  theme(panel.grid = element_blank())
+
+```
+
+#B Cartographie de la présence des Butors sur les sites d'écoute du protocole
+```{r}
+# on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
+process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole_butor <- process_protocole %>%
+  filter(nom_vernaculaire=="Butor étoilé")
+
+#préparer les coordonnées pour R 
+sites_protocole_butor <- st_as_sf(process_protocole_butor, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+# on rassemble les données pour avoir un dataframe avec 1 ligne par site d'étude. L'objectif est d'avoir le nombre d'écoute de Butor par site (somme depuis 2014)
+sites_protocole_butor <- sites_protocole_butor %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+#leaflet est un package pour projeter des infos sur une carte
+leaflet() %>%
+  addTiles() %>%     
+
+  addCircleMarkers(
+    data =sites_protocole_butor, #on prend les data frame résumé avec 1 ligne par site
+    radius = ~somme_nombre_min, #la taille des points est proportionnelle au nombre d'oiseaux entendus
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Butor entendus : " ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+```
+
