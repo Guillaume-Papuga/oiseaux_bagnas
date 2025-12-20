@@ -142,10 +142,10 @@ file_2016 <- read_delim("2016.csv", delim = ";",
 file_2017 <- read_delim("2017.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2018 <- read_delim("2016.csv", delim = ";", 
+file_2018 <- read_delim("2018.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2019 <- read_delim("2017.csv", delim = ";", 
+file_2019 <- read_delim("2019.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
 file_2020 <- read_delim("2020.csv", delim = ";", 
@@ -186,7 +186,7 @@ file_2025 <- file_2025[-1, ]
 data_environnement <- bind_rows(file_2013, file_2014, file_2015, file_2016, file_2017, file_2018, file_2019, file_2020, file_2021, file_2022, file_2023, file_2024, file_2025)
 
 #écrire le CVS avec toutes les données 
-write_csv(data_environnement, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro/raw_environnement")
+write_csv(data_environnement, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro/raw_environnement.csv")
 
 #tri et clean des données environnementales : les données sont toutes les 20min depuis 2013.
 data_environnement2=data_environnement
@@ -219,9 +219,9 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 ```
 
 ```{r}
-##### création des lignes manquantes du tableau environnement_daily
+##### création des lignes pour les jours manquants du tableau environnement_daily
 
-# etape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
+# étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
 
 date_debut <- as.Date("2013-01-01")
 date_fin   <- as.Date("2025-12-31")
@@ -235,8 +235,7 @@ données_2013_2025$julian = yday(données_2013_2025$Date)
 
 View(données_2013_2025)
 
-# etape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes 
-# du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignesdu tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
 environnement_daily <- read_csv("data/pro/environnement_daily.csv")
 
@@ -357,40 +356,6 @@ leaflet() %>%
 
 ```
 
-c)  butor
-
-```{r}
-
-process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
-
-process_protocole_butor <- process_protocole %>%
-  filter(nom_vernaculaire=="Butor étoilé")
-
-sites_protocole_butor <- st_as_sf(process_protocole_butor, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
-
-sites_protocole_butor <- sites_protocole_butor %>%
-  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
-  summarise(
-    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-
-leaflet() %>%
-  addTiles() %>%     # fond OSM
-
-  addCircleMarkers(
-    data =sites_protocole_butor,
-    radius = ~somme_nombre_min,
-    color = "red",
-    fillOpacity = 0.9,
-    popup = ~paste ((nom_lieu), ", Butor entendus :" ,(somme_nombre_min), sep = "")
-  ) %>%
-  setView(lng = 3.51, lat = 43.31, zoom = 13)
-
-
-
-```
 
 d)  talève
 
