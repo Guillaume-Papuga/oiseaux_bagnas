@@ -318,76 +318,11 @@ leaflet() %>%
 
 ```
 
-b)  blongios
-
-```{r}
-#charger le csv des données 
-process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
-
-#on ne garde que les données du blongios 
-process_protocole_blongios <- process_protocole %>%
-  filter(nom_vernaculaire=="Blongios nain, Butor blongios")
-
-#préparer les coordonnées pour R 
-sites_protocole_blongios <- st_as_sf(process_protocole_blongios, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
-
-# on rassemble les données pour avoir un dataframe avec 1 ligne par site d'étude. L'objectif est d'avoir le nombre d'écoute de Blongios par site (somme depuis 2014)
-
-sites_protocole_blongios <- sites_protocole_blongios %>%
-  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
-  summarise(
-    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-
-leaflet() %>%
-  addTiles() %>%     # fond OSM
-
-  addCircleMarkers(
-    data =sites_protocole_blongios,
-    radius = ~somme_nombre_min,
-    color = "red",
-    fillOpacity = 0.9,
-    popup = ~paste ((nom_lieu), ", Blongios entendus :" ,(somme_nombre_min), sep = "")
-  ) %>%  #cela nous donne le nom du lieu suivi du nombre de blongios entendu sur le site depuis 2014 
-  setView(lng = 3.51, lat = 43.31, zoom = 13)
-
-
-```
 
 
 d)  talève
 
 ```{r}
-
-process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
-
-process_protocole_taleve <- process_protocole %>%
-  filter(nom_vernaculaire=="Talève sultane, Poule sultane, Porphyrion bleu")
-
-sites_protocole_taleve <- st_as_sf(process_protocole_taleve, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
-
-sites_protocole_taleve <- sites_protocole_taleve %>%
-  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
-  summarise(
-    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-
-leaflet() %>%
-  addTiles() %>%     # fond OSM
-
-  addCircleMarkers(
-    data =sites_protocole_taleve,
-    radius = ~somme_nombre_min,
-    color = "red",
-    fillOpacity = 0.9,
-    popup = ~paste ((nom_lieu), ", Talèves entendues :" ,(somme_nombre_min), sep = "")
-  ) %>%
-  setView(lng = 3.51, lat = 43.31, zoom = 13)
-
 
 
 ```
