@@ -38,6 +38,7 @@ Si vous avez besoin de **sous-jeux de données**, par exemple uniquement le **Bu
 #| message: false
 #| warning: false
  process_data <- read_csv("data/pro/process_data.csv")
+process_protocole <- read_csv("data/pro/process_protocole.csv")
 ```
 
 ```{r}
@@ -470,8 +471,188 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```
 
+### 2.2.d Effort journalier opportuniste Blongios
 
-### 2.2.g Effort journalier protocole Blongios-Talève
+```{r}
+
+# Données 
+Opportuniste_Blongios <- Opportuniste_Blongios %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+
+Opportuniste_Blongios <- Opportuniste_Blongios  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Opportuniste_Blongios %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Opportuniste_Blongios %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour le Blongios (2014-2018)")
+
+```
+
+
+### 2.2.e Effort journalier protocole Talève
+
+```{r}
+# DOnnées 
+Protocole_Taleve <- Protocole_SuiviBlongiosTaleve %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+Protocole_Taleve <- Protocole_Taleve %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
+
+Protocole_Taleve <- Protocole_Taleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_Taleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Protocole_Taleve %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Talève (2014-2018)")
+
+```
+
+### 2.2.f Effort journalier opportuniste Talève
+
+```{r}
+
+# Données 
+Opportuniste_Taleve <- Opportuniste_Taleve %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+
+Opportuniste_Taleve <- Opportuniste_Taleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Opportuniste_Taleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Opportuniste_Taleve %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour la Talève (2014-2018)")
+
+```
+
+### FACULTATIF ET PAS A JOUR Effort journalier protocole Blongios-Talève
 
 ```{r}
 Protocole_SuiviBlongiosTaleve <- Protocole_SuiviBlongiosTaleve  %>%
