@@ -5,6 +5,7 @@ editor: visual
 ---
 
 #Charger les données et les library
+
 ```{r}
 
 library(tidyverse) 
@@ -24,7 +25,9 @@ process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/p
 ```
 
 ## 1. analyses exploratoires de la Talève
+
 #A- Graphique de présence des Talèves par semaine depuis 1990
+
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
 
@@ -121,6 +124,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 ```
 
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
+
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
@@ -169,13 +173,72 @@ leaflet() %>%
 
 ```
 
-
-
-
-##2 . Modèle de présence/absence 
-
+##2 . Modèle de présence/absence
 
 ##3 . Modèle d'abondance
+
+```{r}
+#Jeu de données protocole Taleve
+process_protocole <- readr::read_csv("C:/Users/lucie/Desktop/Projet_Biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+process_protocole$julian <- yday(process_protocole$date_debut) 
+# Filtrer les relevés pour Talève sultane
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter(
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+```
+
+```{r}
+# Preparation des variables ( standardisation )
+Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
+Protocole_SuiviTaleve$julian <- scale(as.numeric(Protocole_SuiviTaleve$julian))
+Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
+```
+
+```{r}
+#  Modèle dans le temps 
+# y ~ Pois ( lambda)
+
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviTaleve)
+
+
+modele_jour <- glm(nombre_min ~ julian, 
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+
+
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
+
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
+
+
+
+summary(modele_annee)
+summary(modele_jour)
+summary(modele_annee_jour)
+summary(modele_anneejour)
+
+AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
+
+```
+::: {.callout-note}
+## Interprétation
+
+Le meilleur modele d'apres l4AIC est le model avec la combinaison de l'effet de l'année et du jour
+
+Nous allons garder ce modele pour la suite de l'analyse afin de tester les variables environnementales 
+
+:::
+
+
 
 
 
