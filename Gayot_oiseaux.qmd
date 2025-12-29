@@ -14,11 +14,9 @@ library(readxl)
 library(ggplot2)
 ```
 
-
 ```{r}
 library(dplyr)
 ```
-
 
 ```{r}
 library(gridExtra)
@@ -978,12 +976,85 @@ AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 # ---------------------------------------------------------
 
 ## 6.2 Analyse taleve enviro
+
 #----------------------------------------------------------
 
 ```{r}
-modele_annee <- glm(nombre_min ~ annee2, 
-                    family = poisson, 
-                    data = Protocole_SuiviTaleve)
+#Verificatiojn du tableau enviro (dates completes )
 
+dates_completes <- data.frame(
+  Date = seq.Date(
+    from = as.Date("2013-01-01"),
+    to   = as.Date("2025-12-10"),
+    by   = "day"
+  )
+)
+
+# Dates manquantes
+dates_manquantes <- dates_completes %>%
+  anti_join(environnement_daily, by = "Date")
+
+dates_manquantes
 ```
 
+```{r}
+# On calcule la variable temperatuere moyenne glissante sur 31 jours 
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_31j = slide_dbl(
+      temperature,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+```
+
+```{r}
+Na <- environnement_daily %>%
+  filter(is.na(temp_moy_glissante_31j))
+```
+
+```{r}
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_7j = slide_dbl(
+      temperature,
+      mean,
+      .before = 6,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+```
+
+```{r}
+Na <- environnement_daily %>%
+  filter(is.na(temp_moy_glissante_7j))
+```
+
+```{r}
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_31j = slide_dbl(
+      pluie_24h,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+```
+
+```{r}
+Na <- environnement_daily %>%
+  filter(is.na(pluie_moy_glissante_31j))
+```
