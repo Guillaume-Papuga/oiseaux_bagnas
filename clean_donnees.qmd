@@ -264,6 +264,41 @@ résumé_jours_NA = environnement_daily %>%
 
 ```
 
+### 3.2 Rajout des moyennes glissantes
+
+```{r}
+{r}
+# On calcule la variable temperatuere moyenne glissante sur 31 jours 
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_31j = slide_dbl(
+      temperature,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_7j = slide_dbl(
+      temperature,
+      mean,
+      .before = 6,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+
+#Rajouter les precipitations apres discussion pour savoir à quoi correpond excatement les valeurs
+```
+
 ##4. Les données hydro
 
 ## 5. Analyses exploratoires
@@ -317,8 +352,6 @@ leaflet() %>%
   setView(lng = 3.3, lat = 43.6, zoom = 9)
 
 ```
-
-
 
 d)  talève
 
