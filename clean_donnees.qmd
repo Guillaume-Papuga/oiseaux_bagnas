@@ -267,8 +267,7 @@ résumé_jours_NA = environnement_daily %>%
 ### 3.2 Rajout des moyennes glissantes
 
 ```{r}
-{r}
-# On calcule la variable temperatuere moyenne glissante sur 31 jours 
+# On calcule la variable temperatuere et pluie moyenne glissante sur 31 jours 
 
 environnement_daily <- environnement_daily %>%
   arrange(Date) %>%
@@ -296,7 +295,30 @@ environnement_daily <- environnement_daily %>%
     )
   )
 
-#Rajouter les precipitations apres discussion pour savoir à quoi correpond excatement les valeurs
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_31j = slide_dbl(
+      pluie_1h,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_7j = slide_dbl(
+      pluie_1h,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
 ```
 
 ##4. Les données hydro
