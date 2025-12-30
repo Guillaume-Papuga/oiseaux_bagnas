@@ -321,6 +321,13 @@ environnement_daily <- environnement_daily %>%
   )
 ```
 
+Fusion des tableaux
+
+```{r}
+process_protocole = process_protocole %>%
+  inner_join( environnement_daily,by = c("date_debut"= "Date") )
+```
+
 ##4. Les données hydro
 
 ## 5. Analyses exploratoires
