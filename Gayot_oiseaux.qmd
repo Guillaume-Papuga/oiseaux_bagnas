@@ -1028,7 +1028,7 @@ environnement_daily <- environnement_daily %>%
       mean,
       .before = 6,
       .after = 0,
-      .complete = TRUE,
+      .complete = FALSE,
       na.rm = TRUE
     )
   )
@@ -1044,7 +1044,7 @@ environnement_daily <- environnement_daily %>%
   arrange(Date) %>%
   mutate(
     pluie_moy_glissante_31j = slide_dbl(
-      pluie_24h,
+      pluie_1h,
       mean,
       .before = 30,
       .after = 0,
@@ -1057,4 +1057,65 @@ environnement_daily <- environnement_daily %>%
 ```{r}
 Na <- environnement_daily %>%
   filter(is.na(pluie_moy_glissante_31j))
+```
+
+```{r}
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_7j = slide_dbl(
+      pluie_1h,
+      mean,
+      .before = 30,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+```
+
+```{r}
+Na <- environnement_daily %>%
+  filter(is.na(pluie_moy_glissante_7j))
+```
+
+On va joindre le tableau protocole avec le tableau environnement pour avoir un tableau commun
+
+```{r}
+process_protocole = process_protocole %>%
+  inner_join( environnement_daily,by = c("date_debut"= "Date") )
+```
+
+On va faire le modele avec les variables environnementales
+
+```{r}
+# Preparation des variables ( standardisation )
+Protocole_SuiviTaleve$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j))
+Protocole_SuiviTaleve$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
+```
+
+```{r}
+m_temp_7 <- glm(nombre_min ~ annee2 * julian.x + temp_moy_glissante_7j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+m_temp_31 <- glm(nombre_min ~ annee2 * julian.x + temp_moy_glissante_31j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+m_pluie_7 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_7j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+m_pluie_31<- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_31j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+m_pluie_temp_7 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_7j +
+                        temp_moy_glissante_7j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_31j +
+                        temp_moy_glissante_31j,
+          data = Protocole_SuiviTaleve, family = poisson)
+
+AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
