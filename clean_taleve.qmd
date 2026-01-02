@@ -175,7 +175,13 @@ leaflet() %>%
 
 ##2 . Modèle de présence/absence
 
-##3 . Modèle d'abondance
+## 3 . Modèle d'abondance
+
+Cette analyse vise à caractériser la dynamique de la population de **Talève** et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
+
+## 3.1 Modèle d'abondance en fonction du temps
+
+Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
 
@@ -190,7 +196,7 @@ Protocole_SuiviTaleve <- process_protocole %>%
 ```{r}
 # Preparation des variables ( standardisation )
 Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$julian <- scale(as.numeric(Protocole_SuiviTaleve$julian))
+Protocole_SuiviTaleve$julian <- as.numeric(scale(Protocole_SuiviTaleve$julian))
 Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
 ```
 
@@ -227,28 +233,18 @@ AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
 ```
 
-::: callout-note
-:::
-
-::: callout-note
-:::
-
-::: callout-note
 ## Interprétation
 
-Le meilleur modele d'apres l'AIC est le modele avec la combinaison de l'effet de l'année et du jour
+La sélection de modèle par l'AIC a désigné la combinaison des effets temporels (année et jour julien) comme structure optimale. Ce modèle servira de base à notre analyse pour tester l'apport des variables environnementales, telles que la pluviométrie, sur l'abondance des individus.
 
-Nous allons garder ce modele pour la suite de l'analyse afin de tester les variables environnementales
-:::
-
-On rajoute les variables environnementales dans nos modeles
+## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
 
 ```{r}
 #standartisation des variables explicatives continues
-Protocole_SuiviTaleve$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j))
-Protocole_SuiviTaleve$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
+Protocole_SuiviTaleve$temp_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviTaleve$temp_moy_glissante_31j))
+Protocole_SuiviTaleve$temp_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviTaleve$temp_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
 ```
 
 ```{r}
@@ -275,7 +271,7 @@ m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_31j +
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
 
-> La comparaison des modèles à l’aide de l’AIC montre que l’ajout de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle, contrairement aux variables de température qui n’apportent pas d’amélioration supplémentaire.
+> La comparaison des modèles par l'AIC montre que l'intégration de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et ne sont donc pas retenues.
 
 Les paramètres estimés indiquent que :
 
@@ -288,3 +284,7 @@ Les paramètres estimés indiquent que :
 -   L’interaction entre l’année et le jour julien est faiblement positive et significative (β = 0.059, p = 0.034), suggérant que la dynamique saisonnière varie peu d’une année à l’autre.
 
     Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 308.28 contre une déviance nulle de 354.24), avec un AIC de 545.09.
+
+-   La fonction pour trouver l'abondance du blongios en fonction de la pluie , de l,'année et des jours est :
+
+    log(y) = -1.48879 + 0.15277(annee2\[i\]) - 0.59216 (julian\[i\]) -0.17924(pluie\[i\]) + 0.05917(annee\[i\]\*julian\[i\])
