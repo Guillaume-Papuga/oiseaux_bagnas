@@ -5,6 +5,7 @@ editor: visual
 ---
 
 #Charger les données et les library
+
 ```{r}
 
 library(tidyverse) 
@@ -24,7 +25,9 @@ process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/p
 ```
 
 ## 1. analyses exploratoires du Blongios
+
 #A- Graphique de présence des Blongios par semaine depuis 1990
+
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
 
@@ -124,9 +127,8 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```
 
-
-
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
+
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
@@ -169,22 +171,110 @@ leaflet() %>%
 
 ```
 
-
 #D- évolution de l'abondance de blongios dans le temps
 
 ```{r}
 
 ```
 
-
-
-##2 . Modèle de présence/absence 
-
+##2 . Modèle de présence/absence
 
 ##3 . Modèle d'abondance
 
+```{r}
+Protocole_SuiviBlongios <- process_protocole %>%
+  filter(
+      nom_vernaculaire == "Blongios nain, Butor blongios"
+  )
+
+```
+
+```{r}
+# Preparation des variables ( standardisation )
+Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
+Protocole_SuiviBlongios$julian <- scale(as.numeric(Protocole_SuiviBlongios$julian))
+Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
+```
+
+```{r}
+#  Modèle dans le temps 
+# y ~ Pois ( lambda)
+
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviBlongios)
+
+
+modele_jour <- glm(nombre_min ~ julian, 
+                   data = Protocole_SuiviBlongios, 
+                   family = poisson)
+
+
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
+                         data = Protocole_SuiviBlongios, 
+                         family = poisson)
+
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
+                         data = Protocole_SuiviBlongios, 
+                         family = poisson)
 
 
 
+summary(modele_annee)
+summary(modele_jour)
+summary(modele_annee_jour)
+summary(modele_anneejour)
 
+AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
+```
+
+## Interprétation
+
+Le meilleur modele d'apres l'AIC est le modele avec l'effet jour
+
+Nous allons garder ce modele pour la suite de l'analyse afin de tester les variables environnementales
+
+On rajoute les variables environnementales dans nos modeles
+
+```{r}
+#standartisation des variables explicatives continues
+Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
+```
+
+```{r}
+m_temp_7 <- glm(nombre_min ~ julian + temp_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_temp_31 <- glm(nombre_min ~ julian + temp_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_31<- glm(nombre_min ~ julian + pluie_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_temp_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j +
+                        temp_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
+                        temp_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
+```
+
+> La comparaison des modèles à l’aide de l’AIC montre que l’ajout de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle, contrairement aux variables de température qui n’apportent pas d’amélioration supplémentaire.
+
+Les paramètres estimés indiquent que :
+
+-   La pluie moyenne glissante sur 7 jours a un effet négatif significatif sur l’abondance des talèves (β = -0.566, p =0.014). Donc uneaugemtation de la quantité de pluie engendre une diminution ou du nombre d’individus de blongios dans la reserve
+
+-   Le jour julien présente un effet négatif significatif (β = −0.357 p = 0.039), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
+
+    Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 166,96 contre une déviance nulle de 166.96), avec un AIC de 252.79.
