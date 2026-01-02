@@ -1119,3 +1119,93 @@ m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_31j 
 
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
+
+## 6.2 Analyse Blongios
+
+```{r}
+Protocole_SuiviBlongios <- process_protocole %>%
+  filter(
+      nom_vernaculaire == "Blongios nain, Butor blongios"
+  )
+
+```
+
+```{r}
+# Preparation des variables ( standardisation )
+Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
+Protocole_SuiviBlongios$julian <- scale(as.numeric(Protocole_SuiviBlongios$julian))
+Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
+```
+
+```{r}
+#  Modèle dans le temps 
+# y ~ Pois ( lambda)
+
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviBlongios)
+
+
+modele_jour <- glm(nombre_min ~ julian, 
+                   data = Protocole_SuiviBlongios, 
+                   family = poisson)
+
+
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
+                         data = Protocole_SuiviBlongios, 
+                         family = poisson)
+
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
+                         data = Protocole_SuiviBlongios, 
+                         family = poisson)
+
+
+
+summary(modele_annee)
+summary(modele_jour)
+summary(modele_annee_jour)
+summary(modele_anneejour)
+
+AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
+
+```
+
+## Interprétation
+
+Le meilleur modele d'apres l'AIC est le modele avec l'effet jour
+
+Nous allons garder ce modele pour la suite de l'analyse afin de tester les variables environnementales
+
+On rajoute les variables environnementales dans nos modeles
+
+```{r}
+#standartisation des variables explicatives continues
+Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
+```
+
+```{r}
+m_temp_7 <- glm(nombre_min ~ julian + temp_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_temp_31 <- glm(nombre_min ~ julian + temp_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_31<- glm(nombre_min ~ julian + pluie_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_temp_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j +
+                        temp_moy_glissante_7j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
+                        temp_moy_glissante_31j,
+          data = Protocole_SuiviBlongios, family = poisson)
+
+AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
+```
