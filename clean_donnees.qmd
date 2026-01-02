@@ -237,8 +237,6 @@ View(données_2013_2025)
 
 # étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignesdu tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
-environnement_daily <- read_csv("data/pro/environnement_daily.csv")
-
 environnement_daily <- environnement_daily %>%
   full_join(
     données_2013_2025 %>% select(Date, julian),
@@ -275,7 +273,7 @@ environnement_daily <- environnement_daily %>%
     temp_moy_glissante_31j = slide_dbl(
       temperature,
       mean,
-      .before = 30,
+      .before = 31,
       .after = 0,
       .complete = TRUE,
       na.rm = TRUE
@@ -288,7 +286,7 @@ environnement_daily <- environnement_daily %>%
     temp_moy_glissante_7j = slide_dbl(
       temperature,
       mean,
-      .before = 6,
+      .before = 7,
       .after = 0,
       .complete = TRUE,
       na.rm = TRUE
@@ -301,7 +299,7 @@ environnement_daily <- environnement_daily %>%
     pluie_moy_glissante_31j = slide_dbl(
       pluie_1h,
       mean,
-      .before = 30,
+      .before = 31,
       .after = 0,
       .complete = TRUE,
       na.rm = TRUE
@@ -313,7 +311,7 @@ environnement_daily <- environnement_daily %>%
     pluie_moy_glissante_7j = slide_dbl(
       pluie_1h,
       mean,
-      .before = 30,
+      .before = 7,
       .after = 0,
       .complete = TRUE,
       na.rm = TRUE
