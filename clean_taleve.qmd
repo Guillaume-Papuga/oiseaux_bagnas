@@ -233,8 +233,6 @@ AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
 ```
 
-## Interprétation
-
 La sélection de modèle par l'AIC a désigné la combinaison des effets temporels (année et jour julien) comme structure optimale. Ce modèle servira de base à notre analyse pour tester l'apport des variables environnementales, telles que la pluviométrie, sur l'abondance des individus.
 
 ## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
