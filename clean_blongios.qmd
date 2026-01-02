@@ -179,7 +179,13 @@ leaflet() %>%
 
 ##2 . Modèle de présence/absence
 
-##3 . Modèle d'abondance
+## 3 . Modèle d'abondance
+
+Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
+
+## 3.1 Modèle d'abondance en fonction du temps
+
+Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
 Protocole_SuiviBlongios <- process_protocole %>%
@@ -192,7 +198,7 @@ Protocole_SuiviBlongios <- process_protocole %>%
 ```{r}
 # Preparation des variables ( standardisation )
 Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
-Protocole_SuiviBlongios$julian <- scale(as.numeric(Protocole_SuiviBlongios$julian))
+Protocole_SuiviBlongios$julian <- as.numeric(scale(Protocole_SuiviBlongios$julian))
 Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
 ```
 
@@ -231,18 +237,16 @@ AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
 ## Interprétation
 
-Le meilleur modele d'apres l'AIC est le modele avec l'effet jour
+La sélection par l'AIC indique que le modèle incluant l'effet du jour julien est le plus performant. Nous retenons cette structure de base pour la suite des analyses, afin d'y intégrer et de tester l'influence des variables environnementales.
 
-Nous allons garder ce modele pour la suite de l'analyse afin de tester les variables environnementales
-
-On rajoute les variables environnementales dans nos modeles
+## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
 
 ```{r}
-#standartisation des variables explicatives continues
-Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
-Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
+# Nettoyage des variables (on force le passage de matrice à vecteur simple)
+Protocole_SuiviBlongios$temp_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviBlongios$temp_moy_glissante_31j))
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviBlongios$temp_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
 ```
 
 ```{r}
@@ -269,7 +273,7 @@ m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
 
-> La comparaison des modèles à l’aide de l’AIC montre que l’ajout de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle, contrairement aux variables de température qui n’apportent pas d’amélioration supplémentaire.
+> La comparaison des modèles par l’AIC montre que l’intégration de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
 
 Les paramètres estimés indiquent que :
 
@@ -278,3 +282,44 @@ Les paramètres estimés indiquent que :
 -   Le jour julien présente un effet négatif significatif (β = −0.357 p = 0.039), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
 
     Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 166,96 contre une déviance nulle de 166.96), avec un AIC de 252.79.
+
+-   La fonction pour trouver l'abondance du blongios en fonction de la pluie et des jours est :
+
+    log(y) = -1.9136 -03572(julian\[i\]) - 0.5659(pluie\[i\])
+
+    ```{r}
+    #  Création d'un graphique de la fonction predite ; nombre d'individus en fonction de la pluie ( donc on fixe les jours pour avoir seulement l'effet pluie)
+    data_pred <- data.frame(
+      pluie_moy_glissante_7j = seq(min(Protocole_SuiviBlongios$pluie_moy_glissante_7j), 
+    max(Protocole_SuiviBlongios$pluie_moy_glissante_7j), 
+                                   length.out = 100),
+      julian = 0
+    )
+
+    predictions <- predict(m_pluie_7, newdata = data_graph, type = "link", se.fit = TRUE)
+
+    data_pred$fit <- exp(predictions$fit)
+    data_pred$ucl <- exp(predictions$fit + 1.96 * predictions$se.fit)
+    data_pred$lcl <- exp(predictions$fit - 1.96 * predictions$se.fit)
+
+    # Le Graphique
+    ggplot() +
+      geom_ribbon(data = data_graph, aes(x = pluie_moy_glissante_7j, ymin = lcl, ymax = ucl), 
+                  fill = "blue", alpha = 0.1) +
+
+      geom_jitter(data = Protocole_SuiviBlongios, 
+                  aes(x = pluie_moy_glissante_7j, y = nombre_min, color = "Observations"), 
+                  alpha = 0.5, width = 0.05, height = 0.05) +
+      geom_line(data = data_graph, 
+                aes(x = pluie_moy_glissante_7j, y = fit, color = "Modèle GLM"), 
+                size = 1) +
+      scale_color_manual(name = "Légende", 
+                         values = c("Observations" = "orange", "Modèle GLM" = "blue")) +
+      
+      labs(
+        title = "Relation entre Pluie et Abondance de Blongios",
+        x = "Pluie moyenne (standardisée)",
+        y = "Nombre d'individus"
+      ) +
+      theme_minimal()
+    ```
