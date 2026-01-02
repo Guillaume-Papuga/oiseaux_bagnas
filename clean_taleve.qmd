@@ -190,7 +190,7 @@ Protocole_SuiviTaleve <- process_protocole %>%
 ```{r}
 # Preparation des variables ( standardisation )
 Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$julian.x <- scale(as.numeric(Protocole_SuiviTaleve$julian.x))
+Protocole_SuiviTaleve$julian <- scale(as.numeric(Protocole_SuiviTaleve$julian))
 Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
 ```
 
@@ -203,16 +203,16 @@ modele_annee <- glm(nombre_min ~ annee2,
                     data = Protocole_SuiviTaleve)
 
 
-modele_jour <- glm(nombre_min ~ julian.x, 
+modele_jour <- glm(nombre_min ~ julian, 
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
 
 
-modele_annee_jour <- glm(nombre_min ~ annee2 + julian.x, 
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
-modele_anneejour <- glm(nombre_min ~ annee2 * julian.x, 
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
@@ -226,6 +226,12 @@ summary(modele_anneejour)
 AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
 ```
+
+::: callout-note
+:::
+
+::: callout-note
+:::
 
 ::: callout-note
 ## Interprétation
@@ -246,39 +252,39 @@ Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_Suiv
 ```
 
 ```{r}
-m_temp_7 <- glm(nombre_min ~ annee2 * julian.x + temp_moy_glissante_7j,
+m_temp_7 <- glm(nombre_min ~ annee2 * julian + temp_moy_glissante_7j,
           data = Protocole_SuiviTaleve, family = poisson)
 
-m_temp_31 <- glm(nombre_min ~ annee2 * julian.x + temp_moy_glissante_31j,
+m_temp_31 <- glm(nombre_min ~ annee2 * julian + temp_moy_glissante_31j,
           data = Protocole_SuiviTaleve, family = poisson)
 
-m_pluie_7 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_7j,
+m_pluie_7 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_7j,
           data = Protocole_SuiviTaleve, family = poisson)
 
-m_pluie_31<- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_31j,
+m_pluie_31<- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_31j,
           data = Protocole_SuiviTaleve, family = poisson)
 
-m_pluie_temp_7 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_7j +
+m_pluie_temp_7 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_7j +
                         temp_moy_glissante_7j,
           data = Protocole_SuiviTaleve, family = poisson)
 
-m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian.x + pluie_moy_glissante_31j +
+m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_31j +
                         temp_moy_glissante_31j,
           data = Protocole_SuiviTaleve, family = poisson)
 
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
 
-> La comparaison des modèles à l’aide de l’AIC montre que l’ajout de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle, contrairement aux variables de température qui n’apportent pas d’amélioration supplémentaire.
+> La comparaison des modèles à l’aide de l’AIC montre que l’ajout de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle, contrairement aux variables de température qui n’apportent pas d’amélioration supplémentaire.
 
 Les paramètres estimés indiquent que :
 
--   La pluie moyenne glissante sur 7 jours a un effet négatif significatif sur l’abondance des talèves (β = −0.233, p = 0.023). Une augmentation de la pluie récente est associée à une diminution du nombre d’individus observés
+-   La pluie moyenne glissante sur 31 jours n'a pas d'effet négatif significatif sur l’abondance des talèves (β = −0.179, p =0.08). Donc une variation de la quantité de pluie entre les mois n'influence pas une diminution ou augmentation du nombre d’individus
 
 -   L’année a un effet positif significatif sur l’abondance (β = 0.155, p \< 0.001), suggérant une augmentation progressive du nombre de talèves au cours des années.
 
 -   Le jour julien présente un effet négatif significatif (β = −0.569, p = 0.002), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
 
--   L’interaction entre l’année et le jour julien est faiblement positive mais non significative (β = 0.051, p = 0.071), suggérant que la dynamique saisonnière varie peu d’une année à l’autre.
+-   L’interaction entre l’année et le jour julien est faiblement positive et significative (β = 0.059, p = 0.034), suggérant que la dynamique saisonnière varie peu d’une année à l’autre.
 
-    Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 306.2 contre une déviance nulle de 354.2), avec un AIC de 543.1.
+    Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 308.28 contre une déviance nulle de 354.24), avec un AIC de 545.09.
