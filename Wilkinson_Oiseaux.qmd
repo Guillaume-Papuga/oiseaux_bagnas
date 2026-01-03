@@ -1,5 +1,5 @@
-
 ## R code For Geographical coordinates cleaning and processing
+
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -63,8 +63,8 @@ coord_summary <- bird_data %>%
 
 ```
 
+## R code for hydrological data processing
 
-## R code for Binomial GLM
 ```{r}
 
 ### Importe les packages
@@ -144,3 +144,170 @@ write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FA
 
 ```
 
+## R code for binomial GLM
+
+### Importation of necessary datasets
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(broom)
+
+## Importation des données
+BirdDataProtocol <- read.csv("data/pro/process_protocole.csv", sep = ",")
+BirdDataProtocol$nombre_min <- ifelse(BirdDataProtocol$nombre_min > 0, 1, 0)
+HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+```
+
+## BLONGIOS NAIN
+
+```{r}
+
+## colonnes à garder
+cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
+
+## pas de modèle car aucune donnée
+Butor_etoile <- BirdDataProtocol %>%
+  filter(nom_vernaculaire == "Butor étoilé") %>%
+  select(all_of(cols_keep))
+
+
+## modèle pour le blongios nain
+## filtre les données pour le blongios nain
+Blongios_nain <- BirdDataProtocol %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Blongios_nain$date_debut <- as.Date(Blongios_nain$date_debut, format = "%Y-%m-%d")
+Blongios_nain$julian_day <- as.numeric(Blongios_nain$date_debut)
+Blongios_nain$julian_day2 <- Blongios_nain$julian_day^2
+
+## ajoute les données hydrologiques au data frame
+Blongios_nain$annee <- as.integer(format(Blongios_nain$date_debut, "%Y"))
+Blongios_nain$mois <- as.integer(format(Blongios_nain$date_debut, "%m"))
+Blongios_nain <- merge(Blongios_nain, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
+## Modèle GLM avec la présence du blongios en fonction du temps
+glm_blongios_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Blongios_nain)
+summary(glm_blongios_temps)
+
+## Modèles GLM avec la présence du blongios en fonction des conditions hyrdoologiques
+glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
+summary(glm_blongios_hydro)
+
+## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
+glm_blongios_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
+summary(glm_blongios_temps_hydro)
+
+
+## TEST d'un graph qui montre la probabilité prédite de Blongios suivant l'assec qu'il y a eu la semaine précèdente
+
+# Crée un dataframe pour prédictions par AssecT_1
+pred_assec <- data.frame(
+  AssecT_1 = unique(Blongios_nain$AssecT_1))
+
+# On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
+pred_assec$ProfondeurMoyenne <- mean(Blongios_nain$ProfondeurMoyenne, na.rm = TRUE)
+pred_assec$julian_day <- mean(Blongios_nain$julian_day, na.rm = TRUE)
+
+# Prédictions de probabilité
+pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
+
+# Plot
+ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    x = "Assec de l'année précédente",
+    y = "Probabilité prédite de présence",
+    title = "Effet de l'Assec sur la présence du Blongios nain"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+```
+
+Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)
+
+## TALEVE SULTANE
+
+```{r}
+
+## colonnes à garder
+cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
+
+## modèle pour la talève sultane
+## filtre les données pour la talève sultane
+Taleve_sultane <- BirdDataProtocol %>%
+  filter(nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Taleve_sultane$date_debut <- as.Date(Taleve_sultane$date_debut, format = "%Y-%m-%d")
+Taleve_sultane$julian_day <- as.numeric(Taleve_sultane$date_debut)
+Taleve_sultane$julian_day2 <- Taleve_sultane$julian_day^2
+
+## ajoute les données hydrologiques au data frame taleve_sultane
+Taleve_sultane$annee <- as.integer(format(Taleve_sultane$date_debut, "%Y"))
+Taleve_sultane$mois <- as.integer(format(Taleve_sultane$date_debut, "%m"))
+Taleve_sultane <- merge(Taleve_sultane, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
+## Modèle GLM avec la présence de la talève en fonction du temps
+glm_taleve_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Taleve_sultane)  
+summary(glm_taleve_temps)
+
+## Modèles GLM avec la présence de la talève en fonction de ls conditions hyrdoologiques
+glm_taleve_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
+summary(glm_taleve_hydro)
+
+## Modèles GLM avec la présence de la talève en fonction du temps et des conditions hydrologiques
+glm_taleve_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
+summary(glm_taleve_temps_hydro)
+
+
+library(ggplot2)
+
+ggplot(Taleve_sultane, aes(x = ProfondeurMoyenne, y = nombre_min)) +
+  geom_jitter(height = 0.02, width = 0, alpha = 0.5, color = "blue") +
+  stat_smooth(method = "glm", method.args = list(family = binomial),
+              formula = y ~ x, color = "red", se = TRUE) +
+  labs(x = "Profondeur moyenne (m)", y = "Présence (0/1)",
+       title = "Effet de la profondeur sur la présence de la Talève sultane") +
+  theme_minimal()
+
+library(ggplot2)
+library(dplyr)
+
+# Crée une grille de profondeur pour prédiction
+depth_seq <- seq(
+  min(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
+  max(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
+  length.out = 100
+)
+
+# Crée un dataframe pour prédictions
+pred_grid <- data.frame(
+  ProfondeurMoyenne = depth_seq,
+  julian_day = mean(Taleve_sultane$julian_day, na.rm = TRUE),   # On fixe le temps à la moyenne
+  AssecT_1 = "non"                                             # On fixe AssecT_1 à la catégorie de référence
+)
+
+# Prédictions de probabilité
+pred_grid$prob <- predict(glm_taleve_temps_hydro, newdata = pred_grid, type = "response")
+
+# Heatmap
+ggplot(pred_grid, aes(x = ProfondeurMoyenne, y = 1, fill = prob)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "steelblue", name = "Probabilité") +
+  labs(x = "Profondeur moyenne (m)", y = "", 
+       title = "Probabilité prédite de présence de la Talève sultane") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+```
+
+Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).
