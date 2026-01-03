@@ -96,7 +96,6 @@ Hydro_moyenne <- HydrologicDataGrandBagnas %>%
     .groups = "drop"    # <--- important pour éviter des regroupements inutiles
   )
 
-
 ### Code une variable Assec (mois par mois) et AssecT (niveau le plus extreme de l'année) 
 Hydro_moyenne <- Hydro_moyenne %>%
   mutate(
@@ -123,16 +122,12 @@ Assec_annuel <- Hydro_moyenne %>%
   bind_rows(tibble(Annee = 2014, AssecT = "non")) %>%
   filter(Annee != 2026) %>%                             
   arrange(Annee) %>%
-  mutate(
-    AssecT_1 = lag(AssecT),
-    AssecT_1 = if_else(Annee == 2014, "non", AssecT_1))
-
-
-Assec_annuel <- Assec_annuel %>%
+  mutate(AssecT_1 = lag(AssecT),
+         AssecT_1 = if_else(Annee == 2014, "non", AssecT_1))%>%
   group_by(Annee) %>%
-  slice(1) %>%   # garde la première ligne si doublons
+  slice(1) %>%   
   ungroup()
-### Intègre AssecT_1 dans Hydro_moyenne
+
 Hydro_moyenne <- Hydro_moyenne %>%
   left_join(
     Assec_annuel %>% select(Annee, AssecT_1),
@@ -140,8 +135,12 @@ Hydro_moyenne <- Hydro_moyenne %>%
 
 Hydro_moyenne <- Hydro_moyenne[-c(4,5,6)]
 
-Hydro_moyenne <- Hydro_moyenne %>%
+DataHydroBagnas <- Hydro_moyenne %>%
   mutate(ProfondeurMoyenne = if_else(is.na(ProfondeurMoyenne), 0, ProfondeurMoyenne))
+
+## Enregistre le tableau Hydro_moyenne en csv dans le dossier pro
+
+write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 
 ```
 
