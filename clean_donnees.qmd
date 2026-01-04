@@ -4,11 +4,29 @@ format: html
 editor: visual
 ---
 
+#Charger les données et les library
+
+```{r setup, message=FALSE, warning=FALSE}
+
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(leaflet)
+library(slider)
+```
+
 ## 1. Rassembler les deux tableaux de données
 
 a)  récupérer les tableaux de données brute.
 
-```{r}
+```{r recup, message=FALSE, warning=FALSE}
+
 #charger le chemin d'accès : à adapter à votre ordinateur 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas")
 
@@ -23,7 +41,7 @@ raw_data_2 <- read_delim(
 
 ```
 
-Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+#Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 
 ```{r}
 
@@ -121,49 +139,48 @@ write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/da
 
 ##3. Les données environnementales
 
-```{r}
-#chemin pour aller chercher les données environnementales, à changer selon l'ordinateur
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro")
+```{r data_enviro, message=FALSE, warning=FALSE}
+#il faut aller chercher les données environnementales
 
 #récuperer les csv bruts pour chaque année 
-file_2013 <- read_delim("2013.csv", delim = ";", 
+file_2013 <- read_delim("data_enviro/2013.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
 
-file_2014 <- read_delim("2014.csv", delim = ";", 
+file_2014 <- read_delim("data_enviro/2014.csv", delim = ";", 
                        escape_double = FALSE, trim_ws = TRUE, 
                        skip = 4)
-file_2015 <- read_delim("2015.csv", delim = ";", 
+file_2015 <- read_delim("data_enviro/2015.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2016 <- read_delim("2016.csv", delim = ";", 
+file_2016 <- read_delim("data_enviro/2016.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2017 <- read_delim("2017.csv", delim = ";", 
+file_2017 <- read_delim("data_enviro/2017.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2018 <- read_delim("2018.csv", delim = ";", 
+file_2018 <- read_delim("data_enviro/2018.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2019 <- read_delim("2019.csv", delim = ";", 
+file_2019 <- read_delim("data_enviro/2019.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2020 <- read_delim("2020.csv", delim = ";", 
+file_2020 <- read_delim("data_enviro/2020.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2021 <- read_delim("2021.csv", delim = ";", 
+file_2021 <- read_delim("data_enviro/2021.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2022 <- read_delim("2022.csv", delim = ";", 
+file_2022 <- read_delim("data_enviro/2022.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2023 <- read_delim("2023.csv", delim = ";", 
+file_2023 <- read_delim("data_enviro/2023.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2024 <- read_delim("2024.csv", delim = ";", 
+file_2024 <- read_delim("data_enviro/2024.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2025 <- read_delim("2025.csv", delim = ";", 
+file_2025 <- read_delim("data_enviro/2025.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
 
@@ -217,7 +234,9 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 
 
 ```
+
 Dans le tableau des données environnementales, il manque des jours, on fait donc des moyennes glissantes pour créer les données (car 1 ou 2 jours consécutif manquant maximum). Il faut donc d'abord créer les lignes des jours puis créer les données manquantes.
+
 ```{r}
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
@@ -233,7 +252,7 @@ données_2013_2025 <- data.frame(
 
 données_2013_2025$julian = yday(données_2013_2025$Date)
 
-View(données_2013_2025)
+
 
 # étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
@@ -326,19 +345,19 @@ process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
 ```
 
-##4. Les données hydro
 
-```{r}
+##4. Les données hydro
+il faut rajouter le data frame raw dans le guithub avant de pouvoir faire tourner le code. 
+
+
 ### On importe les packages
-library(ggplot2)
-library(dplyr)
-library(lubridate)
 
 
 ### Importation des données
 BirdData <- read.csv("data/pro/process_protocole.csv", sep = ",")
 EnvironmentalData <- read.csv("data/pro/environnement_daily.csv", sep = ",")
 HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
+
 
 #on sélectionne les colonnes qui nous interessent dans le data frame hydro et on remet les données sous le bon format et les données après 2013
 HydrologicDataGrandBagnas <- HydrologicData %>%
@@ -406,7 +425,6 @@ DataHydroBagnas <- Hydro_moyenne %>%
 
 write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 
-```
 
 
 ## 5. Analyses exploratoires
@@ -415,7 +433,7 @@ write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FA
 
 #### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
 
-```{r}
+```{r carto, message=FALSE, warning=FALSE}
 #chargement des library  
 library(leaflet)
 library(sf)
