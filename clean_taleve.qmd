@@ -368,10 +368,10 @@ ggplot(pred_grid, aes(x = ProfondeurMoyenne, y = 1, fill = prob)) +
         axis.ticks.y = element_blank())
 
 ```
+
 ##2.1 Interpretation
 
 Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).
-
 
 ## 3 . Modèle d'abondance
 
@@ -484,3 +484,187 @@ Les paramètres estimés indiquent que :
 -   La fonction pour trouver l'abondance du blongios en fonction de la pluie , de l,'année et des jours est :
 
     log(y) = -1.48879 + 0.15277(annee2\[i\]) - 0.59216 (julian\[i\]) -0.17924(pluie\[i\]) + 0.05917(annee\[i\]\*julian\[i\])
+
+graphes probabilité de détection par année
+
+```{r}
+#========================
+# LIBRAIRIES
+#========================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(lme4)
+
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION  # garder uniquement les lignes protocolées de talève
+#========================
+process_data <- process_data %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
+  mutate(
+    presence   = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee      = factor(lubridate::year(date_debut)),  # année en facteur
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
+  )
+
+
+# ---- MODELE GLM ----
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee,
+  data = process_data,
+  family = binomial
+)
+
+# ---- GRILLE DE PREDICTION (PAR ANNEE) ----
+newdat <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    .groups = "drop"
+  ) %>%
+  unnest(j_julien) %>%
+  mutate(j_julien2 = j_julien^2)
+
+# ---- PREDICTION ----
+newdat$prob_detect <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "response"
+)
+
+# ---- GRAPHE ----
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee)) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de détection",
+    color = "Année"
+  ) +
+  theme_minimal()
+
+
+```
+
+quelles variables font le meilleur glm (préparation au n mixture)
+
+```{r}
+
+
+#========================
+# LIBRAIRIES
+#========================
+library(dplyr)
+library(lubridate)
+
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION
+#========================
+process_data <- process_data %>%
+  mutate(
+    presence = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee = factor(year(date_debut)),
+    j_julien = yday(date_debut),
+    j_julien2 = j_julien^2,
+    mois = factor(month(date_debut, label = TRUE, abbr = FALSE)),
+    nom_lieu = factor(nom_lieu)
+  ) %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu",
+    as.numeric(as.character(annee)) > 2013
+  )
+
+#========================
+# MODELES CANDIDATS
+#========================
+
+# Modèle nul
+m0 <- glm(presence ~ 1,
+          data = process_data,
+          family = binomial)
+
+# Effet DATE (toujours j_julien + j_julien2)
+m_date <- glm(presence ~ j_julien + j_julien2,
+              data = process_data,
+              family = binomial)
+
+# Effet SITE
+m_site <- glm(presence ~ nom_lieu,
+              data = process_data,
+              family = binomial)
+
+# Effet ANNEE
+m_annee <- glm(presence ~ annee,
+               data = process_data,
+               family = binomial)
+
+# DATE + SITE
+m_date_site <- glm(presence ~ j_julien + j_julien2 + nom_lieu,
+                   data = process_data,
+                   family = binomial)
+
+# DATE + ANNEE
+m_date_annee <- glm(presence ~ j_julien + j_julien2 + annee,
+                    data = process_data,
+                    family = binomial)
+
+# SITE + ANNEE
+m_site_annee <- glm(presence ~ nom_lieu + annee,
+                    data = process_data,
+                    family = binomial)
+
+# DATE + SITE + ANNEE 
+m_full <- glm(presence ~ j_julien + j_julien2 + nom_lieu + annee,
+              data = process_data,
+              family = binomial)
+
+#========================
+# COMPARAISON AIC
+#========================
+aic_tab <- AIC(
+  m0,
+  m_date,
+  m_site,
+  m_annee,
+  m_date_site,
+  m_date_annee,
+  m_site_annee,
+  m_full
+)
+
+print(aic_tab)
+
+#========================
+# MEILLEUR MODELE
+#========================
+best_model <- list(
+  m0,
+  m_date,
+  m_site,
+  m_annee,
+  m_date_site,
+  m_date_annee,
+  m_site_annee,
+  m_full
+)[[which.min(aic_tab$AIC)]]
+
+summary(best_model)
+
+```
