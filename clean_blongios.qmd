@@ -235,7 +235,7 @@ Opportuniste_Blongios <- Opportuniste_Blongios %>%
     date = as.Date(heure_debut)
   )
 
-
+ 
 Opportuniste_Blongios <- Opportuniste_Blongios  %>%
   mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
   filter(format(heure_debut, "%H:%M:%S") != "00:00:00")

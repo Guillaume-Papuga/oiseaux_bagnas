@@ -416,7 +416,7 @@ write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FA
 #### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
 
 ```{r}
-#chargement des library 
+#chargement des library  
 library(leaflet)
 library(sf)
 library(RColorBrewer) 

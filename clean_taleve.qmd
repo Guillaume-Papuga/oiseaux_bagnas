@@ -260,7 +260,7 @@ data_plot_h <- heures_jour %>%
     `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
     heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
   )
-
+ 
 ### Barplot
 
 ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
