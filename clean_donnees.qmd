@@ -217,7 +217,7 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 
 
 ```
-
+Dans le tableau des données environnementales, il manque des jours, on fait donc des moyennes glissantes pour créer les données (car 1 ou 2 jours consécutif manquant maximum). Il faut donc d'abord créer les lignes des jours puis créer les données manquantes.
 ```{r}
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
@@ -235,7 +235,7 @@ données_2013_2025$julian = yday(données_2013_2025$Date)
 
 View(données_2013_2025)
 
-# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignesdu tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
 environnement_daily <- environnement_daily %>%
   full_join(
@@ -265,7 +265,7 @@ résumé_jours_NA = environnement_daily %>%
 ### 3.2 Rajout des moyennes glissantes
 
 ```{r}
-# On calcule la variable temperatuere et pluie moyenne glissante sur 31 jours 
+# On calcule la variable température et pluie moyenne glissante sur 31 jours 
 
 environnement_daily <- environnement_daily %>%
   arrange(Date) %>%
@@ -328,6 +328,87 @@ process_protocole = process_protocole %>%
 
 ##4. Les données hydro
 
+```{r}
+### On importe les packages
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+
+### Importation des données
+BirdData <- read.csv("data/pro/process_protocole.csv", sep = ",")
+EnvironmentalData <- read.csv("data/pro/environnement_daily.csv", sep = ",")
+HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
+
+#on sélectionne les colonnes qui nous interessent dans le data frame hydro et on remet les données sous le bon format et les données après 2013
+HydrologicDataGrandBagnas <- HydrologicData %>%
+  select(Station, Date.Releve, Heure, Salinite, Temperature, Niveau.Ngf, Niveau.Relatif)%>%
+  mutate(Profondeur = (Niveau.Ngf+0.27),
+         Date.Releve = as.Date(Date.Releve, format = "%d/%m/%Y"),
+         Annee = as.integer(format(Date.Releve, "%Y")),
+         Mois = format(Date.Releve, "%m"),
+         Jour = yday(Date.Releve))%>%
+  filter(Station == "Etangs du Grand Bagnas - TB5 centre",
+         Annee > 2013)
+
+### Calcule la profondeur et l'altitude moyenne (de l'eau) mensuelle
+Hydro_moyenne <- HydrologicDataGrandBagnas %>%
+  group_by(Annee, Mois) %>%
+  summarise(
+    ProfondeurMoyenne = mean(Profondeur, na.rm = TRUE),
+    AltitudeMoyenne = mean(Niveau.Ngf, na.rm = TRUE),
+    .groups = "drop"    # <--- important pour éviter des regroupements inutiles
+  )
+
+### Code une variable Assec (mois par mois) et AssecT (niveau le plus extreme de l'année) 
+Hydro_moyenne <- Hydro_moyenne %>%
+  mutate(
+    Assec = case_when(
+      is.na(ProfondeurMoyenne) ~ "total",
+      ProfondeurMoyenne < 0.2  ~ "partiel",
+      TRUE                     ~ "non"),
+    Assec_score = case_when(
+      Assec == "non"     ~ 1,
+      Assec == "partiel" ~ 2,
+      Assec == "total"   ~ 3)) %>%
+  group_by(Annee) %>%
+  mutate(
+    AssecT = case_when(
+      max(Assec_score, na.rm = TRUE) == 3 ~ "total",
+      max(Assec_score, na.rm = TRUE) == 2 ~ "partiel",
+      TRUE                                ~ "non")) %>%
+  ungroup() %>%
+  select(-Assec_score)
+
+### Crée une variable AssecT_1 (AssecT de l'année précédente)
+Assec_annuel <- Hydro_moyenne %>%
+  distinct(Annee, AssecT) %>%
+  bind_rows(tibble(Annee = 2014, AssecT = "non")) %>%
+  filter(Annee != 2026) %>%                             
+  arrange(Annee) %>%
+  mutate(AssecT_1 = lag(AssecT),
+         AssecT_1 = if_else(Annee == 2014, "non", AssecT_1))%>%
+  group_by(Annee) %>%
+  slice(1) %>%   
+  ungroup()
+
+Hydro_moyenne <- Hydro_moyenne %>%
+  left_join(
+    Assec_annuel %>% select(Annee, AssecT_1),
+    by = "Annee")
+
+Hydro_moyenne <- Hydro_moyenne[-c(4,5,6)]
+
+DataHydroBagnas <- Hydro_moyenne %>%
+  mutate(ProfondeurMoyenne = if_else(is.na(ProfondeurMoyenne), 0, ProfondeurMoyenne))
+
+## Enregistre le tableau Hydro_moyenne en csv dans le dossier pro
+
+write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
+
+```
+
+
 ## 5. Analyses exploratoires
 
 #### A. les observateurs Script d'Émile
@@ -335,7 +416,7 @@ process_protocole = process_protocole %>%
 #### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
 
 ```{r}
-#chargement des library (plus que necessaire : il faut que j'en enlève)
+#chargement des library 
 library(leaflet)
 library(sf)
 library(RColorBrewer) 
@@ -356,9 +437,8 @@ Cartographie des sites d'observation/écoute des 3 espèces. Tous types de donn�
 
 ```{r}
 
-#1 : tous les sites 
 
-#2 : les sites du protocole :
+#1 : les sites du protocole :
 #on va chercher le csv process_protocole dans l'ordinateur
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
 
@@ -377,12 +457,5 @@ leaflet() %>%
     popup = ~nom_lieu  #quand on appuie sur les point de la carte le nom des sites du protocole apparraissent 
   ) %>%
   setView(lng = 3.3, lat = 43.6, zoom = 9)
-
-```
-
-d)  talève
-
-```{r}
-
 
 ```

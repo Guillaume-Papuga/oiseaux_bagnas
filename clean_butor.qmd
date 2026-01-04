@@ -3,7 +3,9 @@ title: "Butor_clean"
 format: html
 editor: visual
 ---
+
 #Charger les données et les library
+
 ```{r}
 
 library(tidyverse) 
@@ -23,7 +25,9 @@ process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/p
 ```
 
 ## 1. analyses exploratoires du Botor
+
 #A- Graphique de présence des Butors par semaine depuis 1990
+
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
 
@@ -118,6 +122,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 ```
 
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
+
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
@@ -151,27 +156,119 @@ leaflet() %>%
 
 ```
 
-#C- Les heures de la journée où sont vu les Butors
 
+#C- Effort journalier du protocole Butor
 ```{r}
+# Données protocolées du Butor
+Protocole_SuiviButor <- Protocole_SuiviButor %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
 
+Protocole_SuiviButor <- Protocole_SuiviButor  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Création d'une table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les observation par heure
+
+obs_heure <- Protocole_SuiviButor %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Protocole_SuiviButor %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Butor (2014-2018)")
 ```
 
-#D- évolution de l'abondance de butor dans le temps
-
+#D- Effort journalier des données opportunistes
 ```{r}
+# Données 
+Opportuniste_Butor <- Opportuniste_Butor %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+Opportuniste_Butor <- Opportuniste_Butor  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Opportuniste_Butor %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Opportuniste_Butor %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations \n opportuniste par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
 
 ```
-
-
-
-##2 . Modèle de présence/absence 
-
-
-##3 . Modèle d'abondance
-
-
-
-
 
 

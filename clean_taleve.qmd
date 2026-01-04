@@ -161,15 +161,123 @@ leaflet() %>%
 
 ```
 
-#C- Les heures de la journée où sont vu les Talèves
+#C- Effort journalier des données protocoles Talève
 
 ```{r}
+# DOnnées 
+Protocole_Taleve <- Protocole_SuiviBlongiosTaleve %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+Protocole_Taleve <- Protocole_Taleve %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
+
+Protocole_Taleve <- Protocole_Taleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Protocole_Taleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Protocole_Taleve %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Talève (2014-2018)")
+
 
 ```
 
-#D- évolution de l'abondance de Talève dans le temps
-
+#D- Effort journalier des données opportunistes Talève
 ```{r}
+# Données 
+Opportuniste_Taleve <- Opportuniste_Taleve %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  )
+
+
+Opportuniste_Taleve <- Opportuniste_Taleve  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23)
+
+### Sommer les obs par heure
+
+obs_heure <- Opportuniste_Taleve %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+obs_heure
+
+### Frequence horaire
+freq_heure <- Opportuniste_Taleve %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+  left_join(freq_heure, by = "heure_debut_tronc") %>%
+  left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    freq = replace_na(freq, 0),
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+  geom_bar(aes(y = freq),
+           stat = "identity",
+           width = 0.8,
+           fill = "orange") +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
+  ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour la Talève (2014-2018)")
+
 
 ```
 
@@ -286,3 +394,79 @@ Les paramètres estimés indiquent que :
 -   La fonction pour trouver l'abondance du blongios en fonction de la pluie , de l,'année et des jours est :
 
     log(y) = -1.48879 + 0.15277(annee2\[i\]) - 0.59216 (julian\[i\]) -0.17924(pluie\[i\]) + 0.05917(annee\[i\]\*julian\[i\])
+
+
+##4. Modèle présence
+
+```{r}
+## filtre les données pour la talève sultane
+Taleve_sultane <- BirdDataProtocol %>%
+  filter(nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Taleve_sultane$date_debut <- as.Date(Taleve_sultane$date_debut, format = "%Y-%m-%d")
+Taleve_sultane$julian_day <- as.numeric(Taleve_sultane$date_debut) #jour julien
+Taleve_sultane$julian_day2 <- Taleve_sultane$julian_day^2 #jour julien carré
+
+## ajoute les données hydrologiques au data frame taleve_sultane
+Taleve_sultane$annee <- as.integer(format(Taleve_sultane$date_debut, "%Y"))
+Taleve_sultane$mois <- as.integer(format(Taleve_sultane$date_debut, "%m"))
+Taleve_sultane <- merge(Taleve_sultane, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
+## Modèle GLM avec la présence de la talève en fonction du temps
+glm_taleve_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Taleve_sultane)  
+summary(glm_taleve_temps)
+
+## Modèles GLM avec la présence de la talève en fonction des conditions hydrologiques
+glm_taleve_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
+summary(glm_taleve_hydro)
+
+## Modèles GLM avec la présence de la talève en fonction du temps et des conditions hydrologiques
+glm_taleve_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
+summary(glm_taleve_temps_hydro)
+
+
+
+ggplot(Taleve_sultane, aes(x = ProfondeurMoyenne, y = nombre_min)) +
+  geom_jitter(height = 0.02, width = 0, alpha = 0.5, color = "blue") +
+  stat_smooth(method = "glm", method.args = list(family = binomial),
+              formula = y ~ x, color = "red", se = TRUE) +
+  labs(x = "Profondeur moyenne (m)", y = "Présence (0/1)",
+       title = "Effet de la profondeur sur la présence de la Talève sultane") +
+  theme_minimal()
+
+
+
+# Crée une grille de profondeur pour prédiction
+depth_seq <- seq(
+  min(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
+  max(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
+  length.out = 100
+)
+
+# Crée un dataframe pour prédictions
+pred_grid <- data.frame(
+  ProfondeurMoyenne = depth_seq,
+  julian_day = mean(Taleve_sultane$julian_day, na.rm = TRUE),   # On fixe le temps à la moyenne
+  AssecT_1 = "non"                                             # On fixe AssecT_1 à la catégorie de référence
+)
+
+# Prédictions de probabilité
+pred_grid$prob <- predict(glm_taleve_temps_hydro, newdata = pred_grid, type = "response")
+
+# Heatmap
+ggplot(pred_grid, aes(x = ProfondeurMoyenne, y = 1, fill = prob)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "steelblue", name = "Probabilité") +
+  labs(x = "Profondeur moyenne (m)", y = "", 
+       title = "Probabilité prédite de présence de la Talève sultane") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+```
+
+##4.1 Interpretation
+
+Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).
