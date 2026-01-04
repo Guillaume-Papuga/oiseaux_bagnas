@@ -1054,3 +1054,291 @@ ggplot() +
   )
 
 ```
+
+
+
+
+
+------------------------------------------------------------------------------
+
+
+
+
+
+#Jsp somme Obs butor au fil des années + jours julien jsp 
+
+
+qwwwwwwwwwwwwww## 1. Rassembler les deux tableaux de données
+
+a)  récupérer les tableaux de données brute.
+
+```{r}
+#charger le chemin d'accès : à adapter à votre ordinateur 
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas")
+
+#charger les données brutes: 2 tableaux
+raw_data<- read_excel("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
+
+raw_data_2 <- read_delim(
+  "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+```
+
+Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+
+```{r}
+
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
+# car le fichier original contenait une date + une heure
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+# mettre en format date les dates de debut et de fin 
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+
+
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+#correction des formats de certaines colonnes
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+# Le fichier brut est en format "dd/mm/YYYY"
+# On convertit proprement en Date (format standard YYYY-MM-DD)
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+
+# La ligne 132 de process_data_2 avait un NA
+# On remplace par la valeur correspondante dans process_data_1 (ligne 720)
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+#création du tableau final avec les 3 espèces et les colonnes dans le bon format. C'est ce tableau qui est par la suite utilisé. 
+process_data = process_data_2
+
+write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+
+```
+
+## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+
+```{r}
+#floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
+process_data$annee = year(floor_date(process_data$date_debut, "year"))
+
+#on filtre pour enlever toutes les données avant 2014 (le début des protocoles)
+# on filtre pour garder les lieux protocolés "ButorTalèveBlongios de 1 à 9 ; on garde uniquement les données Butor 
+process_butor = process_data  %>%
+  filter( nom_vernaculaire == "Butor étoilé")
+
+```
+
+
+
+```{r}
+##### création des lignes pour les jours manquants du tableau environnement_daily
+
+# étape 1 création d'un tableau de 1990 à 2025 avec une variable jour julian
+
+date_debut <- as.Date("1990-11-18")
+date_fin   <- as.Date("2025-10-09")
+
+toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
+
+données_1990_2025 <- data.frame(
+  Date = toutes_dates)
+
+données_1990_2025$julian = yday(données_1990_2025$Date)
+
+View(données_1990_2025)
+
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+
+butor_daily <- process_butor
+
+process_butor$Date <- process_butor$date_debut
+
+butor_daily <- process_butor %>%
+  full_join(
+    données_1990_2025 %>% select(Date, julian),
+    by = "Date"
+  )
+
+```
+
+
+
+
+
+```{r}
+
+obs_annee <- butor_daily %>%
+  group_by(annee) %>%
+  summarize(sum(nombre_min))
+
+### Barplot
+
+ggplot(obs_annee, aes(x = annee)) +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Année") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque année entre 1990 et 2025")
+
+```
+
+# par jour 
+
+```{r}
+
+obs_julian <- butor_daily %>%
+  group_by(julian) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+### Barplot
+
+ggplot(obs_julian, aes(x = julian)) +
+  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Jour julien") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque jour julien entre 1990 et 2025")
+```
+
+
+# faire par jour pour chaque annee 
+
+```{r}
+
+obs_julian <- butor_daily %>%
+  group_by(annee, julian) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+
+graph <- ggplot(obs_julian, aes(x = julian)) +
+  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Jour julien") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque jour julien entre 1990 et 2025")
+
+graph + facet_grid(. ~ annee)
+
+```
+# avec une boucle 
+
+```{r}
+
+# sommer les obsvertions par année et par jour julien
+
+obs_julian <- butor_daily %>%
+  group_by(annee, julian) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+for (a in unique(obs_julian$annee)) {
+
+  graph_annee <- ggplot(
+    obs_julian %>% filter(annee == a),
+    aes(x = julian, y = `sum(nombre_min, na.rm = TRUE)`)
+  ) +
+    geom_col(width = 0.4, fill = "blue") +
+    theme_classic() +
+    scale_y_continuous(expand = c(0, 0)
+    ) +
+    scale_x_continuous(limits = c(1, 365), expand = c(0, 0)) +
+    xlab("Jour julien") +
+    ylab("Nombre d'observations") +
+    ggtitle(paste(
+      "Nombre de butors observés chaque jour julien en", a
+    ))
+
+  print(graph_annee)
+}
+```
+quel interet quand on voit le peu d'obs par ans ??? refaire en gardant tous les jours juliens pour que ce soit plus lisible  
+
+# par année pour chaque sites 
+
+```{r}
+
+obs_site <- butor_daily %>%
+  group_by(annee, nom_lieu) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+
+for (a in unique(obs_site$nom_lieu)) {
+
+  graph_site <- ggplot(
+    obs_site %>% filter(nom_lieu == a),
+    aes(x = annee, y = `sum(nombre_min, na.rm = TRUE)`)
+  ) +
+    geom_col(width = 0.4, fill = "blue") +
+    theme_classic() +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(1990, 2025), expand = c(0, 0)) +
+    xlab("Annee") +
+    ylab("Nombre d'observations") +
+    ggtitle(paste(
+      "Nombre de butors observés chaque année au site", a
+    ))
+
+  print(graph_site)
+}
+
+```
+refaire avec toutes les années à chaque fois pour que ce soit plus lisible
+

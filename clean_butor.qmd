@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-#Charger les données et les library
+# Charger les données et les library
 
 ```{r}
 
@@ -26,7 +26,7 @@ process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/p
 
 ## 1. analyses exploratoires du Botor
 
-#A- Graphique de présence des Butors par semaine depuis 1990
+### A- Graphique de présence des Butors par semaine depuis 1990
 
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
@@ -121,7 +121,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```
 
-#B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
+### B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
 
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
@@ -156,8 +156,8 @@ leaflet() %>%
 
 ```
 
+### C- Effort journalier du protocole Butor
 
-#C- Effort journalier du protocole Butor
 ```{r}
 # Données protocolées du Butor
 Protocole_SuiviButor <- Protocole_SuiviButor %>%
@@ -214,7 +214,8 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Butor (2014-2018)")
 ```
 
-#D- Effort journalier des données opportunistes
+### D- Effort journalier des données opportunistes
+
 ```{r}
 # Données 
 Opportuniste_Butor <- Opportuniste_Butor %>%
@@ -270,5 +271,3 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations \n opportuniste par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
 
 ```
-
-
