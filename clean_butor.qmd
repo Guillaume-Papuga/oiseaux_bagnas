@@ -18,13 +18,14 @@ library(readr)
 library(knitr)
 library(lme4)
 library(leaflet)
+library(sf)
 
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
-process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro")
+process_data <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
 
 ```
 
-## 1. analyses exploratoires du Botor
+## 1. analyses exploratoires pour le Butor
 
 ### A- Graphique de présence des Butors par semaine depuis 1990
 
@@ -125,7 +126,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
-process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+process_protocole <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_protocole.csv")
 
 process_protocole_butor <- process_protocole %>%
   filter(nom_vernaculaire=="Butor étoilé")
@@ -160,6 +161,13 @@ leaflet() %>%
 
 ```{r}
 # Données protocolées du Butor
+
+Protocole_SuiviButor <- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
+      nom_vernaculaire == "Butor étoilé"
+  )
+
 Protocole_SuiviButor <- Protocole_SuiviButor %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -197,7 +205,6 @@ data_plot_h <- heures_jour %>%
 
 ### Barplot
 
-
 ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   geom_bar(aes(y = freq),
            stat = "identity",
@@ -218,6 +225,13 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```{r}
 # Données 
+
+Opportuniste_Butor <- process_data %>%
+  filter(
+    !champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
+      nom_vernaculaire == "Butor étoilé"
+  )
+
 Opportuniste_Butor <- Opportuniste_Butor %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -268,6 +282,154 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Heure de la journée") +
   ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
-  ggtitle("Effort d'échantillonnage et nombre d'observations \n opportuniste par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
+  ggtitle("Effort d'échantillonnage et nombre d'observations \n opportunistes par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
+
+```
+
+### E - Cumule des observations de Butor 
+
+```{r}
+
+# étape 0 création d'une variable année 
+
+#floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
+data_butor$annee = year(floor_date(data_butor$date_debut, "year"))
+
+##### création des lignes pour les jour  manquants du tableau 
+
+# étape 1 création d'un tableau de 1990 à 2025 avec une variable jour julian
+
+date_debut <- as.Date("1990-11-18")
+date_fin   <- as.Date("2025-10-09")
+
+toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
+
+données_1990_2025 <- data.frame(
+  Date = toutes_dates)
+
+données_1990_2025$julian = yday(données_1990_2025$Date)
+
+View(données_1990_2025)
+
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+
+butor_daily <- data_butor
+
+data_butor$Date <- data_butor$date_debut
+
+butor_daily <- data_butor %>%
+  full_join(
+    données_1990_2025 %>% select(Date, julian),
+    by = "Date"
+  )
+
+```
+
+#### a - Cumule par année 
+
+
+```{r}
+
+obs_annee <- butor_daily %>%
+  group_by(annee) %>%
+  summarize(sum(nombre_min))
+
+### Barplot
+
+ggplot(obs_annee, aes(x = annee)) +
+  geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Année") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque année entre 1990 et 2025")
+
+```
+#### b - Cumule par jour julien 
+
+```{r}
+
+obs_julian <- butor_daily %>%
+  group_by(julian) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+### Barplot
+
+ggplot(obs_julian, aes(x = julian)) +
+  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Jour julien") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque jour julien entre 1990 et 2025")
+
+```
+
+#### c - Cumule par jour julien au sein de chaque année 
+
+```{r}
+
+# sommer les obsvertions par année et par jour julien
+obs_julian <- butor_daily %>%
+  group_by(annee, julian) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+# boucle qui permet d'obtenir 1 graph par année 
+for (a in unique(obs_julian$annee)) {
+
+  graph_annee <- ggplot(
+    obs_julian %>% filter(annee == a),
+    aes(x = julian, y = `sum(nombre_min, na.rm = TRUE)`)
+  ) +
+    geom_col(width = 0.4, fill = "blue") +
+    theme_classic() +
+    scale_y_continuous(expand = c(0, 0)
+    ) +
+    scale_x_continuous(limits = c(1, 365), expand = c(0, 0)) +
+    xlab("Jour julien") +
+    ylab("Nombre d'observations") +
+    ggtitle(paste(
+      "Nombre de butors observés chaque jour julien en", a
+    ))
+
+  print(graph_annee)
+}
+```
+
+#### VERIFER QU'IL Y A PAs DE DUPLICATION DE site comme Raph en avait trouvé 
+#### d - Cumule par année pour chaque site (même les sites hors protocole) 
+
+```{r}
+
+# sommer les obsvertions par site et par année
+obs_site <- butor_daily %>%
+  group_by(annee, nom_lieu) %>%
+  summarize(sum(nombre_min, na.rm = TRUE))
+
+# boucle qui permet d'obtenir 1 graph par site 
+for (a in unique(obs_site$nom_lieu)) {
+
+  graph_site <- ggplot(
+    obs_site %>% filter(nom_lieu == a),
+    aes(x = annee, y = `sum(nombre_min, na.rm = TRUE)`)
+  ) +
+    geom_col(width = 0.4, fill = "blue") +
+    theme_classic() +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(1990, 2025), expand = c(0, 0)) +
+    xlab("Annee") +
+    ylab("Nombre d'observations") +
+    ggtitle(paste(
+      "Nombre de butors observés chaque année au site", a
+    ))
+
+  print(graph_site)
+}
 
 ```
