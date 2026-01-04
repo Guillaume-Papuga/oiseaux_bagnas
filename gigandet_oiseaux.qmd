@@ -524,95 +524,53 @@ process_data <- read.csv("process_protocole.csv")
 # PREPARATION  # garder uniquement les lignes protocolées de talève
 #========================
 process_data <- process_data %>%
-  filter(grepl("SuiviBlongiosTalève", champs_additionnels), nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
   mutate(
-    presence = ifelse(nombre_min > 0, 1, 0),
+    presence   = ifelse(nombre_min > 0, 1, 0),
     date_debut = as.Date(date_debut),
-    annee = factor(year(date_debut)),
-    j_julien = yday(date_debut),
-    j_julien2 = j_julien^2,
-    nom_lieu = factor(nom_lieu)
+    annee      = factor(lubridate::year(date_debut)),  # année en facteur
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
   )
 
-#========================
-# MODELE GLM (annee comme effet fixe)
-#========================
+
+# ---- MODELE GLM ----
 modele_phenologie <- glm(
   presence ~ j_julien + j_julien2 + annee,
   data = process_data,
   family = binomial
 )
 
+# ---- GRILLE DE PREDICTION (PAR ANNEE) ----
+newdat <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    .groups = "drop"
+  ) %>%
+  unnest(j_julien) %>%
+  mutate(j_julien2 = j_julien^2)
 
-#========================
-# CREATION GRILLE DE PREDICTION
-#========================
-jours <- unlist(lapply(split(process_data$j_julien, process_data$annee), range))
-
-annees <- unique(process_data$annee)
-
-newdat <- expand.grid(
-  j_julien = jours,
-  annee = annees
-)
-newdat$j_julien2 <- newdat$j_julien^2
-
-#========================
-# PREDICTION DE LA PROBABILITE DE DETECTION
-#========================
+# ---- PREDICTION ----
 newdat$prob_detect <- predict(
   modele_phenologie,
   newdata = newdat,
   type = "response"
 )
 
-
-#========================
-# GRAPHIQUE
-#========================
+# ---- GRAPHE ----
 ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee)) +
-  geom_line(size = 1.2) +
+  geom_line(linewidth = 1) +
   labs(
     x = "Jour julien",
     y = "Probabilité de détection",
     color = "Année"
   ) +
-  theme_minimal() +
-  theme(
-    text = element_text(size = 14),
-    legend.position = "right"
-  )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  theme_minimal()
 
 
 
