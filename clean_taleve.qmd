@@ -223,6 +223,7 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 ```
 
 #D- Effort journalier des données opportunistes Talève
+
 ```{r}
 # Données 
 Opportuniste_Taleve <- Opportuniste_Taleve %>%
@@ -283,6 +284,95 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ##2 . Modèle de présence/absence
 
+```{r}
+
+library(ggplot2)
+library(dplyr)
+library(broom)
+
+## Importation des données
+process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
+process_protocole$nombre_min <- ifelse(process_protocole$nombre_min > 0, 1, 0)
+HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+
+
+## colonnes à garder
+cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
+
+## filtre les données pour la talève sultane
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter(nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Protocole_SuiviTaleve$date_debut <- as.Date(Protocole_SuiviTaleve$date_debut, format = "%Y-%m-%d")
+Protocole_SuiviTaleve$julian_day <- as.numeric(Protocole_SuiviTaleve$date_debut) #jour julien
+Protocole_SuiviTaleve$julian_day2 <- Protocole_SuiviTaleve$julian_day^2 #jour julien carré
+
+## ajoute les données hydrologiques au data frame taleve_sultane
+Protocole_SuiviTaleve$annee <- as.integer(format(Protocole_SuiviTaleve$date_debut, "%Y"))
+Protocole_SuiviTaleve$mois <- as.integer(format(Protocole_SuiviTaleve$date_debut, "%m"))
+Protocole_SuiviTaleve <- merge(Protocole_SuiviTaleve, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
+## Modèle GLM avec la présence de la talève en fonction du temps
+glm_taleve_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Protocole_SuiviTaleve)  
+summary(glm_taleve_temps)
+
+## Modèles GLM avec la présence de la talève en fonction des conditions hydrologiques
+glm_taleve_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviTaleve)
+summary(glm_taleve_hydro)
+
+## Modèles GLM avec la présence de la talève en fonction du temps et des conditions hydrologiques
+glm_taleve_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviTaleve)
+summary(glm_taleve_temps_hydro)
+
+
+
+ggplot(Taleve_sultane, aes(x = ProfondeurMoyenne, y = nombre_min)) +
+  geom_jitter(height = 0.02, width = 0, alpha = 0.5, color = "blue") +
+  stat_smooth(method = "glm", method.args = list(family = binomial),
+              formula = y ~ x, color = "red", se = TRUE) +
+  labs(x = "Profondeur moyenne (m)", y = "Présence (0/1)",
+       title = "Effet de la profondeur sur la présence de la Talève sultane") +
+  theme_minimal()
+
+
+
+# Crée une grille de profondeur pour prédiction
+depth_seq <- seq(
+  min(Protocole_SuiviTaleve$ProfondeurMoyenne, na.rm = TRUE),
+  max(Protocole_SuiviTaleve$ProfondeurMoyenne, na.rm = TRUE),
+  length.out = 100
+)
+
+# Crée un dataframe pour prédictions
+pred_grid <- data.frame(
+  ProfondeurMoyenne = depth_seq,
+  julian_day = mean(Protocole_SuiviTaleve$julian_day, na.rm = TRUE),   # On fixe le temps à la moyenne
+  AssecT_1 = "non"                                             # On fixe AssecT_1 à la catégorie de référence
+)
+
+# Prédictions de probabilité
+pred_grid$prob <- predict(glm_taleve_temps_hydro, newdata = pred_grid, type = "response")
+
+# Heatmap
+ggplot(pred_grid, aes(x = ProfondeurMoyenne, y = 1, fill = prob)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "steelblue", name = "Probabilité") +
+  labs(x = "Profondeur moyenne (m)", y = "", 
+       title = "Probabilité prédite de présence de la Talève sultane") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+
+```
+##2.1 Interpretation
+
+Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).
+
+
 ## 3 . Modèle d'abondance
 
 Cette analyse vise à caractériser la dynamique de la population de **Talève** et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
@@ -292,7 +382,7 @@ Cette analyse vise à caractériser la dynamique de la population de **Talève**
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
-
+process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
 # Filtrer les relevés pour Talève sultane
 Protocole_SuiviTaleve <- process_protocole %>%
   filter(
@@ -394,79 +484,3 @@ Les paramètres estimés indiquent que :
 -   La fonction pour trouver l'abondance du blongios en fonction de la pluie , de l,'année et des jours est :
 
     log(y) = -1.48879 + 0.15277(annee2\[i\]) - 0.59216 (julian\[i\]) -0.17924(pluie\[i\]) + 0.05917(annee\[i\]\*julian\[i\])
-
-
-##4. Modèle présence
-
-```{r}
-## filtre les données pour la talève sultane
-Taleve_sultane <- BirdDataProtocol %>%
-  filter(nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
-  select(all_of(cols_keep))
-
-## ajoute des colonnes pour le jour julien et son effet quadratique
-Taleve_sultane$date_debut <- as.Date(Taleve_sultane$date_debut, format = "%Y-%m-%d")
-Taleve_sultane$julian_day <- as.numeric(Taleve_sultane$date_debut) #jour julien
-Taleve_sultane$julian_day2 <- Taleve_sultane$julian_day^2 #jour julien carré
-
-## ajoute les données hydrologiques au data frame taleve_sultane
-Taleve_sultane$annee <- as.integer(format(Taleve_sultane$date_debut, "%Y"))
-Taleve_sultane$mois <- as.integer(format(Taleve_sultane$date_debut, "%m"))
-Taleve_sultane <- merge(Taleve_sultane, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
-
-## Modèle GLM avec la présence de la talève en fonction du temps
-glm_taleve_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Taleve_sultane)  
-summary(glm_taleve_temps)
-
-## Modèles GLM avec la présence de la talève en fonction des conditions hydrologiques
-glm_taleve_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
-summary(glm_taleve_hydro)
-
-## Modèles GLM avec la présence de la talève en fonction du temps et des conditions hydrologiques
-glm_taleve_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Taleve_sultane)
-summary(glm_taleve_temps_hydro)
-
-
-
-ggplot(Taleve_sultane, aes(x = ProfondeurMoyenne, y = nombre_min)) +
-  geom_jitter(height = 0.02, width = 0, alpha = 0.5, color = "blue") +
-  stat_smooth(method = "glm", method.args = list(family = binomial),
-              formula = y ~ x, color = "red", se = TRUE) +
-  labs(x = "Profondeur moyenne (m)", y = "Présence (0/1)",
-       title = "Effet de la profondeur sur la présence de la Talève sultane") +
-  theme_minimal()
-
-
-
-# Crée une grille de profondeur pour prédiction
-depth_seq <- seq(
-  min(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
-  max(Taleve_sultane$ProfondeurMoyenne, na.rm = TRUE),
-  length.out = 100
-)
-
-# Crée un dataframe pour prédictions
-pred_grid <- data.frame(
-  ProfondeurMoyenne = depth_seq,
-  julian_day = mean(Taleve_sultane$julian_day, na.rm = TRUE),   # On fixe le temps à la moyenne
-  AssecT_1 = "non"                                             # On fixe AssecT_1 à la catégorie de référence
-)
-
-# Prédictions de probabilité
-pred_grid$prob <- predict(glm_taleve_temps_hydro, newdata = pred_grid, type = "response")
-
-# Heatmap
-ggplot(pred_grid, aes(x = ProfondeurMoyenne, y = 1, fill = prob)) +
-  geom_tile() +
-  scale_fill_gradient(low = "white", high = "steelblue", name = "Probabilité") +
-  labs(x = "Profondeur moyenne (m)", y = "", 
-       title = "Probabilité prédite de présence de la Talève sultane") +
-  theme_minimal() +
-  theme(axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
-
-```
-
-##4.1 Interpretation
-
-Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).

@@ -285,6 +285,91 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ##2 . Modèle de présence/absence
 
+```{r}
+
+
+library(ggplot2)
+library(dplyr)
+library(broom)
+
+## Importation des données
+process_data <- read.csv("data/pro/process_protocole.csv", sep = ",")
+process_data$nombre_min <- ifelse(process_data$nombre_min > 0, 1, 0)
+HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+
+
+## colonnes à garder
+cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
+
+## filtre le tableau de données pour le blongios nain
+Protocole_SuiviBlongios <- process_data %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Protocole_SuiviBlongios$date_debut <- as.Date(Protocole_SuiviBlongios$date_debut, format = "%Y-%m-%d")
+Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien 
+Protocole_SuiviBlongios$julian_day2 <- Protocole_SuiviBlongios$julian_day^2 #jour julien au carré
+
+## ajoute les données hydrologiques au data frame des blongios
+Protocole_SuiviBlongios$annee <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%Y"))
+Protocole_SuiviBlongios$mois <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%m"))
+Protocole_SuiviBlongios <- merge(Protocole_SuiviBlongios, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
+
+```
+
+Modèle GLM présence des blongios en fonction du temps
+
+```{r}
+
+## Modèle GLM avec la présence du blongios en fonction du temps
+glm_blongios_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Protocole_SuiviBlongios)
+summary(glm_blongios_temps)
+
+## Modèles GLM avec la présence du blongios en fonction des conditions hydrologiques : la profondeur moyenne de l'eau et l'assec
+glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
+summary(glm_blongios_hydro)
+
+## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
+glm_blongios_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
+summary(glm_blongios_temps_hydro)
+
+
+## TEST d'un graph qui montre la probabilité prédite de Blongios suivant l'assec qu'il y a eu la semaine précèdente
+
+# Crée un dataframe pour prédictions par AssecT_1
+pred_assec <- data.frame(
+  AssecT_1 = unique(Protocole_SuiviBlongios$AssecT_1))
+
+# On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
+pred_assec$ProfondeurMoyenne <- mean(Protocole_SuiviBlongios$ProfondeurMoyenne, na.rm = TRUE)
+pred_assec$julian_day <- mean(Protocole_SuiviBlongios$julian_day, na.rm = TRUE)
+
+# Prédictions de probabilité
+pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
+
+# Plot
+ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
+  geom_col() +
+  scale_fill_brewer(palette = "Set2") +
+  labs(
+    x = "Assec de l'année précédente",
+    y = "Probabilité prédite de présence",
+    title = "Effet de l'Assec sur la présence du Blongios nain"
+  ) +
+  theme_classic() +
+  theme(legend.position = "none")
+```
+
+##2.1 interpretation
+
+Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)
+
+
+
 ## 3 . Modèle d'abondance
 
 Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
@@ -294,6 +379,7 @@ Cette analyse vise à caractériser la dynamique de la population de blongios et
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
+process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
 Protocole_SuiviBlongios <- process_protocole %>%
   filter(
       nom_vernaculaire == "Blongios nain, Butor blongios"
@@ -429,82 +515,3 @@ Les paramètres estimés indiquent que :
       ) +
       theme_minimal()
     ```
-
-
-##4. Modèle présence/absence 
-
-
-```{r}
-#1. préparation des données
-## Importation des données
-BirdDataProtocol <- read.csv("data/pro/process_protocole.csv", sep = ",")
-BirdDataProtocol$nombre_min <- ifelse(BirdDataProtocol$nombre_min > 0, 1, 0)
-HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
-
-
-
-## filtre le tableau de données pour le blongios nain
-Blongios_nain <- BirdDataProtocol %>%
-  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
-  select(all_of(cols_keep))
-
-## ajoute des colonnes pour le jour julien et son effet quadratique
-Blongios_nain$date_debut <- as.Date(Blongios_nain$date_debut, format = "%Y-%m-%d")
-Blongios_nain$julian_day <- as.numeric(Blongios_nain$date_debut) #jour julien 
-Blongios_nain$julian_day2 <- Blongios_nain$julian_day^2 #jour julien au carré
-
-## ajoute les données hydrologiques au data frame des blongios
-Blongios_nain$annee <- as.integer(format(Blongios_nain$date_debut, "%Y"))
-Blongios_nain$mois <- as.integer(format(Blongios_nain$date_debut, "%m"))
-Blongios_nain <- merge(Blongios_nain, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
-
-
-```
-Modèle GLM présence des blongios en fonction du temps
-```{r}
-
-## Modèle GLM avec la présence du blongios en fonction du temps
-glm_blongios_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Blongios_nain)
-summary(glm_blongios_temps)
-
-## Modèles GLM avec la présence du blongios en fonction des conditions hydrologiques : la profondeur moyenne de l'eau et l'assec
-glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
-summary(glm_blongios_hydro)
-
-## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
-glm_blongios_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
-summary(glm_blongios_temps_hydro)
-
-
-## TEST d'un graph qui montre la probabilité prédite de Blongios suivant l'assec qu'il y a eu la semaine précèdente
-
-# Crée un dataframe pour prédictions par AssecT_1
-pred_assec <- data.frame(
-  AssecT_1 = unique(Blongios_nain$AssecT_1))
-
-# On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
-pred_assec$ProfondeurMoyenne <- mean(Blongios_nain$ProfondeurMoyenne, na.rm = TRUE)
-pred_assec$julian_day <- mean(Blongios_nain$julian_day, na.rm = TRUE)
-
-# Prédictions de probabilité
-pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
-
-# Plot
-ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
-  geom_col() +
-  scale_fill_brewer(palette = "Set2") +
-  labs(
-    x = "Assec de l'année précédente",
-    y = "Probabilité prédite de présence",
-    title = "Effet de l'Assec sur la présence du Blongios nain"
-  ) +
-  theme_classic() +
-  theme(legend.position = "none")
-```
-
-##4.1 interpretation 
-
-
-Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)
