@@ -201,13 +201,13 @@ library(lubridate)
 
 # Vérifie que la colonne "date_debut" est bien au format Date
 process_data <- process_data %>%
-  mutate(date_debut = as.Date(date_debut))  # transforme si c'était du texte
+  mutate(date_debut = as.Date(date_debut))  
 
-# Optionnel : enlever "ADENA" si tu ne veux pas la voir
+#  enlever "ADENA" 
 process_data <- process_data %>%
   filter(observateurs != "")
 
-# Optionnel : trier les observateurs par fréquence
+#  trier les observateurs par fréquence
 process_data <- process_data %>%
   mutate(observateurs = forcats::fct_infreq(observateurs))
 
@@ -260,7 +260,7 @@ library(tidyr)
 library(stringr)
 library(stringi)
 
-# 1) Séparation et nettoyage des observateurs (comme tu as déjà fait)
+# 1) Séparation et nettoyage des observateurs 
 data_clean <- process_data %>%
   mutate(observateurs = as.character(observateurs)) %>%
   filter(!is.na(observateurs) & str_to_upper(str_trim(observateurs)) != "ADENA") %>%
@@ -292,6 +292,7 @@ print(observations_par_obs)
 ```
 
 ```{r}
+---- glm avec effets aléatoires---- 
 library(dplyr)
 library(tidyr)
 library(lubridate)
@@ -335,13 +336,13 @@ modele_mois <- glm(presence ~ mois,
 summary(modele_mois)
 
 
-#---- Modèle logistique : presence ~ temps ----
+#----  presence ~ temps ----
 modele_jj <- glm(presence ~ j_julien,
               data = process_data,
               family = binomial)
 summary(modele_jj)
 
-#---- effet aleatoire annee+site ----
+#---- modele jour effet aleatoire annee+site ----
 library(lme4)
 modele_mixed <- glmer(
   presence ~ j_julien + (1 | annee)+ (1 | nom_lieu),   
@@ -350,7 +351,7 @@ modele_mixed <- glmer(
 )
 modele_mixed
 
-#---- glm annee ----
+#---- modele annee effet aleatoire jour ----
 library(lme4)
 modele_mixed <- glmer(
   presence ~ annee + (1 | j_julien),   
@@ -386,6 +387,17 @@ anova(modele_nul, modele_mixed, test = "Chisq")
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 #========================
 # LIBRAIRIES
 #========================
@@ -406,15 +418,14 @@ process_data <- process_data %>%
     date_debut = as.Date(date_debut),
     annee = factor(year(date_debut)),
     j_julien = yday(date_debut),
+    j_julien2 = j_julien^2,
     mois = factor(month(date_debut, label = TRUE, abbr = FALSE)),
-    j_centre = scale(j_julien, center = TRUE, scale = FALSE),
-    j_centre2 = j_centre^2
+    nom_lieu = factor(nom_lieu)
   ) %>%
   filter(
     nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu",
     as.numeric(as.character(annee)) > 2013
-  ) %>%
-  mutate(nom_lieu = factor(nom_lieu))
+  )
 
 #========================
 # MODELES CANDIDATS
@@ -425,43 +436,152 @@ m0 <- glm(presence ~ 1,
           data = process_data,
           family = binomial)
 
-# Effet linéaire du jour
-m1 <- glm(presence ~ j_centre,
-          data = process_data,
-          family = binomial)
+# Effet DATE (toujours j_julien + j_julien2)
+m_date <- glm(presence ~ j_julien + j_julien2,
+              data = process_data,
+              family = binomial)
 
-# Effet quadratique du jour
-m2 <- glm(presence ~ j_centre + j_centre2,
-          data = process_data,
-          family = binomial)
+# Effet SITE
+m_site <- glm(presence ~ nom_lieu,
+              data = process_data,
+              family = binomial)
 
-# Effet par mois
-m3 <- glm(presence ~ mois,
-          data = process_data,
-          family = binomial)
+# Effet ANNEE
+m_annee <- glm(presence ~ annee,
+               data = process_data,
+               family = binomial)
 
-# Effet par mois
-m4 <- glm(presence ~ nom_lieu,
-          data = process_data,
-          family = binomial)
+# DATE + SITE
+m_date_site <- glm(presence ~ j_julien + j_julien2 + nom_lieu,
+                   data = process_data,
+                   family = binomial)
 
-# Modèle jour² + jour + année + site
-m5 <- glm(presence ~ j_centre + j_centre2 + annee + nom_lieu,
-          data = process_data,
-          family = binomial)
+# DATE + ANNEE
+m_date_annee <- glm(presence ~ j_julien + j_julien2 + annee,
+                    data = process_data,
+                    family = binomial)
+
+# SITE + ANNEE
+m_site_annee <- glm(presence ~ nom_lieu + annee,
+                    data = process_data,
+                    family = binomial)
+
+# DATE + SITE + ANNEE (modèle complet)
+m_full <- glm(presence ~ j_julien + j_julien2 + nom_lieu + annee,
+              data = process_data,
+              family = binomial)
 
 #========================
 # COMPARAISON AIC
 #========================
-aic_tab <- AIC(m0, m1, m2, m3, m4, m5)
+aic_tab <- AIC(
+  m0,
+  m_date,
+  m_site,
+  m_annee,
+  m_date_site,
+  m_date_annee,
+  m_site_annee,
+  m_full
+)
+
 print(aic_tab)
 
 #========================
 # MEILLEUR MODELE
 #========================
-best_model <- list(m0, m1, m2, m3, m4, m5)[[which.min(aic_tab$AIC)]]
+best_model <- list(
+  m0,
+  m_date,
+  m_site,
+  m_annee,
+  m_date_site,
+  m_date_annee,
+  m_site_annee,
+  m_full
+)[[which.min(aic_tab$AIC)]]
+
 summary(best_model)
 
+```
+
+
+```{r}
+#========================
+# LIBRAIRIES
+#========================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(lme4)
+
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION  # garder uniquement les lignes protocolées de talève
+#========================
+process_data <- process_data %>%
+  filter(grepl("SuiviBlongiosTalève", champs_additionnels), nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu") %>%
+  mutate(
+    presence = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee = factor(year(date_debut)),
+    j_julien = yday(date_debut),
+    j_julien2 = j_julien^2,
+    nom_lieu = factor(nom_lieu)
+  )
+
+#========================
+# MODELE GLM (annee comme effet fixe)
+#========================
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee,
+  data = process_data,
+  family = binomial
+)
+
+
+#========================
+# CREATION GRILLE DE PREDICTION
+#========================
+jours <- unlist(lapply(split(process_data$j_julien, process_data$annee), range))
+
+annees <- unique(process_data$annee)
+
+newdat <- expand.grid(
+  j_julien = jours,
+  annee = annees
+)
+newdat$j_julien2 <- newdat$j_julien^2
+
+#========================
+# PREDICTION DE LA PROBABILITE DE DETECTION
+#========================
+newdat$prob_detect <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "response"
+)
+
+
+#========================
+# GRAPHIQUE
+#========================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee)) +
+  geom_line(size = 1.2) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de détection",
+    color = "Année"
+  ) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 14),
+    legend.position = "right"
+  )
 
 
 
@@ -478,6 +598,28 @@ summary(best_model)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+```{r}
 
 
 
@@ -498,20 +640,6 @@ summary(m_step)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #---- occupancy ----
 # Modèle d'occupancy nul : juste l'intercept
 library(unmarked)
@@ -526,10 +654,6 @@ summary(modele_nul)
 
 
 ```
-
-
-
-
 
 
 
