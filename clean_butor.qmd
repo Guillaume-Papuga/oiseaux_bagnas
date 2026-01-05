@@ -4,6 +4,16 @@ format: html
 editor: visual
 ---
 
+```{r setup}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+#ce code permet de n'afficher auxun message parasite ni les warnings. 
+```
+
+
+
 # Charger les données et les library
 
 ```{r}
@@ -19,10 +29,10 @@ library(knitr)
 library(lme4)
 library(leaflet)
 library(sf)
+library(slider)
 
-setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro")
-process_data <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
-
+setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
+process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 ```
 
 ## 1. analyses exploratoires pour le Butor
@@ -126,7 +136,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
-process_protocole <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_protocole.csv")
+process_protocole <- read_csv("data/pro/process_protocole.csv")
 
 process_protocole_butor <- process_protocole %>%
   filter(nom_vernaculaire=="Butor étoilé")
@@ -161,6 +171,9 @@ leaflet() %>%
 
 ```{r}
 # Données protocolées du Butor
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+
 
 Protocole_SuiviButor <- process_protocole %>%
   filter(
@@ -286,7 +299,7 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```
 
-### E - Cumule des observations de Butor 
+### E - Cumule des observations de Butor
 
 ```{r}
 
@@ -309,7 +322,7 @@ données_1990_2025 <- data.frame(
 
 données_1990_2025$julian = yday(données_1990_2025$Date)
 
-View(données_1990_2025)
+head(données_1990_2025)
 
 # étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
@@ -325,8 +338,7 @@ butor_daily <- data_butor %>%
 
 ```
 
-#### a - Cumule par année 
-
+#### a - Cumule par année
 
 ```{r}
 
@@ -348,7 +360,8 @@ ggplot(obs_annee, aes(x = annee)) +
   ggtitle("Nombre de butors observés chaque année entre 1990 et 2025")
 
 ```
-#### b - Cumule par jour julien 
+
+#### b - Cumule par jour julien
 
 ```{r}
 
@@ -371,7 +384,7 @@ ggplot(obs_julian, aes(x = julian)) +
 
 ```
 
-#### c - Cumule par jour julien au sein de chaque année 
+#### c - Cumule par jour julien au sein de chaque année
 
 ```{r}
 
@@ -402,8 +415,9 @@ for (a in unique(obs_julian$annee)) {
 }
 ```
 
-#### VERIFER QU'IL Y A PAs DE DUPLICATION DE site comme Raph en avait trouvé 
-#### d - Cumule par année pour chaque site (même les sites hors protocole) 
+#### VERIFER QU'IL Y A PAs DE DUPLICATION DE site comme Raph en avait trouvé
+
+#### d - Cumule par année pour chaque site (même les sites hors protocole)
 
 ```{r}
 

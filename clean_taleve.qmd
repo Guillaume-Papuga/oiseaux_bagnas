@@ -4,6 +4,15 @@ format: html
 editor: visual
 ---
 
+```{r setup}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+#ce code permet de n'afficher aucun message parasite ni les warnings. 
+```
+
+
 #Charger les données et les library
 
 ```{r}
@@ -17,7 +26,9 @@ library(gridExtra)
 library(readr)
 library(knitr)
 library(lme4)
+library(slider)
 library(leaflet)
+library(sf)
 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
 process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
@@ -164,7 +175,20 @@ leaflet() %>%
 #C- Effort journalier des données protocoles Talève
 
 ```{r}
-# DOnnées 
+# Données 
+
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+Taleve_sultane<-process_data %>% filter( nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu")
+
+Protocole_SuiviBlongiosTaleve <- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire %in% c(
+        "Blongios nain, Butor blongios",
+        "Talève sultane, Poule sultane, Porphyrion bleu"
+      )
+  )
+
 Protocole_Taleve <- Protocole_SuiviBlongiosTaleve %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -226,6 +250,21 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```{r}
 # Données 
+
+opportuniste <- process_data %>%
+  filter(
+    !champs_additionnels %in% c(
+      "{'RELV_NOM': 'SuiviBlongiostaleve'}",
+      "{'RELV_NOM': 'SuiviButor'}"
+    )
+  )
+
+Opportuniste_Taleve<- process_data %>%
+  filter(
+    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
 Opportuniste_Taleve <- Opportuniste_Taleve %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -330,7 +369,7 @@ summary(glm_taleve_temps_hydro)
 
 
 
-ggplot(Taleve_sultane, aes(x = ProfondeurMoyenne, y = nombre_min)) +
+ggplot(Protocole_SuiviTaleve, aes(x = ProfondeurMoyenne, y = nombre_min)) +
   geom_jitter(height = 0.02, width = 0, alpha = 0.5, color = "blue") +
   stat_smooth(method = "glm", method.args = list(family = binomial),
               formula = y ~ x, color = "red", se = TRUE) +
@@ -499,7 +538,7 @@ library(lme4)
 #========================
 # DONNEES
 #========================
-process_data <- read.csv("process_protocole.csv")
+process_data <- read.csv("data/pro/process_protocole.csv")
 
 #========================
 # PREPARATION  # garder uniquement les lignes protocolées de talève
@@ -570,7 +609,7 @@ library(lubridate)
 #========================
 # DONNEES
 #========================
-process_data <- read.csv("process_protocole.csv")
+process_data <- read.csv("data/pro/process_protocole.csv")
 
 #========================
 # PREPARATION

@@ -4,6 +4,15 @@ format: html
 editor: visual
 ---
 
+```{r setup}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+#ce code permet de n'afficher auxun message parasite ni les warnings. 
+```
+
+
 #Charger les données et les library
 
 ```{r}
@@ -18,7 +27,9 @@ library(readr)
 library(knitr)
 library(lme4)
 library(leaflet)
+library(sf)
 
+#à changer selon votre chemin d'accès personnel 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
 process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
@@ -169,6 +180,16 @@ leaflet() %>%
 
 ```{r}
 # Données 
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+Protocole_SuiviBlongiosTaleve <- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire %in% c(
+        "Blongios nain, Butor blongios",
+        "Talève sultane, Poule sultane, Porphyrion bleu"
+      )
+  )
 Protocole_Blongios <- Protocole_SuiviBlongiosTaleve %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -228,6 +249,13 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```{r}
 # Données 
+
+Opportuniste_Blongios<- process_data %>%
+  filter(
+    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
+      nom_vernaculaire == "Blongios nain, Butor blongios"
+  )
+
 Opportuniste_Blongios <- Opportuniste_Blongios %>%
   mutate(
     heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
@@ -368,8 +396,6 @@ ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
 
 Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)
 
-
-
 ## 3 . Modèle d'abondance
 
 Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
@@ -389,6 +415,16 @@ Protocole_SuiviBlongios <- process_protocole %>%
 
 ```{r}
 # Preparation des variables ( standardisation )
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+Protocole_SuiviBlongios<- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire %in% c(
+        "Blongios nain, Butor blongios",
+        "Talève sultane, Poule sultane, Porphyrion bleu"
+      )
+  )
 Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
 Protocole_SuiviBlongios$julian <- as.numeric(scale(Protocole_SuiviBlongios$julian))
 Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
@@ -488,7 +524,7 @@ Les paramètres estimés indiquent que :
       julian = 0
     )
 
-    predictions <- predict(m_pluie_7, newdata = data_graph, type = "link", se.fit = TRUE)
+    predictions <- predict(m_pluie_7, newdata = data_pred, type = "link", se.fit = TRUE)
 
     data_pred$fit <- exp(predictions$fit)
     data_pred$ucl <- exp(predictions$fit + 1.96 * predictions$se.fit)
@@ -496,13 +532,13 @@ Les paramètres estimés indiquent que :
 
     # Le Graphique
     ggplot() +
-      geom_ribbon(data = data_graph, aes(x = pluie_moy_glissante_7j, ymin = lcl, ymax = ucl), 
+      geom_ribbon(data = data_pred, aes(x = pluie_moy_glissante_7j, ymin = lcl, ymax = ucl), 
                   fill = "blue", alpha = 0.1) +
 
       geom_jitter(data = Protocole_SuiviBlongios, 
                   aes(x = pluie_moy_glissante_7j, y = nombre_min, color = "Observations"), 
                   alpha = 0.5, width = 0.05, height = 0.05) +
-      geom_line(data = data_graph, 
+      geom_line(data = data_pred, 
                 aes(x = pluie_moy_glissante_7j, y = fit, color = "Modèle GLM"), 
                 size = 1) +
       scale_color_manual(name = "Légende", 
