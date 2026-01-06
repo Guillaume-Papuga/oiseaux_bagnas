@@ -667,7 +667,7 @@ modele_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ no
                                    family = poisson )
 
 
-summary(modele_annee)
+summary(modele_annee) 
 summary(modele_jour)
 summary(modele_annee_jour)
 summary(modele_anneejour)
