@@ -140,7 +140,7 @@ process_protocole = process_data  %>%
 
 
 #écrire le nouveau csv des données >2014 protocolées 
-write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+write_csv(process_protocole, "data/pro/process_protocole.csv")
 
 
 ```
