@@ -544,6 +544,17 @@ AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_
 modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent, modele_complet_profondeur, modele_complet_assec)
 ```
 
+```{r}
+p1 <- plot(ggeffect(modele_complet_assec, terms= "AssecT_1", residual = T))
+p1
+
+p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
+p2
+
+p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
+p3
+```
+
 La sélection de modèle par l'AIC a désigné la combinaison des effets temporels (année et jour julien) comme structure optimale. Ce modèle servira de base à notre analyse pour tester l'apport des variables environnementales, telles que la pluviométrie, sur l'abondance des individus.
 
 > La comparaison des modèles par l'AIC montre que l'intégration de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et ne sont donc pas retenues.
