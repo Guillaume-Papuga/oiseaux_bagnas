@@ -339,6 +339,24 @@ head(Protocole_SuiviTaleve)
 
 **Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.**
 
+Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.
+
+```{r}
+Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
+Protocole_SuiviTaleve$julian <- as.numeric(Protocole_SuiviTaleve$julian)
+Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
+Protocole_SuiviTaleve$nom_lieu<- as.character (Protocole_SuiviTaleve$nom_lieu)
+Protocole_SuiviTaleve$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j))
+Protocole_SuiviTaleve$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
+Protocole_SuiviTaleve$vent_moyen <- scale(as.numeric(Protocole_SuiviTaleve$vent_moyen))
+Protocole_SuiviTaleve$temperature = scale (as.numeric(Protocole_SuiviTaleve$temperature))
+Protocole_SuiviTaleve$pluie_1h = scale (as.numeric(Protocole_SuiviTaleve$pluie_1h))
+Protocole_SuiviTaleve$Profondeur = scale(as.numeric(Protocole_SuiviTaleve$Profondeur))
+Protocole_SuiviTaleve$AssecT_1 = as.factor((Protocole_SuiviTaleve$AssecT_1))
+```
+
 ##2 . Modèle de présence/absence
 
 ```{r}
@@ -439,26 +457,6 @@ Cette analyse vise à caractériser la dynamique de la population de **Talève**
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
-process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
-# Filtrer les relevés pour Talève sultane
-Protocole_SuiviTaleve <- process_protocole %>%
-  filter(
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
-
-```
-
-```{r}
-# Preparation des variables ( standardisation )
-Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
-Protocole_SuiviTaleve$julian <- as.numeric(scale(Protocole_SuiviTaleve$julian))
-Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
-```
-
-```{r}
-#  Modèle dans le temps 
-# y ~ Pois ( lambda)
-
 modele_annee <- glm(nombre_min ~ annee2, 
                     family = poisson, 
                     data = Protocole_SuiviTaleve)
@@ -476,53 +474,77 @@ modele_annee_jour <- glm(nombre_min ~ annee2 + julian,
 modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
+modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+
+modele_julian2annee <- glm(nombre_min ~ julian*annee2 + I(julian^2),
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+##### Modeles complets 
+modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee2,
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson ) # meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
+modele_complet_anneesite <- glm(nombre_min~ annee2*nom_lieu + julian + I(julian^2),
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+#####   avec variable enviro
+
+modele_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
 
 
+modele_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
 
-summary(modele_annee)
-summary(modele_jour)
-summary(modele_annee_jour)
-summary(modele_anneejour)
+modele_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
 
-AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
+modele_complet_temp_1j<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
 
+modele_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+modele_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+                           
+
+modele_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+
+
+# Selection du meilleur model avec l'AIC 
+AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
+modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent, modele_complet_profondeur, modele_complet_assec)
 ```
 
 La sélection de modèle par l'AIC a désigné la combinaison des effets temporels (année et jour julien) comme structure optimale. Ce modèle servira de base à notre analyse pour tester l'apport des variables environnementales, telles que la pluviométrie, sur l'abondance des individus.
-
-## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
-
-```{r}
-#standartisation des variables explicatives continues
-Protocole_SuiviTaleve$temp_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviTaleve$temp_moy_glissante_31j))
-Protocole_SuiviTaleve$temp_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviTaleve$temp_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
-```
-
-```{r}
-m_temp_7 <- glm(nombre_min ~ annee2 * julian + temp_moy_glissante_7j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-m_temp_31 <- glm(nombre_min ~ annee2 * julian + temp_moy_glissante_31j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-m_pluie_7 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_7j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-m_pluie_31<- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_31j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-m_pluie_temp_7 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_7j +
-                        temp_moy_glissante_7j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-m_pluie_temp_31 <- glm(nombre_min ~ annee2 * julian + pluie_moy_glissante_31j +
-                        temp_moy_glissante_31j,
-          data = Protocole_SuiviTaleve, family = poisson)
-
-AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
-```
 
 > La comparaison des modèles par l'AIC montre que l'intégration de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et ne sont donc pas retenues.
 
