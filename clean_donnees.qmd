@@ -9,6 +9,8 @@ editor: visual
 a)  récupérer les tableaux de données brute.
 
 ```{r}
+
+#| echo: false 
 #charger le chemin d'accès : à adapter à votre ordinateur 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas")
 
@@ -26,6 +28,8 @@ raw_data_2 <- read_delim(
 Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 
 ```{r}
+
+#| echo: false 
 
 process_data_1= raw_data %>%
   select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
@@ -101,6 +105,7 @@ write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pr
 ## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
 
 ```{r}
+#| echo: false 
 #floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
 process_data$annee = year(floor_date(process_data$date_debut, "year"))
 
@@ -122,6 +127,7 @@ write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/da
 ##3. Les données environnementales
 
 ```{r}
+#| echo: false 
 #chemin pour aller chercher les données environnementales, à changer selon l'ordinateur
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro")
 
@@ -219,6 +225,9 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 ```
 
 ```{r}
+#| echo: false 
+
+
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
 # étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
@@ -265,6 +274,8 @@ résumé_jours_NA = environnement_daily %>%
 ### 3.2 Rajout des moyennes glissantes
 
 ```{r}
+
+#| echo: false 
 # On calcule la variable temperatuere et pluie moyenne glissante sur 31 jours 
 
 environnement_daily <- environnement_daily %>%
