@@ -25,70 +25,80 @@ write.csv(process_data,
           row.names = FALSE)
 ```
 
-
+graphe nombre obs par observateur 
 ```{r}
 library(ggplot2)
 library(dplyr)
 library(forcats)
 library(stringr)
+library(stringi)
 
-# --- 0) Diagnostic : afficher un aperçu de process_data ---
+# ==============================
+# 0) Diagnostic initial
+# ==============================
 cat("Aperçu de process_data (5 premières lignes) :\n")
 print(utils::head(process_data, 5))
 cat("\nStructure de process_data :\n")
 print(str(process_data))
 
-library(stringi)
-library(stringr)
-library(dplyr)
-
+# ==============================
+# 1) Nettoyage et normalisation des observateurs
+# ==============================
 process_data <- process_data %>%
   mutate(observateurs = as.character(observateurs)) %>%
   
-  # Séparer provisoirement sur "/"
   mutate(observateurs = sapply(observateurs, function(x) {
     
-    # si NA → NA
     if (is.na(x)) return(NA)
     
-    # séparer en plusieurs observateurs mais sans éclater les lignes
+    # Séparer les observateurs multiples
     noms <- strsplit(x, "/")[[1]]
     
-    # nettoyage individuel
     noms_clean <- noms %>%
-      trimws() %>%                                # enlever espaces
-      tolower() %>%                               # minuscules
-      stringi::stri_trans_general("Latin-ASCII") %>%  # enlever accents
+      trimws() %>%
+      tolower() %>%
+      stringi::stri_trans_general("Latin-ASCII") %>%
       sapply(function(y) {
-        mots <- unlist(strsplit(y, " +"))         # séparer mots
-        mots <- sort(mots)                        # trier mots
-        paste(mots, collapse = " ")               # reconstruire
+        mots <- unlist(strsplit(y, " +"))
+        mots <- mots[mots != ""]
+        paste(sort(mots), collapse = " ")
       })
     
-    # remettre les noms ensemble avec "/"
     paste(noms_clean, collapse = " / ")
   }))
 
+# ==============================
+# 2) Corrections manuelles des noms
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = case_when(
+    observateurs == "clara rondeau" ~ "rondeau clara",
+    observateurs == "antoine cornet" ~ "cornet antoine",
+    observateurs == "salvarelli benjamin" ~ "salvarelli benjamin",
+    observateurs == "benjamin salvarelli" ~ "salvarelli benjamin",
+    observateurs == "pascale pt tabouriech" ~ "tabouriech pascale",
+    observateurs == "al anthony labouille" ~ "labouille anthony",
+    observateurs == "benoit vibarel" ~ "vibarel benoit",
+    observateurs == "claude gleise" ~ "gleise claude",
+    TRUE ~ observateurs
+  ))
 
-
-
-
-# --- 1) Re-créer data_filtered au cas où (exclusion ADENA, insensible à la casse et aux espaces) ---
+# ==============================
+# 3) Filtrage (exclusion ADENA)
+# ==============================
 data_filtered <- process_data %>%
-  # s'assurer que la colonne existe et est en caractère
-  mutate(observateurs = as.character(observateurs)) %>%
-  # nettoyer espaces début/fin et remplacer NA par "NA_obs" si besoin (optionnel)
   mutate(observateurs = str_trim(observateurs)) %>%
-  # exclusion insensible à la casse de "ADENA" (gère "Adena", " ADENA ", etc.)
-  filter(!is.na(observateurs) & !(str_to_upper(observateurs) == "ADENA"))
+  filter(
+    !is.na(observateurs),
+    str_to_upper(observateurs) != "ADENA"
+  )
 
-cat("\nVérification data_filtered (5 premières lignes) :\n")
-print(utils::head(data_filtered, 5))
 cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
 
-# --- 2) Agrégation : somme de nombre_min par observateur ---
+# ==============================
+# 4) Agrégation des observations
+# ==============================
 data_summarized <- data_filtered %>%
-  # s'assurer que nombre_min est numérique
   mutate(nombre_min = as.numeric(nombre_min)) %>%
   group_by(observateurs) %>%
   summarise(
@@ -97,27 +107,37 @@ data_summarized <- data_filtered %>%
     .groups = "drop"
   )
 
+# ==============================
+# 5) Suppression des observateurs sans observations
+# ==============================
+data_summarized <- data_summarized %>%
+  filter(!is.na(total_min), total_min > 0)
+
 cat("\nTable agrégée (top 20) :\n")
 print(utils::head(arrange(data_summarized, desc(total_min)), 20))
 
-# Vérification d'éventuels problèmes
+# Sécurité
 if (nrow(data_summarized) == 0) {
-  stop("data_summarized est vide — vérifie que data_filtered contient des lignes et que la colonne nombre_min est numérique.")
-}
-if (all(is.na(data_summarized$total_min))) {
-  stop("Toutes les sommes sont NA — vérifie la colonne nombre_min (valeurs non numériques).")
+  stop("Aucun observateur avec des observations (> 0).")
 }
 
-# --- 3) Réordonner les observateurs pour un affichage clair (optionnel) ---
+# ==============================
+# 6) Réorganisation pour le graphique
+# ==============================
 data_summarized <- data_summarized %>%
   arrange(desc(total_min)) %>%
   mutate(observateurs = factor(observateurs, levels = observateurs))
 
-# --- 4) Tracer le barplot avec geom_col() et valeurs au-dessus des barres ---
+# ==============================
+# 7) Graphique
+# ==============================
 p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
-  geom_col() +                           # geom_col() = geom_bar(stat="identity")
-  geom_text(aes(label = round(total_min, 1)), 
-            vjust = -0.3, size = 3) +    # afficher la valeur au-dessus
+  geom_col() +
+  geom_text(
+    aes(label = round(total_min, 1)),
+    vjust = -0.3,
+    size = 3
+  ) +
   labs(
     title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
     x = "Observateur",
@@ -130,13 +150,13 @@ p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 
 print(p)
 
+```
 
 
 
 
 
-
-
+```{r}
 
 
 
@@ -193,6 +213,9 @@ ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 
 
 ```
+
+
+
 
 ```{r}
 library(ggplot2)
@@ -507,9 +530,9 @@ summary(best_model)
 
 
 ```{r}
-#========================
+#=======================
 # LIBRAIRIES
-#========================
+#=======================
 library(dplyr)
 library(lubridate)
 library(ggplot2)
