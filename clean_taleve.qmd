@@ -29,8 +29,8 @@ library(slider)
 library(leaflet)
 library(sf)
 
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
-process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+setwd("data/pro")
+process_data <- read_csv("process_data.csv")
 
 ```
 
@@ -137,7 +137,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
-process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+process_protocole <- read_csv("data/process_protocole.csv")
 
 process_protocole_taleve <- process_protocole %>%
   filter(nom_vernaculaire=="Talève sultane, Poule sultane, Porphyrion bleu")
