@@ -341,9 +341,9 @@ process_protocole <- process_protocole %>%
   inner_join(DataHydroBagnas, by = c("date_debut" = "date")) %>%
   select(-Annee, -Jour)
 
-write_csv(environnement_daily, "data/environnement_daily.csv")
+write_csv(environnement_daily, "data/pro/environnement_daily.csv")
 
-write_csv(process_protocole, "data/process_protocole.csv")
+write_csv(process_protocole, "data/pro/process_protocole.csv")
 
 ```
 
