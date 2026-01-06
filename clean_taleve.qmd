@@ -7,7 +7,8 @@ editor: visual
 ```{r setup}
 knitr::opts_chunk$set(
   warning = FALSE,
-  message = FALSE
+  message = FALSE, 
+  echo = FALSE
 )
 #ce code permet de n'afficher aucun message parasite ni les warnings. 
 ```
@@ -28,15 +29,19 @@ library(lme4)
 library(slider)
 library(leaflet)
 library(sf)
+library(broom)
+library(ggeffects)
 
-setwd("data/pro")
-process_data <- read_csv("process_data.csv")
+
+process_data <- read_csv("data/pro/process_data.csv")
 
 ```
 
 ## 1. analyses exploratoires de la Talève
 
 #A- Graphique de présence des Talèves par semaine depuis 1990
+
+Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où le blongios n’a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d’écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.
 
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
@@ -133,8 +138,11 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```
 
+on voit que le protocole est réalisé pendant la periode historique d'écoute et d'observation du la talève. Nous pouvons voir que la talève est présente tout au long de l'année.
+
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
 
+Cette carte donne la localisation des points d’écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("data/process_protocole.csv")
@@ -173,6 +181,7 @@ leaflet() %>%
 
 #C- Effort journalier des données protocoles Talève
 
+ Ce graphique représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole talève pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
 ```{r}
 # Données 
 
@@ -245,7 +254,11 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```
 
+En orange l'effort d'échantillonngage et en bleu le nombre de talèves observés/entendus.
+
 #D- Effort journalier des données opportunistes Talève
+
+Ce graphique représente le nombre cumulé d’observations opportunistes ainsi que le nombre cumulé de talèves observés de cette manière pour chaque heure de la journée entre 1997 et 2023. Les observations pour lesquelles l’heure n’était pas disponible ont été enlevées, expliquant l’intervalle temporel réduit.
 
 ```{r}
 # Données 
@@ -320,6 +333,8 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 ```
 
+LA couleur orange représente les observations protocolées et le bleu représente les observations opportunistes. Nous retrouvons le meme patron entre les deux types d'observations
+
 ## 2 Preparation du jeu de données et des variables
 
 Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé *Protocole_SuiviTaleve*.\*\*
@@ -361,48 +376,43 @@ Protocole_SuiviTaleve$AssecT_1 = as.factor((Protocole_SuiviTaleve$AssecT_1))
 
 ```{r}
 
-library(ggplot2)
-library(dplyr)
-library(broom)
-
-
 ## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
 Protocole_SuiviTaleve$Occurence <- ifelse(Protocole_SuiviTaleve$nombre_min > 0, 1, 0)
 
 ### Modeles emboités 
 
 
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
+modele_complet_anneesite <- glm(Occurence~ annee2*nom_lieu + julian + I(julian^2),
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
+modele_complet_vent <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+modele_complet_temp_31 <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+modele_complet_temp_7j <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
+modele_complet_temp_1j<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temperature,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+modele_complet_temp_1j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+modele_complet_pluie_31j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+modele_complet_pluie_1j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
 
@@ -413,71 +423,17 @@ modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_ve
 AIC_tab
 
 ## meilleur modèle selon AIC
-library(dplyr)
-library(ggplot2)
-library(ggeffects)
 
-# =========================
-# plot des effets du meilleur MODELE
-# =========================
-mod <- glm(
-  Occurence ~ annee + julian + I(julian^2) + nom_lieu +
-    pluie_moy_glissante_7j + vent_moyen,
-  family = binomial,
-  data = Protocole_SuiviTaleve)
+p1 <- plot(ggeffect(modele_complet_pluie_31j_vent, terms= "pluie_moy_glissante_31j  ", residual = T))
 
-# =========================
-# EFFET DE L'ANNEE
-# =========================
-pred_annee <- ggpredict(mod, terms = "annee")
 
-p1 <- ggplot(pred_annee, aes(x = x, y = predicted)) +
-  geom_line(linewidth = 1) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2) +
-  labs(
-    x = "Année",
-    y = "Probabilité de présence",
-    title = "Effet de l'année"
-  ) +
-  theme_classic()
+p2 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "annee2", residual = T))
 
-# =========================
-# EFFET DE LA PLUIE
-# =========================
-pred_pluie <- ggpredict(mod, terms = "pluie_moy_glissante_7j")
 
-p2 <- ggplot(pred_pluie, aes(x = x, y = predicted)) +
-  geom_line(linewidth = 1) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2) +
-  labs(
-    x = "Pluie moyenne glissante (7 jours)",
-    y = "Probabilité de présence",
-    title = "Effet de la pluie"
-  ) +
-  theme_classic()
+p3 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "nom_lieu", residual = T))
 
-# =========================
-# EFFET DU LIEU
-# =========================
-pred_lieu <- ggpredict(mod, terms = "nom_lieu")
+#### Affichage 
 
-p3 <- ggplot(pred_lieu, aes(x = reorder(x, predicted), y = predicted)) +
-  geom_point(size = 3) +
-  geom_errorbar(
-    aes(ymin = conf.low, ymax = conf.high),
-    width = 0.2
-  ) +
-  coord_flip() +
-  labs(
-    x = "Site",
-    y = "Probabilité de présence",
-    title = "Effet du site"
-  ) +
-  theme_classic()
-
-# =========================
-# AFFICHAGE
-# =========================
 p1
 p2
 p3
