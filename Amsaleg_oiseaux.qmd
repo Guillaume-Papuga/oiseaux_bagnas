@@ -3,8 +3,7 @@ title: "Amsaleg_oiseaux"
 format: html
 editor: visual
 ---
-
-Importation + clean du tableau
+##1Importation + clean du tableau
 
 ```{r setup, include=FALSE}
 library(readxl)
@@ -136,7 +135,7 @@ data_blongios <- process_data %>%
   )
 
 ```
-
+##2 graphiques de la semaine 
 graphique qui montre l'observation des blongios par semaine sur toute la periode de suivi (1990-2025). Attention, si dans une même semaine il y a des sorties sans observations et des sorties avec, la semaine est comptée comme "observation"
 
 ```{r}
@@ -381,6 +380,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 ```
 
+#modèles essai 1 
 ```{r}
 
 #essai d'analyse GLM 
@@ -507,8 +507,6 @@ AIC( glm_blongios_proto_day, glm_blongios_proto_month, glm_blongios_proto_year, 
 
 ```
 
-
-
 ```{r}
 library(tidyverse) 
 library(lubridate) 
@@ -557,5 +555,138 @@ leaflet() %>%
 
 
 
+#A. Modèle abondance talève temps + enviro + hydro 
+```{r}
+
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+#Filtrer les relevés pour Talève sultane
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter(
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+
+#modèle abondance talève : partie hydro 
+
+
+#standardidation des données 
+
+Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
+Protocole_SuiviTaleve$julian <- as.numeric(Protocole_SuiviTaleve$julian)
+Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
+Protocole_SuiviTaleve$nom_lieu<- as.character (Protocole_SuiviTaleve$nom_lieu)
+
+# enviro 
+Protocole_SuiviTaleve$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j))
+Protocole_SuiviTaleve$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
+Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
+Protocole_SuiviTaleve$vent_moyen <- scale(as.numeric(Protocole_SuiviTaleve$vent_moyen))
+Protocole_SuiviTaleve$temperature = scale (as.numeric(Protocole_SuiviTaleve$temperature))
+Protocole_SuiviTaleve$pluie_1h = scale (as.numeric(Protocole_SuiviTaleve$pluie_1h))
+
+#hydro 
+
+Protocole_SuiviTaleve$Profondeur <- scale( as.numeric(Protocole_SuiviTaleve$Profondeur ))
+Protocole_SuiviTaleve$AssecT_1 <- as.factor(Protocole_SuiviTaleve$AssecT_1 )
+
+#modèles : 
+# 4a. Modèle par année
+
+modele_annee <- glm(nombre_min ~ annee2, 
+                    family = poisson, 
+                    data = Protocole_SuiviTaleve)
+
+
+modele_jour <- glm(nombre_min ~ julian, 
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson)
+
+
+modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
+                         data = Protocole_SuiviTaleve, 
+                         family = poisson)
+
+modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
+                        data = Protocole_SuiviTaleve, 
+                        family = poisson)
+modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
+                      data = Protocole_SuiviTaleve, 
+                      family = poisson)
+
+modele_julian2annee <- glm(nombre_min ~ julian*annee2 + I(julian^2),
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson)
+##### Modeles complets 
+modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee2,
+                            data = Protocole_SuiviTaleve, 
+                            family = poisson)
+modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson ) ### meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
+modele_complet_anneesite <- glm(nombre_min~ annee2*nom_lieu + julian + I(julian^2),
+                                data = Protocole_SuiviTaleve, 
+                                family = poisson )
+modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+
+### modèle avec variable enviro
+
+modele_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+
+
+modele_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                              data = Protocole_SuiviTaleve, 
+                              family = poisson )
+
+modele_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                              data = Protocole_SuiviTaleve, 
+                              family = poisson )
+
+modele_complet_temp_1j<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature,
+                             data = Protocole_SuiviTaleve, 
+                             family = poisson )
+
+modele_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+                                  data = Protocole_SuiviTaleve, 
+                                  family = poisson )
+
+modele_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                                    data = Protocole_SuiviTaleve, 
+                                    family = poisson )
+
+modele_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                                   data = Protocole_SuiviTaleve, 
+                                   family = poisson )
+modele_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                                   data = Protocole_SuiviTaleve, 
+                                   family = poisson )
+
+
+summary(modele_annee)
+summary(modele_jour)
+summary(modele_annee_jour)
+summary(modele_anneejour)
+summary(modele_complet_site)
+summary(modele_complet_anneesite)
+summary((modele_complet_temp_31))
+
+### modèle avec var hydro 
+
+modele_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+                           
+
+modele_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+summary(modele_complet_assec)
+AIC(modele_complet_site,modele_complet_vent,modele_complet_assec,modele_complet_profondeur)
+```
 
 
