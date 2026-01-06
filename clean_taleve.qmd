@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
 #ce code permet de n'afficher aucun message parasite ni les warnings. 
 ```
 
-
 #Charger les données et les library
 
 ```{r}
@@ -320,6 +319,25 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 
 
 ```
+
+## 2 Preparation du jeu de données et des variables
+
+Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé *Protocole_SuiviTaleve*.\*\*
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
+# Filtrer les relevés pour Talève sultane
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter(
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+head(Protocole_SuiviTaleve)
+```
+
+**Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.**
 
 ##2 . Modèle de présence/absence
 
