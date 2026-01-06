@@ -12,8 +12,6 @@ knitr::opts_chunk$set(
 #ce code permet de n'afficher auxun message parasite ni les warnings. 
 ```
 
-
-
 #Charger les données et les library
 
 ```{r}
@@ -346,6 +344,10 @@ environnement_daily <- environnement_daily %>%
       na.rm = TRUE
     )
   )
+write_csv(
+  environnement_daily,
+  "data/pro/environnement_daily.csv"
+)
 ```
 
 Fusion des tableaux
@@ -354,10 +356,13 @@ Fusion des tableaux
 process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
 
-write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
+write_csv(
+  process_protocole,
+  "data/pro/process_protocole.csv"
+)
 ```
 
-##4. Les données hydro 
+##4. Les données hydro
 
 ```{r}
 
@@ -437,6 +442,7 @@ DataHydroBagnas <- Hydro_moyenne %>%
 write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 
 ```
+
 ## 5. Analyses exploratoires
 
 #### A. les observateurs Script d'Émile
