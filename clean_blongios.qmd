@@ -7,7 +7,8 @@ editor: visual
 ```{r setup}
 knitr::opts_chunk$set(
   warning = FALSE,
-  message = FALSE
+  message = FALSE, 
+  echo = FALSE
 )
 #ce code permet de n'afficher auxun message parasite ni les warnings. 
 ```
@@ -27,6 +28,7 @@ library(knitr)
 library(lme4)
 library(leaflet)
 library(sf)
+library(ggeffects)
 
 #à changer selon votre chemin d'accès personnel 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
@@ -38,6 +40,11 @@ process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/p
 
 #A- Graphique de présence des Blongios par semaine depuis 1990
 
+Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne)
+le butor a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique
+aussi les sorties protocolées où le blongios n’a pas été observé. La ligne pointillée bleue correspond à 2014,
+début du protocole de point d’écoute du blongios. Celui-ci se déroule du 10 avril au 16 mai, période
+favorable pour la détection de mâles chanteurs.
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
 
@@ -136,9 +143,12 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 
 
 ```
+on voit que le protocole est réalisé pendant la periode historique d'écoute et d'observation du blongios. Il y a des observations protocolées, des mixtes et que quelques sorties non fructueuses (surtout l'année 2019).  
+
 
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
-
+Cette carte donne la localisation des points d’écoute du protocole blongios et le nombre de blongios
+contactés (en cliquant sur les points).
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
@@ -176,7 +186,9 @@ leaflet() %>%
 ```
 
 #C- Effort journalier du protocole Blongios
-
+Ce graphique représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours
+du protocole blongios pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est
+représenté par la somme des sorties effectuées.
 ```{r}
 # Données 
 process_protocole <- read_csv("data/pro/process_protocole.csv")
@@ -243,9 +255,15 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
   ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Blongios (2014-2018)")
 ```
+En orange l'effort d'échantillonngage et en bleu le nombre de blongios observés/entendus. 
+
+
 
 #D- Effort journalier des données opportunistes Blongios
-
+Ce graphique représente le nombre cumulé d’observations opportunistes ainsi que le nombre cumulé
+de blongios observé de cette manière pour chaque heure de la journée entre 1997 et 2023. Les
+observations pour lesquelles l’heure n’était pas disponible ont été enlevées, expliquant l’intervalle
+temporel réduit.
 ```{r}
 # Données 
 
@@ -309,6 +327,8 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour le Blongios (2014-2018)")
 
 ```
+Les heures d'observations opportunistes et protocolées sont assez similaires. 
+
 
 ##2 . Modèle de présence/absence
 
@@ -361,6 +381,12 @@ modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_
 AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
 modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent)
 
+
+```
+le tableau d'AIC des  différents modèles de présence/absence permet de choisir le modèle qui fit le plus les données. 
+On choisit donc le modele_complet_pluie_7j_vent. Il contient : annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen
+```{r}
+
 ## meilleur modèle selon AIC
 
 modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
@@ -368,8 +394,8 @@ modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_
                         family = binomial)
 
 summary(modele_complet_pluie_7j_vent)
-
 ```
+Ce summary du modèle choisi nous montre s'il y a des variables significatives. Ici il n'y en a pas. 
 
 ##2.1 interpretation
 
@@ -378,6 +404,7 @@ Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de 
 ## 3 . Modèle d'abondance
 
 Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
+
 
 ## 3.1 Modèle d'abondance en fonction du temps
 
@@ -458,10 +485,10 @@ modeleB_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
 
-summary(modele_annee)
-summary(modele_jour)
-summary(modele_annee_jour)
-summary(modele_anneejour)
+# summary(modele_annee)
+# summary(modele_jour)
+# summary(modele_annee_jour)
+# summary(modele_anneejour)
 
 AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
 
@@ -499,10 +526,10 @@ modeleB_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ 
 modeleB_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
                                    data = Protocole_SuiviBlongios, 
                                    family = poisson )
+
 modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
                                    data = Protocole_SuiviBlongios, 
                                    family = poisson )
-
 
 
 
@@ -513,66 +540,41 @@ modeleB_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
                            
-summary(modeleB_complet_assec)
-
 modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
-summary(modeleB_complet_profondeur)
+
+```
+L'aic nous indique que l'on choisit le modeleB_complet_temp_7j. il contient : annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen 
+
+
+```{r}
+
+
+
+summary(modeleB_complet_assec)
 ```
 
-> La comparaison des modèles par l’AIC montre que l’intégration de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
+> La comparaison des modèles par l’AIC montre que l’intégration de la température moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de pluie n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
 
-Les paramètres estimés indiquent que :
+```{r}
+#je ne sais pas ce que c'est il faut regarder plus tard. 
 
--   La pluie moyenne glissante sur 7 jours a un effet négatif significatif sur l’abondance des talèves (β = -0.566, p =0.014). Donc uneaugemtation de la quantité de pluie engendre une diminution ou du nombre d’individus de blongios dans la reserve
+# Les paramètres estimés indiquent que :
+# 
+# -   La pluie moyenne glissante sur 7 jours a un effet négatif significatif sur l’abondance des talèves (β = -0.566, p =0.014). Donc uneaugemtation de la quantité de pluie engendre une diminution ou du nombre d’individus de blongios dans la reserve
+# 
+# -   Le jour julien présente un effet négatif significatif (β = −0.357 p = 0.039), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
+# 
+#     Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 166,96 contre une déviance nulle de 166.96), avec un AIC de 252.79.
+# 
+# -   La fonction pour trouver l'abondance du blongios en fonction de la pluie et des jours est :
+# 
+#     log(y) = -1.9136 -03572(julian\[i\]) - 0.5659(pluie\[i\])
 
--   Le jour julien présente un effet négatif significatif (β = −0.357 p = 0.039), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
-
-    Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 166,96 contre une déviance nulle de 166.96), avec un AIC de 252.79.
-
--   La fonction pour trouver l'abondance du blongios en fonction de la pluie et des jours est :
-
-    log(y) = -1.9136 -03572(julian\[i\]) - 0.5659(pluie\[i\])
-
-    ```{r}
-    #  Création d'un graphique de la fonction predite ; nombre d'individus en fonction de la pluie ( donc on fixe les jours pour avoir seulement l'effet pluie)
-    data_pred <- data.frame(
-      pluie_moy_glissante_7j = seq(min(Protocole_SuiviBlongios$pluie_moy_glissante_7j), 
-    max(Protocole_SuiviBlongios$pluie_moy_glissante_7j), 
-                                   length.out = 100),
-      julian = 0
-    )
-
-    predictions <- predict(m_pluie_7, newdata = data_pred, type = "link", se.fit = TRUE)
-
-    data_pred$fit <- exp(predictions$fit)
-    data_pred$ucl <- exp(predictions$fit + 1.96 * predictions$se.fit)
-    data_pred$lcl <- exp(predictions$fit - 1.96 * predictions$se.fit)
-
-    # Le Graphique
-    ggplot() +
-      geom_ribbon(data = data_pred, aes(x = pluie_moy_glissante_7j, ymin = lcl, ymax = ucl), 
-                  fill = "blue", alpha = 0.1) +
-
-      geom_jitter(data = Protocole_SuiviBlongios, 
-                  aes(x = pluie_moy_glissante_7j, y = nombre_min, color = "Observations"), 
-                  alpha = 0.5, width = 0.05, height = 0.05) +
-      geom_line(data = data_pred, 
-                aes(x = pluie_moy_glissante_7j, y = fit, color = "Modèle GLM"), 
-                size = 1) +
-      scale_color_manual(name = "Légende", 
-                         values = c("Observations" = "orange", "Modèle GLM" = "blue")) +
-      
-      labs(
-        title = "Relation entre Pluie et Abondance de Blongios",
-        x = "Pluie moyenne (standardisée)",
-        y = "Nombre d'individus"
-      ) +
-      theme_minimal()
-    ```
+```
 
 #plot
 
@@ -580,9 +582,7 @@ Les paramètres estimés indiquent que :
 p1 <- plot(ggeffect(modeleB_complet_temp_7j, terms= "temp_moy_glissante_7j", residual = T))
 p1
 
-p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
-p2
 
-p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
-p3
+
 ```
+Pour les blongios, la température a le pus d;effet. On voit que plus il fait chaud, plus on voit de Blongios. (les Températures sont standardisées)
