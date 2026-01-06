@@ -59,8 +59,6 @@ coord_summary <- bird_data %>%
   ungroup() %>%
   arrange(desc(n_sites))
 
-
-
 ```
 
 ## R code for hydrological data processing
@@ -71,11 +69,8 @@ coord_summary <- bird_data %>%
 library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(purrr)
 
-
-### Importe les données
-BirdData <- read.csv("data/pro/process_protocole.csv", sep = ",")
-EnvironmentalData <- read.csv("data/pro/environnement_daily.csv", sep = ",")
 HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
 HydrologicDataGrandBagnas <- HydrologicData %>%
   select(Station, Date.Releve, Heure, Salinite, Temperature, Niveau.Ngf, Niveau.Relatif)%>%
@@ -97,11 +92,11 @@ Hydro_moyenne <- HydrologicDataGrandBagnas %>%
   )
 
 ### Code une variable Assec (mois par mois) et AssecT (niveau le plus extreme de l'année) 
-Hydro_moyenne <- Hydro_moyenne %>%
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
   mutate(
     Assec = case_when(
-      is.na(ProfondeurMoyenne) ~ "total",
-      ProfondeurMoyenne < 0.2  ~ "partiel",
+      is.na(Profondeur) ~ "total",
+      Profondeur < 0.2  ~ "partiel",
       TRUE                     ~ "non"),
     Assec_score = case_when(
       Assec == "non"     ~ 1,
@@ -117,7 +112,7 @@ Hydro_moyenne <- Hydro_moyenne %>%
   select(-Assec_score)
 
 ### Crée une variable AssecT_1 (AssecT de l'année précédente)
-Assec_annuel <- Hydro_moyenne %>%
+Assec_annuel <- HydrologicDataGrandBagnas %>%
   distinct(Annee, AssecT) %>%
   bind_rows(tibble(Annee = 2014, AssecT = "non")) %>%
   filter(Annee != 2026) %>%                             
@@ -128,19 +123,54 @@ Assec_annuel <- Hydro_moyenne %>%
   slice(1) %>%   
   ungroup()
 
-Hydro_moyenne <- Hydro_moyenne %>%
+## Ajoute la variable AssecT_1 au tableau HydrologicDataGrandBagnas
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
   left_join(
     Assec_annuel %>% select(Annee, AssecT_1),
     by = "Annee")
 
-Hydro_moyenne <- Hydro_moyenne[-c(4,5,6)]
+## Conserve que les bonnes variables 
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas[,c(8,9,10,11,14)]
 
-DataHydroBagnas <- Hydro_moyenne %>%
-  mutate(ProfondeurMoyenne = if_else(is.na(ProfondeurMoyenne), 0, ProfondeurMoyenne))
+## Remplace les valeurs NA de Profondeur par 0
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
+  mutate(Profondeur = if_else(is.na(Profondeur), 0, Profondeur))
 
-## Enregistre le tableau Hydro_moyenne en csv dans le dossier pro
+## Convertit Mois en numérique  
+HydrologicDataGrandBagnas$Mois <- as.numeric(as.character(HydrologicDataGrandBagnas$Mois))
 
-write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
+## Graphique de la profondeur moyenne mensuelle par année
+ggplot(HydrologicDataGrandBagnas, aes(x = Mois, y = Profondeur)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Annee, ncol = 3) +
+  scale_x_continuous(breaks = 1:12) +
+  theme_bw()
+
+## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
+jours_par_annee <- function(df) {
+  data.frame(Jour = 1:365)}
+
+DataInterpolationProfondeur <- HydrologicDataGrandBagnas %>%
+  group_by(Annee) %>%
+  group_modify(~ {    interp <- approx(
+      x = .x$Jour,
+      y = .x$Profondeur,
+      xout = 1:365,   
+      rule = 2         )
+    tibble(
+      Jour = interp$x,
+      Profondeur = interp$y)}) %>% ungroup()
+
+AssecT_1_annee <- HydrologicDataGrandBagnas %>%
+  select(Annee, AssecT_1) %>%
+  distinct()
+
+HydrologicDataGrandBagnas <- DataInterpolationProfondeur %>%
+  left_join(AssecT_1_annee, by = "Annee")
+
+## Enregistre le tableau final dans le fichier processed
+write.csv(HydrologicDataGrandBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 
 ```
 
@@ -155,78 +185,71 @@ library(broom)
 
 ## Importation des données
 BirdDataProtocol <- read.csv("data/pro/process_protocole.csv", sep = ",")
-BirdDataProtocol$nombre_min <- ifelse(BirdDataProtocol$nombre_min > 0, 1, 0)
-HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+
+## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
+BirdDataProtocol$Occurence <- ifelse(BirdDataProtocol$nombre_min > 0, 1, 0)
+
 ```
 
 ## BLONGIOS NAIN
 
 ```{r}
 
-## colonnes à garder
-cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
-
-## pas de modèle car aucune donnée
-Butor_etoile <- BirdDataProtocol %>%
-  filter(nom_vernaculaire == "Butor étoilé") %>%
-  select(all_of(cols_keep))
-
-
-## modèle pour le blongios nain
 ## filtre les données pour le blongios nain
 Blongios_nain <- BirdDataProtocol %>%
-  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
-  select(all_of(cols_keep))
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios")
 
-## ajoute des colonnes pour le jour julien et son effet quadratique
-Blongios_nain$date_debut <- as.Date(Blongios_nain$date_debut, format = "%Y-%m-%d")
-Blongios_nain$julian_day <- as.numeric(Blongios_nain$date_debut)
-Blongios_nain$julian_day2 <- Blongios_nain$julian_day^2
+### Modeles emboités 
 
-## ajoute les données hydrologiques au data frame
-Blongios_nain$annee <- as.integer(format(Blongios_nain$date_debut, "%Y"))
-Blongios_nain$mois <- as.integer(format(Blongios_nain$date_debut, "%m"))
-Blongios_nain <- merge(Blongios_nain, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+modele_julian2_annee <- glm(Occurence ~ julian + I(julian^2)+annee,
+                   data = Blongios_nain, 
+                   family = binomial)
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
+modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                        data = Blongios_nain, 
+                   family = binomial )
 
-## Modèle GLM avec la présence du blongios en fonction du temps
-glm_blongios_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Blongios_nain)
-summary(glm_blongios_temps)
 
-## Modèles GLM avec la présence du blongios en fonction des conditions hyrdoologiques
-glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
-summary(glm_blongios_hydro)
+AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
+modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent)
 
-## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
-glm_blongios_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Blongios_nain)
-summary(glm_blongios_temps_hydro)
+## meilleur modèle selon AIC
 
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Blongios_nain, 
+                        family = binomial )
 
-## TEST d'un graph qui montre la probabilité prédite de Blongios suivant l'assec qu'il y a eu la semaine précèdente
+summary(modele_complet_pluie_7j_vent)
 
-# Crée un dataframe pour prédictions par AssecT_1
-pred_assec <- data.frame(
-  AssecT_1 = unique(Blongios_nain$AssecT_1))
-
-# On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
-pred_assec$ProfondeurMoyenne <- mean(Blongios_nain$ProfondeurMoyenne, na.rm = TRUE)
-pred_assec$julian_day <- mean(Blongios_nain$julian_day, na.rm = TRUE)
-
-# Prédictions de probabilité
-pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
-
-# Plot
-ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
-  geom_col() +
-  scale_fill_brewer(palette = "Set2") +
-  labs(
-    x = "Assec de l'année précédente",
-    y = "Probabilité prédite de présence",
-    title = "Effet de l'Assec sur la présence du Blongios nain"
-  ) +
-  theme_classic() +
-  theme(legend.position = "none")
 
 ```
 
