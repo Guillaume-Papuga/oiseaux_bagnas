@@ -25,7 +25,7 @@ write.csv(process_data,
           row.names = FALSE)
 ```
 
-graphe nombre obs par observateur 
+graphe nombre obs par observateur (avec couple trio d'observateurs possible)
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -151,72 +151,145 @@ p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 print(p)
 
 ```
-
-
-
-
-
+graphe avec eclatement des observateurs (mais attention problemes de saisies dans certains couple, A DEMANDER AU BAGNAS)
 ```{r}
-
-
-
+library(ggplot2)
 library(dplyr)
-library(tidyr)
+library(forcats)
 library(stringr)
 library(stringi)
+library(tidyr)
 
-# 1) Nettoyage et séparation des observateurs
-data_clean <- process_data %>%
+# ==============================
+# 0) Diagnostic initial
+# ==============================
+cat("Aperçu de process_data (5 premières lignes) :\n")
+print(head(process_data, 5))
+cat("\nStructure de process_data :\n")
+print(str(process_data))
+
+# ==============================
+# 1) Nettoyage et normalisation des observateurs
+# ==============================
+process_data <- process_data %>%
   mutate(observateurs = as.character(observateurs)) %>%
-  # Exclusion ADENA insensible à la casse
-  filter(!is.na(observateurs) & str_to_upper(str_trim(observateurs)) != "ADENA") %>%
-  # Séparer les observateurs sur "/"
-  separate_rows(observateurs, sep = "/") %>%
-  mutate(
-    observateurs = str_trim(observateurs),                     # enlever espaces
-    observateurs = tolower(observateurs),                     # minuscules
-    observateurs = stringi::stri_trans_general(observateurs, "Latin-ASCII"), # enlever accents
-    # trier les mots dans le nom
-    observateurs = sapply(observateurs, function(x) {
-      mots <- unlist(strsplit(x, " +"))
-      paste(sort(mots), collapse = " ")
-    })
+  
+  mutate(observateurs = sapply(observateurs, function(x) {
+    
+    if (is.na(x)) return(NA)
+    
+    noms <- strsplit(x, "/")[[1]]
+    
+    noms_clean <- noms %>%
+      trimws() %>%
+      tolower() %>%
+      stringi::stri_trans_general("Latin-ASCII") %>%
+      sapply(function(y) {
+        mots <- unlist(strsplit(y, " +"))
+        mots <- mots[mots != ""]
+        paste(sort(mots), collapse = " ")
+      })
+    
+    paste(noms_clean, collapse = " / ")
+  }))
+
+# ==============================
+# 2) Corrections manuelles des noms
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = case_when(
+    observateurs == "clara rondeau" ~ "rondeau clara",
+    observateurs == "antoine cornet" ~ "cornet antoine",
+    observateurs == "salvarelli benjamin" ~ "salvarelli benjamin",
+    observateurs == "benjamin salvarelli" ~ "salvarelli benjamin",
+    observateurs == "pascale pt tabouriech" ~ "tabouriech pascale",
+    observateurs == "al anthony labouille" ~ "labouille anthony",
+    observateurs == "benoit vibarel" ~ "vibarel benoit",
+    observateurs == "claude gleise" ~ "gleise claude",
+    TRUE ~ observateurs
+  ))
+
+# ==============================
+# 3) ÉCLATEMENT DES OBSERVATEURS
+# ==============================
+data_exploded <- process_data %>%
+  separate_rows(observateurs, sep = "\\s*/\\s*")
+
+# ==============================
+# 4) Filtrage (exclusion ADENA)
+# ==============================
+data_filtered <- data_exploded %>%
+  mutate(observateurs = str_trim(observateurs)) %>%
+  filter(
+    !is.na(observateurs),
+    str_to_upper(observateurs) != "ADENA"
   )
 
-# 2) Agrégation
-data_summarized <- data_clean %>%
+cat("\nNombre de lignes après éclatement + filtre :", nrow(data_filtered), "\n")
+
+# ==============================
+# 5) Agrégation par observateur
+# ==============================
+data_summarized <- data_filtered %>%
   mutate(nombre_min = as.numeric(nombre_min)) %>%
   group_by(observateurs) %>%
-  summarise(total_min = sum(nombre_min, na.rm = TRUE), .groups = "drop") %>%
+  summarise(
+    total_min = sum(nombre_min, na.rm = TRUE),
+    nb_obs = n(),
+    .groups = "drop"
+  )
+
+# ==============================
+# 6) Suppression des observateurs sans observations
+# ==============================
+data_summarized <- data_summarized %>%
+  filter(!is.na(total_min), total_min > 0)
+
+cat("\nTable agrégée (top 20) :\n")
+print(head(arrange(data_summarized, desc(total_min)), 20))
+
+if (nrow(data_summarized) == 0) {
+  stop("Aucun observateur avec des observations (> 0).")
+}
+
+# ==============================
+# 7) Préparation pour le graphique
+# ==============================
+data_summarized <- data_summarized %>%
   arrange(desc(total_min)) %>%
   mutate(observateurs = factor(observateurs, levels = observateurs))
 
-# 3) Barplot
-library(ggplot2)
-
-ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+# ==============================
+# 8) Graphique
+# ==============================
+p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
   geom_col() +
-  geom_text(aes(label = total_min), vjust = -0.3, size = 3) +
+  geom_text(
+    aes(label = round(total_min, 1)),
+    vjust = -0.3,
+    size = 3
+  ) +
   labs(
-    title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
+    title = "Nombre total (nombre_min) par observateur\n(observateurs éclatés, sans ADENA)",
     x = "Observateur",
     y = "Total nombre_min"
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 
-
-
-
-
-
-
+print(p)
 
 ```
 
 
 
 
+
+
+
+graphe observateurs fonction des années 
 ```{r}
 library(ggplot2)
 library(dplyr)
