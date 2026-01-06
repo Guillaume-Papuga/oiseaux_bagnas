@@ -344,6 +344,7 @@ process_protocole <- process_protocole %>%
 write_csv(environnement_daily, "data/environnement_daily.csv")
 
 write_csv(process_protocole, "data/process_protocole.csv")
+
 ```
 
 write_csv(environnement_daily, "data/environnement_daily.csv")
