@@ -9,13 +9,18 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-#ce code permet de n'afficher auxun message parasite ni les warnings. 
+#ce code permet de n'afficher aucun message parasite ni les warnings. 
 ```
 
 #Charger les données et les library
 
 ```{r}
-
+#|  echo: false
+library(leaflet)
+library(sf)
+library(RColorBrewer) 
+library(dplyr)
+library(readr)
 library(tidyverse) 
 library(lubridate) 
 library(readxl) 
@@ -25,7 +30,6 @@ library(gridExtra)
 library(readr)
 library(knitr)
 library(lme4)
-library(leaflet)
 library(slider)
 ```
 
@@ -34,6 +38,8 @@ library(slider)
 a)  récupérer les tableaux de données brute.
 
 ```{r recup, message=FALSE, warning=FALSE}
+
+#| echo: false
 
 #charger le chemin d'accès : à adapter à votre ordinateur 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas")
@@ -52,6 +58,7 @@ raw_data_2 <- read_delim(
 #Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 
 ```{r}
+#| echo: false
 
 process_data_1= raw_data %>%
   select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
@@ -127,6 +134,7 @@ write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pr
 ## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
 
 ```{r}
+#| echo: false
 #floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
 process_data$annee = year(floor_date(process_data$date_debut, "year"))
 
@@ -148,6 +156,7 @@ write_csv(process_protocole, "data/pro/process_protocole.csv")
 ##3. Les données environnementales
 
 ```{r data_enviro, message=FALSE, warning=FALSE}
+#| echo: false
 #il faut aller chercher les données environnementales
 
 #récuperer les csv bruts pour chaque année 
@@ -246,6 +255,7 @@ write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/
 Dans le tableau des données environnementales, il manque des jours, on fait donc des moyennes glissantes pour créer les données (car 1 ou 2 jours consécutif manquant maximum). Il faut donc d'abord créer les lignes des jours puis créer les données manquantes.
 
 ```{r}
+#| echo: false
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
 # étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
@@ -292,6 +302,7 @@ résumé_jours_NA = environnement_daily %>%
 ### 3.2 Rajout des moyennes glissantes
 
 ```{r}
+#| echo: false
 # On calcule la variable température et pluie moyenne glissante sur 31 jours 
 
 environnement_daily <- environnement_daily %>%
@@ -353,6 +364,7 @@ write_csv(
 Fusion des tableaux
 
 ```{r}
+#| echo: false
 process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
 
@@ -365,7 +377,7 @@ write_csv(
 ##4. Les données hydro
 
 ```{r}
-
+#| echo: false
 ### Importe les packages
 library(ggplot2)
 library(dplyr)
@@ -450,27 +462,14 @@ write.csv(DataHydroBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FA
 #### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
 
 ```{r carto, message=FALSE, warning=FALSE}
-#chargement des library  
-library(leaflet)
-library(sf)
-library(RColorBrewer) 
-library(dplyr)
-library(readr)
-library(tidyverse) 
-library(lubridate) 
-library(readxl) 
-library(ggplot2) 
-library(dplyr)
-library(gridExtra)
-library(readr)
-library(knitr)
-library(lme4)
+#| echo: false
+
 ```
 
-Cartographie des sites d'observation/écoute des 3 espèces. Tous types de données mélangées (protocole et hors protocole) depuis 2014
+Cartographie des sites d'écoute des 3 espèces confondues. Les sites sur la carte sont les 9 sites du protocole.
 
 ```{r}
-
+#| echo: false
 
 #1 : les sites du protocole :
 #on va chercher le csv process_protocole dans l'ordinateur
