@@ -4,13 +4,43 @@ format: html
 editor: visual
 ---
 
-## 1. Rassembler les deux tableaux de données
-
-a)  récupérer les tableaux de données brute.
+```{r setup}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE, 
+  echo = FALSE
+)
+#ce code permet de n'afficher aucun message parasite ni les warnings. 
+```
 
 ```{r}
+#1. Il faut charger les données et les library
+#charger les library 
+library(leaflet)
+library(sf)
+library(RColorBrewer) 
+library(dplyr)
+library(readr)
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(slider)
+```
 
-#| echo: false 
+# 1. Mise en forme du tableau de données
+
+```{r recup, message=FALSE, warning=FALSE}
+
+## 1. Rassembler les deux tableaux de données
+
+#a)  récupérer les tableaux de données brute.
+
 #charger le chemin d'accès : à adapter à votre ordinateur 
 setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas")
 
@@ -25,11 +55,8 @@ raw_data_2 <- read_delim(
 
 ```
 
-Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
-
 ```{r}
-
-#| echo: false 
+#Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
 
 process_data_1= raw_data %>%
   select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
@@ -100,12 +127,14 @@ process_data = process_data_2
 
 write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
+head(process_data)
 ```
 
-## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+Le tableau process_data correspond aux données sur toute la periode 1990-2025 pour toutes les données sur les 3 espèces d'interet. On crée par la suite un tableau qui ne comprend que les données des protocoles, donc à partir de 2014, et pour des sites d'études particuliers.
 
 ```{r}
-#| echo: false 
+## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+
 #floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
 process_data$annee = year(floor_date(process_data$date_debut, "year"))
 
@@ -119,57 +148,58 @@ process_protocole = process_data  %>%
 
 
 #écrire le nouveau csv des données >2014 protocolées 
-write_csv(process_protocole, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
-
+write_csv(process_protocole, "data/pro/process_protocole.csv")
+head(process_protocole)
 
 ```
 
-##3. Les données environnementales
+Ce tableau est celui qui sera utilisé pour les analyses dans la suite du projet. Il ne contient que les données qui appartiennent aux protocoles BlongiosTalève et Butor.
 
-```{r}
-#| echo: false 
-#chemin pour aller chercher les données environnementales, à changer selon l'ordinateur
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro")
+# 2. Les données environnementales
+
+```{r data_enviro, message=FALSE, warning=FALSE}
+#| echo: false
+#il faut aller chercher les données environnementales
 
 #récuperer les csv bruts pour chaque année 
-file_2013 <- read_delim("2013.csv", delim = ";", 
+file_2013 <- read_delim("data_enviro/2013.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
 
-file_2014 <- read_delim("2014.csv", delim = ";", 
+file_2014 <- read_delim("data_enviro/2014.csv", delim = ";", 
                        escape_double = FALSE, trim_ws = TRUE, 
                        skip = 4)
-file_2015 <- read_delim("2015.csv", delim = ";", 
+file_2015 <- read_delim("data_enviro/2015.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2016 <- read_delim("2016.csv", delim = ";", 
+file_2016 <- read_delim("data_enviro/2016.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2017 <- read_delim("2017.csv", delim = ";", 
+file_2017 <- read_delim("data_enviro/2017.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2018 <- read_delim("2018.csv", delim = ";", 
+file_2018 <- read_delim("data_enviro/2018.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2019 <- read_delim("2019.csv", delim = ";", 
+file_2019 <- read_delim("data_enviro/2019.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2020 <- read_delim("2020.csv", delim = ";", 
+file_2020 <- read_delim("data_enviro/2020.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2021 <- read_delim("2021.csv", delim = ";", 
+file_2021 <- read_delim("data_enviro/2021.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2022 <- read_delim("2022.csv", delim = ";", 
+file_2022 <- read_delim("data_enviro/2022.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2023 <- read_delim("2023.csv", delim = ";", 
+file_2023 <- read_delim("data_enviro/2023.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2024 <- read_delim("2024.csv", delim = ";", 
+file_2024 <- read_delim("data_enviro/2024.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
-file_2025 <- read_delim("2025.csv", delim = ";", 
+file_2025 <- read_delim("data_enviro/2025.csv", delim = ";", 
                         escape_double = FALSE, trim_ws = TRUE, 
                         skip = 4)
 
@@ -213,21 +243,23 @@ environnement_daily <- data_environnement2_clean %>%
   summarise(across(where(is.numeric),
                    ~ mean(.x, na.rm = TRUE)),
             .groups = "drop")
-summary(environnement_daily)
+
 
 
 #écriture du csv propre qui sera utilisé par la suite : 1 donnée par jour (moyenne de toutes les variables qui étaient toutes les 20min) -> nommé environnement_daily
 write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data_enviro/environnement_daily.csv")
 
-
+head(environnement_daily)
 
 
 ```
 
+Nous avons un tableau de données environnementales de 2013 à 2025. Initialement, il y avait des données toutes les 20minutes, nous avons fait des moyennes journalières pour diminuer le nombre de données.
+
+Dans le tableau des données environnementales, il manque des jours, on fait donc des moyennes glissantes pour créer les données (car 1 ou 2 jours consécutif manquant maximum). Il faut donc d'abord créer les lignes des jours puis créer les données manquantes.
+
 ```{r}
-#| echo: false 
-
-
+#| echo: false
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
 # étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
@@ -242,9 +274,9 @@ données_2013_2025 <- data.frame(
 
 données_2013_2025$julian = yday(données_2013_2025$Date)
 
-View(données_2013_2025)
 
-# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignesdu tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
 
 environnement_daily <- environnement_daily %>%
   full_join(
@@ -271,12 +303,11 @@ résumé_jours_NA = environnement_daily %>%
 
 ```
 
-### 3.2 Rajout des moyennes glissantes
-
 ```{r}
 
-#| echo: false 
-# On calcule la variable temperatuere et pluie moyenne glissante sur 31 jours 
+### 3.2 Rajout des moyennes glissantes
+
+# On calcule la variable température et pluie moyenne glissante sur 31 jours 
 
 environnement_daily <- environnement_daily %>%
   arrange(Date) %>%
@@ -328,41 +359,24 @@ environnement_daily <- environnement_daily %>%
       na.rm = TRUE
     )
   )
+write_csv(
+  environnement_daily,
+  "data/pro/environnement_daily.csv"
+)
 ```
 
-Fusion des tableaux
-
 ```{r}
+#| echo: false
 process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
+
+write_csv(
+  process_protocole,
+  "data/pro/process_protocole.csv"
+)
 ```
 
-Rajout des variables hydro dans le process_protocole et environnement_daily
-
-```{r}
-DataHydroBagnas<- DataHydroBagnas%>%
-
- mutate( date = as.Date(Jour-1 , origin = paste0(Annee, "-01-01")) )
-
-environnement_daily = environnement_daily %>%
-  inner_join( DataHydroBagnas,by = c("Date"= "date") )%>%
-  select(-Annee, -Jour)
-
-process_protocole <- process_protocole %>%
-  inner_join(DataHydroBagnas, by = c("date_debut" = "date")) %>%
-  select(-Annee, -Jour)
-
-write_csv(environnement_daily, "data/pro/environnement_daily.csv")
-
-write_csv(process_protocole, "data/pro/process_protocole.csv")
-
-```
-
-write_csv(environnement_daily, "data/environnement_daily.csv")
-
-write_csv(process_protocole, "data/process_protocole.csv")
-
-##4. Les données hydro
+# 3. Les données hydro
 
 ```{r}
 
@@ -370,7 +384,6 @@ write_csv(process_protocole, "data/process_protocole.csv")
 library(ggplot2)
 library(dplyr)
 library(lubridate)
-library(purrr)
 
 ### Importation des données brutes
 HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
@@ -460,13 +473,13 @@ jours_par_annee <- function(df) {
 DataInterpolationProfondeur <- HydrologicDataGrandBagnas %>%
   group_by(Annee) %>%
   group_modify(~ {    interp <- approx(
-      x = .x$Jour,
-      y = .x$Profondeur,
-      xout = 1:365,   
-      rule = 2         )
-    tibble(
-      Jour = interp$x,
-      Profondeur = interp$y)}) %>% ungroup()
+    x = .x$Jour,
+    y = .x$Profondeur,
+    xout = 1:365,   
+    rule = 2         )
+  tibble(
+    Jour = interp$x,
+    Profondeur = interp$y)}) %>% ungroup()
 
 ### Ajoute les colonnes Date, Mois au tableau DataInterpolationProfondeur
 AssecT_1_annee <- HydrologicDataGrandBagnas %>%
@@ -479,39 +492,45 @@ HydrologicDataGrandBagnas <- DataInterpolationProfondeur %>%
 
 ### Enregistre le tableau final dans le fichier processed
 write.csv(HydrologicDataGrandBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
+DataHydroBagnas <- HydrologicDataGrandBagnas
+head(DataHydroBagnas)
 ```
 
-## 5. Analyses exploratoires
+Les données hydro nous interessent pour la profondeur moyenne et les assec
 
-#### A. les observateurs Script d'Émile
-
-#### B. cartographie des sites protocoles avec la taille des points qui montre l'abondance par site (de 2014 à 2025 confondu) pour chaque espèce
+On rajoute ensuite les variables hydro dans le process_protocole et environnement_daily
 
 ```{r}
-#chargement des library (plus que necessaire : il faut que j'en enlève)
-library(leaflet)
-library(sf)
-library(RColorBrewer) 
-library(dplyr)
-library(readr)
-library(tidyverse) 
-library(lubridate) 
-library(readxl) 
-library(ggplot2) 
-library(dplyr)
-library(gridExtra)
-library(readr)
-library(knitr)
-library(lme4)
+DataHydroBagnas<- DataHydroBagnas%>%
+
+ mutate( date = as.Date(Jour-1 , origin = paste0(Annee, "-01-01")) )
+
+environnement_daily = environnement_daily %>%
+  inner_join( DataHydroBagnas,by = c("Date"= "date") )%>%
+  select(-Annee, -Jour)
+
+process_protocole <- process_protocole %>%
+  inner_join(DataHydroBagnas, by = c("date_debut" = "date")) %>%
+  select(-Annee, -Jour)
+
+write_csv(environnement_daily, "data/pro/environnement_daily.csv")
+
+write_csv(process_protocole, "data/pro/process_protocole.csv")
+
 ```
 
-Cartographie des sites d'observation/écoute des 3 espèces. Tous types de données mélangées (protocole et hors protocole) depuis 2014
+# 4. Analyses exploratoires
+
+## A. les observateurs Script d'Émile
+
+## B. cartographie des sites protocolés
+
+Cartographie des sites d'écoute des 3 espèces confondues. Les sites sur la carte sont les 9 sites du protocole.
 
 ```{r}
 
-#1 : tous les sites 
 
-#2 : les sites du protocole :
+#1 : les sites du protocole :
 #on va chercher le csv process_protocole dans l'ordinateur
 process_protocole <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_protocole.csv")
 
@@ -529,13 +548,6 @@ leaflet() %>%
     fillOpacity = 0.9,
     popup = ~nom_lieu  #quand on appuie sur les point de la carte le nom des sites du protocole apparraissent 
   ) %>%
-  setView(lng = 3.3, lat = 43.6, zoom = 9)
-
-```
-
-d)  talève
-
-```{r}
-
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
 
 ```
