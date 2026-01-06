@@ -346,6 +346,10 @@ write_csv(environnement_daily, "data/environnement_daily.csv")
 write_csv(process_protocole, "data/process_protocole.csv")
 ```
 
+write_csv(environnement_daily, "data/environnement_daily.csv")
+
+write_csv(process_protocole, "data/process_protocole.csv")
+
 ##4. Les données hydro
 
 ```{r}
