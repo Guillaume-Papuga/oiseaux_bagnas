@@ -337,7 +337,7 @@ Protocole_SuiviBlongios <- process_data %>%
 
 ## ajoute des colonnes pour le jour julien et son effet quadratique
 Protocole_SuiviBlongios$date_debut <- as.Date(Protocole_SuiviBlongios$date_debut, format = "%Y-%m-%d")
-Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien 
+Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien
 Protocole_SuiviBlongios$julian_day2 <- Protocole_SuiviBlongios$julian_day^2 #jour julien au carré
 
 ## ajoute les données hydrologiques au data frame des blongios
@@ -353,7 +353,7 @@ Modèle GLM présence des blongios en fonction du temps
 ```{r}
 
 ## Modèle GLM avec la présence du blongios en fonction du temps
-glm_blongios_temps <- glm(nombre_min ~ julian_day + I(julian_day^2), family = binomial, data = Protocole_SuiviBlongios)
+glm_blongios_temps <- glm(nombre_min ~ julian + I(julian^2), family = binomial, data = Protocole_SuiviBlongios)
 summary(glm_blongios_temps)
 
 ## Modèles GLM avec la présence du blongios en fonction des conditions hydrologiques : la profondeur moyenne de l'eau et l'assec
@@ -361,7 +361,7 @@ glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = bi
 summary(glm_blongios_hydro)
 
 ## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
-glm_blongios_temps_hydro <- glm(nombre_min ~ julian_day + I(julian_day^2) + ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
+glm_blongios_temps_hydro <- glm(nombre_min ~ julian + I(julian^2) + Profondeur + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
 summary(glm_blongios_temps_hydro)
 
 
@@ -372,8 +372,8 @@ pred_assec <- data.frame(
   AssecT_1 = unique(Protocole_SuiviBlongios$AssecT_1))
 
 # On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
-pred_assec$ProfondeurMoyenne <- mean(Protocole_SuiviBlongios$ProfondeurMoyenne, na.rm = TRUE)
-pred_assec$julian_day <- mean(Protocole_SuiviBlongios$julian_day, na.rm = TRUE)
+pred_assec$Profondeur<- mean(Protocole_SuiviBlongios$Profondeur, na.rm = TRUE)
+pred_assec$julian <- mean(Protocole_SuiviBlongios$julian, na.rm = TRUE)
 
 # Prédictions de probabilité
 pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
@@ -493,7 +493,6 @@ La sélection par l'AIC indique que le modèle incluant l'effet du jour julien e
 
 ## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
 
-
 ```{r}
 modeleB_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
                            data = Protocole_SuiviBlongios, 
@@ -541,7 +540,7 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
                            family = poisson )
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
-
+summary(modeleB_complet_profondeur)
 ```
 
 > La comparaison des modèles par l’AIC montre que l’intégration de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
@@ -594,3 +593,16 @@ Les paramètres estimés indiquent que :
       ) +
       theme_minimal()
     ```
+
+#plot
+
+```{r}
+p1 <- plot(ggeffect(modeleB_complet_temp_7j, terms= "temp_moy_glissante_7j", residual = T))
+p1
+
+p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
+p2
+
+p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
+p3
+```
