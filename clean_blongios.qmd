@@ -493,7 +493,6 @@ La sélection par l'AIC indique que le modèle incluant l'effet du jour julien e
 
 ## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
 
-
 ```{r}
 modeleB_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
                            data = Protocole_SuiviBlongios, 
@@ -541,7 +540,7 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
                            family = poisson )
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
-
+summary(modeleB_complet_profondeur)
 ```
 
 > La comparaison des modèles par l’AIC montre que l’intégration de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
@@ -594,3 +593,18 @@ Les paramètres estimés indiquent que :
       ) +
       theme_minimal()
     ```
+
+
+#plot 
+
+```{r}
+p1 <- plot(ggeffect(modeleB_complet_temp_7j, terms= "temp_moy_glissante_7j", residual = T))
+p1
+
+p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
+p2
+
+p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
+p3
+```
+
