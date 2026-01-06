@@ -313,74 +313,44 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 ##2 . Modèle de présence/absence
 
 ```{r}
-# 
-# 
-# library(ggplot2)
-# library(dplyr)
-# library(broom)
-# 
-# ## Importation des données
-# process_data <- read.csv("data/pro/process_protocole.csv", sep = ",")
-# process_data$nombre_min <- ifelse(process_data$nombre_min > 0, 1, 0)
-# HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
-# colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
-# colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
-# 
-# 
-# ## colonnes à garder
-# cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
-# 
-# ## filtre le tableau de données pour le blongios nain
-# Protocole_SuiviBlongios <- process_data %>%
-#   filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
-#   select(all_of(cols_keep))
-# 
-# ## ajoute des colonnes pour le jour julien et son effet quadratique
-# Protocole_SuiviBlongios$date_debut <- as.Date(Protocole_SuiviBlongios$date_debut, format = "%Y-%m-%d")
-# Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien 
-# Protocole_SuiviBlongios$julian_day2 <- Protocole_SuiviBlongios$julian_day^2 #jour julien au carré
-# 
-# ## ajoute les données hydrologiques au data frame des blongios
-# Protocole_SuiviBlongios$annee <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%Y"))
-# Protocole_SuiviBlongios$mois <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%m"))
-# Protocole_SuiviBlongios <- merge(Protocole_SuiviBlongios, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
-# 
+
+
+library(ggplot2)
+library(dplyr)
+library(broom)
+
+## Importation des données
+process_data <- read.csv("data/pro/process_protocole.csv", sep = ",")
+process_data$nombre_min <- ifelse(process_data$nombre_min > 0, 1, 0)
+HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
+colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+
+
+## colonnes à garder
+cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
+
+## filtre le tableau de données pour le blongios nain
+Protocole_SuiviBlongios <- process_data %>%
+  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
+  select(all_of(cols_keep))
+
+## ajoute des colonnes pour le jour julien et son effet quadratique
+Protocole_SuiviBlongios$date_debut <- as.Date(Protocole_SuiviBlongios$date_debut, format = "%Y-%m-%d")
+Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien
+Protocole_SuiviBlongios$julian_day2 <- Protocole_SuiviBlongios$julian_day^2 #jour julien au carré
+
+## ajoute les données hydrologiques au data frame des blongios
+Protocole_SuiviBlongios$annee <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%Y"))
+Protocole_SuiviBlongios$mois <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%m"))
+Protocole_SuiviBlongios <- merge(Protocole_SuiviBlongios, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
+
 
 ```
 
 Modèle GLM présence des blongios en fonction du temps
 
 ```{r}
-process_protocole <- read_csv("data/pro/process_protocole.csv")
-
-Protocole_SuiviBlongios<- process_protocole %>%
-  filter(
-    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-      nom_vernaculaire %in% c(
-        "Blongios nain, Butor blongios"
-      )
-  )
-
-#standardidation
-Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
-Protocole_SuiviBlongios$julian <- as.numeric(Protocole_SuiviBlongios$julian)
-Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
-Protocole_SuiviBlongios$nom_lieu<- as.character (Protocole_SuiviBlongios$nom_lieu)
-
-# enviro 
-Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
-Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
-Protocole_SuiviBlongios$vent_moyen <- scale(as.numeric(Protocole_SuiviBlongios$vent_moyen))
-Protocole_SuiviBlongios$temperature = scale (as.numeric(Protocole_SuiviBlongios$temperature))
-Protocole_SuiviBlongios$pluie_1h = scale (as.numeric(Protocole_SuiviBlongios$pluie_1h))
-
-#hydro 
-
-Protocole_SuiviBlongios$Profondeur <- scale( as.numeric(Protocole_SuiviBlongios$Profondeur ))
-Protocole_SuiviBlongios$AssecT_1 <- as.factor(Protocole_SuiviBlongios$AssecT_1 )
-
 
 ## Modèle GLM avec la présence du blongios en fonction du temps
 glm_blongios_temps <- glm(nombre_min ~ julian + I(julian^2), family = binomial, data = Protocole_SuiviBlongios)
@@ -624,8 +594,7 @@ Les paramètres estimés indiquent que :
       theme_minimal()
     ```
 
-
-#plot 
+#plot
 
 ```{r}
 p1 <- plot(ggeffect(modeleB_complet_temp_7j, terms= "temp_moy_glissante_7j", residual = T))
@@ -637,4 +606,3 @@ p2
 p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
 p3
 ```
-
