@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
 #ce code permet de n'afficher auxun message parasite ni les warnings. 
 ```
 
-
 #Charger les données et les library
 
 ```{r}
@@ -425,9 +424,31 @@ Protocole_SuiviBlongios<- process_protocole %>%
         "Talève sultane, Poule sultane, Porphyrion bleu"
       )
   )
+
+
+#standardidation
 Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
-Protocole_SuiviBlongios$julian <- as.numeric(scale(Protocole_SuiviBlongios$julian))
+Protocole_SuiviBlongios$julian <- as.numeric(Protocole_SuiviBlongios$julian)
 Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
+Protocole_SuiviBlongios$nom_lieu<- as.character (Protocole_SuiviBlongios$nom_lieu)
+
+# enviro 
+Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
+Protocole_SuiviBlongios$vent_moyen <- scale(as.numeric(Protocole_SuiviBlongios$vent_moyen))
+Protocole_SuiviBlongios$temperature = scale (as.numeric(Protocole_SuiviBlongios$temperature))
+Protocole_SuiviBlongios$pluie_1h = scale (as.numeric(Protocole_SuiviBlongios$pluie_1h))
+
+#hydro 
+
+Protocole_SuiviBlongios$Profondeur <- scale( as.numeric(Protocole_SuiviBlongios$Profondeur ))
+Protocole_SuiviBlongios$AssecT_1 <- as.factor(Protocole_SuiviBlongios$AssecT_1 )
+
+
+
+
 ```
 
 ```{r}
@@ -452,7 +473,10 @@ modele_anneejour <- glm(nombre_min ~ annee2 * julian,
                          data = Protocole_SuiviBlongios, 
                          family = poisson)
 
-
+#modèle complet 
+modeleB_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+                           data = Protocole_SuiviBlongios, 
+                           family = poisson )
 
 summary(modele_annee)
 summary(modele_jour)
@@ -469,36 +493,55 @@ La sélection par l'AIC indique que le modèle incluant l'effet du jour julien e
 
 ## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
 
-```{r}
-# Nettoyage des variables (on force le passage de matrice à vecteur simple)
-Protocole_SuiviBlongios$temp_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviBlongios$temp_moy_glissante_31j))
-Protocole_SuiviBlongios$temp_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviBlongios$temp_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_7j <- as.numeric(scale(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_31j <- as.numeric(scale(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
-```
 
 ```{r}
-m_temp_7 <- glm(nombre_min ~ julian + temp_moy_glissante_7j,
-          data = Protocole_SuiviBlongios, family = poisson)
+modeleB_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                           data = Protocole_SuiviBlongios, 
+                           family = poisson )
 
-m_temp_31 <- glm(nombre_min ~ julian + temp_moy_glissante_31j,
-          data = Protocole_SuiviBlongios, family = poisson)
 
-m_pluie_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j,
-          data = Protocole_SuiviBlongios, family = poisson)
+modeleB_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                              data = Protocole_SuiviBlongios, 
+                              family = poisson )
 
-m_pluie_31<- glm(nombre_min ~ julian + pluie_moy_glissante_31j,
-          data = Protocole_SuiviBlongios, family = poisson)
+modeleB_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                              data = Protocole_SuiviBlongios, 
+                              family = poisson )
 
-m_pluie_temp_7 <- glm(nombre_min ~ julian + pluie_moy_glissante_7j +
-                        temp_moy_glissante_7j,
-          data = Protocole_SuiviBlongios, family = poisson)
 
-m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
-                        temp_moy_glissante_31j,
-          data = Protocole_SuiviBlongios, family = poisson)
+modeleB_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+                                  data = Protocole_SuiviBlongios, 
+                                  family = poisson )
 
-AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
+modeleB_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                                    data = Protocole_SuiviBlongios, 
+                                    family = poisson )
+
+modeleB_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                                   data = Protocole_SuiviBlongios, 
+                                   family = poisson )
+modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                                   data = Protocole_SuiviBlongios, 
+                                   family = poisson )
+
+
+
+
+
+# avec hydro 
+
+modeleB_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+                           data = Protocole_SuiviBlongios, 
+                           family = poisson )
+                           
+summary(modeleB_complet_assec)
+
+modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+                           data = Protocole_SuiviBlongios, 
+                           family = poisson )
+
+AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
+
 ```
 
 > La comparaison des modèles par l’AIC montre que l’intégration de la pluie moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
