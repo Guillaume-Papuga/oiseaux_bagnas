@@ -326,6 +326,26 @@ process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
 ```
 
+Rajout des variables hydro dans le process_protocole et environnement_daily
+
+```{r}
+DataHydroBagnas<- DataHydroBagnas%>%
+
+ mutate( date = as.Date(Jour-1 , origin = paste0(Annee, "-01-01")) )
+
+environnement_daily = environnement_daily %>%
+  inner_join( DataHydroBagnas,by = c("Date"= "date") )%>%
+  select(-Annee, -Jour)
+
+process_protocole <- process_protocole %>%
+  inner_join(DataHydroBagnas, by = c("date_debut" = "date")) %>%
+  select(-Annee, -Jour)
+
+write_csv(environnement_daily, "data/environnement_daily.csv")
+
+write_csv(process_protocole, "data/process_protocole.csv")
+```
+
 ##4. Les données hydro
 
 ```{r}
@@ -444,7 +464,6 @@ HydrologicDataGrandBagnas <- DataInterpolationProfondeur %>%
 ### Enregistre le tableau final dans le fichier processed
 write.csv(HydrologicDataGrandBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 ```
-
 
 ## 5. Analyses exploratoires
 
