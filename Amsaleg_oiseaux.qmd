@@ -626,6 +626,7 @@ modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee2,
 modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
                            data = Protocole_SuiviTaleve, 
                            family = poisson ) ### meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
+
 modele_complet_anneesite <- glm(nombre_min~ annee2*nom_lieu + julian + I(julian^2),
                                 data = Protocole_SuiviTaleve, 
                                 family = poisson )
@@ -695,7 +696,8 @@ summary(modele_complet_pluie_31j_assec)
 AIC(modele_complet_site,modele_complet_vent,modele_complet_assec,modele_complet_profondeur,modele_complet_pluie_31j_assec)
 ```
 
-## blongios 
+## blongios
+
 ```{r}
 Protocole_SuiviBlongios <- process_protocole %>%
   filter(
@@ -776,4 +778,3 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
 ```
-
