@@ -315,80 +315,60 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 ```{r}
 
 
-library(ggplot2)
-library(dplyr)
-library(broom)
+## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
+Protocole_Blongios$Occurence <- ifelse(Protocole_Blongios$nombre_min > 0, 1, 0)
 
-## Importation des données
-process_data <- read.csv("data/pro/process_protocole.csv", sep = ",")
-process_data$nombre_min <- ifelse(process_data$nombre_min > 0, 1, 0)
-HydrologicDataGrandBagnas <- read.csv("data/pro/DataHydroBagnas.csv", sep = ",")
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Annee"] <- "annee"
-colnames(HydrologicDataGrandBagnas)[colnames(HydrologicDataGrandBagnas) == "Mois"] <- "mois"
+### Modeles emboités 
 
-
-## colonnes à garder
-cols_keep <- c(1, 2, 3, 6, 7, 12, 14)
-
-## filtre le tableau de données pour le blongios nain
-Protocole_SuiviBlongios <- process_data %>%
-  filter(nom_vernaculaire == "Blongios nain, Butor blongios") %>%
-  select(all_of(cols_keep))
-
-## ajoute des colonnes pour le jour julien et son effet quadratique
-Protocole_SuiviBlongios$date_debut <- as.Date(Protocole_SuiviBlongios$date_debut, format = "%Y-%m-%d")
-Protocole_SuiviBlongios$julian_day <- as.numeric(Protocole_SuiviBlongios$date_debut) #jour julien
-Protocole_SuiviBlongios$julian_day2 <- Protocole_SuiviBlongios$julian_day^2 #jour julien au carré
-
-## ajoute les données hydrologiques au data frame des blongios
-Protocole_SuiviBlongios$annee <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%Y"))
-Protocole_SuiviBlongios$mois <- as.integer(format(Protocole_SuiviBlongios$date_debut, "%m"))
-Protocole_SuiviBlongios <- merge(Protocole_SuiviBlongios, HydrologicDataGrandBagnas, by = c("annee", "mois"), all.x = TRUE)
-
-
-```
-
-Modèle GLM présence des blongios en fonction du temps
-
-```{r}
-
-## Modèle GLM avec la présence du blongios en fonction du temps
-glm_blongios_temps <- glm(nombre_min ~ julian + I(julian^2), family = binomial, data = Protocole_SuiviBlongios)
-summary(glm_blongios_temps)
-
-## Modèles GLM avec la présence du blongios en fonction des conditions hydrologiques : la profondeur moyenne de l'eau et l'assec
-glm_blongios_hydro <- glm(nombre_min ~ ProfondeurMoyenne + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
-summary(glm_blongios_hydro)
-
-## Modèles GLM avec la présence du blongios en fonction du temps et des conditions hydrologiques
-glm_blongios_temps_hydro <- glm(nombre_min ~ julian + I(julian^2) + Profondeur + AssecT_1, family = binomial, data = Protocole_SuiviBlongios)
-summary(glm_blongios_temps_hydro)
+modele_julian2_annee <- glm(Occurence ~ julian + I(julian^2)+annee,
+                   data = Protocole_Blongios, 
+                   family = binomial)
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
+modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                        data = Protocole_Blongios, 
+                   family = binomial )
 
 
-## TEST d'un graph qui montre la probabilité prédite de Blongios suivant l'assec qu'il y a eu la semaine précèdente
+AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
+modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent)
 
-# Crée un dataframe pour prédictions par AssecT_1
-pred_assec <- data.frame(
-  AssecT_1 = unique(Protocole_SuiviBlongios$AssecT_1))
+## meilleur modèle selon AIC
 
-# On fixe la profondeur et le temps à leur moyenne pour isoler l'effet de l'Assec
-pred_assec$Profondeur<- mean(Protocole_SuiviBlongios$Profondeur, na.rm = TRUE)
-pred_assec$julian <- mean(Protocole_SuiviBlongios$julian, na.rm = TRUE)
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Protocole_Blongios, 
+                        family = binomial)
 
-# Prédictions de probabilité
-pred_assec$prob <- predict(glm_blongios_temps_hydro, newdata = pred_assec, type = "response")
+summary(modele_complet_pluie_7j_vent)
 
-# Plot
-ggplot(pred_assec, aes(x = AssecT_1, y = prob, fill = AssecT_1)) +
-  geom_col() +
-  scale_fill_brewer(palette = "Set2") +
-  labs(
-    x = "Assec de l'année précédente",
-    y = "Probabilité prédite de présence",
-    title = "Effet de l'Assec sur la présence du Blongios nain"
-  ) +
-  theme_classic() +
-  theme(legend.position = "none")
 ```
 
 ##2.1 interpretation
