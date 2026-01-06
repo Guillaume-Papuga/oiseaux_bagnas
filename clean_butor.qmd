@@ -29,8 +29,8 @@ library(leaflet)
 library(sf)
 library(slider)
 
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
-process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro")
+process_data <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
 ```
 
 ## 1. analyses exploratoires pour le Butor
@@ -306,41 +306,13 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 #floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
 data_butor$annee = year(floor_date(data_butor$date_debut, "year"))
 
-##### création des lignes pour les jour  manquants du tableau 
-
-# étape 1 création d'un tableau de 1990 à 2025 avec une variable jour julian
-
-date_debut <- as.Date("1990-11-18")
-date_fin   <- as.Date("2025-10-09")
-
-toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
-
-données_1990_2025 <- data.frame(
-  Date = toutes_dates)
-
-données_1990_2025$julian = yday(données_1990_2025$Date)
-
-head(données_1990_2025)
-
-# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
-
-butor_daily <- data_butor
-
-data_butor$Date <- data_butor$date_debut
-
-butor_daily <- data_butor %>%
-  full_join(
-    données_1990_2025 %>% select(Date, julian),
-    by = "Date"
-  )
-
 ```
 
 #### a - Cumule par année
 
 ```{r}
 
-obs_annee <- butor_daily %>%
+obs_annee <- data_butor %>%
   group_by(annee) %>%
   summarize(sum(nombre_min))
 
@@ -359,63 +331,53 @@ ggplot(obs_annee, aes(x = annee)) +
 
 ```
 
-#### b - Cumule par jour julien
+#### b - Cumule par semaine
 
 ```{r}
-
-obs_julian <- butor_daily %>%
-  group_by(julian) %>%
-  summarize(sum(nombre_min, na.rm = TRUE))
+obs_semaine <- data_butor %>%
+  group_by(semaine) %>%
+  summarize(sum(nombre_min, na.rm = TRUE)) %>%
+  mutate(
+    saison = case_when(
+      semaine %in% c(0:12, 52:53) ~ "Hiver",
+      semaine %in% 13:25          ~ "Printemps",
+      semaine %in% 26:38          ~ "Été",
+      semaine %in% 39:51          ~ "Automne"
+    )
+  )
 
 ### Barplot
 
-ggplot(obs_julian, aes(x = julian)) +
-  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`),
-           stat = "identity",
-           width = 0.4,
-           fill = "blue") +
+ggplot(obs_semaine, aes(x = semaine)) +
+  geom_rect(
+    aes(xmin = 15, xmax = 21, ymin = -Inf, ymax = Inf,
+        fill = "Période du protocole"),
+    inherit.aes = FALSE
+  ) +
+  geom_bar(
+    aes(y = `sum(nombre_min, na.rm = TRUE)`, fill = saison),
+    stat = "identity",
+    width = 0.4
+  ) +
   theme_classic() +
   scale_y_continuous(expand = c(0, 0)) +
-  xlab("Jour julien") +
-  ylab("Nombre d'observations") +
-  ggtitle("Nombre de butors observés chaque jour julien entre 1990 et 2025")
-
-```
-
-#### c - Cumule par jour julien au sein de chaque année
-
-```{r}
-
-# sommer les obsvertions par année et par jour julien
-obs_julian <- butor_daily %>%
-  group_by(annee, julian) %>%
-  summarize(sum(nombre_min, na.rm = TRUE))
-
-# boucle qui permet d'obtenir 1 graph par année 
-for (a in unique(obs_julian$annee)) {
-
-  graph_annee <- ggplot(
-    obs_julian %>% filter(annee == a),
-    aes(x = julian, y = `sum(nombre_min, na.rm = TRUE)`)
+  scale_fill_manual(
+    values = c(
+      "Hiver" = "steelblue",
+      "Printemps" = "forestgreen",
+      "Été" = "gold",
+      "Automne" = "darkorange",
+      "Période du protocole" = "grey70"
+    )
   ) +
-    geom_col(width = 0.4, fill = "blue") +
-    theme_classic() +
-    scale_y_continuous(expand = c(0, 0)
-    ) +
-    scale_x_continuous(limits = c(1, 365), expand = c(0, 0)) +
-    xlab("Jour julien") +
-    ylab("Nombre d'observations") +
-    ggtitle(paste(
-      "Nombre de butors observés chaque jour julien en", a
-    ))
+  xlab("Semaine") +
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre de butors observés chaque semaine de l'année entre 1990 et 2025") +
+  labs(fill = "")
 
-  print(graph_annee)
-}
 ```
 
-#### VERIFER QU'IL Y A PAs DE DUPLICATION DE site comme Raph en avait trouvé
-
-#### d - Cumule par année pour chaque site (même les sites hors protocole)
+#### c - Cumule par année pour chaque site (même les sites hors protocole)
 
 ```{r}
 process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
