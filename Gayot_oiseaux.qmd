@@ -1269,3 +1269,14 @@ m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
 
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
+
+#  fusion du tableau en hydro 
+
+```{r}
+DataHydroBagnas<- DataHydroBagnas%>%
+
+ mutate( date = as.Date(Jour-1 , origin = paste0(Annee, "-01-01")) )
+
+environnement_daily = environnement_daily %>%
+  inner_join( DataHydroBagnas,by = c("Date"= "date") )
+```
