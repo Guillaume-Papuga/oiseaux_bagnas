@@ -4,7 +4,6 @@ format: html
 editor: visual
 ---
 
-
 ```{r}
 #| message: false
 #| warning: false
@@ -108,7 +107,7 @@ Opportuniste_Taleve<- process_data %>%
 
 ## 2.2 effort d'observation journalier
 
-### FACULTATIF ET PAS A JOUR  Effort journalier toutes espèces tout protocole
+### FACULTATIF ET PAS A JOUR Effort journalier toutes espèces tout protocole
 
 ```{r}
 
@@ -530,7 +529,6 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour le Blongios (2014-2018)")
 
 ```
-
 
 ### 2.2.e Effort journalier protocole Talève
 
@@ -1055,18 +1053,9 @@ ggplot() +
 
 ```
 
+------------------------------------------------------------------------
 
-
-
-
-------------------------------------------------------------------------------
-
-
-
-
-
-#Jsp somme Obs butor au fil des années + jours julien jsp 
-
+#Jsp somme Obs butor au fil des années + jours julien jsp
 
 qwwwwwwwwwwwwww## 1. Rassembler les deux tableaux de données
 
@@ -1175,8 +1164,6 @@ process_butor = process_data  %>%
 
 ```
 
-
-
 ```{r}
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
@@ -1208,10 +1195,6 @@ butor_daily <- process_butor %>%
 
 ```
 
-
-
-
-
 ```{r}
 
 obs_annee <- butor_daily %>%
@@ -1233,7 +1216,7 @@ ggplot(obs_annee, aes(x = annee)) +
 
 ```
 
-# par jour 
+# par jour
 
 ```{r}
 
@@ -1255,8 +1238,7 @@ ggplot(obs_julian, aes(x = julian)) +
   ggtitle("Nombre de butors observés chaque jour julien entre 1990 et 2025")
 ```
 
-
-# faire par jour pour chaque annee 
+# faire par jour pour chaque annee
 
 ```{r}
 
@@ -1279,7 +1261,8 @@ graph <- ggplot(obs_julian, aes(x = julian)) +
 graph + facet_grid(. ~ annee)
 
 ```
-# avec une boucle 
+
+# avec une boucle
 
 ```{r}
 
@@ -1309,9 +1292,10 @@ for (a in unique(obs_julian$annee)) {
   print(graph_annee)
 }
 ```
-quel interet quand on voit le peu d'obs par ans ??? refaire en gardant tous les jours juliens pour que ce soit plus lisible  
 
-# par année pour chaque sites 
+quel interet quand on voit le peu d'obs par ans ??? refaire en gardant tous les jours juliens pour que ce soit plus lisible
+
+# par année pour chaque sites
 
 ```{r}
 
@@ -1342,7 +1326,6 @@ for (a in unique(obs_site$nom_lieu)) {
 ```
 
 # CLEAN BUTOR ET REDACTION RAPPORT
-
 ---
 title: "Butor_clean"
 format: html
@@ -1354,10 +1337,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-#ce code permet de n'afficher aucun message parasite ni les warnings. 
+#ce code permet de n'afficher auxun message parasite ni les warnings. 
 ```
-
-
 
 # Charger les données et les library
 
@@ -1678,68 +1659,7 @@ ggplot(obs_annee, aes(x = annee)) +
 
 ```
 
-#### b - Cumule par semaine 
-
-```{r}
-
-obs_semaine <- data_butor %>%
-  group_by(semaine) %>%
-  summarize(sum(nombre_min, na.rm = TRUE))
-
-### Barplot
-
-ggplot(obs_semaine, aes(x = semaine)) +
-  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`),
-           stat = "identity",
-           width = 0.4,
-           fill = "blue") +
-  theme_classic() +
-  scale_y_continuous(expand = c(0, 0)) +
-  xlab("Semaine") +
-  ylab("Nombre d'observations") +
-  ggtitle("Nombre de butors observés chaque semaine de l'année entre 1990 et 2025")
-
-```
-
-
-
-##### semaine avec saison test 
-
-```{r}
-obs_semaine <- data_butor %>%
-  group_by(semaine) %>%
-  summarize(sum(nombre_min, na.rm = TRUE)) %>%
-  mutate(
-    saison = case_when(
-      semaine %in% c(1:12, 52:53) ~ "Hiver",
-      semaine %in% 13:25          ~ "Printemps",
-      semaine %in% 26:38          ~ "Été",
-      semaine %in% 39:51          ~ "Automne"
-    )
-  )
-
-### Barplot
-
-ggplot(obs_semaine, aes(x = semaine)) +
-  geom_bar(aes(y = `sum(nombre_min, na.rm = TRUE)`, fill = saison),
-           stat = "identity",
-           width = 0.4) +
-  theme_classic() +
-  scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_manual(values = c(
-    "Hiver" = "steelblue",
-    "Printemps" = "forestgreen",
-    "Été" = "gold",
-    "Automne" = "darkorange"
-  )) +
-  xlab("Semaine") +
-  ylab("Nombre d'observations") +
-  ggtitle("Nombre de butors observés chaque semaine de l'année entre 1990 et 2025") +
-  labs(fill = "Saison")
-
-```
-
-##### semaine avec saison et protocole test 
+#### b - Cumule par semaine
 
 ```{r}
 obs_semaine <- data_butor %>%
@@ -1785,3 +1705,36 @@ ggplot(obs_semaine, aes(x = semaine)) +
 
 ```
 
+#### c - Cumule par année pour chaque site (même les sites hors protocole)
+
+```{r}
+process_data <- read_csv("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
+
+
+process_butor <- process_data %>%
+  filter(nom_vernaculaire=="Butor étoilé")
+
+#préparer les coordonnées pour R 
+sites_butor <- st_as_sf(process_butor, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+# on rassemble les données pour avoir un dataframe avec 1 ligne par site d'étude. L'objectif est d'avoir le nombre d'écoute de Butor par site (somme depuis 2014)
+sites_butor <- sites_butor %>%
+  group_by(nom_lieu, nom_vernaculaire, geometry) %>%
+  summarise(
+    somme_nombre_min = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+#leaflet est un package pour projeter des infos sur une carte
+leaflet() %>%
+  addTiles() %>%     
+  
+  addCircleMarkers(
+    data =sites_butor, #on prend les data frame résumé avec 1 ligne par site
+    radius = ~somme_nombre_min, #la taille des points est proportionnelle au nombre d'oiseaux entendus
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~paste ((nom_lieu), ", Butor entendus : " ,(somme_nombre_min), sep = "")
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+```
