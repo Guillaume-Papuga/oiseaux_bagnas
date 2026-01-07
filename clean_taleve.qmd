@@ -41,7 +41,7 @@ process_data <- read_csv("data/pro/process_data.csv")
 
 #A- Graphique de présence des Talèves par semaine depuis 1990
 
-Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où le blongios n’a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d’écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.
+Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où la talève n’a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d’écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.
 
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
@@ -143,6 +143,7 @@ on voit que le protocole est réalisé pendant la periode historique d'écoute e
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
 
 Cette carte donne la localisation des points d’écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).
+
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("data/process_protocole.csv")
@@ -181,7 +182,8 @@ leaflet() %>%
 
 #C- Effort journalier des données protocoles Talève
 
- Ce graphique représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole talève pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
+Ce graphique représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole talève pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
+
 ```{r}
 # Données 
 
@@ -352,7 +354,7 @@ Protocole_SuiviTaleve <- process_protocole %>%
 head(Protocole_SuiviTaleve)
 ```
 
-**Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.**
+Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.
 
 Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.
 
@@ -447,7 +449,7 @@ Le modèle GLM explorant la présence de la Talève sultane en fonction du temps
 
 ## 3 . Modèle d'abondance
 
-Cette analyse vise à caractériser la dynamique de la population de **Talève** et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
+Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
 
 ## 3.1 Modèle d'abondance en fonction du temps
 
@@ -459,16 +461,16 @@ modele_annee <- glm(nombre_min ~ annee2,
                     data = Protocole_SuiviTaleve)
 
 
-modele_jour <- glm(nombre_min ~ julian, 
+modele_julian <- glm(nombre_min ~ julian, 
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
 
 
-modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
+modele_annee_julian <- glm(nombre_min ~ annee2 + julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
-modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
+modele_anneejulian <- glm(nombre_min ~ annee2 * julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
@@ -537,40 +539,108 @@ modele_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_
 
 
 # Selection du meilleur model avec l'AIC 
-AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
-modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent, modele_complet_profondeur, modele_complet_assec)
+AIC_tab <- AIC(
+  modele_annee,
+  modele_julian,
+  modele_annee_julian,
+  modele_anneejulian,
+  modele_julian2,
+  modele_julian2annee,
+  modele_julian2_annee,
+  modele_complet_site,
+  modele_complet_anneesite,
+  modele_complet_vent,
+  modele_complet_temp_31,
+  modele_complet_temp_7j,
+  modele_complet_temp_1j,
+  modele_complet_temp_1j_vent,
+  modele_complet_pluie_31j_vent,
+  modele_complet_pluie_7j_vent,
+  modele_complet_pluie_1j_vent,
+  modele_complet_profondeur,
+  modele_complet_assec
+) %>%
+  as.data.frame() %>%
+  rownames_to_column("Modèle") %>%
+  arrange(AIC) %>%
+  mutate(
+    delta_AIC = AIC - min(AIC)
+  )
+
+kable(
+  AIC_tab,
+  digits = 2,
+  caption = "Comparaison des modèles selon le critère d'information d'Akaike (AIC)"
+)
+
 ```
+
+La sélection de modèles basée sur le critère d’information d’Akaike (AIC) a mis en évidence qu’un modèle intégrant les effets temporels (année et jour julien), un effet spatial lié au site, ainsi que des variables environnementales locales (vitesse moyenne du vent et conditions d’assec) constitue la structure la plus parcimonieuse pour expliquer la variation de l’occurrence des individus. Ce modèle a donc été retenu comme base pour l’analyse, afin d’évaluer l’influence conjointe des facteurs temporels, spatiaux et environnementaux sur l'abondance des individus
+
+Les parametres estimés indiquent que :
+
+```{r}
+extract_coef <- function(modele, var){
+  c <- summary(modele)$coefficients[var, ]
+  tibble(
+    beta = round(c["Estimate"], 3),
+    p    = round(c["Pr(>|z|)"], 7)
+  )
+}
+
+assec_res <- extract_coef(modele_complet_assec, "AssecT_1partiel")
+```
+
+-   L’assec partiel a un effet négatif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). En revanche, un assec total ne montre aucun effet significatif sur l’abondance des talèves (fig X) . On peut imaginer que le nombre limité d’assec total n’est pas valorisé en raison de sa faible fréquence de présence.
+
+Le graphique présente l'évolution de la population de la talèves en fonction des differents modalités du niveau de l'eau ( assec total , assec partiel , absence d'assec )
 
 ```{r}
 p1 <- plot(ggeffect(modele_complet_assec, terms= "AssecT_1", residual = T))
 p1
+```
 
+```{r}
+extract_coef <- function(modele, var){
+  c <- summary(modele)$coefficients[var, ]
+  tibble(
+    beta = round(c["Estimate"], 3),
+    p    = round(c["Pr(>|z|)"], 7)
+  )
+}
+
+annee_res <- extract_coef(modele_complet_assec, "annee2")
+```
+
+-   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+
+Le graphique présente l'évolution de la population de la talèves en fonction au cours des années
+
+```{r}
 p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
 p2
+```
 
+-   Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
+
+-   Le graphique montre l’évolution des observations de la talève sur chaque site du protocole :
+
+
+```{r}
 p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
 p3
 ```
 
-La sélection de modèle par l'AIC a désigné la combinaison des effets temporels (année et jour julien) comme structure optimale. Ce modèle servira de base à notre analyse pour tester l'apport des variables environnementales, telles que la pluviométrie, sur l'abondance des individus.
+```{r}
+null_dev <- modele_complet_assec$null.deviance
+resid_dev <- modele_complet_assec$deviance
 
-> La comparaison des modèles par l'AIC montre que l'intégration de la pluie moyenne glissante sur 31 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de température n'apportent aucune amélioration supplémentaire et ne sont donc pas retenues.
+pseudo_R2 <- (null_dev - resid_dev) / null_dev
+pseudo_R2
+```
 
-Les paramètres estimés indiquent que :
+Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R²  = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
 
--   La pluie moyenne glissante sur 31 jours n'a pas d'effet négatif significatif sur l’abondance des talèves (β = −0.179, p =0.08). Donc une variation de la quantité de pluie entre les mois n'influence pas une diminution ou augmentation du nombre d’individus
-
--   L’année a un effet positif significatif sur l’abondance (β = 0.155, p \< 0.001), suggérant une augmentation progressive du nombre de talèves au cours des années.
-
--   Le jour julien présente un effet négatif significatif (β = −0.569, p = 0.002), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
-
--   L’interaction entre l’année et le jour julien est faiblement positive et significative (β = 0.059, p = 0.034), suggérant que la dynamique saisonnière varie peu d’une année à l’autre.
-
-    Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 308.28 contre une déviance nulle de 354.24), avec un AIC de 545.09.
-
--   La fonction pour trouver l'abondance du blongios en fonction de la pluie , de l,'année et des jours est :
-
-    log(y) = -1.48879 + 0.15277(annee2\[i\]) - 0.59216 (julian\[i\]) -0.17924(pluie\[i\]) + 0.05917(annee\[i\]\*julian\[i\])
 
 graphes probabilité de détection par année
 
