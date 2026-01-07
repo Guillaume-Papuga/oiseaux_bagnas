@@ -190,7 +190,7 @@ Protocole_SuiviBlongiosTaleve <- process_protocole %>%
   )
 Protocole_Blongios <- Protocole_SuiviBlongiosTaleve %>%
   mutate(
-    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S"),
     heure_debut_tronc = hour(heure_debut),
     date = as.Date(heure_debut)
   )
@@ -198,7 +198,7 @@ Protocole_Blongios <- Protocole_SuiviBlongiosTaleve %>%
 Protocole_Blongios <- Protocole_Blongios %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
 Protocole_Blongios <- Protocole_Blongios  %>%
-  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S")) %>%
   filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
 
 # Table des 24 heures
@@ -247,44 +247,42 @@ Ici, on observe que les sorties protocolées sont majoritairement réalisées en
 
 ### D) Effort d'échantillonnage journalier et répartition temporelle journalière des observations opportunistes de Blongios nain
 
-Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties opportunistes, et quelles étaient les horaires qui permettaient une meilleure détection de l'espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente l’effort d’échantillonnage ainsi que le nombre d’obervations opportunistes cumulés pour chaque heure de la journée de 1997 à 2023. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
+Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties hors protocole standardisé, et quelles étaient les horaires qui permettaient une meilleure détection de l'espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente le nombre d’obervations hors protocole cumulés pour chaque heure de la journée de 1997 à 2023. Il est important de préciser que les sorties hors protocole où l'heure d'observation est identifiée sont très rares (n=46), et correspondent en majorité à des données produites lors d'autres protocoles non dédiés à cette espèce. 
 
 ```{r}
-# Données 
 
-head(process_data$heure_debut, 10)
-str(process_data$heure_debut)
-
-
+## Filtrage des données opportunistes
 Opportuniste_Blongios<- process_data %>%
-  filter(
-    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "Blongios nain, Butor blongios")
+  filter( nom_vernaculaire == "Blongios nain, Butor blongios" &
+    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" )
+     
 
+## Preparation des données
 Opportuniste_Blongios <- Opportuniste_Blongios %>%
   mutate(
-    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S"),
     heure_debut_tronc = hour(heure_debut),
     date = as.Date(heure_debut))
 
 Opportuniste_Blongios <- Opportuniste_Blongios %>%
-  filter(!(hour(heure_debut) == 0 & minute(heure_debut) == 0))
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
 
-# Table des 24 heures
+## Table des 24 heures
 
 heures_jour <- tibble(heure_debut_tronc = 0:23)
 
-### Sommer les obs par heure
+## Additionner les observations par heure
 
 obs_heure <- Opportuniste_Blongios %>%
   group_by(heure_debut_tronc) %>%
   summarize(sum(nombre_min)) 
 obs_heure
 
-### Frequence horaire
+## Frequence horaire
 freq_heure <- Opportuniste_Blongios %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 
-# Compléter les heures manquantes avec 0
+## Compléter les heures manquantes avec 0
 data_plot_h <- heures_jour %>%
   left_join(freq_heure, by = "heure_debut_tronc") %>%
   left_join(obs_heure, by = "heure_debut_tronc") %>%
@@ -293,13 +291,9 @@ data_plot_h <- heures_jour %>%
     `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
     heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23))
 
-### Barplot
+## Barplot
 
 ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
-  geom_bar(aes(y = freq),
-           stat = "identity",
-           width = 0.8,
-           fill = "orange") +
   geom_bar(aes(y = `sum(nombre_min)`),
            stat = "identity",
            width = 0.4,
@@ -308,12 +302,13 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Heure de la journée") +
   ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
-  ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour le Blongios (2014-2018)")
+  ggtitle("Nombre d'observations hors protocole\n par heure pour le Blongios (1997-2023)")
 
 
 ```
 
-On observe que les sorties opportunistes coïncident également assez bien avec les périodes d’activité maximale du Blongios nain, avec une détéction de l'oiseau sur les mêmes plages horaires (7-8h et 20-21h).
+On remarque que hors protocole standardisé, le Blonios nain est essentiellement entre 6 et 11h du matin et entre 19 et 21h du soir, ce qui correspond bien à son pic d'activité (aube et crépuscule), et au horaires de prospections choisies pour le protocole dédié au Blongios nain. 
+
 
 ##2 . Modèle de présence/absence
 
