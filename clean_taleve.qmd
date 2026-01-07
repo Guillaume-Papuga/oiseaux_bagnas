@@ -625,7 +625,6 @@ p2
 
 -   Le graphique montre l’évolution des observations de la talève sur chaque site du protocole :
 
-
 ```{r}
 p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
 p3
@@ -639,27 +638,30 @@ pseudo_R2 <- (null_dev - resid_dev) / null_dev
 pseudo_R2
 ```
 
-Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R²  = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
-
+Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
 
 graphes probabilité de détection par année
 
 ```{r}
-#========================
+
+#=======================
 # LIBRAIRIES
-#========================
+#=======================
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(tidyr)
 library(lme4)
 
 #========================
 # DONNEES
 #========================
-process_data <- read.csv("data/pro/process_protocole.csv")
+process_data <- read.csv("process_protocole.csv")
 
 #========================
-# PREPARATION  # garder uniquement les lignes protocolées de talève
+# PREPARATION
+# garder uniquement les lignes protocolées de talève
+# ET supprimer l'année 2018
 #========================
 process_data <- process_data %>%
   filter(
@@ -669,21 +671,27 @@ process_data <- process_data %>%
   mutate(
     presence   = ifelse(nombre_min > 0, 1, 0),
     date_debut = as.Date(date_debut),
-    annee      = factor(lubridate::year(date_debut)),  # année en facteur
+    annee      = lubridate::year(date_debut),
     j_julien   = lubridate::yday(date_debut),
     j_julien2  = j_julien^2,
     nom_lieu   = factor(nom_lieu)
-  )
+  ) %>%
+  filter(annee != 2018)   # ⬅️ suppression définitive de 2018
 
-
-# ---- MODELE GLM ----
+#========================
+# MODELE GLM
+#========================
 modele_phenologie <- glm(
   presence ~ j_julien + j_julien2 + annee,
   data = process_data,
   family = binomial
 )
 
-# ---- GRILLE DE PREDICTION (PAR ANNEE) ----
+summary(modele_phenologie)
+
+#========================
+# GRILLE DE PREDICTION
+#========================
 newdat <- process_data %>%
   group_by(annee) %>%
   summarise(
@@ -693,15 +701,19 @@ newdat <- process_data %>%
   unnest(j_julien) %>%
   mutate(j_julien2 = j_julien^2)
 
-# ---- PREDICTION ----
+#========================
+# PREDICTION
+#========================
 newdat$prob_detect <- predict(
   modele_phenologie,
   newdata = newdat,
   type = "response"
 )
 
-# ---- GRAPHE ----
-ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee)) +
+#========================
+# GRAPHE
+#========================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = factor(annee))) +
   geom_line(linewidth = 1) +
   labs(
     x = "Jour julien",
