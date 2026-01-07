@@ -640,7 +640,7 @@ pseudo_R2
 
 Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
 
-graphes probabilité de détection par année
+graphes probabilité d'occurence par année SANS IC
 
 ```{r}
 
@@ -723,6 +723,180 @@ ggplot(newdat, aes(x = j_julien, y = prob_detect, color = factor(annee))) +
   theme_minimal()
 
 
+```
+
+graphe proba occurence AVEC IC
+
+```{r}
+
+#=======================
+# LIBRAIRIES
+#=======================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(tidyr)
+library(lme4)
+
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION
+# garder uniquement les lignes protocolées de talève
+# ET supprimer l'année 2018
+#========================
+process_data <- process_data %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
+  mutate(
+    presence   = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee      = lubridate::year(date_debut),
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
+  ) %>%
+  filter(annee != 2018)   # ⬅️ suppression définitive de 2018
+
+#========================
+# MODELE GLM
+#========================
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee,
+  data = process_data,
+  family = binomial
+)
+
+summary(modele_phenologie)
+
+#========================
+# GRILLE DE PREDICTION
+#========================
+newdat <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    .groups = "drop"
+  ) %>%
+  unnest(j_julien) %>%
+  mutate(j_julien2 = j_julien^2)
+
+#========================
+# PREDICTION
+#========================
+newdat$prob_detect <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "response"
+)
+
+#========================
+# GRAPHE
+#========================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = factor(annee))) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de détection",
+    color = "Année"
+  ) +
+  theme_minimal()
+
+#graphe proba occ taleve avec intervalle 
+#=======================
+# LIBRAIRIES
+#=======================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(tidyr)
+library(lme4)
+
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION
+# Garder uniquement les lignes protocolées de Talève
+# ET supprimer l'année 2018
+#========================
+process_data <- process_data %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
+  mutate(
+    presence   = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee      = factor(lubridate::year(date_debut)),  # année en facteur
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
+  ) %>%
+  filter(annee != 2018)   # suppression définitive de 2018
+
+#========================
+# MODELE GLM
+#========================
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee,
+  data = process_data,
+  family = binomial
+)
+
+summary(modele_phenologie)
+
+#========================
+# GRILLE DE PREDICTION
+#========================
+newdat <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    .groups = "drop"
+  ) %>%
+  unnest(j_julien) %>%
+  mutate(j_julien2 = j_julien^2)
+
+#========================
+# PREDICTION AVEC INTERVALLES DE CONFIANCE
+#========================
+pred <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "link",        # échelle logit
+  se.fit = TRUE
+)
+
+newdat <- newdat %>%
+  mutate(
+    fit         = pred$fit,
+    se_fit      = pred$se.fit,
+    prob_detect = plogis(fit),
+    prob_lower  = plogis(fit - 1.96 * se_fit),
+    prob_upper  = plogis(fit + 1.96 * se_fit)
+  )
+
+#========================
+# GRAPHE AVEC INTERVALLES
+#========================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee, fill = annee)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(aes(ymin = prob_lower, ymax = prob_upper), alpha = 0.2, color = NA) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de détection",
+    color = "Année",
+    fill  = "Année"
+  ) +
+  theme_minimal()
 ```
 
 quelles variables font le meilleur glm (préparation au n mixture)
