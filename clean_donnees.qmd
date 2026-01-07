@@ -30,11 +30,12 @@ library(gridExtra)
 library(readr)
 library(knitr)
 library(lme4)
+library(kableExtra)
 library(slider)
 ```
 
 # 1. Mise en forme du tableau de données
-
+Nous partons avec des tableaux de données bruts. Il faut donc les mettre en forme, regrouper les données et créer de nouveaux tableaux. 
 ```{r recup, message=FALSE, warning=FALSE}
 
 ## 1. Rassembler les deux tableaux de données
@@ -127,10 +128,18 @@ process_data = process_data_2
 
 write_csv(process_data, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/process_data.csv")
 
-head(process_data)
+
+
+head(process_data) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
 ```
 
-Le tableau process_data correspond aux données sur toute la periode 1990-2025 pour toutes les données sur les 3 espèces d'interet. On crée par la suite un tableau qui ne comprend que les données des protocoles, donc à partir de 2014, et pour des sites d'études particuliers.
+Le tableau process_data correspond aux données sur toute la periode 1990-2025 pour toutes les données sur les 3 espèces d'interet. On y retrouve des données protocolées et des données oportunistes. On crée par la suite un tableau qui ne comprend que les données des protocoles, donc à partir de 2014, et pour des sites d'études particuliers.
 
 ```{r}
 ## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
@@ -149,7 +158,14 @@ process_protocole = process_data  %>%
 
 #écrire le nouveau csv des données >2014 protocolées 
 write_csv(process_protocole, "data/pro/process_protocole.csv")
-head(process_protocole)
+
+head(process_protocole) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
 
 ```
 
@@ -249,8 +265,7 @@ environnement_daily <- data_environnement2_clean %>%
 #écriture du csv propre qui sera utilisé par la suite : 1 donnée par jour (moyenne de toutes les variables qui étaient toutes les 20min) -> nommé environnement_daily
 write_csv(environnement_daily, "~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro/environnement_daily.csv")
 
-head(environnement_daily)
-library(kableExtra)
+
 
 head(environnement_daily) |>
   kbl(caption = "Aperçu des données") |>
@@ -469,7 +484,11 @@ ggplot(HydrologicDataGrandBagnas, aes(x = Mois, y = Profondeur)) +
   facet_wrap(~ Annee, ncol = 3) +
   scale_x_continuous(breaks = 1:12) +
   theme_bw()
+```
 
+ces graphiques représentent 
+
+```{r}
 ## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
 
 ### On crée une fonction qui génère un data frame avec les jours de l'année
@@ -500,7 +519,17 @@ HydrologicDataGrandBagnas <- DataInterpolationProfondeur %>%
 ### Enregistre le tableau final dans le fichier processed
 write.csv(HydrologicDataGrandBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
 DataHydroBagnas <- HydrologicDataGrandBagnas
-head(DataHydroBagnas)
+
+
+
+head(DataHydroBagnas) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+
 ```
 
 Les données hydro nous interessent pour la profondeur moyenne et les assec
