@@ -398,7 +398,10 @@ write_csv(
 )
 ```
 
-# 3. Les données hydro
+# 3. Les données hydrologiques
+
+Les données hydrologiques comportent un grand nombre de variables, mais seules 2 variables nous interessent ici : la profondeur moyenne du grand Bagnas, et les assec totaux ou partiels. 
+ 
 
 ```{r}
 
@@ -486,8 +489,10 @@ ggplot(HydrologicDataGrandBagnas, aes(x = Mois, y = Profondeur)) +
   theme_bw()
 ```
 
-ces graphiques représentent 
+ces graphiques représentent la profondeur de l'eau chaque année. on peut voir en 2016, 2019 et 2022 des assec totaux (profondeur à 0). 
 
+Pour des raisons écologiques, on utilise les assec de l'année qui précède l'année d'étude. JUSTIFICATION BIBLIO?
+On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
 ```{r}
 ## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
 
@@ -532,9 +537,9 @@ head(DataHydroBagnas) |>
 
 ```
 
-Les données hydro nous interessent pour la profondeur moyenne et les assec
+Les données hydro nous interessent pour la profondeur moyenne et les assec. Dans le tableau initial, les données n'étaient que toutes les 2 semaines, on a donc créé des données quotidienne par interpolation linéaire. On a donc pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant. 
 
-On rajoute ensuite les variables hydro dans le process_protocole et environnement_daily
+On rajoute ensuite les variables hydrologiques dans les tableaux de données process_protocole et environnement_daily. 
 
 ```{r}
 DataHydroBagnas<- DataHydroBagnas%>%
@@ -556,12 +561,14 @@ write_csv(process_protocole, "data/pro/process_protocole.csv")
 ```
 
 # 4. Analyses exploratoires
-
+Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces. 
 ## A. les observateurs Script d'Émile
+Ce graphique représente les observations par observateurs.
+
 
 ## B. cartographie des sites protocolés
 
-Cartographie des sites d'écoute des 3 espèces confondues. Les sites sur la carte sont les 9 sites du protocole.
+La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte sont les 9 sites du protocole. En cliquant sur les points rouges les noms des sites apparaissent.
 
 ```{r}
 
