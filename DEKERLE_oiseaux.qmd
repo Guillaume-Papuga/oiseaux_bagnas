@@ -81,7 +81,7 @@ data_butor <- process_data %>%
 data_butor_summarized <- data_butor %>%
   mutate(
     is_obs = nombre_min > 0,
-    is_protocole = grepl("SuiviButor", champs_additionnels) & annee_reelle >= 2014 #on définit ce qu'est une observation protocolée
+    is_protocole = grepl("SuiviButor", champs_additionnels) & annee_reelle >= 2014 #on définit ce qu'est une observation protocolée, certaines observations sont notées comme protocolées alors qu'elles ont lieu avant la mise en place du protocole, on les enlève en filtrant à partir de 2014. 
   ) %>%
   group_by(annee_suivi, semaine) %>%
   summarise(
@@ -118,7 +118,7 @@ grille <- grille %>%
 
 #on fait le graphique 
 ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
-  geom_tile(color = "white", linewidth = 0.2) +
+  geom_tile(color = "white", linewidth = 0.2, , show.legend = TRUE) +
   geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
   scale_y_reverse() +
   scale_fill_manual(
@@ -134,10 +134,10 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
       "Observation (protocole)",
       "Observation (hors protocole)",
       "Observation (mixte)",
-      "Sortie sans observation",
+      "Sortie protocolée sans observation",
       "Pas de sortie"
     ),
-    drop = FALSE,
+    drop = FALSE
   ) +
   labs(
     title = paste("Observations de", esp_butor),
@@ -151,7 +151,7 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
 ```
 
 ::: justify
-On remarque que la plupart des observations de butor sont réalisées de manière opportuniste en début et fin d'année. A contrario, on observe une "zone blanche" en milieu d'année où les observations sont quasiment nulles. Le protocole se situe dans cette zone blanche. En effet, aucun butor n'a été observé lors du protocole d'écoute depuis 2014. Les prospections classifiées comme protocolées avant 2014 ont probablement été effectuées dans le cadre d'autres suivies ou peuvent résulter d'erreurs de saisies. En conclusion, il n'y a très probablement pas de mâle chanteur en réserve du Bagnas. Les observations opportunistes correspondent sûrement à des individus hivernants.
+On remarque que la plupart des observations de butor sont réalisées de manière opportuniste en début et fin d'année. A contrario, on observe une "zone blanche" en milieu d'année (de fin mars à octobre) où les observations sont quasiment nulles. Le protocole se situe dans cette zone blanche. En effet, aucun butor n'a été observé lors du protocole d'écoute depuis 2014. Les prospections classifiées comme protocolées avant 2014 ont probablement été effectuées dans le cadre d'autres suivies ou peuvent résulter d'erreurs de saisies. En conclusion, il n'y a très probablement pas de mâle chanteur en réserve du Bagnas. Les observations opportunistes correspondent sûrement à des individus hivernants.
 :::
 
 ## 2 - Cartographie de la présence des Butors sur les sites d'écoute du protocole
@@ -268,82 +268,14 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
 ```
 
 ::: justify
-Ce graphique représente l' "effort d'échantillonnage" ainsi que le nombre d'obervations opportunistes de butor cumulées pour chaque heure de la journée de 1990 et 2025. L'effort d'échantillonnage est représenté par la somme des observations opportuniste.
+
+On observe que les sorties se concentrent avant le levé du soleil et au crépuscule, heures favorables à l'écoute du butor. L'effort d'échantillonnage représente plus de 250 heures sur 11 ans, mais n'a pas permis de contacter d'individu chanteur. 
+
 :::
 
-## 4 - Effort journalier des données opportunistes
 
-::: justify
-Ce graphique représente le nombre cumulé d'observations opportunistes ainsi que le nombre cumulé de butors observé de cette manière pour chaque heure de la journée entre 1997 et 2023. Les observations pour lesquelles l'heure n'était pas disponible ont été enlevées, expliquant l'intervalle temporel réduit.
-:::
 
-```{r}
-# Données 
-
-Opportuniste_Butor <- process_data %>%
-  filter(
-    !champs_additionnels == "{'RELV_NOM': 'SuiviButor'}" &
-      nom_vernaculaire == "Butor étoilé"
-  )
-
-Opportuniste_Butor <- Opportuniste_Butor %>%
-  mutate(
-    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
-    heure_debut_tronc = hour(heure_debut),
-    date = as.Date(heure_debut)
-  )
-
-Opportuniste_Butor <- Opportuniste_Butor  %>%
-  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
-  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
-
-# Table des 24 heures
-
-heures_jour <- tibble(heure_debut_tronc = 0:23)
-
-### Sommer les obs par heure
-
-obs_heure <- Opportuniste_Butor %>%
-  group_by(heure_debut_tronc) %>%
-  summarize(sum(nombre_min)) 
-
-### Frequence horaire
-freq_heure <- Opportuniste_Butor %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
-
-# Compléter les heures manquantes avec 0
-data_plot_h <- heures_jour %>%
-  left_join(freq_heure, by = "heure_debut_tronc") %>%
-  left_join(obs_heure, by = "heure_debut_tronc") %>%
-  mutate(
-    freq = replace_na(freq, 0),
-    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
-    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
-  )
- 
-### Barplot
-
-ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
-  geom_bar(aes(y = freq),
-           stat = "identity",
-           width = 0.8,
-           fill = "orange") +
-  geom_bar(aes(y = `sum(nombre_min)`),
-           stat = "identity",
-           width = 0.4,
-           fill = "blue") +
-  theme_classic() +
-  scale_y_continuous(expand = c(0, 0)) +
-  xlab("Heure de la journée") +
-  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
-  ggtitle("Effort d'échantillonnage et nombre d'observations \n opportunistes par heure pour le Butor (1997-2023), \nsans les heures inconnues ")
-
-```
-
-::: justify
-Les observations opportunistes sont plus éparpillées au cours de la journée, correspondant aux heures de terrains d'autres protocoles au sein de la réserve.
-:::
-
-## 5 - Cumule des observations de Butor
+## 4 - Cumule des observations de Butor
 
 ::: justify
 Face à l'absence de données protocolées, nous n'avons pas pu effectuer de modélisation de la structure de la population de butor. Nous avons cependant représenté graphiquement la distribution du nombre de butors contactés pour obtenir la structure inter-annuelle, intra-annuelle et spatiale.
@@ -352,7 +284,7 @@ Face à l'absence de données protocolées, nous n'avons pas pu effectuer de mod
 #### a - Cumule par année
 
 ::: justify
-Ce graphique représente le cumul de toutes les observations de butor entre 1990 et 2025 structurées par année. Ce graphique permet d'avoir une idée de la structure inter-annuelle des observations.
+Ce graphique représente le cumul de toutes les observations de butor entre 1990 et 2025 structurées par année (uniquement des observations opportunistes). Ce graphique permet d'avoir une idée de la structure inter-annuelle des observations.
 :::
 
 ```{r}
@@ -374,19 +306,19 @@ ggplot(obs_annee, aes(x = annee)) +
   theme_classic() +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Année") +
-  ylab("Nombre d'observations") +
+  ylab("Nombre d'observations opportuniste cumulées") +
   ggtitle("Nombre de butors observés chaque année entre 1990 et 2025")
 
 ```
 
 ::: justify
-La majorité des observations opportunistes ont eu lieu autour des années 1998 et 2015 sans suivre de structures particulières. A partir de 2014, en raison du protocole, les observations opportunistes ont peut-être arrêté d'être renseignées systématiquement, expliquant la baisse.
+La majorité des observations opportunistes ont eu lieu autour des années 1998 et 2015 sans suivre de structures particulières. Très peu de butors ont été observés ces 10 dernières années. 
 :::
 
 #### b - Cumul par semaine
 
 ::: justify
-Ce graphique représente le cumule de toutes les observations de butor entre 1990 et 2025 structurées par semaine de l'année. Ce graphique permet d'avoir une idée de la structure intra-annuelle des observations.
+Ce graphique représente le cumule de toutes les observations de butor entre 1990 et 2025 structurées par semaine de l'année (uniquement des observations opportunistes). Ce graphique permet d'avoir une idée de la structure intra-annuelle des observations.
 :::
 
 ```{r}
@@ -427,7 +359,7 @@ ggplot(obs_semaine, aes(x = semaine)) +
     )
   ) +
   xlab("Semaine") +
-  ylab("Nombre d'observations") +
+  ylab("Nombre d'observations opportunistes cumulées") +
   ggtitle("Nombre de butors observés chaque semaine de l'année entre 1990 et 2025") +
   labs(fill = "")
 
@@ -437,7 +369,67 @@ ggplot(obs_semaine, aes(x = semaine)) +
 La majorité des observations opportunistes ont eu lieu aux périodes d'hivernage, en dehors de la période du protocole.
 :::
 
-#### c - Cumul par année pour chaque site (y compris hors protocole)
+
+#### c - Cumul journalier
+
+::: justify
+
+Ce graphique représente le nombre cumulé d'observations de butors à la réserve du Bagnas (uniquement des observations opportunistes) pour chaque heure de la journée entre 1997 et 2025. Les observations pour lesquelles l'heure n'était pas disponible ont été enlevées, expliquant l'intervalle temporel réduit.
+
+:::
+
+```{r}
+
+data_butor_h <- data_butor %>%
+  mutate(
+    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut_tronc = hour(heure_debut),
+    date = as.Date(heure_debut)
+  ) # on met les heures au bon format 
+
+data_butor_h <- data_butor_h  %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00") #on enlève les obs aux heures inconnues 
+
+# Table des 24 heures
+
+heures_jour <- tibble(heure_debut_tronc = 0:23) #on créé une table avec les 24h pour les fixer sur le graphique et avoir toutes les heures sur l'axe des abscisses . 
+
+### Sommer les obs par heure
+
+obs_heure <- data_butor_h %>%
+  group_by(heure_debut_tronc) %>%
+  summarize(sum(nombre_min)) 
+
+# Compléter les heures manquantes avec 0
+data_plot_h <- heures_jour %>%
+    left_join(obs_heure, by = "heure_debut_tronc") %>%
+  mutate(
+    `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
+  )
+ 
+### Barplot
+
+ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
+    geom_bar(aes(y = `sum(nombre_min)`),
+           stat = "identity",
+           width = 0.4,
+           fill = "blue") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0, 0)) +
+  xlab("Heure de la journée") +
+  ylab("Nombre de d'observations opportunistes cumulées") +
+  ggtitle("Nombre d'observations opportunistes par heure \npour le Butor (1997-2025), sans les heures inconnues ")
+
+```
+::: justify
+
+Les observations opportunistes sont plus éparpillées au cours de la journée, correspondant aux heures de terrains d'autres protocoles au sein de la réserve.
+
+:::
+
+#### d - Cumul par année pour chaque site (y compris hors protocole)
 
 ::: justify
 Ce graphique représente le cumul de toutes les observations de butor entre 1990 et 2025 structurées en fonction du lieu d'observation. Ce graphique permet d'avoir une idée de la structure spatiale des observations.
@@ -480,3 +472,26 @@ La majorité des observations opportunistes ont eu lieu dans les sites intitulé
 ::: justify
 Les analyses ont montré qu'il n'y avait sûrement pas de butor chanteur en réserve du bagnas. Cependant, la réserve semble être une zone d'hivernage favorable pour cette espèce. Nous recommandons d'arrêter le protocole de point d'écoute en période de reproduction. En fonction de la faisabilité (le butor étant une espèce cryptique) il pourrait être remplacé par un comptage en période d'hivernage pour essayer de déterminer la structure des populations hivernantes de manière plus rigoureuse. En cas d'impossibilité ou de manque de robustesse du changement du protocole, les observations opportunistes peuvent continuer à être renseignées afin de continuer à disposer des périodes de présence du butor sur la réserve.
 :::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
