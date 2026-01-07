@@ -323,12 +323,19 @@ Pour les analyses de présence et d’abondance, nous utilisons uniquement les d
 ```{r}
 process_protocole <- read_csv("data/pro/process_protocole.csv")
 
-Protocole_SuiviBlongios2<- process_protocole %>%
+Protocole_SuiviBlongios<- process_protocole %>%
   filter(
-    champs_additionnels  != "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+    champs_additionnels  = "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire ==
         "Blongios nain, Butor blongios"
       )
+
+#Protocole_SuiviBlongios2<- process_protocole %>%
+#  filter(
+#    champs_additionnels  != "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+#      nom_vernaculaire ==
+#        "Blongios nain, Butor blongios"
+ #     )
 ```
 
 Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.
