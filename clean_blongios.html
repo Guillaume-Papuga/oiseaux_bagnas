@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>clean_blongios</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="clean_blongios_files/libs/clipboard/clipboard.min.js"></script>
+<script src="clean_blongios_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="clean_blongios_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="clean_blongios_files/libs/quarto-html/popper.min.js"></script>
+<script src="clean_blongios_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="clean_blongios_files/libs/quarto-html/anchor.min.js"></script>
+<link href="clean_blongios_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="clean_blongios_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="clean_blongios_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="clean_blongios_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="clean_blongios_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="clean_blongios_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="clean_blongios_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="clean_blongios_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="clean_blongios_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+
+<script src="clean_blongios_files/libs/leaflet-1.3.1/leaflet.js"></script>
+
+<link href="clean_blongios_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+
+<script src="clean_blongios_files/libs/proj4-2.6.2/proj4.min.js"></script>
+
+<script src="clean_blongios_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+
+<link href="clean_blongios_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+
+<script src="clean_blongios_files/libs/leaflet-binding-2.2.3/leaflet.js"></script>
+
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">clean_blongios</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="analyse-des-observations-de-blongios-nain-ixobrychus-minutus-dans-la-reserve-naturelle-du-bagnas" class="level1">
+<h1>Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
+<div class="justify">
+<p>Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne. L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021. L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.</p>
+</div>
+</section>
+<section id="importation-des-packages" class="level2">
+<h2 class="anchored" data-anchor-id="importation-des-packages">2. Importation des packages</h2>
+</section>
+<section id="definition-du-répertoire-de-travail-et-importation-des-données" class="level2">
+<h2 class="anchored" data-anchor-id="definition-du-répertoire-de-travail-et-importation-des-données">3. Definition du répertoire de travail et importation des données</h2>
+</section>
+<section id="analyses-exploratoires" class="level2">
+<h2 class="anchored" data-anchor-id="analyses-exploratoires">4. Analyses exploratoires</h2>
+<section id="a-répartition-temporelle-des-observations-de-blongios-nain-depuis-1990" class="level3">
+<h3 class="anchored" data-anchor-id="a-répartition-temporelle-des-observations-de-blongios-nain-depuis-1990">A) Répartition temporelle des observations de Blongios nain depuis 1990</h3>
+<p>En premier lieu, nous voulions visualiser l’absence et la présence du Blongios nain sur toute la période d’étude. Pour cela, nous avons créé une grille années X semaines qui montre toutes les sorties avec et sans observation d’individus. Les cases du graphiques sont colorées de manière à différentier (i) les semaines avec observation d’un Blongios lors d’un protocole standardisé, (ii) les semaines avec observation opportuniste d’un Blongios, (iii) les semaines avec à la fois des observations opportuniste et par protocole standardisé, et (iiii) les semaines sans observation d’un Blongios.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Premièrement, on observe que l’ensemble des observations est concentré approximativement entre les semaines 16 et 35 (printemps–été), ce qui correspond bien à la période de présence du Blongios nain sur le littoral méditerranéen français. Le protocole de suivi standardisé a débuté en 2014, avec plusieurs passages réalisés tous les deux ans environ (entre 3 et 8 passages selon les années). Enfin, les résultats suggèrent une diminution de la présence du Blongios nain sur la réserve au cours du temps. En effet, le nombre total de semaines avec au moins une observation semble décroître, avec seulement deux semaines de présence détectée en 2024 contre onze en 2004. Cette tendance pourrait indiquer soit un déclin de la population globale, soit une diminution de l’attractivité écologique du site du Bagnas pour la population nicheuse.</p>
+</section>
+<section id="b-répartition-spatiale-des-observations-de-blongios-nain-issues-du-protocole-standardisé-de-suivi" class="level3">
+<h3 class="anchored" data-anchor-id="b-répartition-spatiale-des-observations-de-blongios-nain-issues-du-protocole-standardisé-de-suivi">B) Répartition spatiale des observations de Blongios nain issues du protocole standardisé de suivi</h3>
+<p>Ensuite, nous voulions visualiser la répartition spatiale des observations de Blongios nain issues du protocole standardisé de suivi. Pour cela, nous avons créé une carte avec des cercles dont la taille est proportionnelle au nombre total d’individus entendus/vus sur chaque site d’écoute depuis le début du protocole en 2014.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-e5e59bb00cb533332e99" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-e5e59bb00cb533332e99">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[5,2,2,6,12,9,1,2,6],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Blongios entendus :5","ButorTalèveBlongios-2, Blongios entendus :2","ButorTalèveBlongios-3, Blongios entendus :2","ButorTalèveBlongios-4, Blongios entendus :6","ButorTalèveBlongios-5, Blongios entendus :12","ButorTalèveBlongios-6, Blongios entendus :9","ButorTalèveBlongios-7, Blongios entendus :1","ButorTalèveBlongios-8, Blongios entendus :2","ButorTalèveBlongios-9, Blongios entendus :6"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Sur cette carte on peut voir que certains sites semblent plus propice à l’observation d’individus de Blongios nain que d’autres. Notamment les sites n°5 et 6 semblent être les plus favorables à l’observation de cette espèce.</p>
+</section>
+<section id="c-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-protocolées-de-blongios-nain" class="level3">
+<h3 class="anchored" data-anchor-id="c-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-protocolées-de-blongios-nain">C) Effort d’échantillonnage journalier et répartition temporelle journalière des observations protocolées de Blongios nain</h3>
+<p>Ici, nous voulions comprendre à quel moment de la journée était réalisé le protocole, et quelles étaient les horaires qui permettaient une meilleure détection de l’espèce. Pour cela, nous avons réalisé un graphique qui représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole blongios pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  heure_debut_tronc `sum(nombre_min)`
+              &lt;int&gt;             &lt;dbl&gt;
+1                 5                 1
+2                 6                 8
+3                 7                 5
+4                 8                 0
+5                19                 1
+6                20                13
+7                21                 7
+8                22                 1</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ici, on observe que les sorties protocolées sont majoritairement réalisées entre 6 h et 7 h du matin ainsi qu’entre 20 h et 21 h, ce qui correspond aux plages horaires du protocole standardisé et aux périodes d’activité maximale du Blongios nain. Ces créneaux apparaissent pertinents, puisque c’est durant ces périodes que l’espèce est le plus fréquemment détectée</p>
+</section>
+<section id="d-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-opportunistes-de-blongios-nain" class="level3">
+<h3 class="anchored" data-anchor-id="d-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-opportunistes-de-blongios-nain">D) Effort d’échantillonnage journalier et répartition temporelle journalière des observations opportunistes de Blongios nain</h3>
+<p>Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties hors protocole standardisé, et quelles étaient les horaires qui permettaient une meilleure détection de l’espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente le nombre d’obervations hors protocole cumulés pour chaque heure de la journée de 1997 à 2023. Il est important de préciser que les sorties hors protocole où l’heure d’observation est identifiée sont très rares (n=46), et correspondent en majorité à des données produites lors d’autres protocoles non dédiés à cette espèce.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   heure_debut_tronc `sum(nombre_min)`
+               &lt;int&gt;             &lt;int&gt;
+ 1                 4                 0
+ 2                 5                 0
+ 3                 6                 3
+ 4                 8                12
+ 5                 9                 2
+ 6                10                 4
+ 7                11                 1
+ 8                15                 1
+ 9                19                 1
+10                20                 2
+11                21                 8</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>On remarque que hors protocole standardisé, le Blonios nain est essentiellement entre 6 et 11h du matin et entre 19 et 21h du soir, ce qui correspond bien à son pic d’activité (aube et crépuscule), et au horaires de prospections choisies pour le protocole dédié au Blongios nain.</p>
+</section>
+</section>
+</section>
+<section id="preparation-du-jeu-de-données-et-des-variables" class="level1">
+<h1>3. Preparation du jeu de données et des variables</h1>
+<p>Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation du blongios provenant des observations protocolées. Ce jeu de données sera nommé **Protocole_SuiviBlongios**</p>
+<p>Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (<em>environnement_daily</em>) et d’un tableau regroupant les observations de talèves.</p>
+<p>Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.</p>
+</section>
+<section id="analyses-de-la-population-de-blongios" class="level1">
+<h1>4. Analyses de la population de blongios</h1>
+<section id="modèle-de-présenceabsence" class="level2">
+<h2 class="anchored" data-anchor-id="modèle-de-présenceabsence">4.1 . Modèle de présence/absence</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                              df      AIC
+modele_complet_site           12 169.9147
+modele_complet_anneesite      20 179.0692
+modele_complet_vent           13 162.0089
+modele_complet_temp_31        14 163.9447
+modele_complet_temp_7j        14 162.6671
+modele_complet_temp_1j        13 165.2115
+modele_complet_temp_1j_vent   14 163.7954
+modele_complet_pluie_31j_vent 14 162.7982
+modele_complet_pluie_7j_vent  14 161.0002
+modele_complet_pluie_1j_vent  14 163.9984</code></pre>
+</div>
+</div>
+<p>le tableau d’AIC des différents modèles de présence/absence permet de choisir le modèle qui fit le plus les données. On choisit donc le modele_complet_pluie_7j_vent. Il contient : annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Occurence ~ annee + julian + I(julian^2) + nom_lieu + 
+    pluie_moy_glissante_7j + vent_moyen, family = binomial, data = Protocole_Blongios)
+
+Coefficients:
+                                Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)                    2.324e+02  1.429e+02   1.627   0.1038  
+annee                         -1.272e-01  7.177e-02  -1.772   0.0764 .
+julian                         3.034e-01  2.054e-01   1.477   0.1396  
+I(julian^2)                   -8.795e-04  5.763e-04  -1.526   0.1270  
+nom_lieuButorTalèveBlongios-2 -1.069e+00  9.320e-01  -1.147   0.2512  
+nom_lieuButorTalèveBlongios-3 -1.069e+00  9.320e-01  -1.147   0.2512  
+nom_lieuButorTalèveBlongios-4 -2.074e-01  7.915e-01  -0.262   0.7933  
+nom_lieuButorTalèveBlongios-5  8.973e-01  7.035e-01   1.275   0.2022  
+nom_lieuButorTalèveBlongios-6 -3.458e-01  7.900e-01  -0.438   0.6616  
+nom_lieuButorTalèveBlongios-7 -1.753e+01  1.401e+03  -0.013   0.9900  
+nom_lieuButorTalèveBlongios-8 -1.841e+00  1.169e+00  -1.575   0.1152  
+nom_lieuButorTalèveBlongios-9 -7.166e-01  8.394e-01  -0.854   0.3933  
+pluie_moy_glissante_7j        -1.072e+01  6.618e+00  -1.619   0.1054  
+vent_moyen                    -4.369e-01  2.245e-01  -1.946   0.0516 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 164.62  on 177  degrees of freedom
+Residual deviance: 133.00  on 164  degrees of freedom
+  (9 observations effacées parce que manquantes)
+AIC: 161
+
+Number of Fisher Scoring iterations: 17</code></pre>
+</div>
+</div>
+<p>Ce summary du modèle choisi nous montre s’il y a des variables significatives. Ici il n’y en a pas.</p>
+<p>##2.1 interpretation</p>
+<p>Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)</p>
+</section>
+<section id="modèle-dabondance" class="level2">
+<h2 class="anchored" data-anchor-id="modèle-dabondance">4.2 Modèle d’abondance</h2>
+<p>Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l’influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l’abondance observée.</p>
+<p>Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Comparaison des modèles selon le critère d’information d’Akaike (AIC)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modèle</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">delta_AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">modeleB_complet_pluie_7j_vent</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">203.04</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modeleB_complet_pluie_31j_vent</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">204.05</td>
+<td style="text-align: right;">1.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modeleB_complet_vent</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">204.65</td>
+<td style="text-align: right;">1.61</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modeleB_complet_temp_7j</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">204.93</td>
+<td style="text-align: right;">1.89</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modeleB_complet_profondeur</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">205.38</td>
+<td style="text-align: right;">2.34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modeleB_complet_temp_31</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">205.72</td>
+<td style="text-align: right;">2.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modeleB_complet_temp_1j_vent</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">205.88</td>
+<td style="text-align: right;">2.83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modeleB_complet_pluie_1j_vent</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">206.26</td>
+<td style="text-align: right;">3.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">modeleB_complet_assec</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">206.65</td>
+<td style="text-align: right;">3.60</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>La sélection de modèles basée sur le critère d’information d’Akaike (AIC) a mis en évidence qu’un modèle intégrant les effets temporels (année et jour julien), un effet spatial lié au site, ainsi que des variables environnementales locales (vitesse moyenne du vent et pluie) constitue la structure la plus parcimonieuse pour expliquer la variation de l’abondance des individus. Ce modèle (modeleB_complet_pluie_7j_vent) a donc été retenu comme base pour l’analyse, afin d’évaluer l’influence conjointe des facteurs temporels, spatiaux et environnementaux sur l’abondance des individus blongios</p>
+<p>Le tableau suivant (tab. X) présente les estimations des paramètres du modèle ainsi que les valeurs de <em>p</em>, permettant d’évaluer l’existence d’effets significatifs sur l’abondance du blongios au sein de la réserve.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Les estimations des parametres avec leur p-value)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Pr(&gt;|z|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-17.48</td>
+<td style="text-align: right;">0.22</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">annee2</td>
+<td style="text-align: right;">-0.07</td>
+<td style="text-align: right;">0.27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">julian</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.23</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">I(julian^2)</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.21</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-2</td>
+<td style="text-align: right;">-0.85</td>
+<td style="text-align: right;">0.31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-3</td>
+<td style="text-align: right;">-0.85</td>
+<td style="text-align: right;">0.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-4</td>
+<td style="text-align: right;">-0.16</td>
+<td style="text-align: right;">0.81</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-5</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-6</td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.69</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-7</td>
+<td style="text-align: right;">-16.53</td>
+<td style="text-align: right;">0.99</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-8</td>
+<td style="text-align: right;">-1.55</td>
+<td style="text-align: right;">0.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nom_lieuButorTalèveBlongios-9</td>
+<td style="text-align: right;">-0.45</td>
+<td style="text-align: right;">0.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pluie_moy_glissante_7j</td>
+<td style="text-align: right;">-0.40</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vent_moyen</td>
+<td style="text-align: right;">-0.19</td>
+<td style="text-align: right;">0.39</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Nous pouvons constater qu’aucune valeur de <em>p</em> n’est inférieure au seuil de 5 %. Par conséquent, aucune des variables incluses dans le modèle n’a d’effet significatif sur l’abondance de la population de blongios dans la réserve du Bagnas.</p>
+<p>Le modèle explique environ 22 % de la variation de l’abondance des talèves (pseudo-R² = 0.2267077), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
+</blockquote>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
