@@ -35,7 +35,9 @@ library(slider)
 ```
 
 # 1. Mise en forme du tableau de données
-Nous partons avec des tableaux de données bruts. Il faut donc les mettre en forme, regrouper les données et créer de nouveaux tableaux. 
+
+Nous partons avec des tableaux de données bruts. Il faut donc les mettre en forme, regrouper les données et créer de nouveaux tableaux.
+
 ```{r recup, message=FALSE, warning=FALSE}
 
 ## 1. Rassembler les deux tableaux de données
@@ -400,8 +402,7 @@ write_csv(
 
 # 3. Les données hydrologiques
 
-Les données hydrologiques comportent un grand nombre de variables, mais seules 2 variables nous interessent ici : la profondeur moyenne du grand Bagnas, et les assec totaux ou partiels. 
- 
+Les données hydrologiques comportent un grand nombre de variables, mais seules 2 variables nous interessent ici : la profondeur moyenne du grand Bagnas, et les assec totaux ou partiels.
 
 ```{r}
 
@@ -489,10 +490,10 @@ ggplot(HydrologicDataGrandBagnas, aes(x = Mois, y = Profondeur)) +
   theme_bw()
 ```
 
-ces graphiques représentent la profondeur de l'eau chaque année. on peut voir en 2016, 2019 et 2022 des assec totaux (profondeur à 0). 
+ces graphiques représentent la profondeur de l'eau chaque année. on peut voir en 2016, 2019 et 2022 des assec totaux (profondeur à 0).
 
-Pour des raisons écologiques, on utilise les assec de l'année qui précède l'année d'étude. JUSTIFICATION BIBLIO?
-On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
+Pour des raisons écologiques, on utilise les assec de l'année qui précède l'année d'étude. JUSTIFICATION BIBLIO? On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
+
 ```{r}
 ## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
 
@@ -537,9 +538,9 @@ head(DataHydroBagnas) |>
 
 ```
 
-Les données hydro nous interessent pour la profondeur moyenne et les assec. Dans le tableau initial, les données n'étaient que toutes les 2 semaines, on a donc créé des données quotidienne par interpolation linéaire. On a donc pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant. 
+Les données hydro nous interessent pour la profondeur moyenne et les assec. Dans le tableau initial, les données n'étaient que toutes les 2 semaines, on a donc créé des données quotidienne par interpolation linéaire. On a donc pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant.
 
-On rajoute ensuite les variables hydrologiques dans les tableaux de données process_protocole et environnement_daily. 
+On rajoute ensuite les variables hydrologiques dans les tableaux de données process_protocole et environnement_daily.
 
 ```{r}
 DataHydroBagnas<- DataHydroBagnas%>%
@@ -561,10 +562,170 @@ write_csv(process_protocole, "data/pro/process_protocole.csv")
 ```
 
 # 4. Analyses exploratoires
-Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces. 
-## A. les observateurs Script d'Émile
-Ce graphique représente les observations par observateurs.
 
+Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces.
+
+#graphique nombre observations par observateur (avec couple trio d'observateurs possible)
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(forcats)
+library(stringr)
+library(stringi)
+
+# ==============================
+# 0) Diagnostic initial
+# ==============================
+cat("Aperçu de process_data (5 premières lignes) :\n")
+print(utils::head(process_data, 5))
+cat("\nStructure de process_data :\n")
+print(str(process_data))
+
+# ==============================
+# 1) Nettoyage et normalisation des observateurs
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  
+  mutate(observateurs = sapply(observateurs, function(x) {
+    
+    if (is.na(x)) return(NA)
+    
+    # Séparer les observateurs multiples
+    noms <- strsplit(x, "/")[[1]]
+    
+    noms_clean <- noms %>%
+      trimws() %>%
+      tolower() %>%
+      stringi::stri_trans_general("Latin-ASCII") %>%
+      sapply(function(y) {
+        mots <- unlist(strsplit(y, " +"))
+        mots <- mots[mots != ""]
+        paste(sort(mots), collapse = " ")
+      })
+    
+    paste(noms_clean, collapse = " / ")
+  }))
+
+# ==============================
+# 2) Corrections manuelles des noms
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = case_when(
+    observateurs == "clara rondeau" ~ "rondeau clara",
+    observateurs == "antoine cornet" ~ "cornet antoine",
+    observateurs == "salvarelli benjamin" ~ "salvarelli benjamin",
+    observateurs == "benjamin salvarelli" ~ "salvarelli benjamin",
+    observateurs == "pascale pt tabouriech" ~ "tabouriech pascale",
+    observateurs == "al anthony labouille" ~ "labouille anthony",
+    observateurs == "benoit vibarel" ~ "vibarel benoit",
+    observateurs == "claude gleise" ~ "gleise claude",
+    TRUE ~ observateurs
+  ))
+
+# ==============================
+# 3) Filtrage (exclusion ADENA)
+# ==============================
+data_filtered <- process_data %>%
+  mutate(observateurs = str_trim(observateurs)) %>%
+  filter(
+    !is.na(observateurs),
+    str_to_upper(observateurs) != "ADENA"
+  )
+
+cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
+
+# ==============================
+# 4) Agrégation des observations
+# ==============================
+data_summarized <- data_filtered %>%
+  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  group_by(observateurs) %>%
+  summarise(
+    total_min = sum(nombre_min, na.rm = TRUE),
+    n_rows = n(),
+    .groups = "drop"
+  )
+
+# ==============================
+# 5) Suppression des observateurs sans observations
+# ==============================
+data_summarized <- data_summarized %>%
+  filter(!is.na(total_min), total_min > 0)
+
+cat("\nTable agrégée (top 20) :\n")
+print(utils::head(arrange(data_summarized, desc(total_min)), 20))
+
+# Sécurité
+if (nrow(data_summarized) == 0) {
+  stop("Aucun observateur avec des observations (> 0).")
+}
+
+# ==============================
+# 6) Réorganisation pour le graphique
+# ==============================
+data_summarized <- data_summarized %>%
+  arrange(desc(total_min)) %>%
+  mutate(observateurs = factor(observateurs, levels = observateurs))
+
+# ==============================
+# 7) Graphique
+# ==============================
+p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+  geom_col() +
+  geom_text(
+    aes(label = round(total_min, 1)),
+    vjust = -0.3,
+    size = 3
+  ) +
+  labs(
+    title = "Nombre total (nombre_min) par observateur\n(sans ADENA)",
+    x = "Observateur",
+    y = "Total nombre_min"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(p)
+```
+
+### #graphique observations par observateur en fonction des années 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+# Vérifie que la colonne "date_debut" est bien au format Date
+process_data <- process_data %>%
+  mutate(date_debut = as.Date(date_debut))  
+
+#  enlever "ADENA" 
+process_data <- process_data %>%
+  filter(observateurs != "")
+
+#  trier les observateurs par fréquence
+process_data <- process_data %>%
+  mutate(observateurs = forcats::fct_infreq(observateurs))
+
+# --- Graphe de présence ---
+ggplot(process_data, aes(x = date_debut, y = observateurs)) +
+  geom_point(alpha = 0.7, color = "steelblue", size = 3) +
+  labs(
+    title = "Présence des observateurs dans le temps",
+    x = "Date de début", 
+    y = "Observateurs"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
 
 ## B. cartographie des sites protocolés
 
