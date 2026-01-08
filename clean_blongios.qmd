@@ -23,13 +23,11 @@ knitr::opts_chunk$set(
 
 # 1. Introduction
 
-Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne. 
+Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne.
 
-L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021. 
+L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021.
 
 L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.
-
-
 
 ```{r}
 ## Importation des packages nécessaires
@@ -356,7 +354,6 @@ Maintenant que nous avons exploré les données, nous avons construit différent
 
 Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation du blongios provenant des observations protocolées. Ce jeu de données sera nommé **Protocole_SuiviBlongios**
 
-
 ```{r, echo=FALSE}
 
 ##La première étape consiste à reprendre le jeu de données comprenant les données protocolées de Blongios nain.
@@ -369,7 +366,6 @@ Protocole_SuiviBlongios<- process_protocole %>%
       nom_vernaculaire ==
         "Blongios nain, Butor blongios")
 ```
-
 
 ```{r, echo=FALSE}
 
@@ -405,68 +401,126 @@ En premier lieu, nous réalisons un modèle pour essayer d'expliquer l'absence/p
 ## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
 Protocole_SuiviBlongios$Occurence <- ifelse(Protocole_SuiviBlongios$nombre_min > 0, 1, 0)
 
-## test de la colinéarité entre variables
-VariablesExplicatives <- (Protocole_SuiviBlongios %>%
-  select(annee, julian, temp_moy_glissante_31j, temp_moy_glissante_7j,
-         pluie_moy_glissante_31j, pluie_moy_glissante_7j, vent_moyen,
-         temperature, pluie_1h, Profondeur))
-
-CorrelationVariablesExplicatives <- cor(VariablesExplicatives, use = "pairwise.complete.obs")
-corrplot::corrplot(CorrelationVariablesExplicatives)
-
-## verification de la distribution de la variable réponse
-hist(Protocole_SuiviBlongios$Occurence)
-
 ```
 
-Nous commençons par vérifier la structure et la dispersion de la variable réponse 
+Nous commençons par vérifier la structure et la dispersion de la variable réponse
 
 ```{r}
 ## création d'un histogramme pour visualiser les données d'occurence
-hist(Protocole_SuiviBlongios$Occurence)
+Protocole_SuiviBlongiosGraph <- Protocole_SuiviBlongios
+Protocole_SuiviBlongiosGraph$Occurence <- ifelse(Protocole_SuiviBlongiosGraph$nombre_min > 0, 1, 0)
+Protocole_SuiviBlongiosGraph$Occurence <- factor(
+  Protocole_SuiviBlongiosGraph$Occurence,
+  levels = c(0, 1),
+  labels = c("Absence", "Présence"))
+
+ggplot(Protocole_SuiviBlongiosGraph, aes(x = Occurence)) +
+  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_text(
+    stat = "count",
+    aes(label = after_stat(count)),
+    vjust = -0.5,
+    size = 4
+  ) +
+  labs(
+    x = "",
+    y = "Nombre d'observations",
+    title = "Occurrence du Blongios (absence / présence)"
+  ) +
+  theme_classic(base_size = 13) +
+  expand_limits(y = 0)
+
+
 ```
 
-On peut voir que la majorité des observations sont des zéros (absence de l’espèce). Par conséquent, nous avons utilisé un modèle logistf (régression logistique pénalisée de Firth) qui permet de fournir des estimations stables et des intervalles de confiance fiables lorsqu'il y a de très rares présences. Cependant, nous allons diminuer le nombre de variables explicatives et nous limiter à l'estimation d'une tendance temporelle interanuelle.
+On peut voir que la majorité des observations sont des absence de l’espèce (n=203) pour seulement quelques présences (n=33).
+
+Par conséquent, nous avons utilisé un modèle ***logistf*** (régression logistique pénalisée de Firth) qui permet de fournir des estimations stables et des intervalles de confiance fiables lorsqu'il y a de très rares présences. Cependant, nous réduisons le nombre de variables explicatives et nous nous limitons à une estimation d'une tendance temporelle interanuelle (variable annee).
 
 ```{r}
 
 ## Modèle logistf avec uniquement l'effet de l'année
-logistf_model <- logistf(Occurence ~ annee, data = Protocole_SuiviBlongios)
+ModeleOccurenceLogistf <- logistf(Occurence ~ annee, data = Protocole_SuiviBlongios)
+summary(ModeleOccurenceLogistf)
+## Données de prédiction
+annees <- data.frame(
+  annee = sort(unique(Protocole_SuiviBlongios$annee)))
 
-## Prédictions
-annees <- data.frame(annee = sort(unique(Protocole_SuiviBlongios$annee)))
-annees$predicted_prob <- predict(logistf_model, newdata = annees, type = "response")
+## Prédictions sur l’échelle du lien (logit)
+pred <- predict(
+  ModeleOccurenceLogistf,
+  newdata = annees,
+  type = "link",
+  se.fit = TRUE)
+
+## Ajout des prédictions et IC (95 %)
+annees$predicted_prob <- plogis(pred$fit)
+annees$lower_ci <- plogis(pred$fit - 1.96 * pred$se.fit)
+annees$upper_ci <- plogis(pred$fit + 1.96 * pred$se.fit)
 
 ## graphique
 
-ggplot(annees, aes(x = annee, y = predicted_prob)) +
-  geom_line(color = "steelblue", size = 1) +    
-  geom_point(data = Protocole_SuiviBlongios,     
-             aes(x = annee, y = Occurence),
-             color = "black", alpha = 0.6) +
+ggplot(annees, aes(x = annee)) +
+  geom_ribbon(
+    aes(ymin = lower_ci, ymax = upper_ci),
+    fill = "steelblue",
+    alpha = 0.25
+  ) +
+  geom_line(
+    aes(y = predicted_prob),
+    color = "steelblue",
+    size = 1
+  ) +
+  geom_point(
+    data = Protocole_SuiviBlongios,
+    aes(x = annee, y = Occurence),
+    color = "black",
+    alpha = 0.6,
+    position = position_jitter(height = 0.03)
+  ) +
   labs(
     x = "Année",
     y = "Probabilité de présence du Blongios",
-    title = "Probabilité prédite de présence selon l'année (logistf)"
+    title = "Probabilité prédite de présence en fonction des années",
+    subtitle = "Bande = IC à 95 %"
   ) +
-  theme_minimal(base_size = 14)
+  theme_classic(base_size = 14)
 
 ```
 
+L'effet de l'année sur la probabilité de présence du Blongios est négatif mais non significatif (β = `, round(coef(ModeleOccurenceLogistf)["annee"], 3),`, `p = ", round(summary(ModeleOccurenceLogistf)$coefficients["annee", "p"], 3),`). Cela signifie qu'il n'y a pas de tendance prononcée au cours du temps. On peut toutefois peut quand même relever qu'en visualisant l'effet graphiquement, on observe une tendance légèrement négative de la probablité de présence du Blongios nain sur la réserve.
+
 ### B) Modèles d'abondance du Blongios nain
 
-Ensuite, nous avons construit des modèles pour expliquer l'abondance du Blongios sur la Réserve.. Cela nous à permis de vérifier s'il y avait (i) des tendances temporelles dans les populations de Blongios de la réserve, (ii) des sites avec plus d'individus observés ou (iii) des variables environnementales qui pouvaient influencer le nombre d'individus recensé lors du suivi.
+Ensuite, nous réalisons un modèle pour essayer d'expliquer la variabilité de l'abondance du Blongios nain sur les 10 années de suivi protocolé. Nous commençons également par vérifier la structure et la dispersion de la variable réponse abondance.
 
 ```{r}
 
+Protocole_SuiviBlongiosGraph_abond <- Protocole_SuiviBlongios %>%
+  mutate(
+    Abondance_f = factor(nombre_min))
 
-## vérification de la distribution de la variable réponse
-hist(Protocole_SuiviBlongios$nombre_min)
+ggplot(Protocole_SuiviBlongiosGraph_abond, aes(x = Abondance_f)) +
+  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_text(
+    stat = "count",
+    aes(label = after_stat(count)),
+    vjust = -0.5,
+    size = 4
+  ) +
+  labs(
+    x = "Abondance (nombre d'individus observés)",
+    y = "Nombre d'observations",
+    title = "Distribution des abondances de Blongios"
+  ) +
+  theme_classic(base_size = 13) +
+  expand_limits(y = 0)
 
-## enormément de zéros : test de la surdispersion
+```
 
-ModeleEnvironnementAbondance |>
-  performance::check_overdispersion()
+On observe un nombre important de zéros dans la variable réallons essayer ponse abondance (nombre d'individus observés). Par conséquent, nous avons choisi d'utiliser un modèle GLM à inflation de zéros (glmmTMB). Et similairement au modèle de présence, nous allons seulement essayer de détecter une tendance temporelle, car l'estimation de trop de paramètres peut être instable avec un si petit jeu de données.
+
+```{r}
 
 # Modèle à inflation de zéros
 modeleZI <- glmmTMB(nombre_min ~ annee,
@@ -503,6 +557,9 @@ ggplot(annees, aes(x = annee, y = fit)) +
 
 ```
 
+
+
+
 ```{r}
 Abondance_suivi <- Protocole_SuiviBlongios %>%
   arrange(date_debut) %>%   # tri chronologique
@@ -527,11 +584,10 @@ ggplot(Abondance_suivi, aes(x = date_debut, y = total_abondance)) +
 
 La variable temporelle interannuelle (année) et intraannuelle (jours julian) n'ont pas d'effet significatif sur l'abondance de l'espèce, ce qui signifie que le nombre d'individus contacté lors des suivis protocolés de l'espèce ne varie pas significativement entre 2014 et 2024 (β = `r round(coef(ModeleEnvironnementAbondance)["annee"], 3)` ± `r round(summary(ModeleEnvironnementAbondance)$coefficients["annee", "Std. Error"], 3)`, p = `r format.pval(summary(ModeleEnvironnementAbondance)$coefficients["annee", "Pr(>|z|)"], digits = 3)`), ni durant la durée du protocole (β = `r round(coef(ModeleEnvironnementAbondance)["julian"], 3)` ± `r round(summary(ModeleEnvironnementAbondance)$coefficients["julian", "Std. Error"], 3)`, p = `r format.pval(summary(ModeleEnvironnementAbondance)$coefficients["julian", "Pr(>|z|)"], digits = 3)`. De même, il n'y a aucun site de la réserve qui montre un nombre de Blongios observé plus important, et aucune des variables environnementales qui expliquent significativement les variations d'abondance du Blongios nain.
 
+Nous admettons que le modèle de base comprend uniquement les variables temporelles (année, jour julien) et spatiales (site d'écoute). Pour les variations intra-anuelles on rajoute également un effet quadratique sur la variable jour julien (julian\^2). Ensuite, nous rajoutons à ce modèle de base les variables environnementales (climatiques et hydrologiques). Un test de corrélation entre les variables environnementales est réalisé au préalable pour éviter la colinéarité entre variables explicatives.
 
+Modèle Occurence \~ Temporel + Spatial
 
-Nous admettons que le modèle de base comprend uniquement les variables temporelles (année, jour julien) et spatiales (site d'écoute). Pour les variations intra-anuelles on rajoute également un effet quadratique sur la variable jour julien (julian^2). Ensuite, nous rajoutons à ce modèle de base les variables environnementales (climatiques et hydrologiques). Un test de corrélation entre les variables environnementales est réalisé au préalable pour éviter la colinéarité entre variables explicatives.
-
-Modèle Occurence ~ Temporel + Spatial 
 ```{r,echo=FALSE}
 
 ## Modèle de base (temporel et spatial)
@@ -554,7 +610,8 @@ tidy(ModeleBaseOccurence) %>%
 
 ```
 
-Modèle Occurence ~ Temporel + Spatial + Environnement
+Modèle Occurence \~ Temporel + Spatial + Environnement
+
 ```{r, echo=FALSE}
 ## Modèle complet avec les variables environnementales
 ModeleEnvironnementOccurence <- glm(Occurence ~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ pluie_moy_glissante_31j + pluie_moy_glissante_7j + pluie_1h + AssecT_1 + Profondeur,
@@ -581,7 +638,6 @@ Nous obervons que les trois variables de température sont fortement corrélées
 
 La variable temporelle interannuelle (année) et intraannuelle (jours julian) n'ont pas d'effet significatif sur la présence de l'espèce, ce qui signifie que la probabilité d'occurrence de l'espèce ne varie pas significativement entre 2014 et 2024 (β = `r round(coef(ModeleEnvironnementOccurence)["annee"], 3)` ± `r round(summary(ModeleEnvironnementOccurence)$coefficients["annee", "Std. Error"], 3)`, p = `r format.pval(summary(ModeleEnvironnementOccurence)$coefficients["annee", "Pr(>|z|)"], digits = 3)`), ni durant la durée du protocole (β = `r round(coef(ModeleEnvironnementOccurence)["julian"], 3)` ± `r round(summary(ModeleEnvironnementOccurence)$coefficients["julian", "Std. Error"], 3)`, p = `r format.pval(summary(ModeleEnvironnementOccurence)$coefficients["julian", "Pr(>|z|)"], digits = 3)`. De même, il n'y a aucun site qui montre une meilleure présence de Blongios sur la réserve, et aucune variables environnementales qui explique significativement l'occurence du Blongios nain.
 
-
 ```{r}
 
 ## Modèle de base (temporel et spatial)
@@ -597,3 +653,16 @@ ModeleEnvironnementAbondance <- glm(nombre_min ~ annee + julian + I(julian^2)+ n
 summary(ModeleEnvironnementAbondance)
 ```
 
+```{r}
+
+## test de la colinéarité entre variables
+VariablesExplicatives <- (Protocole_SuiviBlongios %>%
+  select(annee, julian, temp_moy_glissante_31j, temp_moy_glissante_7j,
+         pluie_moy_glissante_31j, pluie_moy_glissante_7j, vent_moyen,
+         temperature, pluie_1h, Profondeur))
+
+CorrelationVariablesExplicatives <- cor(VariablesExplicatives, use = "pairwise.complete.obs")
+corrplot::corrplot(CorrelationVariablesExplicatives)
+```
+
+Ensuite, nous avons construit des modèles pour expliquer l'abondance du Blongios sur la Réserve. Cela nous à permis de vérifier s'il y avait (i) des tendances temporelles dans les populations de Blongios de la réserve, (ii) des sites avec plus d'individus observés ou (iii) des variables environnementales qui pouvaient influencer le nombre d'individus recensé lors du suivi.
