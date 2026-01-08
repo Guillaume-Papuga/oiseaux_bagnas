@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.7.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -21,6 +21,7 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -58,38 +59,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <script src="clean_taleve_files/libs/clipboard/clipboard.min.js"></script>
-<script src="clean_taleve_files/libs/quarto-html/quarto.js"></script>
+<script src="clean_taleve_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="clean_taleve_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="clean_taleve_files/libs/quarto-html/popper.min.js"></script>
 <script src="clean_taleve_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="clean_taleve_files/libs/quarto-html/anchor.min.js"></script>
 <link href="clean_taleve_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="clean_taleve_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="clean_taleve_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="clean_taleve_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="clean_taleve_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="clean_taleve_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-
+<link href="clean_taleve_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <link href="clean_taleve_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
 <script src="clean_taleve_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
 <script src="clean_taleve_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
 <link href="clean_taleve_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+
 <script src="clean_taleve_files/libs/leaflet-1.3.1/leaflet.js"></script>
+
 <link href="clean_taleve_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+
 <script src="clean_taleve_files/libs/proj4-2.6.2/proj4.min.js"></script>
+
 <script src="clean_taleve_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+
 <link href="clean_taleve_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
-<script src="clean_taleve_files/libs/leaflet-binding-2.2.2/leaflet.js"></script>
+
+<script src="clean_taleve_files/libs/leaflet-binding-2.2.3/leaflet.js"></script>
+
 <link href="clean_taleve_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="clean_taleve_files/libs/datatables-binding-0.33/datatables.js"></script>
+
+<script src="clean_taleve_files/libs/datatables-binding-0.34.0/datatables.js"></script>
+
 <link href="clean_taleve_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
 <link href="clean_taleve_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
 <script src="clean_taleve_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="clean_taleve_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
-<script src="clean_taleve_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="clean_taleve_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="clean_taleve_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
 
 
 </head>
 
-<body class="fullcontent">
+<body class="fullcontent quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
 
@@ -110,7 +128,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
@@ -127,7 +147,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où la talève n’a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d’écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>on voit que le protocole est réalisé pendant la periode historique d’écoute et d’observation du la talève. Nous pouvons voir que la talève est présente tout au long de l’année.</p>
@@ -135,8 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Cette carte donne la localisation des points d’écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-72cf2c8921bcfbbea155" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-72cf2c8921bcfbbea155">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[21,35,8,2,5,33,3,17,31],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Talèves entendues :21","ButorTalèveBlongios-2, Talèves entendues :35","ButorTalèveBlongios-3, Talèves entendues :8","ButorTalèveBlongios-4, Talèves entendues :2","ButorTalèveBlongios-5, Talèves entendues :5","ButorTalèveBlongios-6, Talèves entendues :33","ButorTalèveBlongios-7, Talèves entendues :3","ButorTalèveBlongios-8, Talèves entendues :17","ButorTalèveBlongios-9, Talèves entendues :31"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-f87a779d59f69caf445a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-f87a779d59f69caf445a">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[21,35,8,2,5,33,3,17,31],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Talèves entendues :21","ButorTalèveBlongios-2, Talèves entendues :35","ButorTalèveBlongios-3, Talèves entendues :8","ButorTalèveBlongios-4, Talèves entendues :2","ButorTalèveBlongios-5, Talèves entendues :5","ButorTalèveBlongios-6, Talèves entendues :33","ButorTalèveBlongios-7, Talèves entendues :3","ButorTalèveBlongios-8, Talèves entendues :17","ButorTalèveBlongios-9, Talèves entendues :31"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>#C- Effort journalier des données protocoles Talève</p>
@@ -155,7 +179,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7                21                23</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>En orange l’effort d’échantillonngage et en bleu le nombre de talèves observés/entendus.</p>
@@ -179,7 +207,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 11                21                30</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>LA couleur orange représente les observations protocolées et le bleu représente les observations opportunistes. Nous retrouvons le meme patron entre les deux types d’observations</p>
@@ -189,9 +221,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé <em>Protocole_SuiviTaleve</em>.**</p>
 <div class="cell">
 <div class="cell-output-display">
-
-<div class="datatables html-widget html-fill-item" id="htmlwidget-704120883ac6dd845eb0" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-704120883ac6dd845eb0">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[115476,115477,115478,115479,115480,115481,115482,115483,115484,115485],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu"],[3,2,5,3,0,0,0,0,0,1],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],[3.524423,3.519831,3.510068,3.509005,3.503405,3.510314,3.503888,3.515507,3.524187,3.524187],[43.329853,43.317739,43.327324,43.320424,43.32293,43.314765,43.317255,43.331375,43.322337,43.322337],["ButorTalèveBlongios-1","ButorTalèveBlongios-3","ButorTalèveBlongios-9","ButorTalèveBlongios-6","ButorTalèveBlongios-7","ButorTalèveBlongios-4","ButorTalèveBlongios-5","ButorTalèveBlongios-8","ButorTalèveBlongios-2","ButorTalèveBlongios-2"],["{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}"],[2019,2019,2019,2019,2019,2019,2019,2019,2019,2019],[null,null,null,null,null,null,null,null,null,null],[20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,16.23611111111111],[1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1014.29375],[0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.3426229508196721],[63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,77.93055555555556],[12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.23263888888889],[null,null,null,null,null,null,null,null,null,null],[3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,4.684027777777778],[null,null,null,null,null,null,null,null,null,null],[13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,11.95416666666667],[272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,222.4375],[14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,10.3],[24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,17.71319444444444],[0,0,0,0,0,0,0,0,0,0],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,1.283333333333333],[null,null,null,null,null,null,null,null,null,1.911111111111111],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,336.3888888888889],[1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.850694444444444],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[18038,18038,18038,18038,18038,18038,18038,18038,18038,18059],[142,142,142,142,142,142,142,142,142,163],[15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,18.01964754813947],[16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,18.12406231410413],[0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.02123528079710145],[0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.0125],[0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7000000000000001],["non","non","non","non","non","non","non","non","non","non"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>id_synthese<\/th>\n      <th>date_debut<\/th>\n      <th>date_fin<\/th>\n      <th>heure_debut<\/th>\n      <th>heure_fin<\/th>\n      <th>nom_vernaculaire<\/th>\n      <th>nombre_min<\/th>\n      <th>observateurs<\/th>\n      <th>determinateur<\/th>\n      <th>x_centroid_4326<\/th>\n      <th>y_centroid_4326<\/th>\n      <th>nom_lieu<\/th>\n      <th>champs_additionnels<\/th>\n      <th>annee<\/th>\n      <th>station_id<\/th>\n      <th>temperature<\/th>\n      <th>pression<\/th>\n      <th>pression_variation_3h<\/th>\n      <th>humidite<\/th>\n      <th>point_de_rosee<\/th>\n      <th>visibilite<\/th>\n      <th>vent_moyen<\/th>\n      <th>vent_rafales<\/th>\n      <th>vent_rafales_10min<\/th>\n      <th>vent_direction<\/th>\n      <th>temperature_min<\/th>\n      <th>temperature_max<\/th>\n      <th>pluie_1h<\/th>\n      <th>pluie_3h<\/th>\n      <th>pluie_6h<\/th>\n      <th>pluie_12h<\/th>\n      <th>pluie_24h<\/th>\n      <th>pluie_cumul_0h<\/th>\n      <th>pluie_intensite<\/th>\n      <th>pluie_intensite_max_1h<\/th>\n      <th>uv<\/th>\n      <th>uv_index<\/th>\n      <th>ensoleillement<\/th>\n      <th>temperature_sol<\/th>\n      <th>temps_omm<\/th>\n      <th>complements<\/th>\n      <th>source<\/th>\n      <th>date<\/th>\n      <th>julian<\/th>\n      <th>temp_moy_glissante_31j<\/th>\n      <th>temp_moy_glissante_7j<\/th>\n      <th>pluie_moy_glissante_31j<\/th>\n      <th>pluie_moy_glissante_7j<\/th>\n      <th>Profondeur<\/th>\n      <th>AssecT_1<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,7,10,11,14,16,17,18,19,20,22,24,25,26,27,28,29,30,31,32,33,34,35,36,37,40,43,44,45,46,47,48,49]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"id_synthese","targets":1},{"name":"date_debut","targets":2},{"name":"date_fin","targets":3},{"name":"heure_debut","targets":4},{"name":"heure_fin","targets":5},{"name":"nom_vernaculaire","targets":6},{"name":"nombre_min","targets":7},{"name":"observateurs","targets":8},{"name":"determinateur","targets":9},{"name":"x_centroid_4326","targets":10},{"name":"y_centroid_4326","targets":11},{"name":"nom_lieu","targets":12},{"name":"champs_additionnels","targets":13},{"name":"annee","targets":14},{"name":"station_id","targets":15},{"name":"temperature","targets":16},{"name":"pression","targets":17},{"name":"pression_variation_3h","targets":18},{"name":"humidite","targets":19},{"name":"point_de_rosee","targets":20},{"name":"visibilite","targets":21},{"name":"vent_moyen","targets":22},{"name":"vent_rafales","targets":23},{"name":"vent_rafales_10min","targets":24},{"name":"vent_direction","targets":25},{"name":"temperature_min","targets":26},{"name":"temperature_max","targets":27},{"name":"pluie_1h","targets":28},{"name":"pluie_3h","targets":29},{"name":"pluie_6h","targets":30},{"name":"pluie_12h","targets":31},{"name":"pluie_24h","targets":32},{"name":"pluie_cumul_0h","targets":33},{"name":"pluie_intensite","targets":34},{"name":"pluie_intensite_max_1h","targets":35},{"name":"uv","targets":36},{"name":"uv_index","targets":37},{"name":"ensoleillement","targets":38},{"name":"temperature_sol","targets":39},{"name":"temps_omm","targets":40},{"name":"complements","targets":41},{"name":"source","targets":42},{"name":"date","targets":43},{"name":"julian","targets":44},{"name":"temp_moy_glissante_31j","targets":45},{"name":"temp_moy_glissante_7j","targets":46},{"name":"pluie_moy_glissante_31j","targets":47},{"name":"pluie_moy_glissante_7j","targets":48},{"name":"Profondeur","targets":49},{"name":"AssecT_1","targets":50}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-3ea6242429f4930918df" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3ea6242429f4930918df">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[115476,115477,115478,115479,115480,115481,115482,115483,115484,115485],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu"],[3,2,5,3,0,0,0,0,0,1],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],[3.524423,3.519831,3.510068,3.509005,3.503405,3.510314,3.503888,3.515507,3.524187,3.524187],[43.329853,43.317739,43.327324,43.320424,43.32293,43.314765,43.317255,43.331375,43.322337,43.322337],["ButorTalèveBlongios-1","ButorTalèveBlongios-3","ButorTalèveBlongios-9","ButorTalèveBlongios-6","ButorTalèveBlongios-7","ButorTalèveBlongios-4","ButorTalèveBlongios-5","ButorTalèveBlongios-8","ButorTalèveBlongios-2","ButorTalèveBlongios-2"],["{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}"],[2019,2019,2019,2019,2019,2019,2019,2019,2019,2019],[null,null,null,null,null,null,null,null,null,null],[20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,16.23611111111111],[1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1014.29375],[0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.3426229508196721],[63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,77.93055555555556],[12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.23263888888889],[null,null,null,null,null,null,null,null,null,null],[3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,4.684027777777778],[null,null,null,null,null,null,null,null,null,null],[13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,11.95416666666667],[272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,222.4375],[14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,10.3],[24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,17.71319444444444],[0,0,0,0,0,0,0,0,0,0],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,1.283333333333333],[null,null,null,null,null,null,null,null,null,1.911111111111111],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,336.3888888888889],[1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.850694444444444],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[18038,18038,18038,18038,18038,18038,18038,18038,18038,18059],[142,142,142,142,142,142,142,142,142,163],[15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,18.01964754813947],[16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,18.12406231410413],[0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.02123528079710145],[0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.0125],[0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7000000000000001],["non","non","non","non","non","non","non","non","non","non"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>id_synthese<\/th>\n      <th>date_debut<\/th>\n      <th>date_fin<\/th>\n      <th>heure_debut<\/th>\n      <th>heure_fin<\/th>\n      <th>nom_vernaculaire<\/th>\n      <th>nombre_min<\/th>\n      <th>observateurs<\/th>\n      <th>determinateur<\/th>\n      <th>x_centroid_4326<\/th>\n      <th>y_centroid_4326<\/th>\n      <th>nom_lieu<\/th>\n      <th>champs_additionnels<\/th>\n      <th>annee<\/th>\n      <th>station_id<\/th>\n      <th>temperature<\/th>\n      <th>pression<\/th>\n      <th>pression_variation_3h<\/th>\n      <th>humidite<\/th>\n      <th>point_de_rosee<\/th>\n      <th>visibilite<\/th>\n      <th>vent_moyen<\/th>\n      <th>vent_rafales<\/th>\n      <th>vent_rafales_10min<\/th>\n      <th>vent_direction<\/th>\n      <th>temperature_min<\/th>\n      <th>temperature_max<\/th>\n      <th>pluie_1h<\/th>\n      <th>pluie_3h<\/th>\n      <th>pluie_6h<\/th>\n      <th>pluie_12h<\/th>\n      <th>pluie_24h<\/th>\n      <th>pluie_cumul_0h<\/th>\n      <th>pluie_intensite<\/th>\n      <th>pluie_intensite_max_1h<\/th>\n      <th>uv<\/th>\n      <th>uv_index<\/th>\n      <th>ensoleillement<\/th>\n      <th>temperature_sol<\/th>\n      <th>temps_omm<\/th>\n      <th>complements<\/th>\n      <th>source<\/th>\n      <th>date<\/th>\n      <th>julian<\/th>\n      <th>temp_moy_glissante_31j<\/th>\n      <th>temp_moy_glissante_7j<\/th>\n      <th>pluie_moy_glissante_31j<\/th>\n      <th>pluie_moy_glissante_7j<\/th>\n      <th>Profondeur<\/th>\n      <th>AssecT_1<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,7,10,11,14,16,17,18,19,20,22,24,25,26,27,28,29,30,31,32,33,34,35,36,37,40,43,44,45,46,47,48,49]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"id_synthese","targets":1},{"name":"date_debut","targets":2},{"name":"date_fin","targets":3},{"name":"heure_debut","targets":4},{"name":"heure_fin","targets":5},{"name":"nom_vernaculaire","targets":6},{"name":"nombre_min","targets":7},{"name":"observateurs","targets":8},{"name":"determinateur","targets":9},{"name":"x_centroid_4326","targets":10},{"name":"y_centroid_4326","targets":11},{"name":"nom_lieu","targets":12},{"name":"champs_additionnels","targets":13},{"name":"annee","targets":14},{"name":"station_id","targets":15},{"name":"temperature","targets":16},{"name":"pression","targets":17},{"name":"pression_variation_3h","targets":18},{"name":"humidite","targets":19},{"name":"point_de_rosee","targets":20},{"name":"visibilite","targets":21},{"name":"vent_moyen","targets":22},{"name":"vent_rafales","targets":23},{"name":"vent_rafales_10min","targets":24},{"name":"vent_direction","targets":25},{"name":"temperature_min","targets":26},{"name":"temperature_max","targets":27},{"name":"pluie_1h","targets":28},{"name":"pluie_3h","targets":29},{"name":"pluie_6h","targets":30},{"name":"pluie_12h","targets":31},{"name":"pluie_24h","targets":32},{"name":"pluie_cumul_0h","targets":33},{"name":"pluie_intensite","targets":34},{"name":"pluie_intensite_max_1h","targets":35},{"name":"uv","targets":36},{"name":"uv_index","targets":37},{"name":"ensoleillement","targets":38},{"name":"temperature_sol","targets":39},{"name":"temps_omm","targets":40},{"name":"complements","targets":41},{"name":"source","targets":42},{"name":"date","targets":43},{"name":"julian","targets":44},{"name":"temp_moy_glissante_31j","targets":45},{"name":"temp_moy_glissante_7j","targets":46},{"name":"pluie_moy_glissante_31j","targets":47},{"name":"pluie_moy_glissante_7j","targets":48},{"name":"Profondeur","targets":49},{"name":"AssecT_1","targets":50}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (<em>environnement_daily</em>) et d’un tableau regroupant les observations de talèves.</p>
@@ -202,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l’influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l’occurence observée.</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Comparaison des modèles selon le critère d’information d’Akaike (AIC)</caption>
 <thead>
 <tr class="header">
@@ -232,12 +263,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques n’améliore pas l’ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet.</p>
 <p>Les parametres estimés indiquent que :</p>
 <ul>
-<li>Année a un effet positif significatif sur l’abondance des talèves (β = 0.242, p = 0.0109713). Donc nous avons une augmentation de l’abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d’environ 1.2737942de talèves dans la reserve independamment des facteurs etudiés dans le modèle</li>
+<li>Année a un effet positif significatif sur l’abondance des talèves (β = 0.242, p = 0.011. Donc nous avons une augmentation de l’abondance de talèves au cours des années. Le modele nous donne la chance qu’un site soit occupé par la talève augmente de 27.36d’une année sur l’autre</li>
 </ul>
 <p>Le graphique présente l’évolution de la population de la talèves au cours du temps</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <ul>
@@ -245,29 +280,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Le graphique montre le nombre d’observations de talèves sur chaque site du protocole :</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div></li>
 </ul>
 <p>Les graphiques suivants illustrent les effets des variables pour lesquelles aucun effet significatif n’a été détecté, dans le but d’évaluer l’existence de tendances potentielles.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-4.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-6.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>À travers ces derniers graphiques, nous observons une tendance positive de la température : lorsque celle-ci augmente, l’occurrence des talèves tend également à augmenter. À l’inverse, les variables de pluviométrie moyenne sur 31 et 7 jours montrent une tendance négative, une augmentation des précipitations étant associée à une diminution de l’occurrence des talèves. En revanche, pour la pluviométrie journalière, la profondeur et l’assec, aucun effet clair ni tendance marquée sur l’occurrence des talèves ne se dégage.</p>
@@ -278,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="caption-top table table-sm table-striped small">
 <caption>Comparaison des modèles selon le critère d’information d’Akaike (AIC)</caption>
 <thead>
 <tr class="header">
@@ -313,7 +376,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Le graphique présente l’évolution de la population de la talèves au cours du temps</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <ul>
@@ -323,7 +390,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Le graphique présente l’évolution de la population de la talèves en fonction au cours des années</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <ul>
@@ -332,7 +403,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = 0.4332637), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
@@ -367,7 +442,11 @@ AIC: 285.04
 Number of Fisher Scoring iterations: 4</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>La probabilité d’occurence de la talève est plus élevée dans les dernières années de protocole (2019, 2021, 2023) que pendant la première, en 2014. L’espèce semble bien coloniser la réserve du bagnat depuis au moins 2014.</p>
@@ -426,239 +505,406 @@ Number of Fisher Scoring iterations: 5</code></pre>
 </main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
       }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
+      return false;
     }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
       });
     }
-  }
-});
-</script>
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </div> <!-- /content -->
+
 
 
 

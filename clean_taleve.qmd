@@ -33,7 +33,7 @@ library(broom)
 library(ggeffects)
 library(reactable)
 library(DT)
-
+library(questionr)
 
 process_data <- read_csv("data/pro/process_data.csv")
 
@@ -429,18 +429,25 @@ La sélection de modèles selon le critère d’information d’Akaike (AIC) ind
 Les parametres estimés indiquent que :
 
 ```{r}
+# Nous transformons les resultats par la l'inverse de sa fonction lien (logit) afin de pouvoir les interpreter biologiquement
+transformation_logit=odds.ratio (modele_complet)
+```
+
+
+
+```{r}
 extract_coef <- function(modele, var){
   c <- summary(modele)$coefficients[var, ]
   tibble(
     beta = round(c["Estimate"], 3),
-    p    = round(c["Pr(>|z|)"], 7)
+    p    = round(c["Pr(>|z|)"], 3)
   )
 }
 
 annee_res <- extract_coef(modele_complet, "annee")
 ```
 
--   Année a un effet positif significatif sur l’abondance des talèves (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+-   Année a un effet positif significatif sur l’abondance des talèves (β = `r annee_res$beta`, p = `r annee_res$p`. Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne la chance qu'un site soit occupé par la talève augmente de  `r round(((transformation_logit["annee", 'OR']-1)*100),2)`% d'une année sur l'autre
 
 Le graphique présente l'évolution de la population de la talèves au cours du temps
 
