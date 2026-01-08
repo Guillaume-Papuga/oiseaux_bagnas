@@ -361,17 +361,17 @@ Nous allons préparer les variables environnementales, c’est‑à‑dire les s
 ```{r}
 Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
 Protocole_SuiviTaleve$julian <- as.numeric(Protocole_SuiviTaleve$julian)
-Protocole_SuiviTaleve$annee2 <- as.numeric(as.character(Protocole_SuiviTaleve$annee)) - 2013
+Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
 Protocole_SuiviTaleve$nom_lieu<- as.character (Protocole_SuiviTaleve$nom_lieu)
-Protocole_SuiviTaleve$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j))
-Protocole_SuiviTaleve$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j))
-Protocole_SuiviTaleve$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j))
-Protocole_SuiviTaleve$vent_moyen <- scale(as.numeric(Protocole_SuiviTaleve$vent_moyen))
-Protocole_SuiviTaleve$temperature = scale (as.numeric(Protocole_SuiviTaleve$temperature))
-Protocole_SuiviTaleve$pluie_1h = scale (as.numeric(Protocole_SuiviTaleve$pluie_1h))
-Protocole_SuiviTaleve$Profondeur = scale(as.numeric(Protocole_SuiviTaleve$Profondeur))
-Protocole_SuiviTaleve$AssecT_1 = as.factor((Protocole_SuiviTaleve$AssecT_1))
+Protocole_SuiviTaleve$temp_moy_glissante_31j <- as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_31j)
+Protocole_SuiviTaleve$temp_moy_glissante_7j <- as.numeric(Protocole_SuiviTaleve$temp_moy_glissante_7j)
+Protocole_SuiviTaleve$pluie_moy_glissante_7j <- as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_7j)
+Protocole_SuiviTaleve$pluie_moy_glissante_31j <- as.numeric(Protocole_SuiviTaleve$pluie_moy_glissante_31j)
+Protocole_SuiviTaleve$vent_moyen <- as.numeric(Protocole_SuiviTaleve$vent_moyen)
+Protocole_SuiviTaleve$temperature =  as.numeric(Protocole_SuiviTaleve$temperature)
+Protocole_SuiviTaleve$pluie_1h = as.numeric(Protocole_SuiviTaleve$pluie_1h)
+Protocole_SuiviTaleve$Profondeur = as.numeric(Protocole_SuiviTaleve$Profondeur)
+Protocole_SuiviTaleve$AssecT_1 = as.factor(Protocole_SuiviTaleve$AssecT_1)
 ```
 
 ##2 . Modèle de présence/absence
@@ -384,37 +384,37 @@ Protocole_SuiviTaleve$Occurence <- ifelse(Protocole_SuiviTaleve$nombre_min > 0, 
 ### Modeles emboités 
 
 
-modele_complet_site <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_anneesite <- glm(Occurence~ annee2*nom_lieu + julian + I(julian^2),
+modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_site <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_vent <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_31 <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_7j <- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_1j<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temperature,
+modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_temp_1j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_31j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_7j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
-modele_complet_pluie_1j_vent<- glm(Occurence~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = binomial )
 
@@ -429,7 +429,7 @@ AIC_tab
 p1 <- plot(ggeffect(modele_complet_pluie_31j_vent, terms= "pluie_moy_glissante_31j  ", residual = T))
 
 
-p2 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "annee2", residual = T))
+p2 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "annee", residual = T))
 
 
 p3 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "nom_lieu", residual = T))
@@ -456,7 +456,7 @@ Cette analyse vise à caractériser la dynamique de la population de la Talève 
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
-modele_annee <- glm(nombre_min ~ annee2, 
+modele_annee <- glm(nombre_min ~ annee, 
                     family = poisson, 
                     data = Protocole_SuiviTaleve)
 
@@ -466,74 +466,74 @@ modele_julian <- glm(nombre_min ~ julian,
                    family = poisson)
 
 
-modele_annee_julian <- glm(nombre_min ~ annee2 + julian, 
+modele_annee_julian <- glm(nombre_min ~ annee + julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 
-modele_anneejulian <- glm(nombre_min ~ annee2 * julian, 
+modele_anneejulian <- glm(nombre_min ~ annee * julian, 
                          data = Protocole_SuiviTaleve, 
                          family = poisson)
 modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
 
-modele_julian2annee <- glm(nombre_min ~ julian*annee2 + I(julian^2),
+modele_julian2annee <- glm(nombre_min ~ julian*annee + I(julian^2),
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
 ##### Modeles complets 
-modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee2,
+modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee,
                    data = Protocole_SuiviTaleve, 
                    family = poisson)
-modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = poisson ) # meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
-modele_complet_anneesite <- glm(nombre_min~ annee2*nom_lieu + julian + I(julian^2),
+modele_complet_anneesite <- glm(nombre_min~ annee*nom_lieu + julian + I(julian^2),
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
-modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
 #####   avec variable enviro
 
-modele_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+modele_complet_vent <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
 
-modele_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+modele_complet_temp_31 <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+modele_complet_temp_7j <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_temp_1j<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature,
+modele_complet_temp_1j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+modele_complet_temp_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+modele_complet_pluie_31j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+modele_complet_pluie_7j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
-modele_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+modele_complet_pluie_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
                         data = Protocole_SuiviTaleve, 
                    family = poisson )
 
-modele_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+modele_complet_assec <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
                            data = Protocole_SuiviTaleve, 
                            family = poisson )
                            
 
-modele_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+modele_complet_profondeur <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
                            data = Protocole_SuiviTaleve, 
                            family = poisson )
 
@@ -609,7 +609,7 @@ extract_coef <- function(modele, var){
   )
 }
 
-annee_res <- extract_coef(modele_complet_assec, "annee2")
+annee_res <- extract_coef(modele_complet_assec, "annee")
 ```
 
 -   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
@@ -617,7 +617,7 @@ annee_res <- extract_coef(modele_complet_assec, "annee2")
 Le graphique présente l'évolution de la population de la talèves en fonction au cours des années
 
 ```{r}
-p2 = plot(ggeffect(modele_complet_assec, terms= "annee2", residual = T))
+p2 = plot(ggeffect(modele_complet_assec, terms= "annee", residual = T))
 p2
 ```
 
