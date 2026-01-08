@@ -348,10 +348,17 @@ Pour les analyses de présence et d’abondance, nous utilisons uniquement les d
 process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
 # Filtrer les relevés pour Talève sultane
 Protocole_SuiviTaleve <- process_protocole %>%
-  filter(
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
 head(Protocole_SuiviTaleve)
+
+#Protocole_SuiviTaleve2<- process_protocole %>%
+#  filter(
+#    champs_additionnels  != "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+ #     nom_vernaculaire ==
+ #       "Talève sultane, Poule sultane, Porphyrion bleu"
+#      )
 ```
 
 Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.
@@ -456,109 +463,17 @@ Cette analyse vise à caractériser la dynamique de la population de la Talève 
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
 ```{r}
-modele_annee <- glm(nombre_min ~ annee, 
-                    family = poisson, 
-                    data = Protocole_SuiviTaleve)
-
-
-modele_julian <- glm(nombre_min ~ julian, 
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-
-
-modele_annee_julian <- glm(nombre_min ~ annee + julian, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-
-modele_anneejulian <- glm(nombre_min ~ annee * julian, 
-                         data = Protocole_SuiviTaleve, 
-                         family = poisson)
-modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-
-modele_julian2annee <- glm(nombre_min ~ julian*annee + I(julian^2),
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-##### Modeles complets 
-modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee,
-                   data = Protocole_SuiviTaleve, 
-                   family = poisson)
-modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson ) # meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
-modele_complet_anneesite <- glm(nombre_min~ annee*nom_lieu + julian + I(julian^2),
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-#####   avec variable enviro
-
-modele_complet_vent <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-
-modele_complet_temp_31 <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_temp_7j <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_temp_1j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_temp_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_pluie_31j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_pluie_7j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-modele_complet_pluie_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = poisson )
-
-modele_complet_assec <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
-                           data = Protocole_SuiviTaleve, 
-                           family = poisson )
-                           
-
-modele_complet_profondeur <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
-                           data = Protocole_SuiviTaleve, 
-                           family = poisson )
-
-
-# Selection du meilleur model avec l'AIC 
+modele_null <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu ,
+                    data = Protocole_SuiviTaleve, 
+                      family = poisson )
+                   
+modele_complet <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu +  temp_moy_glissante_7j + pluie_moy_glissante_7j + pluie_moy_glissante_31j+ pluie_1h + AssecT_1+ Profondeur,
+                      data = Protocole_SuiviTaleve, 
+                      family = poisson )
+# comparaison de modeles 
 AIC_tab <- AIC(
-  modele_annee,
-  modele_julian,
-  modele_annee_julian,
-  modele_anneejulian,
-  modele_julian2,
-  modele_julian2annee,
-  modele_julian2_annee,
-  modele_complet_site,
-  modele_complet_anneesite,
-  modele_complet_vent,
-  modele_complet_temp_31,
-  modele_complet_temp_7j,
-  modele_complet_temp_1j,
-  modele_complet_temp_1j_vent,
-  modele_complet_pluie_31j_vent,
-  modele_complet_pluie_7j_vent,
-  modele_complet_pluie_1j_vent,
-  modele_complet_profondeur,
-  modele_complet_assec
+  modele_null,
+  modele_complet
 ) %>%
   as.data.frame() %>%
   rownames_to_column("Modèle") %>%
@@ -572,10 +487,9 @@ kable(
   digits = 2,
   caption = "Comparaison des modèles selon le critère d'information d'Akaike (AIC)"
 )
-
 ```
 
-La sélection de modèles basée sur le critère d’information d’Akaike (AIC) a mis en évidence qu’un modèle intégrant les effets temporels (année et jour julien), un effet spatial lié au site, ainsi que des variables environnementales locales (vitesse moyenne du vent et conditions d’assec) constitue la structure la plus parcimonieuse pour expliquer la variation de l’occurrence des individus. Ce modèle a donc été retenu comme base pour l’analyse, afin d’évaluer l’influence conjointe des facteurs temporels, spatiaux et environnementaux sur l'abondance des individus
+La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques améliore significativement l’ajustement du modèle. Ces résultats suggèrent que ces facteurs jouent un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet afin d’explorer les effets prédictifs des paramètres sur cette population.
 
 Les parametres estimés indiquent que :
 
@@ -588,15 +502,15 @@ extract_coef <- function(modele, var){
   )
 }
 
-assec_res <- extract_coef(modele_complet_assec, "AssecT_1partiel")
+annee_res <- extract_coef(modele_complet, "annee")
 ```
 
--   L’assec partiel a un effet négatif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). En revanche, un assec total ne montre aucun effet significatif sur l’abondance des talèves (fig X) . On peut imaginer que le nombre limité d’assec total n’est pas valorisé en raison de sa faible fréquence de présence.
+-   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. L’assec partiel a un effet négatif significatif sur l’abondance des talèves. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
 
 Le graphique présente l'évolution de la population de la talèves en fonction des differents modalités du niveau de l'eau ( assec total , assec partiel , absence d'assec )
 
 ```{r}
-p1 <- plot(ggeffect(modele_complet_assec, terms= "AssecT_1", residual = T))
+p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
 p1
 ```
 
@@ -609,15 +523,17 @@ extract_coef <- function(modele, var){
   )
 }
 
-annee_res <- extract_coef(modele_complet_assec, "annee")
+assec_res <- extract_coef(modele_complet, "AssecT_1total")
 ```
 
--   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+-   L’effet de l’assec sur l’abondance est négatif (β = `r AssecT_1total_res$beta`, p = `r AssecT_1total_res$p`). Donc les evenements d'assec ont un impact négatif qui fait diminuer la popualtion de taleves d'environ `r exp(assec_res$beta)` par rapport à l'année précedente.
+
+    Nous ne pouvons pas mettre en évidence un effet de l’assec partiel sur la population de talèves, celui-ci n’ayant eu lieu qu’en 2022. De plus, le protocole de suivi n’a pas été appliqué selon la périodicité habituelle de deux ans, ce qui limite la capacité à détecter un effet éventuel.
 
 Le graphique présente l'évolution de la population de la talèves en fonction au cours des années
 
 ```{r}
-p2 = plot(ggeffect(modele_complet_assec, terms= "annee", residual = T))
+p2 = plot(ggeffect(modele_complet, terms= "AssecT_1", residual = T))
 p2
 ```
 
@@ -626,19 +542,18 @@ p2
 -   Le graphique montre l’évolution des observations de la talève sur chaque site du protocole :
 
 ```{r}
-p3 = plot(ggeffect(modele_complet_assec, terms= "nom_lieu", residual = T))
+p3 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
 p3
 ```
 
 ```{r}
-null_dev <- modele_complet_assec$null.deviance
-resid_dev <- modele_complet_assec$deviance
+null_dev <- modele_complet$null.deviance
+resid_dev <- modele_complet$deviance
 
 pseudo_R2 <- (null_dev - resid_dev) / null_dev
-pseudo_R2
 ```
 
-Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
+Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
 
 graphe probabilité de présence de la talève sur la réserve
 
