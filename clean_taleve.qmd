@@ -381,7 +381,9 @@ Protocole_SuiviTaleve$Profondeur = as.numeric(Protocole_SuiviTaleve$Profondeur)
 Protocole_SuiviTaleve$AssecT_1 = as.factor(Protocole_SuiviTaleve$AssecT_1)
 ```
 
-##2 . Modèle de présence/absence
+# 3 . Modèle de présence/absence
+
+Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'occurence observée.
 
 ```{r}
 
@@ -391,74 +393,99 @@ Protocole_SuiviTaleve$Occurence <- ifelse(Protocole_SuiviTaleve$nombre_min > 0, 
 ### Modeles emboités 
 
 
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
-modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
-                        data = Protocole_SuiviTaleve, 
-                   family = binomial )
+modele_null <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu ,
+                    data = Protocole_SuiviTaleve, 
+                      family = binomial )
+                   
+modele_complet <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu +  temp_moy_glissante_7j + pluie_moy_glissante_7j + pluie_moy_glissante_31j+ pluie_1h + AssecT_1+ Profondeur,
+                      data = Protocole_SuiviTaleve, 
+                      family = binomial )
+# comparaison de modeles 
+AIC_tab <- AIC(
+  modele_null,
+  modele_complet
+) %>%
+  as.data.frame() %>%
+  rownames_to_column("Modèle") %>%
+  arrange(AIC) %>%
+  mutate(
+    delta_AIC = AIC - min(AIC)
+  )
 
-
-AIC_tab <- AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
-modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent)
-
-AIC_tab
-
-## meilleur modèle selon AIC
-
-p1 <- plot(ggeffect(modele_complet_pluie_31j_vent, terms= "pluie_moy_glissante_31j  ", residual = T))
-
-
-p2 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "annee", residual = T))
-
-
-p3 = plot(ggeffect(modele_complet_pluie_31j_vent, terms= "nom_lieu", residual = T))
-
-#### Affichage 
-
-p1
-p2
-p3
-
+kable(
+  AIC_tab,
+  digits = 2,
+  caption = "Comparaison des modèles selon le critère d'information d'Akaike (AIC)"
+)
 
 ```
 
-##2.1 Interpretation
+La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques n'améliore pas l’ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet.
 
-Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).
+Les parametres estimés indiquent que :
 
-## 3 . Modèle d'abondance
+```{r}
+extract_coef <- function(modele, var){
+  c <- summary(modele)$coefficients[var, ]
+  tibble(
+    beta = round(c["Estimate"], 3),
+    p    = round(c["Pr(>|z|)"], 7)
+  )
+}
+
+annee_res <- extract_coef(modele_complet, "annee")
+```
+
+-   Année a un effet positif significatif sur l’abondance des talèves (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+
+Le graphique présente l'évolution de la population de la talèves au cours du temps
+
+```{r}
+p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
+p1
+```
+
+-   Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
+
+    Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
+
+    ```{r}
+    p2 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
+    p2
+    ```
+
+Les graphiques suivants illustrent les effets des variables pour lesquelles aucun effet significatif n’a été détecté, dans le but d’évaluer l’existence de tendances potentielles.
+
+```{r}
+p3 = plot(ggeffect(modele_complet, terms= "temp_moy_glissante_7j", residual = T))
+p4 = plot(ggeffect(modele_complet, terms= "pluie_moy_glissante_7j", residual = T))
+p5 = plot(ggeffect(modele_complet, terms= "pluie_moy_glissante_31j", residual = T))
+p6 = plot(ggeffect(modele_complet, terms= "pluie_1h", residual = T))
+p7 <- plot(ggeffect(modele_complet, terms = "AssecT_1", residuals = TRUE))
+p8 = plot(ggeffect(modele_complet, terms= "Profondeur", residual = T))
+
+p3
+p4
+p5
+p6
+p7
+p8
+```
+
+À travers ces derniers graphiques, nous observons une tendance positive de la température : lorsque celle-ci augmente, l’occurrence des talèves tend également à augmenter. À l’inverse, les variables de pluviométrie moyenne sur 31 et 7 jours montrent une tendance négative, une augmentation des précipitations étant associée à une diminution de l’occurrence des talèves. En revanche, pour la pluviométrie journalière, la profondeur et l’assec, aucun effet clair ni tendance marquée sur l’occurrence des talèves ne se dégage.
+
+```{r}
+null_dev <- modele_complet$null.deviance
+resid_dev <- modele_complet$deviance
+
+pseudo_R2 <- (null_dev - resid_dev) / null_dev
+```
+
+Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 29% de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
+
+## 4 . Modèle d'abondance
 
 Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
-
-## 3.1 Modèle d'abondance en fonction du temps
 
 Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
 
@@ -505,9 +532,9 @@ extract_coef <- function(modele, var){
 annee_res <- extract_coef(modele_complet, "annee")
 ```
 
--   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. L’assec partiel a un effet négatif significatif sur l’abondance des talèves. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+-   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
 
-Le graphique présente l'évolution de la population de la talèves en fonction des differents modalités du niveau de l'eau ( assec total , assec partiel , absence d'assec )
+Le graphique présente l'évolution de la population de la talèves au cours du temps
 
 ```{r}
 p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
@@ -539,7 +566,7 @@ p2
 
 -   Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
 
--   Le graphique montre l’évolution des observations de la talève sur chaque site du protocole :
+-   Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
 
 ```{r}
 p3 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
@@ -554,6 +581,8 @@ pseudo_R2 <- (null_dev - resid_dev) / null_dev
 ```
 
 Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
+
+-----------------------------------------------------------------------------
 
 graphe probabilité de présence de la talève sur la réserve
 
