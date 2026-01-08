@@ -76,13 +76,13 @@ data_taleve_summarized <- data_taleve %>%
   group_by(annee_suivi, semaine) %>%
   summarise(
     statut = case_when(
-      # observations présentes
-       # si dans une semaine il y a eu au moins 1 observation protocole ET 1 opportuniste, alors on définit ça en observation mixte 
-      any(is_obs) & any(is_protocole & is_obs) ~ "obs_protocole",  #si dans 1 semaine il y a eu au moins 1 observation protocolée (et aucune opportuniste) on définit en observation protocolée 
-      any(is_obs) & any(!is_protocole & is_obs) ~ "obs_hors_protocole", #si dans 1 semaine il y a eu au moins 1 observation opportuniste (et aucune protocolée) on définit en observation hors protocole
-      
-      # sorties sans observation = aucun oiseau vu
-      !any(is_obs) & any(nombre_min == 0) ~ "sortie_sans_observation",
+      # sorties avec observations 
+      any(is_obs) & any(is_protocole & is_obs) & any(!is_protocole & is_obs)   ~ "obs_mixte", # si dans une semaine il y a eu au moins 1 observation protocole ET 1 opportuniste, alors on définit ça en observation mixte 
+      any(is_obs) & any(is_protocole & is_obs)  ~ "obs_protocole",  #si dans 1 semaine il y a eu au moins 1 observation protocolée (et aucune opportuniste) on définit en observation protocolée 
+      any(is_obs) & any(!is_protocole & is_obs)  ~ "obs_hors_protocole", #si dans 1 semaine il y a eu au moins 1 observation opportuniste (et aucune protocolée) on définit en observation hors protocole
+
+      # sorties protocolées sans observation = aucun oiseau vu
+      any(is_protocole) & any(nombre_min == 0) ~ "sortie_sans_observation",
 
       TRUE ~ NA_character_
     ),
@@ -586,7 +586,7 @@ pseudo_R2 <- (null_dev - resid_dev) / null_dev
 
 Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
 
------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 graphe probabilité de présence de la talève sur la réserve
 
