@@ -434,7 +434,8 @@ Les observations opportunistes sont plus éparpillées au cours de la journée, 
 #### d - Cumul pour chaque site (y compris hors protocole)
 
 ::: justify
-Ce graphique représente le cumul de toutes les observations de butor entre 1990 et 2025, structurées en fonction du lieu d'observation. Ce graphique permet d'avoir une idée de la structure spatiale des observations. Les points noirs représentent les sites où aucun butor n'a été contacté. Les cercles rouges ont un rayon proportionnel au nombre de butors contactés. Cliquer sur le cercle permet de voir le nombre exacte. 
+Ce graphique représente le cumul de toutes les observations de butor entre 1990 et 2025, structurées en fonction du lieu d'observation. Ce graphique permet d'avoir une idée de la structure spatiale des observations. Les points noirs représentent les sites où aucun butor n'a été contacté. Les cercles rouges ont un rayon proportionnel au nombre de butors contactés. 
+Cliquer sur le cercle permet de voir le nombre exacte. 
 :::
 
 ```{r}
@@ -478,7 +479,7 @@ leaflet() %>%
 ```
 
 ::: justify
-La majorité des observations opportunistes ont eu lieu dans les sites intitulés "GB". Principalement GB1, GB5, GB2, GB. En raison de la taille restreinte de la réserve et de la proximité de certains de ces lieux avec les sites protocolés, il est possible que la structure soit davantage liée à la fréquence de visite des sites "GB" plutôt qu'aux caractéristiques du milieu.
+La majorité des observations opportunistes ont eu lieu dans les sites intitulés "GB". Principalement GB1, GB5 et GB2. En raison de la taille restreinte de la réserve et de la proximité de certains de ces lieux avec les sites protocolés, il est possible que la structure soit davantage liée à la fréquence de visite des sites "GB" plutôt qu'aux caractéristiques du milieu.
 :::
 
 ## Discussion et recommandations
