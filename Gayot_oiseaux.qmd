@@ -1270,7 +1270,7 @@ m_pluie_temp_31 <- glm(nombre_min ~ julian + pluie_moy_glissante_31j +
 AIC(m_temp_31,m_temp_7,m_pluie_7, m_pluie_31, m_pluie_temp_7, m_pluie_temp_31)
 ```
 
-#  fusion du tableau en hydro 
+# fusion du tableau en hydro
 
 ```{r}
 DataHydroBagnas<- DataHydroBagnas%>%
@@ -1279,4 +1279,123 @@ DataHydroBagnas<- DataHydroBagnas%>%
 
 environnement_daily = environnement_daily %>%
   inner_join( DataHydroBagnas,by = c("Date"= "date") )
+```
+
+##### Annexe des script d'abondance 
+
+```{r}
+#modele_annee <- glm(nombre_min ~ annee, 
+#                    family = poisson, 
+#                    data = Protocole_SuiviTaleve)
+#
+
+#modele_julian <- glm(nombre_min ~ julian, 
+ #                  data = Protocole_SuiviTaleve, 
+ #                  family = poisson)
+
+
+#modele_annee_julian <- glm(nombre_min ~ annee + julian, 
+#                         data = Protocole_SuiviTaleve, 
+ #                        family = poisson)
+
+#modele_anneejulian <- glm(nombre_min ~ annee * julian, 
+ #                        data = Protocole_SuiviTaleve, 
+  #                       family = poisson)
+#modele_julian2 <- glm(nombre_min ~ julian + I(julian^2), 
+ #                  data = Protocole_SuiviTaleve, 
+  #                 family = poisson)
+
+#modele_julian2annee <- glm(nombre_min ~ julian*annee + I(julian^2),
+ #                  data = Protocole_SuiviTaleve, 
+  #                 family = poisson)
+##### Modeles complets 
+#modele_julian2_annee <- glm(nombre_min ~ julian + I(julian^2)+annee,
+ #                  data = Protocole_SuiviTaleve, 
+#                   family = poisson)
+#modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson ) # meilleur AIC avec le model interaction mais le nombre de parametres largement plus faible (12 < 20 ) donc on le prend
+#modele_complet_anneesite <- glm(nombre_min~ annee*nom_lieu + julian + I(julian^2),
+#                        data = Protocole_SuiviTaleve, 
+ #                  family = poisson )
+#modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
+#                        data = Protocole_SuiviTaleve, 
+#                   family = poisson )
+
+#####   Modèle complet 
+
+modele_complet_vent <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+#### Modèle temperature
+
+modele_complet_temp_31j <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_temp_7j <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_temp_1j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature+ vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+#### Modèle pluie
+
+modele_complet_pluie_31j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+modele_complet_pluie_7j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+modele_complet_pluie_1j<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+                        data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
+### modele hydro 
+modele_complet_assec <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+                           
+
+modele_complet_profondeur <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+                           data = Protocole_SuiviTaleve, 
+                           family = poisson )
+
+#Selection du meilleur model avec l'AIC 
+AIC_tab <- AIC(
+  modele_annee,
+  modele_julian,
+  modele_annee_julian,
+  modele_anneejulian,
+  modele_julian2,
+  modele_julian2annee,
+  modele_julian2_annee,
+  modele_complet_site,
+  modele_complet_anneesite,
+  modele_complet_vent,
+  modele_complet_temp_31,
+  modele_complet_temp_7j,
+  modele_complet_temp_1j,
+  modele_complet_temp_1j_vent,
+  modele_complet_pluie_31j_vent,
+  modele_complet_pluie_7j_vent,
+  modele_complet_pluie_1j_vent,
+  modele_complet_profondeur,
+  modele_complet_assec
+) %>%
+  as.data.frame() %>%
+  rownames_to_column("Modèle") %>%
+  arrange(AIC) %>%
+  mutate(
+    delta_AIC = AIC - min(AIC)
+  )
+
+kable(
+  AIC_tab,
+  digits = 2,
+  caption = "Comparaison des modèles selon le critère d'information d'Akaike (AIC)"
+)
 ```
