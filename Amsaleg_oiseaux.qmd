@@ -778,3 +778,290 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
 ```
+
+
+## n-mixture 
+
+```{r}
+
+
+
+```{r}
+
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(slider)
+library(leaflet)
+library(sf)
+library(broom)
+library(ggeffects)
+library(tidyr)
+library(unmarked)
+
+process_data <- read_csv("data/pro/process_data.csv")
+library(readr) 
+DataHydroBagnas <- read_csv("data/pro/DataHydroBagnas.csv") 
+View(DataHydroBagnas)
+
+```
+
+
+```{r}
+
+Protocole_SuiviBlongios<- process_protocole %>%
+  filter(
+    champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire ==
+        "Blongios nain, Butor blongios"
+      )
+
+```
+
+création des données pour N-Mixture 
+```{r}
+
+
+tableau_site_annee <- Protocole_SuiviBlongios %>%
+  group_by(annee, nom_lieu) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+  
+  
+Y <- pivot_wider(
+  tableau_site_annee,
+  names_from = nom_lieu,
+  values_from = total_obs
+)
+
+
+
+```
+
+```{r}
+Protocole_SuiviBlongios2 <- Protocole_SuiviBlongios %>%
+  arrange(annee, nom_lieu, julian) %>%
+  group_by(annee,nom_lieu) %>%
+  mutate(visite = row_number()) %>%
+  ungroup()
+
+
+max(Protocole_SuiviBlongios2$visite)
+
+Z <- Protocole_SuiviBlongios2 %>%
+  pivot_wider(
+    id_cols = c(nom_lieu, annee),
+    names_from = visite,
+    values_from = nombre_min
+  )
+```
+
+
+```{r}
+#propre pour faire le tableau ready que abondance
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+tableau_addition_site <- Protocole_SuiviTaleve %>%
+  group_by(date_debut) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+  
+
+tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y"))
+tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ]
+
+tableau_repet <- tableau_addition_site %>%
+  arrange(annee, date_debut) %>%
+  group_by(annee) %>%
+  mutate(passage = row_number()) %>%
+  ungroup()
+
+
+tableau_ready<- tableau_repet %>%
+  select(annee, passage, total_obs) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = total_obs,
+    names_prefix = "passage_"
+  )
+```
+```
+
+```{r}
+<!-- Protocole_SuiviTaleve <- process_protocole %>% -->
+<!--   filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" & -->
+<!--       nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu" -->
+<!--   ) -->
+
+
+<!-- tableau_addition_site <- Protocole_SuiviTaleve %>% -->
+<!--   group_by(date_debut, temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur) %>% -->
+<!--   summarise( -->
+<!--     total_obs = sum(nombre_min, na.rm = TRUE), -->
+<!--     .groups = "drop" -->
+<!--   ) -->
+
+
+<!-- tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y")) -->
+<!-- tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ] -->
+
+<!-- tableau_repet <- tableau_addition_site %>% -->
+<!--   arrange(annee, date_debut) %>% -->
+<!--   group_by(annee) %>% -->
+<!--   mutate(passage = row_number()) %>% -->
+<!--   ungroup() -->
+
+
+<!-- tableau_ready<- tableau_repet %>% -->
+<!--   select(annee, passage, total_obs,temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j, AssecT_1, Profondeur) %>% -->
+<!--   pivot_wider( -->
+<!--     names_from = passage, -->
+<!--     values_from = total_obs, -->
+<!--     names_prefix = "passage_" -->
+<!--   ) -->
+```
+
+```{r}
+# test tableau complet 
+
+df_long <- tableau_ready %>%
+  pivot_longer(
+    cols = starts_with("passage_"),
+    names_to = "passage",
+    values_to = "count"
+  ) %>%
+  filter(!is.na(count)) %>%
+  mutate(
+    passage = as.numeric(gsub("passage_", "", passage))
+  )
+  
+  
+counts <- df_long %>%
+  select(annee, passage, count) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = count,
+    names_prefix = "passage_"
+  ) %>%
+  arrange(annee)
+  
+counts_mat <- as.matrix(counts[, -1])
+rownames(counts_mat) <- counts$annee
+  
+  
+obs_covs <- df_long %>%
+  select(annee, passage,
+         temp_moy_glissante_7j,
+         pluie_1h,
+         pluie_moy_glissante_7j,
+         pluie_moy_glissante_31j,
+         Profondeur,
+         AssecT_1) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = c(
+      temp_moy_glissante_7j,
+      pluie_1h,
+      pluie_moy_glissante_7j,
+      pluie_moy_glissante_31j, 
+      Profondeur, 
+      AssecT_1
+    ),
+    names_sep = "_passage_"
+  ) %>%
+  arrange(annee)
+
+
+df_final <- counts %>%
+  left_join(obs_covs, by = "annee")
+
+
+```
+
+```{r}
+
+comptage <- df_final[,2:5]				
+
+#Les covariables qui dépendent du temps.
+temp<-df_final[,6:9]			# recuperer les covariables de session
+pluie_1h<-df_final[,10:13]
+pluie_7j<-df_final[,14:17]
+pluie_31j<-df_final[,18:21]
+profondeur<-df_final[,22:25]
+assec <- df_final[,26:29]
+# faire une liste avec les covariables de sessions
+obscov<-list(temp=temp,pluie_1h=pluie_1h,pluie_7j=pluie_7j,pluie_31j=pluie_31j,profondeur=profondeur, assec=assec )	
+
+	
+
+#On refait le jeu de données.
+taleve_nmixture<-unmarkedFramePCount(comptage,obsCovs=obscov)
+
+
+summary(taleve_nmixture)
+```
+
+
+
+```{r}
+
+#n-mixture 
+
+#1. mettre en matrice 
+
+#' 1. Ajuste modèle null pcount(~p ~abondance, dataset, K).
+## ------------------------------------------------------------------------------------------------------
+T_count_null <- pcount(~ 1 ~ 1, taleve_nmixture, K = 100) # detection, then abundance
+
+#' 
+#' On back-transforme la détection et l'abondance (valeurs moyennes). 
+## ------------------------------------------------------------------------------------------------------
+names(T_count_null)
+backTransform(T_count_null, "state")
+backTransform(T_count_null, "det")
+
+predict(T_count_null, type="state")
+predict(T_count_null, type="det")
+#' 
+#' Abondance sur chaque site.
+## ------------------------------------------------------------------------------------------------------
+ranef(T_count_null) # abondance corrigé par la detection
+
+#' 
+#'2. On fait tourner qqs modèles avec le même jeu de données.
+## ------------------------------------------------------------------------------------------------------
+T_count_null <- pcount(~ 1 ~ 1, taleve_nmixture, K = 100)         #p(.)lambda(.)
+T_count_temp <- pcount(~ temp ~ 1, taleve_nmixture, K = 100)    #p(temp)lambda(.)
+T_count_assec <- pcount(~ assec~ 1, taleve_nmixture, K = 100)    #p(.)lambda(terlapin)
+
+
+T_count_List <- fitList('{lambda, p}' = T_count_null, 
+                  '{lambda, p(temp)}' = T_count_temp, 
+                  '{lambda, assec}' = T_count_assec)
+
+modSel(T_count_List)
+
+
+predict(T_count_temp, type = 'det')
+
+```
+
+```
+
+
+
+
