@@ -347,21 +347,22 @@ Nous allons préparer les variables environnementales, c’est‑à‑dire les s
 #standardidation
 Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
 Protocole_SuiviBlongios$julian <- as.numeric(Protocole_SuiviBlongios$julian)
-Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
+Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
 Protocole_SuiviBlongios$nom_lieu<- as.character (Protocole_SuiviBlongios$nom_lieu)
 
 # enviro 
-Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
-Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
-Protocole_SuiviBlongios$vent_moyen <- scale(as.numeric(Protocole_SuiviBlongios$vent_moyen))
-Protocole_SuiviBlongios$temperature = scale (as.numeric(Protocole_SuiviBlongios$temperature))
-Protocole_SuiviBlongios$pluie_1h = scale (as.numeric(Protocole_SuiviBlongios$pluie_1h))
+Protocole_SuiviBlongios$temp_moy_glissante_31j <-as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j)
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j)
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <-as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j)
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j)
+Protocole_SuiviBlongios$vent_moyen<-
+as.numeric(Protocole_SuiviBlongios$vent_moyen)
+Protocole_SuiviBlongios$temperature =  as.numeric(Protocole_SuiviBlongios$temperature)
+Protocole_SuiviBlongios$pluie_1h =  as.numeric(Protocole_SuiviBlongios$pluie_1h)
 
 #hydro 
 
-Protocole_SuiviBlongios$Profondeur <- scale( as.numeric(Protocole_SuiviBlongios$Profondeur ))
+Protocole_SuiviBlongios$Profondeur <-  as.numeric(Protocole_SuiviBlongios$Profondeur )
 Protocole_SuiviBlongios$AssecT_1 <- as.factor(Protocole_SuiviBlongios$AssecT_1 )
 
 ```
@@ -453,7 +454,7 @@ Nous réalisons cette analyse sur seulement les observations qui proviennent du 
 #  Modèle dans le temps 
 # y ~ Pois ( lambda)
 
-modele_annee <- glm(nombre_min ~ annee2, 
+modele_annee <- glm(nombre_min ~ annee, 
                     family = poisson, 
                     data = Protocole_SuiviBlongios)
 
@@ -463,16 +464,16 @@ modele_julian <- glm(nombre_min ~ julian,
                    family = poisson)
 
 
-modele_annee_julian <- glm(nombre_min ~ annee2 + julian, 
+modele_annee_julian <- glm(nombre_min ~ annee + julian, 
                          data = Protocole_SuiviBlongios, 
                          family = poisson)
 
-modele_anneejulian <- glm(nombre_min ~ annee2 * julian, 
+modele_anneejulian <- glm(nombre_min ~ annee * julian, 
                          data = Protocole_SuiviBlongios, 
                          family = poisson)
 
 #modèle complet 
-modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
+modele_complet_site <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
 
@@ -481,38 +482,38 @@ modele_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
 # summary(modele_annee_jour)
 # summary(modele_anneejour)
 
-AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
+AIC(modele_annee, modele_julian, modele_annee_julian, modele_anneejulian)
 
 ```
 
 ```{r}
-modeleB_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
+modeleB_complet_vent <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
 
 
-modeleB_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
+modeleB_complet_temp_31 <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
                               data = Protocole_SuiviBlongios, 
                               family = poisson )
 
-modeleB_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
+modeleB_complet_temp_7j <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
                               data = Protocole_SuiviBlongios, 
                               family = poisson )
 
 
-modeleB_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
+modeleB_complet_temp_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
                                   data = Protocole_SuiviBlongios, 
                                   family = poisson )
 
-modeleB_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
+modeleB_complet_pluie_31j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
                                     data = Protocole_SuiviBlongios, 
                                     family = poisson )
 
-modeleB_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
+modeleB_complet_pluie_7j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
                                    data = Protocole_SuiviBlongios, 
                                    family = poisson )
 
-modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
+modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
                                    data = Protocole_SuiviBlongios, 
                                    family = poisson )
 
@@ -521,11 +522,11 @@ modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ n
 
 # avec hydro 
 
-modeleB_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
+modeleB_complet_assec <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
                            
-modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
+modeleB_complet_profondeur <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
                            data = Protocole_SuiviBlongios, 
                            family = poisson )
 
