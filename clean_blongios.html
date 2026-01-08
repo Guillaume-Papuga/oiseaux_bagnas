@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>clean_blongios</title>
+<title>Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -56,6 +56,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="fullcontent quarto-light">
@@ -66,7 +67,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">clean_blongios</h1>
+<h1 class="title">Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas</h1>
 </div>
 
 
@@ -83,22 +84,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="analyse-des-observations-de-blongios-nain-ixobrychus-minutus-dans-la-reserve-naturelle-du-bagnas" class="level1">
-<h1>Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas</h1>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
-<div class="justify">
-<p>Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne. L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021. L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.</p>
+<div class="cell">
+<style type="text/css">
+
+body {
+    text-align: justify}
+    
+</style>
 </div>
+<section id="introduction" class="level1">
+<h1>1. Introduction</h1>
+<p>Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne.</p>
+<p>L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021.</p>
+<p>L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.</p>
 </section>
-<section id="importation-des-packages" class="level2">
-<h2 class="anchored" data-anchor-id="importation-des-packages">2. Importation des packages</h2>
-</section>
-<section id="definition-du-répertoire-de-travail-et-importation-des-données" class="level2">
-<h2 class="anchored" data-anchor-id="definition-du-répertoire-de-travail-et-importation-des-données">3. Definition du répertoire de travail et importation des données</h2>
-</section>
+<section id="analyses" class="level1">
+<h1>3. Analyses</h1>
 <section id="analyses-exploratoires" class="level2">
-<h2 class="anchored" data-anchor-id="analyses-exploratoires">4. Analyses exploratoires</h2>
+<h2 class="anchored" data-anchor-id="analyses-exploratoires">3.1 Analyses exploratoires</h2>
 <section id="a-répartition-temporelle-des-observations-de-blongios-nain-depuis-1990" class="level3">
 <h3 class="anchored" data-anchor-id="a-répartition-temporelle-des-observations-de-blongios-nain-depuis-1990">A) Répartition temporelle des observations de Blongios nain depuis 1990</h3>
 <p>En premier lieu, nous voulions visualiser l’absence et la présence du Blongios nain sur toute la période d’étude. Pour cela, nous avons créé une grille années X semaines qui montre toutes les sorties avec et sans observation d’individus. Les cases du graphiques sont colorées de manière à différentier (i) les semaines avec observation d’un Blongios lors d’un protocole standardisé, (ii) les semaines avec observation opportuniste d’un Blongios, (iii) les semaines avec à la fois des observations opportuniste et par protocole standardisé, et (iiii) les semaines sans observation d’un Blongios.</p>
@@ -106,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_blongios_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -118,8 +121,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Ensuite, nous voulions visualiser la répartition spatiale des observations de Blongios nain issues du protocole standardisé de suivi. Pour cela, nous avons créé une carte avec des cercles dont la taille est proportionnelle au nombre total d’individus entendus/vus sur chaque site d’écoute depuis le début du protocole en 2014.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-7f0ea33fd8541c74e68c" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-7f0ea33fd8541c74e68c">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[5,2,2,6,12,9,1,2,6],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Blongios entendus :5","ButorTalèveBlongios-2, Blongios entendus :2","ButorTalèveBlongios-3, Blongios entendus :2","ButorTalèveBlongios-4, Blongios entendus :6","ButorTalèveBlongios-5, Blongios entendus :12","ButorTalèveBlongios-6, Blongios entendus :9","ButorTalèveBlongios-7, Blongios entendus :1","ButorTalèveBlongios-8, Blongios entendus :2","ButorTalèveBlongios-9, Blongios entendus :6"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-8ac4acb3b120e4970f5d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-8ac4acb3b120e4970f5d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[5,2,2,6,12,6,0,1,3],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Blongios entendus :5","ButorTalèveBlongios-2, Blongios entendus :2","ButorTalèveBlongios-3, Blongios entendus :2","ButorTalèveBlongios-4, Blongios entendus :6","ButorTalèveBlongios-5, Blongios entendus :12","ButorTalèveBlongios-6, Blongios entendus :6","ButorTalèveBlongios-7, Blongios entendus :0","ButorTalèveBlongios-8, Blongios entendus :1","ButorTalèveBlongios-9, Blongios entendus :3"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Sur cette carte on peut voir que certains sites semblent plus propice à l’observation d’individus de Blongios nain que d’autres. Notamment les sites n°5 et 6 semblent être les plus favorables à l’observation de cette espèce.</p>
@@ -128,23 +131,10 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="c-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-protocolées-de-blongios-nain">C) Effort d’échantillonnage journalier et répartition temporelle journalière des observations protocolées de Blongios nain</h3>
 <p>Ici, nous voulions comprendre à quel moment de la journée était réalisé le protocole, et quelles étaient les horaires qui permettaient une meilleure détection de l’espèce. Pour cela, nous avons réalisé un graphique qui représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole blongios pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 8 × 2
-  heure_debut_tronc `sum(nombre_min)`
-              &lt;int&gt;             &lt;dbl&gt;
-1                 5                 1
-2                 6                 8
-3                 7                 5
-4                 8                 0
-5                19                 1
-6                20                13
-7                21                 7
-8                22                 1</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_blongios_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -155,26 +145,10 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="d-effort-déchantillonnage-journalier-et-répartition-temporelle-journalière-des-observations-opportunistes-de-blongios-nain">D) Effort d’échantillonnage journalier et répartition temporelle journalière des observations opportunistes de Blongios nain</h3>
 <p>Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties hors protocole standardisé, et quelles étaient les horaires qui permettaient une meilleure détection de l’espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente le nombre d’obervations hors protocole cumulés pour chaque heure de la journée de 1997 à 2023. Il est important de préciser que les sorties hors protocole où l’heure d’observation est identifiée sont très rares (n=46), et correspondent en majorité à des données produites lors d’autres protocoles non dédiés à cette espèce.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 11 × 2
-   heure_debut_tronc `sum(nombre_min)`
-               &lt;int&gt;             &lt;int&gt;
- 1                 4                 0
- 2                 5                 0
- 3                 6                 3
- 4                 8                12
- 5                 9                 2
- 6                10                 4
- 7                11                 1
- 8                15                 1
- 9                19                 1
-10                20                 2
-11                21                 8</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_blongios_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -182,240 +156,274 @@ ul.task-list li input[type="checkbox"] {
 <p>On remarque que hors protocole standardisé, le Blonios nain est essentiellement entre 6 et 11h du matin et entre 19 et 21h du soir, ce qui correspond bien à son pic d’activité (aube et crépuscule), et au horaires de prospections choisies pour le protocole dédié au Blongios nain.</p>
 </section>
 </section>
-</section>
-<section id="preparation-du-jeu-de-données-et-des-variables" class="level1">
-<h1>3. Preparation du jeu de données et des variables</h1>
-<p>Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation du blongios provenant des observations protocolées. Ce jeu de données sera nommé **Protocole_SuiviBlongios**</p>
-<p>Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (<em>environnement_daily</em>) et d’un tableau regroupant les observations de talèves.</p>
-<p>Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.</p>
-</section>
-<section id="analyses-de-la-population-de-blongios" class="level1">
-<h1>4. Analyses de la population de blongios</h1>
-<section id="modèle-de-présenceabsence" class="level2">
-<h2 class="anchored" data-anchor-id="modèle-de-présenceabsence">4.1 . Modèle de présence/absence</h2>
+<section id="modèles-statistiques" class="level2">
+<h2 class="anchored" data-anchor-id="modèles-statistiques">3.2. Modèles statistiques</h2>
+<p>Maintenant que nous avons exploré les données, nous avons construit différent modèles statistiques pour voir si :</p>
+<ul>
+<li><p>il y a des tendances temporelles (intra- et inter- annuelles) significatives dans la présence et l’abondance du Blongios nain dans la réserve</p></li>
+<li><p>il y a des différences spatiales (entre sites d’écoute) significatives dans la présence et l’abondance du Blongios nain dans la réserve</p></li>
+<li><p>quelles variables environnementales (climatiques et hydrologiques) influencent la présence et l’abondance du Blongios nain</p></li>
+</ul>
+<p>Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation du blongios provenant des observations protocolées. Ce jeu de données sera nommé <strong>Protocole_SuiviBlongios</strong></p>
+<section id="a-modèles-de-présenceabsence-du-blongios-nain" class="level3">
+<h3 class="anchored" data-anchor-id="a-modèles-de-présenceabsence-du-blongios-nain">A) Modèles de présence/absence du Blongios Nain</h3>
+<p>En premier lieu, nous réalisons un modèle pour essayer d’expliquer l’absence/présence du Blongios nain sur les 10 années de suivi protocolé. Pour cela nous utilisons la variable Occurence qui notifie la présence ou l’absence d’une observation de Blongios à chaque sortie.</p>
+<p>Nous admettons que le modèle de base comprend uniquement les variables temporelles (année, jour julien) et spatiales (site d’écoute). Ensuite, nous comparons ce modèle de base à un modèle complet intégrant les variables environnementales (climatiques et hydrologiques). Un test de corrélation entre les variables environnementales est réalisé au préalable pour éviter la colinéarité entre variables explicatives.</p>
 <div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                              df      AIC
-modele_complet_site           12 169.9147
-modele_complet_anneesite      20 179.0692
-modele_complet_vent           13 162.0089
-modele_complet_temp_31        14 163.9447
-modele_complet_temp_7j        14 162.6671
-modele_complet_temp_1j        13 165.2115
-modele_complet_temp_1j_vent   14 163.7954
-modele_complet_pluie_31j_vent 14 162.7982
-modele_complet_pluie_7j_vent  14 161.0002
-modele_complet_pluie_1j_vent  14 163.9984</code></pre>
+<pre><code>
+Call:
+glm(formula = Occurence ~ annee + julian + I(julian^2) + nom_lieu, 
+    family = binomial, data = Protocole_SuiviBlongios)
+
+Coefficients:
+                                Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)                    1.443e+02  1.255e+02   1.150    0.250
+annee                         -7.688e-02  6.229e-02  -1.234    0.217
+julian                         1.193e-01  1.390e-01   0.858    0.391
+I(julian^2)                   -3.747e-04  4.018e-04  -0.933    0.351
+nom_lieuButorTalèveBlongios-2 -9.997e-01  8.938e-01  -1.119    0.263
+nom_lieuButorTalèveBlongios-3 -9.997e-01  8.938e-01  -1.119    0.263
+nom_lieuButorTalèveBlongios-4  2.471e-01  6.873e-01   0.359    0.719
+nom_lieuButorTalèveBlongios-5  9.076e-01  6.432e-01   1.411    0.158
+nom_lieuButorTalèveBlongios-6 -2.077e-01  7.436e-01  -0.279    0.780
+nom_lieuButorTalèveBlongios-7 -1.706e+01  1.261e+03  -0.014    0.989
+nom_lieuButorTalèveBlongios-8 -1.739e+00  1.139e+00  -1.527    0.127
+nom_lieuButorTalèveBlongios-9 -5.459e-01  7.963e-01  -0.685    0.493
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 191.60  on 237  degrees of freedom
+Residual deviance: 164.23  on 226  degrees of freedom
+AIC: 188.23
+
+Number of Fisher Scoring iterations: 17</code></pre>
 </div>
-</div>
-<p>le tableau d’AIC des différents modèles de présence/absence permet de choisir le modèle qui fit le plus les données. On choisit donc le modele_complet_pluie_7j_vent. Il contient : annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen</p>
-<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 glm(formula = Occurence ~ annee + julian + I(julian^2) + nom_lieu + 
-    pluie_moy_glissante_7j + vent_moyen, family = binomial, data = Protocole_Blongios)
+    temp_moy_glissante_31j + pluie_moy_glissante_31j + pluie_moy_glissante_7j + 
+    pluie_1h + AssecT_1 + Profondeur, family = binomial, data = Protocole_SuiviBlongios)
 
 Coefficients:
-                                Estimate Std. Error z value Pr(&gt;|z|)  
-(Intercept)                    2.324e+02  1.429e+02   1.627   0.1038  
-annee                         -1.272e-01  7.177e-02  -1.772   0.0764 .
-julian                         3.034e-01  2.054e-01   1.477   0.1396  
-I(julian^2)                   -8.795e-04  5.763e-04  -1.526   0.1270  
-nom_lieuButorTalèveBlongios-2 -1.069e+00  9.320e-01  -1.147   0.2512  
-nom_lieuButorTalèveBlongios-3 -1.069e+00  9.320e-01  -1.147   0.2512  
-nom_lieuButorTalèveBlongios-4 -2.074e-01  7.915e-01  -0.262   0.7933  
-nom_lieuButorTalèveBlongios-5  8.973e-01  7.035e-01   1.275   0.2022  
-nom_lieuButorTalèveBlongios-6 -3.458e-01  7.900e-01  -0.438   0.6616  
-nom_lieuButorTalèveBlongios-7 -1.753e+01  1.401e+03  -0.013   0.9900  
-nom_lieuButorTalèveBlongios-8 -1.841e+00  1.169e+00  -1.575   0.1152  
-nom_lieuButorTalèveBlongios-9 -7.166e-01  8.394e-01  -0.854   0.3933  
-pluie_moy_glissante_7j        -1.072e+01  6.618e+00  -1.619   0.1054  
-vent_moyen                    -4.369e-01  2.245e-01  -1.946   0.0516 .
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+                                Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)                    1.263e+02  2.360e+02   0.535    0.593
+annee                         -7.240e-02  1.125e-01  -0.643    0.520
+julian                         2.606e-01  2.931e-01   0.889    0.374
+I(julian^2)                   -7.337e-04  7.324e-04  -1.002    0.316
+nom_lieuButorTalèveBlongios-2 -1.007e+00  9.056e-01  -1.112    0.266
+nom_lieuButorTalèveBlongios-3 -1.007e+00  9.056e-01  -1.112    0.266
+nom_lieuButorTalèveBlongios-4 -1.946e-01  7.580e-01  -0.257    0.797
+nom_lieuButorTalèveBlongios-5  9.480e-01  6.612e-01   1.434    0.152
+nom_lieuButorTalèveBlongios-6 -1.946e-01  7.580e-01  -0.257    0.797
+nom_lieuButorTalèveBlongios-7 -1.710e+01  1.266e+03  -0.014    0.989
+nom_lieuButorTalèveBlongios-8 -1.757e+00  1.148e+00  -1.530    0.126
+nom_lieuButorTalèveBlongios-9 -5.432e-01  8.096e-01  -0.671    0.502
+temp_moy_glissante_31j        -1.600e-01  4.025e-01  -0.398    0.691
+pluie_moy_glissante_31j       -1.181e+01  1.792e+01  -0.659    0.510
+pluie_moy_glissante_7j        -6.119e+00  7.796e+00  -0.785    0.433
+pluie_1h                       3.863e+00  1.975e+01   0.196    0.845
+AssecT_1total                  7.099e-01  9.642e-01   0.736    0.462
+Profondeur                    -1.461e+00  3.314e+00  -0.441    0.659
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 164.62  on 177  degrees of freedom
-Residual deviance: 133.00  on 164  degrees of freedom
-  (9 observations effacées parce que manquantes)
-AIC: 161
+    Null deviance: 181.29  on 227  degrees of freedom
+Residual deviance: 150.82  on 210  degrees of freedom
+  (10 observations effacées parce que manquantes)
+AIC: 186.82
 
 Number of Fisher Scoring iterations: 17</code></pre>
 </div>
 </div>
-<p>Ce summary du modèle choisi nous montre s’il y a des variables significatives. Ici il n’y en a pas.</p>
-<p>##2.1 interpretation</p>
-<p>Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)</p>
+<p>Nous obervons que les trois variables de température sont fortement corrélées entre elles (R&gt;0.8), donc nous conservons que la variable de température moyénnée à 7 jours avant la date du suivi. Concernant les précipitations, nous gardons les trois variables (du jour J, moyenne sur 7 et 31 jours).</p>
+<p>La variable temporelle interannuelle (année) et intraannuelle (jours julian) n’ont pas d’effet significatif sur la présence de l’espèce, ce qui signifie que la probabilité d’occurrence de l’espèce ne varie pas significativement entre 2014 et 2024 (β = -0.072 ± 0.113, p = 0.52), ni durant la durée du protocole (β = 0.261 ± 0.293, p = 0.374. De même, il n’y a aucun site qui montre une meilleure présence de Blongios sur la réserve, et aucune variables environnementales qui explique significativement l’occurence du Blongios nain.</p>
+<p>Graphiques (je pense ne pas mettre)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-13-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="modèle-dabondance" class="level2">
-<h2 class="anchored" data-anchor-id="modèle-dabondance">4.2 Modèle d’abondance</h2>
-<p>Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l’influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l’abondance observée.</p>
-<p>Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)</p>
+<section id="b-modèles-dabondance-du-blongios-nain" class="level3">
+<h3 class="anchored" data-anchor-id="b-modèles-dabondance-du-blongios-nain">B) Modèles d’abondance du Blongios nain</h3>
+<p>Ensuite, nous avons refait les mêmes modèles avec les même variables explicatives, mais avec la variable nombre_min (Abondance). Cela nous à permis de vérifier s’il y avait (i) des tendances temporelles dans les populations de Blongios de la réserve, (ii) des sites avec plus d’individus observés ou (iii) des variables environnementales qui pouvaient influencer le nombre d’individus recensé lors du suivi.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = nombre_min ~ annee + julian + I(julian^2) + nom_lieu, 
+    family = poisson, data = Protocole_SuiviBlongios)
+
+Coefficients:
+                                Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)                    5.338e+01  1.032e+02   0.517    0.605
+annee                         -3.205e-02  5.108e-02  -0.628    0.530
+julian                         1.238e-01  1.224e-01   1.011    0.312
+I(julian^2)                   -3.911e-04  3.567e-04  -1.097    0.273
+nom_lieuButorTalèveBlongios-2 -8.646e-01  8.367e-01  -1.033    0.301
+nom_lieuButorTalèveBlongios-3 -8.646e-01  8.367e-01  -1.033    0.301
+nom_lieuButorTalèveBlongios-4  1.942e-01  6.059e-01   0.321    0.749
+nom_lieuButorTalèveBlongios-5  8.307e-01  5.324e-01   1.560    0.119
+nom_lieuButorTalèveBlongios-6  2.340e-01  6.056e-01   0.386    0.699
+nom_lieuButorTalèveBlongios-7 -1.656e+01  1.099e+03  -0.015    0.988
+nom_lieuButorTalèveBlongios-8 -1.558e+00  1.095e+00  -1.422    0.155
+nom_lieuButorTalèveBlongios-9 -4.592e-01  7.304e-01  -0.629    0.530
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 149.88  on 237  degrees of freedom
+Residual deviance: 120.97  on 226  degrees of freedom
+AIC: 213.19
+
+Number of Fisher Scoring iterations: 16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = nombre_min ~ annee + julian + I(julian^2) + nom_lieu + 
+    temp_moy_glissante_31j + pluie_moy_glissante_31j + pluie_moy_glissante_7j + 
+    pluie_1h + AssecT_1 + Profondeur, family = poisson, data = Protocole_SuiviBlongios)
+
+Coefficients:
+                                Estimate Std. Error z value Pr(&gt;|z|)
+(Intercept)                   -4.498e+01  1.827e+02  -0.246    0.806
+annee                          1.341e-02  8.710e-02   0.154    0.878
+julian                         2.304e-01  2.382e-01   0.967    0.333
+I(julian^2)                   -6.847e-04  6.020e-04  -1.137    0.255
+nom_lieuButorTalèveBlongios-2 -8.503e-01  8.369e-01  -1.016    0.310
+nom_lieuButorTalèveBlongios-3 -8.503e-01  8.369e-01  -1.016    0.310
+nom_lieuButorTalèveBlongios-4 -1.571e-01  6.711e-01  -0.234    0.815
+nom_lieuButorTalèveBlongios-5  8.228e-01  5.326e-01   1.545    0.122
+nom_lieuButorTalèveBlongios-6  2.483e-01  6.059e-01   0.410    0.682
+nom_lieuButorTalèveBlongios-7 -1.749e+01  1.757e+03  -0.010    0.992
+nom_lieuButorTalèveBlongios-8 -1.543e+00  1.096e+00  -1.409    0.159
+nom_lieuButorTalèveBlongios-9 -4.448e-01  7.306e-01  -0.609    0.543
+temp_moy_glissante_31j        -7.976e-02  3.260e-01  -0.245    0.807
+pluie_moy_glissante_31j       -1.107e+01  1.487e+01  -0.744    0.457
+pluie_moy_glissante_7j        -6.602e+00  7.180e+00  -0.919    0.358
+pluie_1h                       8.811e+00  1.768e+01   0.498    0.618
+AssecT_1total                 -1.487e-02  7.824e-01  -0.019    0.985
+Profondeur                    -1.372e+00  2.640e+00  -0.520    0.603
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 143.32  on 227  degrees of freedom
+Residual deviance: 109.66  on 210  degrees of freedom
+  (10 observations effacées parce que manquantes)
+AIC: 209.88
+
+Number of Fisher Scoring iterations: 17</code></pre>
+</div>
+</div>
+<p>La variable temporelle interannuelle (année) et intraannuelle (jours julian) n’ont pas d’effet significatif sur l’abondance de l’espèce, ce qui signifie que le nombre d’individus contacté lors des suivis protocolés de l’espèce ne varie pas significativement entre 2014 et 2024 (β = 0.013 ± 0.087, p = 0.878), ni durant la durée du protocole (β = 0.23 ± 0.238, p = 0.333. De même, il n’y a aucun site de la réserve qui montre un nombre de Blongios observé plus important, et aucune des variables environnementales qui expliquent significativement les variations d’abondance du Blongios nain.</p>
+<p>Graphiques (à ne pas mettre je pense)</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Comparaison des modèles selon le critère d’information d’Akaike (AIC)</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Modèle</th>
-<th style="text-align: right;">df</th>
-<th style="text-align: right;">AIC</th>
-<th style="text-align: right;">delta_AIC</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">modeleB_complet_pluie_7j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">203.04</td>
-<td style="text-align: right;">0.00</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modeleB_complet_pluie_31j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">204.05</td>
-<td style="text-align: right;">1.01</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modeleB_complet_vent</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">204.65</td>
-<td style="text-align: right;">1.61</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modeleB_complet_temp_7j</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">204.93</td>
-<td style="text-align: right;">1.89</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modeleB_complet_profondeur</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">205.38</td>
-<td style="text-align: right;">2.34</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modeleB_complet_temp_31</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">205.72</td>
-<td style="text-align: right;">2.67</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modeleB_complet_temp_1j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">205.88</td>
-<td style="text-align: right;">2.83</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modeleB_complet_pluie_1j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">206.26</td>
-<td style="text-align: right;">3.21</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modeleB_complet_assec</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">206.65</td>
-<td style="text-align: right;">3.60</td>
-</tr>
-</tbody>
-</table>
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>La sélection de modèles basée sur le critère d’information d’Akaike (AIC) a mis en évidence qu’un modèle intégrant les effets temporels (année et jour julien), un effet spatial lié au site, ainsi que des variables environnementales locales (vitesse moyenne du vent et pluie) constitue la structure la plus parcimonieuse pour expliquer la variation de l’abondance des individus. Ce modèle (modeleB_complet_pluie_7j_vent) a donc été retenu comme base pour l’analyse, afin d’évaluer l’influence conjointe des facteurs temporels, spatiaux et environnementaux sur l’abondance des individus blongios</p>
-<p>Le tableau suivant (tab. X) présente les estimations des paramètres du modèle ainsi que les valeurs de <em>p</em>, permettant d’évaluer l’existence d’effets significatifs sur l’abondance du blongios au sein de la réserve.</p>
-<div class="cell">
 <div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<caption>Les estimations des parametres avec leur p-value)</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Estimate</th>
-<th style="text-align: right;">Pr(&gt;|z|)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">-17.48</td>
-<td style="text-align: right;">0.22</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">annee2</td>
-<td style="text-align: right;">-0.07</td>
-<td style="text-align: right;">0.27</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">julian</td>
-<td style="text-align: right;">0.20</td>
-<td style="text-align: right;">0.23</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">I(julian^2)</td>
-<td style="text-align: right;">0.00</td>
-<td style="text-align: right;">0.21</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-2</td>
-<td style="text-align: right;">-0.85</td>
-<td style="text-align: right;">0.31</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-3</td>
-<td style="text-align: right;">-0.85</td>
-<td style="text-align: right;">0.31</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-4</td>
-<td style="text-align: right;">-0.16</td>
-<td style="text-align: right;">0.81</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-5</td>
-<td style="text-align: right;">0.81</td>
-<td style="text-align: right;">0.13</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-6</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.69</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-7</td>
-<td style="text-align: right;">-16.53</td>
-<td style="text-align: right;">0.99</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-8</td>
-<td style="text-align: right;">-1.55</td>
-<td style="text-align: right;">0.16</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">nom_lieuButorTalèveBlongios-9</td>
-<td style="text-align: right;">-0.45</td>
-<td style="text-align: right;">0.54</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">pluie_moy_glissante_7j</td>
-<td style="text-align: right;">-0.40</td>
-<td style="text-align: right;">0.09</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">vent_moyen</td>
-<td style="text-align: right;">-0.19</td>
-<td style="text-align: right;">0.39</td>
-</tr>
-</tbody>
-</table>
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<blockquote class="blockquote">
-<p>Nous pouvons constater qu’aucune valeur de <em>p</em> n’est inférieure au seuil de 5 %. Par conséquent, aucune des variables incluses dans le modèle n’a d’effet significatif sur l’abondance de la population de blongios dans la réserve du Bagnas.</p>
-<p>Le modèle explique environ 22 % de la variation de l’abondance des talèves (pseudo-R² = 0.2267077), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
-</blockquote>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_blongios_files/figure-html/unnamed-chunk-15-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 
