@@ -89,6 +89,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <script src="clean_taleve_files/libs/leaflet-binding-2.2.3/leaflet.js"></script>
 
+<link href="clean_taleve_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="clean_taleve_files/libs/datatables-binding-0.34.0/datatables.js"></script>
+
+<link href="clean_taleve_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="clean_taleve_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="clean_taleve_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="clean_taleve_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="clean_taleve_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
 
 
 </head>
@@ -145,8 +159,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Cette carte donne la localisation des points d’écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-868f671c1108eaa5a0ce" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-868f671c1108eaa5a0ce">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[21,35,8,2,5,33,3,17,31],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Talèves entendues :21","ButorTalèveBlongios-2, Talèves entendues :35","ButorTalèveBlongios-3, Talèves entendues :8","ButorTalèveBlongios-4, Talèves entendues :2","ButorTalèveBlongios-5, Talèves entendues :5","ButorTalèveBlongios-6, Talèves entendues :33","ButorTalèveBlongios-7, Talèves entendues :3","ButorTalèveBlongios-8, Talèves entendues :17","ButorTalèveBlongios-9, Talèves entendues :31"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-16b947e8c46c0b26480e" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-16b947e8c46c0b26480e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addCircleMarkers","args":[[43.329853,43.322337,43.317739,43.314765,43.317255,43.320424,43.32293,43.331375,43.327324],[3.524423,3.524187,3.519831,3.510314,3.503888,3.509005,3.503405,3.515507,3.510068],[21,35,8,2,5,33,3,17,31],null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.9},null,null,["ButorTalèveBlongios-1, Talèves entendues :21","ButorTalèveBlongios-2, Talèves entendues :35","ButorTalèveBlongios-3, Talèves entendues :8","ButorTalèveBlongios-4, Talèves entendues :2","ButorTalèveBlongios-5, Talèves entendues :5","ButorTalèveBlongios-6, Talèves entendues :33","ButorTalèveBlongios-7, Talèves entendues :3","ButorTalèveBlongios-8, Talèves entendues :17","ButorTalèveBlongios-9, Talèves entendues :31"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[43.314765,43.331375],"lng":[3.503405,3.524423]},"setView":[[43.31,3.51],13,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>#C- Effort journalier des données protocoles Talève</p>
@@ -206,134 +220,124 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="preparation-du-jeu-de-données-et-des-variables">2 Preparation du jeu de données et des variables</h2>
 <p>Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé <em>Protocole_SuiviTaleve</em>.**</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>  id_synthese date_debut   date_fin heure_debut heure_fin
-1      115476 2019-05-22 2019-05-22    06:09:00  06:09:00
-2      115477 2019-05-22 2019-05-22    06:29:00  06:29:00
-3      115478 2019-05-22 2019-05-22    06:53:00  06:53:00
-4      115479 2019-05-22 2019-05-22    07:13:00  07:13:00
-5      115480 2019-05-22 2019-05-22    07:30:00  07:30:00
-6      115481 2019-05-22 2019-05-22    06:51:00  06:51:00
-                                nom_vernaculaire nombre_min   observateurs
-1 Talève sultane, Poule sultane, Porphyrion bleu          3 Lognos Mathieu
-2 Talève sultane, Poule sultane, Porphyrion bleu          2 Fortuny Xavier
-3 Talève sultane, Poule sultane, Porphyrion bleu          5 Lognos Mathieu
-4 Talève sultane, Poule sultane, Porphyrion bleu          3 Lognos Mathieu
-5 Talève sultane, Poule sultane, Porphyrion bleu          0 Lognos Mathieu
-6 Talève sultane, Poule sultane, Porphyrion bleu          0 Fortuny Xavier
-   determinateur x_centroid_4326 y_centroid_4326              nom_lieu
-1 Lognos Mathieu        3.524423        43.32985 ButorTalèveBlongios-1
-2 Fortuny Xavier        3.519831        43.31774 ButorTalèveBlongios-3
-3 Lognos Mathieu        3.510068        43.32732 ButorTalèveBlongios-9
-4 Lognos Mathieu        3.509005        43.32042 ButorTalèveBlongios-6
-5 Lognos Mathieu        3.503405        43.32293 ButorTalèveBlongios-7
-6 Fortuny Xavier        3.510314        43.31477 ButorTalèveBlongios-4
-                  champs_additionnels annee station_id temperature pression
-1 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-2 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-3 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-4 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-5 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-6 {'RELV_NOM': 'SuiviBlongiosTalève'}  2019         NA        20.4 1015.832
-  pression_variation_3h humidite point_de_rosee visibilite vent_moyen
-1                0.0736 63.96528       12.73194         NA   3.989583
-2                0.0736 63.96528       12.73194         NA   3.989583
-3                0.0736 63.96528       12.73194         NA   3.989583
-4                0.0736 63.96528       12.73194         NA   3.989583
-5                0.0736 63.96528       12.73194         NA   3.989583
-6                0.0736 63.96528       12.73194         NA   3.989583
-  vent_rafales vent_rafales_10min vent_direction temperature_min
-1           NA           13.32639       272.5694           14.85
-2           NA           13.32639       272.5694           14.85
-3           NA           13.32639       272.5694           14.85
-4           NA           13.32639       272.5694           14.85
-5           NA           13.32639       272.5694           14.85
-6           NA           13.32639       272.5694           14.85
-  temperature_max pluie_1h pluie_3h pluie_6h pluie_12h pluie_24h pluie_cumul_0h
-1        24.03958        0       NA       NA        NA        NA              0
-2        24.03958        0       NA       NA        NA        NA              0
-3        24.03958        0       NA       NA        NA        NA              0
-4        24.03958        0       NA       NA        NA        NA              0
-5        24.03958        0       NA       NA        NA        NA              0
-6        24.03958        0       NA       NA        NA        NA              0
-  pluie_intensite pluie_intensite_max_1h       uv uv_index ensoleillement
-1               0                      0 307.2847 1.736111             NA
-2               0                      0 307.2847 1.736111             NA
-3               0                      0 307.2847 1.736111             NA
-4               0                      0 307.2847 1.736111             NA
-5               0                      0 307.2847 1.736111             NA
-6               0                      0 307.2847 1.736111             NA
-  temperature_sol temps_omm complements source  date julian
-1              NA        NA          NA     NA 18038    142
-2              NA        NA          NA     NA 18038    142
-3              NA        NA          NA     NA 18038    142
-4              NA        NA          NA     NA 18038    142
-5              NA        NA          NA     NA 18038    142
-6              NA        NA          NA     NA 18038    142
-  temp_moy_glissante_31j temp_moy_glissante_7j pluie_moy_glissante_31j
-1               15.73741              16.38498              0.03814795
-2               15.73741              16.38498              0.03814795
-3               15.73741              16.38498              0.03814795
-4               15.73741              16.38498              0.03814795
-5               15.73741              16.38498              0.03814795
-6               15.73741              16.38498              0.03814795
-  pluie_moy_glissante_7j Profondeur AssecT_1
-1             0.07244112  0.7893333      non
-2             0.07244112  0.7893333      non
-3             0.07244112  0.7893333      non
-4             0.07244112  0.7893333      non
-5             0.07244112  0.7893333      non
-6             0.07244112  0.7893333      non</code></pre>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-9d1ebcf40e99612c44b4" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9d1ebcf40e99612c44b4">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],[115476,115477,115478,115479,115480,115481,115482,115483,115484,115485],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-05-22","2019-06-12"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["06:09:00","06:29:00","06:53:00","07:13:00","07:30:00","06:51:00","07:05:00","06:26:00","06:12:00","20:03:00"],["Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu","Talève sultane, Poule sultane, Porphyrion bleu"],[3,2,5,3,0,0,0,0,0,1],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],["Lognos Mathieu","Fortuny Xavier","Lognos Mathieu","Lognos Mathieu","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier","Lognos Mathieu","Fortuny Xavier","Fortuny Xavier"],[3.524423,3.519831,3.510068,3.509005,3.503405,3.510314,3.503888,3.515507,3.524187,3.524187],[43.329853,43.317739,43.327324,43.320424,43.32293,43.314765,43.317255,43.331375,43.322337,43.322337],["ButorTalèveBlongios-1","ButorTalèveBlongios-3","ButorTalèveBlongios-9","ButorTalèveBlongios-6","ButorTalèveBlongios-7","ButorTalèveBlongios-4","ButorTalèveBlongios-5","ButorTalèveBlongios-8","ButorTalèveBlongios-2","ButorTalèveBlongios-2"],["{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}","{'RELV_NOM': 'SuiviBlongiosTalève'}"],[2019,2019,2019,2019,2019,2019,2019,2019,2019,2019],[null,null,null,null,null,null,null,null,null,null],[20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,20.4,16.23611111111111],[1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1015.831944444444,1014.29375],[0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.0736,0.3426229508196721],[63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,63.96527777777778,77.93055555555556],[12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.73194444444444,12.23263888888889],[null,null,null,null,null,null,null,null,null,null],[3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,3.989583333333333,4.684027777777778],[null,null,null,null,null,null,null,null,null,null],[13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,13.32638888888889,11.95416666666667],[272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,272.5694444444445,222.4375],[14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,14.85,10.3],[24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,24.03958333333333,17.71319444444444],[0,0,0,0,0,0,0,0,0,0],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,1.283333333333333],[null,null,null,null,null,null,null,null,null,1.911111111111111],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0],[307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,307.2847222222222,336.3888888888889],[1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.736111111111111,1.850694444444444],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null,null,null],[18038,18038,18038,18038,18038,18038,18038,18038,18038,18059],[142,142,142,142,142,142,142,142,142,163],[15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,15.73740891425751,18.01964754813947],[16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,16.38497899669775,18.12406231410413],[0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.03814795372200264,0.02123528079710145],[0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.07244112318840579,0.0125],[0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7893333333333333,0.7000000000000001],["non","non","non","non","non","non","non","non","non","non"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>id_synthese<\/th>\n      <th>date_debut<\/th>\n      <th>date_fin<\/th>\n      <th>heure_debut<\/th>\n      <th>heure_fin<\/th>\n      <th>nom_vernaculaire<\/th>\n      <th>nombre_min<\/th>\n      <th>observateurs<\/th>\n      <th>determinateur<\/th>\n      <th>x_centroid_4326<\/th>\n      <th>y_centroid_4326<\/th>\n      <th>nom_lieu<\/th>\n      <th>champs_additionnels<\/th>\n      <th>annee<\/th>\n      <th>station_id<\/th>\n      <th>temperature<\/th>\n      <th>pression<\/th>\n      <th>pression_variation_3h<\/th>\n      <th>humidite<\/th>\n      <th>point_de_rosee<\/th>\n      <th>visibilite<\/th>\n      <th>vent_moyen<\/th>\n      <th>vent_rafales<\/th>\n      <th>vent_rafales_10min<\/th>\n      <th>vent_direction<\/th>\n      <th>temperature_min<\/th>\n      <th>temperature_max<\/th>\n      <th>pluie_1h<\/th>\n      <th>pluie_3h<\/th>\n      <th>pluie_6h<\/th>\n      <th>pluie_12h<\/th>\n      <th>pluie_24h<\/th>\n      <th>pluie_cumul_0h<\/th>\n      <th>pluie_intensite<\/th>\n      <th>pluie_intensite_max_1h<\/th>\n      <th>uv<\/th>\n      <th>uv_index<\/th>\n      <th>ensoleillement<\/th>\n      <th>temperature_sol<\/th>\n      <th>temps_omm<\/th>\n      <th>complements<\/th>\n      <th>source<\/th>\n      <th>date<\/th>\n      <th>julian<\/th>\n      <th>temp_moy_glissante_31j<\/th>\n      <th>temp_moy_glissante_7j<\/th>\n      <th>pluie_moy_glissante_31j<\/th>\n      <th>pluie_moy_glissante_7j<\/th>\n      <th>Profondeur<\/th>\n      <th>AssecT_1<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[1,7,10,11,14,16,17,18,19,20,22,24,25,26,27,28,29,30,31,32,33,34,35,36,37,40,43,44,45,46,47,48,49]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"id_synthese","targets":1},{"name":"date_debut","targets":2},{"name":"date_fin","targets":3},{"name":"heure_debut","targets":4},{"name":"heure_fin","targets":5},{"name":"nom_vernaculaire","targets":6},{"name":"nombre_min","targets":7},{"name":"observateurs","targets":8},{"name":"determinateur","targets":9},{"name":"x_centroid_4326","targets":10},{"name":"y_centroid_4326","targets":11},{"name":"nom_lieu","targets":12},{"name":"champs_additionnels","targets":13},{"name":"annee","targets":14},{"name":"station_id","targets":15},{"name":"temperature","targets":16},{"name":"pression","targets":17},{"name":"pression_variation_3h","targets":18},{"name":"humidite","targets":19},{"name":"point_de_rosee","targets":20},{"name":"visibilite","targets":21},{"name":"vent_moyen","targets":22},{"name":"vent_rafales","targets":23},{"name":"vent_rafales_10min","targets":24},{"name":"vent_direction","targets":25},{"name":"temperature_min","targets":26},{"name":"temperature_max","targets":27},{"name":"pluie_1h","targets":28},{"name":"pluie_3h","targets":29},{"name":"pluie_6h","targets":30},{"name":"pluie_12h","targets":31},{"name":"pluie_24h","targets":32},{"name":"pluie_cumul_0h","targets":33},{"name":"pluie_intensite","targets":34},{"name":"pluie_intensite_max_1h","targets":35},{"name":"uv","targets":36},{"name":"uv_index","targets":37},{"name":"ensoleillement","targets":38},{"name":"temperature_sol","targets":39},{"name":"temps_omm","targets":40},{"name":"complements","targets":41},{"name":"source","targets":42},{"name":"date","targets":43},{"name":"julian","targets":44},{"name":"temp_moy_glissante_31j","targets":45},{"name":"temp_moy_glissante_7j","targets":46},{"name":"pluie_moy_glissante_31j","targets":47},{"name":"pluie_moy_glissante_7j","targets":48},{"name":"Profondeur","targets":49},{"name":"AssecT_1","targets":50}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (<em>environnement_daily</em>) et d’un tableau regroupant les observations de talèves.</p>
 <p>Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.</p>
-<p>##2 . Modèle de présence/absence</p>
+</section>
+<section id="modèle-de-présenceabsence" class="level1">
+<h1>3 . Modèle de présence/absence</h1>
+<p>Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l’influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l’occurence observée.</p>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>                              df      AIC
-modele_complet_site           12 300.7632
-modele_complet_anneesite      20 291.8432
-modele_complet_vent           13 296.3882
-modele_complet_temp_31        14 291.6140
-modele_complet_temp_7j        14 295.5876
-modele_complet_temp_1j        13 295.1475
-modele_complet_temp_1j_vent   14 296.8998
-modele_complet_pluie_31j_vent 14 285.5789
-modele_complet_pluie_7j_vent  14 288.8839
-modele_complet_pluie_1j_vent  14 296.5147</code></pre>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Comparaison des modèles selon le critère d’information d’Akaike (AIC)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modèle</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">delta_AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">modele_null</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">244.54</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">modele_complet</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">246.43</td>
+<td style="text-align: right;">1.89</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+<p>La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques n’améliore pas l’ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet.</p>
+<p>Les parametres estimés indiquent que :</p>
+<ul>
+<li>Année a un effet positif significatif sur l’abondance des talèves (β = 0.242, p = 0.0109713). Donc nous avons une augmentation de l’abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d’environ 1.2737942de talèves dans la reserve independamment des facteurs etudiés dans le modèle</li>
+</ul>
+<p>Le graphique présente l’évolution de la population de la talèves au cours du temps</p>
+<div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig.&nbsp;X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.</p>
+<p>Le graphique montre le nombre d’observations de talèves sur chaque site du protocole :</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div></li>
+</ul>
+<p>Les graphiques suivants illustrent les effets des variables pour lesquelles aucun effet significatif n’a été détecté, dans le but d’évaluer l’existence de tendances potentielles.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-12-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>##2.1 Interpretation</p>
-<p>Le modèle GLM explorant la présence de la Talève sultane en fonction du temps, de la profondeur et de l’assec de l’année précédente montre que la profondeur moyenne a un effet significatif positif sur la probabilité de présence (Estimate = 2,19, p = 0,035). Les variables temporelles (date julienne et son terme quadratique) ne sont pas significatives (p ≈ 0,09–0,10), indiquant que la présence de l’espèce n’évolue pas de façon marquée au cours de la période 2014–2024. Les effets de l’assec de l’année précédente sont faibles et non significatifs, avec un assec partiel ayant un effet légèrement négatif et un assec total un effet légèrement positif (p ≈ 0,17–0,08).</p>
-</section>
+<p>À travers ces derniers graphiques, nous observons une tendance positive de la température : lorsque celle-ci augmente, l’occurrence des talèves tend également à augmenter. À l’inverse, les variables de pluviométrie moyenne sur 31 et 7 jours montrent une tendance négative, une augmentation des précipitations étant associée à une diminution de l’occurrence des talèves. En revanche, pour la pluviométrie journalière, la profondeur et l’assec, aucun effet clair ni tendance marquée sur l’occurrence des talèves ne se dégage.</p>
+<p>Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 29% de la variation de l’abondance des talèves (pseudo-R² = 0.2899152), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
 <section id="modèle-dabondance" class="level2">
-<h2 class="anchored" data-anchor-id="modèle-dabondance">3 . Modèle d’abondance</h2>
+<h2 class="anchored" data-anchor-id="modèle-dabondance">4 . Modèle d’abondance</h2>
 <p>Cette analyse vise à caractériser la dynamique de la population de la Talève et à déterminer l’influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l’abondance observée.</p>
-</section>
-<section id="modèle-dabondance-en-fonction-du-temps" class="level2">
-<h2 class="anchored" data-anchor-id="modèle-dabondance-en-fonction-du-temps">3.1 Modèle d’abondance en fonction du temps</h2>
 <p>Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -349,171 +353,27 @@ modele_complet_pluie_1j_vent  14 296.5147</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">modele_complet_assec</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">458.06</td>
+<td style="text-align: left;">modele_complet</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">403.07</td>
 <td style="text-align: right;">0.00</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">modele_complet_pluie_31j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">469.65</td>
-<td style="text-align: right;">11.58</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_complet_profondeur</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">472.00</td>
-<td style="text-align: right;">13.93</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_complet_temp_31</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">476.47</td>
-<td style="text-align: right;">18.40</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_complet_pluie_1j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">476.55</td>
-<td style="text-align: right;">18.49</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_complet_temp_1j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">476.85</td>
-<td style="text-align: right;">18.79</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_complet_pluie_7j_vent</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">477.12</td>
-<td style="text-align: right;">19.06</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_complet_temp_1j</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">477.14</td>
-<td style="text-align: right;">19.07</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_complet_temp_7j</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">477.84</td>
-<td style="text-align: right;">19.77</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_complet_vent</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">477.90</td>
-<td style="text-align: right;">19.84</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_complet_anneesite</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">486.66</td>
-<td style="text-align: right;">28.60</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_complet_site</td>
+<td style="text-align: left;">modele_null</td>
 <td style="text-align: right;">12</td>
-<td style="text-align: right;">488.88</td>
-<td style="text-align: right;">30.82</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_anneejulian</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">546.24</td>
-<td style="text-align: right;">88.18</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_julian2annee</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">546.43</td>
-<td style="text-align: right;">88.37</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_annee_julian</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">555.15</td>
-<td style="text-align: right;">97.08</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_annee</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">556.47</td>
-<td style="text-align: right;">98.41</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_julian2_annee</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">556.73</td>
-<td style="text-align: right;">98.67</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">modele_julian</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">583.09</td>
-<td style="text-align: right;">125.03</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">modele_julian2</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">584.99</td>
-<td style="text-align: right;">126.92</td>
+<td style="text-align: right;">413.25</td>
+<td style="text-align: right;">10.18</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>La sélection de modèles basée sur le critère d’information d’Akaike (AIC) a mis en évidence qu’un modèle intégrant les effets temporels (année et jour julien), un effet spatial lié au site, ainsi que des variables environnementales locales (vitesse moyenne du vent et conditions d’assec) constitue la structure la plus parcimonieuse pour expliquer la variation de l’occurrence des individus. Ce modèle a donc été retenu comme base pour l’analyse, afin d’évaluer l’influence conjointe des facteurs temporels, spatiaux et environnementaux sur l’abondance des individus</p>
+<p>La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques améliore significativement l’ajustement du modèle. Ces résultats suggèrent que ces facteurs jouent un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet afin d’explorer les effets prédictifs des paramètres sur cette population.</p>
 <p>Les parametres estimés indiquent que :</p>
 <ul>
-<li>L’assec partiel a un effet négatif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = -2.182, p = 4.63^{-5}). En revanche, un assec total ne montre aucun effet significatif sur l’abondance des talèves (fig X) . On peut imaginer que le nombre limité d’assec total n’est pas valorisé en raison de sa faible fréquence de présence.</li>
+<li>Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = 0.199, p = 6.41^{-5}). Donc nous avons une augmentation de l’abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d’environ 1.220182de talèves dans la reserve independamment des facteurs etudiés dans le modèle</li>
 </ul>
-<p>Le graphique présente l’évolution de la population de la talèves en fonction des differents modalités du niveau de l’eau ( assec total , assec partiel , absence d’assec )</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = 0.214, p = 10^{-6}). Donc nous avons une augmentation de l’abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d’environ 1.2386227de talèves dans la reserve</li>
-</ul>
-<p>Le graphique présente l’évolution de la population de la talèves en fonction au cours des années</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li><p>Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig.&nbsp;X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.</p></li>
-<li><p>Le graphique montre l’évolution des observations de la talève sur chaque site du protocole :</p></li>
-</ul>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="clean_taleve_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4011681</code></pre>
-</div>
-</div>
-<p>Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 40 % de la variation de l’abondance des talèves (pseudo-R² = 0.4011681), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
-<p>graphes probabilité de détection par année</p>
+<p>Le graphique présente l’évolution de la population de la talèves au cours du temps</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -523,6 +383,73 @@ modele_complet_pluie_1j_vent  14 296.5147</code></pre>
 </div>
 </div>
 </div>
+<ul>
+<li><p>L’effet de l’assec sur l’abondance est négatif (β = -0.668, p = 0.0233527). Donc les evenements d’assec ont un impact négatif qui fait diminuer la popualtion de taleves d’environ 0.512733 par rapport à l’année précedente.</p>
+<p>Nous ne pouvons pas mettre en évidence un effet de l’assec partiel sur la population de talèves, celui-ci n’ayant eu lieu qu’en 2022. De plus, le protocole de suivi n’a pas été appliqué selon la périodicité habituelle de deux ans, ce qui limite la capacité à détecter un effet éventuel.</p></li>
+</ul>
+<p>Le graphique présente l’évolution de la population de la talèves en fonction au cours des années</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig.&nbsp;X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.</p></li>
+<li><p>Le graphique montre le nombre d’observations de talèves sur chaque site du protocole :</p></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = 0.4332637), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.</p>
+<hr>
+<p>graphe probabilité de présence de la talève sur la réserve</p>
+<p>Ce graphique permet de déterminer la probabilité d’occurence de la talève sur la réserve. La probabilité est calculée en faisant le ration des sorties avec observations sur les sorties sans observations. Seules les observations protocolées sont prises en compte</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = presence ~ j_julien + j_julien2 + annee, family = binomial, 
+    data = process_data)
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.227e+01  9.480e+00  -1.295 0.195425    
+j_julien     1.374e-01  1.096e-01   1.254 0.209902    
+j_julien2   -4.283e-04  3.129e-04  -1.369 0.171035    
+annee2016    5.739e-01  4.492e-01   1.278 0.201370    
+annee2019    1.340e+00  4.583e-01   2.923 0.003469 ** 
+annee2021    1.432e+00  4.553e-01   3.146 0.001657 ** 
+annee2023    1.733e+00  4.530e-01   3.824 0.000131 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 295.93  on 229  degrees of freedom
+Residual deviance: 271.04  on 223  degrees of freedom
+AIC: 285.04
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="clean_taleve_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La probabilité d’occurence de la talève est plus élevée dans les dernières années de protocole (2019, 2021, 2023) que pendant la première, en 2014. L’espèce semble bien coloniser la réserve du bagnat depuis au moins 2014.</p>
 <p>quelles variables font le meilleur glm (préparation au n mixture)</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -572,6 +499,7 @@ AIC: 251.25
 Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
+</section>
 </section>
 
 </main>

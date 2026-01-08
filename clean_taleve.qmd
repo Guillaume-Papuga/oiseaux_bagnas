@@ -31,6 +31,8 @@ library(leaflet)
 library(sf)
 library(broom)
 library(ggeffects)
+library(reactable)
+library(DT)
 
 
 process_data <- read_csv("data/pro/process_data.csv")
@@ -351,7 +353,9 @@ Protocole_SuiviTaleve <- process_protocole %>%
   filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
-head(Protocole_SuiviTaleve)
+
+datatable(head(Protocole_SuiviTaleve, 10), 
+          options = list(scrollX = TRUE, pageLength = 5))
 
 #Protocole_SuiviTaleve2<- process_protocole %>%
 #  filter(
@@ -553,7 +557,7 @@ extract_coef <- function(modele, var){
 assec_res <- extract_coef(modele_complet, "AssecT_1total")
 ```
 
--   L’effet de l’assec sur l’abondance est négatif (β = `r AssecT_1total_res$beta`, p = `r AssecT_1total_res$p`). Donc les evenements d'assec ont un impact négatif qui fait diminuer la popualtion de taleves d'environ `r exp(assec_res$beta)` par rapport à l'année précedente.
+-   L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). Donc les evenements d'assec ont un impact négatif qui fait diminuer la popualtion de taleves d'environ `r exp(assec_res$beta)` par rapport à l'année précedente.
 
     Nous ne pouvons pas mettre en évidence un effet de l’assec partiel sur la population de talèves, celui-ci n’ayant eu lieu qu’en 2022. De plus, le protocole de suivi n’a pas été appliqué selon la périodicité habituelle de deux ans, ce qui limite la capacité à détecter un effet éventuel.
 
@@ -601,7 +605,7 @@ library(lme4)
 #========================
 # DONNEES
 #========================
-process_data <- read.csv("process_protocole.csv")
+#process_data <- read.csv("process_protocole.csv")
 
 #========================
 # PREPARATION
