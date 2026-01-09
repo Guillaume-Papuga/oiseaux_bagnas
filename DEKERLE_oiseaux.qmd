@@ -994,9 +994,9 @@ editor: visual
 ::: justify
 La réserve du Bagnas est un espace naturel protégé situé entre Agde et Marseillan. Classée Réserve Naturelle Nationale depuis 1983, elle abrite une remarquable diversité de milieux : étangs, lagunes, roselières, prés salés, sansouïres et dunes. La réserve abrite une biodiversité d'une grande richesse. 
 
-La réserve est d'importance majeure à l'échelle régionale, notamment comme site de nidification, comme pour la Talève sultane qui niche dans les roselières. et halte migratoire pour de nombreuses espèces d'oiseaux. On y observe une importante population de hérons, dont le Blongios nain, le Butor étoilé et le Héron pourpré.
+La réserve est d'importance majeure à l'échelle régionale, notamment comme site de nidification, comme pour la Talève sultane qui niche dans les roselières, et halte migratoire pour de nombreuses espèces d'oiseaux. On y observe une importante population de hérons, dont le Blongios nain, le Butor étoilé et le Héron pourpré.
 
-Dans cette étude, nous nous concentrons sur le Blongios nain, le Butor étoilé et la Talève sultane. Ces trois espèces font l'objet d'un suivi protocolé depuis 2014, notre objectif ici est d'analyser les données des protocoles afin d'en retirer des informations utiles pour la réserve et le protocole.
+Dans cette étude, nous nous concentrons sur le Blongios nain, le Butor étoilé et la Talève sultane. Ces trois espèces font l'objet d'un suivi protocolé depuis 2014, notre objectif est d'analyser les données des protocoles afin d'en retirer des informations utiles pour la réserve et le protocole.
 
 Le projet se base sur des données d'observation fournies par la réserve du Bagnas. Les données hydrologiques sont également fournies par la réserve, les données météorologiques proviennent de InfoClimat.
 
