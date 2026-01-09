@@ -980,6 +980,693 @@ La majorité des observations opportunistes ont eu lieu dans les sites intitulé
 Les analyses ont montré qu'il n'y avait sûrement pas de butor chanteur en réserve du bagnas. Cependant, la réserve semble être une zone d'hivernage favorable pour cette espèce. Nous recommandons d'arrêter le protocole de point d'écoute en période de reproduction. En fonction de la faisabilité (le butor étant une espèce cryptique) il pourrait être remplacé par un comptage en période d'hivernage pour essayer de déterminer la structure des populations hivernantes de manière plus rigoureuse. En cas d'impossibilité ou de manque de robustesse du changement du protocole, les observations opportunistes peuvent continuer à être renseignées afin de continuer à disposer des périodes de présence du butor sur la réserve.
 :::
 
+--------------------------------------------------------------------------------------
+
+
+---
+title: "Document introductif"
+format: html
+editor: visual
+---
+
+# A. Introduction
+
+::: justify
+La réserve du Bagnas est un espace naturel protégé situé entre Agde et Marseillan. Classée Réserve Naturelle Nationale depuis 1983, elle abrite une remarquable diversité de milieux : étangs, lagunes, roselières, prés salés, sansouïres et dunes. La réserve abrite une biodiversité d'une grande richesse. 
+
+La réserve est d'importance majeure à l'échelle régionale, notamment comme site de nidification, comme pour la Talève sultane qui niche dans les roselières. et halte migratoire pour de nombreuses espèces d'oiseaux. On y observe une importante population de hérons, dont le Blongios nain, le Butor étoilé et le Héron pourpré.
+
+Dans cette étude, nous nous concentrons sur le Blongios nain, le Butor étoilé et la Talève sultane. Ces trois espèces font l'objet d'un suivi protocolé depuis 2014, notre objectif ici est d'analyser les données des protocoles afin d'en retirer des informations utiles pour la réserve et le protocole.
+
+Le projet se base sur des données d'observation fournies par la réserve du Bagnas. Les données hydrologiques sont également fournies par la réserve, les données météorologiques proviennent de InfoClimat.
+
+Ce document comprend deux parties : la première est la préparation des données et la deuxième présente des figures générales sur les données.
+:::
+
+# B. Préparation des données
+
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE, 
+  echo = FALSE
+)
+#ce code permet de n'afficher aucun message parasite ni les warnings. 
+```
+
+```{r}
+#1. Il faut charger les données et les library
+#charger les library 
+library(leaflet)
+library(sf)
+library(RColorBrewer) 
+library(dplyr)
+library(readr)
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(kableExtra)
+library(slider)
+```
+
+# 1. Mise en forme du tableau de données
+
+Nous partons avec des tableaux de données bruts.
+
+Dans chaque tableau il y a 77 variables et toutes les données d'observations du Butor, Blongios et de la Talève de 1990 à 2025. Dans ces tableaux, de nombreuses variables ne nous seront pas utiles pour la suite, il faut donc trier les variables et créer un nouveau tableau qui ne comprend que les 13 variables d'intéret.
+
+On crée un nouveau
+
+```{r recup, message=FALSE, warning=FALSE}
+
+## 1. Rassembler les deux tableaux de données
+
+#a)  récupérer les tableaux de données brute.
+
+#charger le chemin d'accès : à adapter à votre ordinateur 
+setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas")
+
+#charger les données brutes: 2 tableaux
+raw_data<- read_excel("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
+
+raw_data_2 <- read_delim(
+  "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  delim = ";",
+  locale = locale(encoding = "Latin1", decimal_mark = ".")
+)
+
+```
+
+```{r}
+#Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+
+process_data_1= raw_data %>%
+  select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
+         nom_vernaculaire,nombre_min,observateurs,determinateur,x_centroid_4326,
+         y_centroid_4326,nom_lieu,champs_additionnels)
+
+process_data_2 <- raw_data_2 %>%
+  select(id_synthese, date_debut, date_fin, heure_debut, heure_fin,
+         nom_vernaculaire, nombre_min, observateurs, determinateur,
+         x_centroid_4326, y_centroid_4326,
+         nom_lieu, champs_additionnels)
+
+# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
+# car le fichier original contenait une date + une heure
+process_data_1 <- process_data_1 %>%
+  mutate(
+    heure_debut = format(heure_debut, "%H:%M:%S"),
+    heure_fin   = format(heure_fin,   "%H:%M:%S")
+  )
+
+# mettre en format date les dates de debut et de fin 
+
+process_data_1 <- process_data_1 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+
+
+process_data_2 <- process_data_2 %>%
+  mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
+          date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
+
+#correction des formats de certaines colonnes
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = as.character(x_centroid_4326),
+    y_centroid_4326 = as.character(y_centroid_4326)
+  )
+
+process_data_1<- process_data_1 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
+    y_centroid_4326 = round(as.numeric(y_centroid_4326), 6)
+  )
+# Le fichier brut est en format "dd/mm/YYYY"
+# On convertit proprement en Date (format standard YYYY-MM-DD)
+
+
+process_data_2 <- process_data_2 %>%
+  mutate(
+    heure_debut = as.character(heure_debut),
+    heure_fin   = as.character(heure_fin)
+  )
+
+# La ligne 132 de process_data_2 avait un NA
+# On remplace par la valeur correspondante dans process_data_1 (ligne 720)
+process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <- 
+  process_data_1$champs_additionnels[720]
+
+#création du tableau final avec les 3 espèces et les colonnes dans le bon format. C'est ce tableau qui est par la suite utilisé. 
+process_data = process_data_2
+
+write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+
+tibble(Variables = names(process_data)) |>
+  kbl(caption = "Variables du jeu de données") |>
+  kable_styling(full_width = FALSE)
+```
+
+Les 13 variables conservées sont présentées dans la la liste ci-dessus.
+
+```{r}
+
+head(process_data) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+```
+
+Le tableau process_data correspond aux données sur toute la periode 1990-2025 pour toutes les données d'interet. On y retrouve des données protocolées et des données oportunistes.
+
+Il y a deux protocoles mis en place pour les trois espèces : un pour le Butor étoilé et un pour le Blongios et la Talève. Le protocole Butor se réalise entre le 10 avril et le 16 mai, à raison de deux à quatre visites sur la période. Chaque visite sur un point consiste à écouter pendant 15 minutes 1 fois le soir (entre 30mn avant le coucher du soleil et 1h après) et 1 fois le matin (dans les 2h qui précèdent le lever du soleil).
+
+Le protocole Bliongios-Talève se réalise entre le 1er mai et fin juiller. Il y a une visite toutes les 3 semaines sur les 9 points d'écoute (et d'observation), soit 4 visites annuelles. Chaque visite sur un point consiste à écouter (et observer) pendant 30 minutes 1 fois le soir (entre 1h avant le coucher du soleil et 30mn après) et 1 fois le matin (dans les 1h30 qui suivent le lever du soleil) Chaque visite comporte trois parties : 10 mn d'écoute-observation suivie de 10mn d'écoute-observation avec repasse du chant de Blongios suivi de 10mn d'écoute-observation avec repasse du chant de Talève.
+
+Nous ne gardons par la suite des analyses que les données qui font parti de ces protocoles : donc à partir de 2014 et uniquement sur les 9 points d'écoutes protocolés. Les autres données sont considerées comme opportunistes.
+
+```{r}
+## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+
+#floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
+process_data$annee = year(floor_date(process_data$date_debut, "year"))
+
+#on filtre pour enlever toutes les données avant 2014 (le début des protocoles)
+# on filtre pour garder uniquement les données protocolées : on garde les lieux protocolés "ButorTalèveBlongios de 1 à 9 ; on garde uniquement les données rensignées comme protocolés SuiviButor|BlongiosTalève
+process_protocole = process_data  %>%
+  filter(annee>= 2014) %>%
+  filter (nom_lieu  %in% paste0 ("ButorTalèveBlongios-", 1 : 9)) %>%
+  filter( champs_additionnels== "{'RELV_NOM': 'SuiviButor'}" |
+          champs_additionnels== "{'RELV_NOM': 'SuiviBlongiosTalève'}")
+
+
+#écrire le nouveau csv des données >2014 protocolées 
+write_csv(process_protocole, "data/pro/process_protocole.csv")
+
+head(process_protocole) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+
+```
+
+Ce tableau est celui qui sera utilisé pour les analyses dans la suite du projet. Il ne contient que les données qui appartiennent aux protocoles BlongiosTalève et Butor.
+
+# 2. Les données météorologiques
+
+Les données météorologiques ont été fournies par InfoClimat. Nous avons un document par année de 2013 à 2025. On créé un nouveau data frame qui rassemble toutes les données en 1 tableau.
+
+```{r data_enviro, message=FALSE, warning=FALSE}
+#| echo: false
+#il faut aller chercher les données environnementales
+
+#récuperer les csv bruts pour chaque année 
+file_2013 <- read_delim("data/raw/2013.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+
+file_2014 <- read_delim("data/raw/2014.csv", delim = ";", 
+                       escape_double = FALSE, trim_ws = TRUE, 
+                       skip = 4)
+file_2015 <- read_delim("data/raw/2015.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2016 <- read_delim("data/raw/2016.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2017 <- read_delim("data/raw/2017.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2018 <- read_delim("data/raw/2018.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2019 <- read_delim("data/raw/2019.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2020 <- read_delim("data/raw/2020.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2021 <- read_delim("data/raw/2021.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2022 <- read_delim("data/raw/2022.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2023 <- read_delim("data/raw/2023.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2024 <- read_delim("data/raw/2024.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+file_2025 <- read_delim("data/raw/2025.csv", delim = ";", 
+                        escape_double = FALSE, trim_ws = TRUE, 
+                        skip = 4)
+
+#enlever la première ligne qui donne les unités des colonnes (toujours présent dans les données brutes si besoin de les retrouver )
+file_2013 <- file_2013[-1, ]
+file_2014 <- file_2014[-1, ]
+file_2015 <- file_2015[-1, ]
+file_2016 <- file_2016[-1, ]
+file_2017 <- file_2017[-1, ]
+file_2018 <- file_2018[-1, ]
+file_2019 <- file_2019[-1, ]
+file_2020 <- file_2020[-1, ]
+file_2021 <- file_2021[-1, ]
+file_2022 <- file_2022[-1, ]
+file_2023 <- file_2023[-1, ]
+file_2024 <- file_2024[-1, ]
+file_2025 <- file_2025[-1, ]
+
+#on crée un data frame avec tous les fichiers 
+data_environnement <- bind_rows(file_2013, file_2014, file_2015, file_2016, file_2017, file_2018, file_2019, file_2020, file_2021, file_2022, file_2023, file_2024, file_2025)
+
+#écrire le CVS avec toutes les données 
+write_csv(data_environnement, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/raw_environnement.csv")
+
+#tri et clean des données environnementales : les données sont toutes les 20min depuis 2013.
+data_environnement2=data_environnement
+
+#mettre la date en bon format
+data_environnement2$dh_utc= as.POSIXct(data_environnement2$dh_utc, format =c("%Y-%m-%d %H:%M:%S"), tz="UTC")
+
+data_environnement2$date <- as.Date(data_environnement2$dh_utc)
+
+
+data_environnement2_clean <- data_environnement2 %>%
+  mutate(Date = as.Date(date)) %>%
+  mutate(across(!c(Date,dh_utc), ~ suppressWarnings(as.numeric(.x))))
+
+
+environnement_daily <- data_environnement2_clean %>%
+  group_by(Date) %>%
+  summarise(across(where(is.numeric),
+                   ~ mean(.x, na.rm = TRUE)),
+            .groups = "drop")
+
+
+
+#écriture du csv propre qui sera utilisé par la suite : 1 donnée par jour (moyenne de toutes les variables qui étaient toutes les 20min) -> nommé environnement_daily
+write_csv(environnement_daily, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/environnement_daily.csv")
+
+
+
+head(environnement_daily) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+```
+
+Nous avons un tableau de données environnementales de 2013 à 2025. Initialement, il y avait des données toutes les 20minutes, nous avons fait des moyennes journalières pour diminuer le nombre de données.
+
+Dans le tableau des données environnementales, il manque des jours, on fait donc des moyennes glissantes pour créer les données (car 1 ou 2 jours consécutif manquant maximum). Il faut donc d'abord créer les lignes des jours puis créer les données manquantes.
+
+```{r}
+
+##### création des lignes pour les jours manquants du tableau environnement_daily
+
+# étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
+
+date_debut <- as.Date("2013-01-01")
+date_fin   <- as.Date("2025-12-31")
+
+toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
+
+données_2013_2025 <- data.frame(
+  Date = toutes_dates)
+
+données_2013_2025$julian = yday(données_2013_2025$Date)
+
+
+
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+
+environnement_daily <- environnement_daily %>%
+  full_join(
+    données_2013_2025 %>% select(Date, julian),
+    by = "Date"
+  )
+
+# Etape 3 verification du jeu de données
+# 
+# # Nombre de jours par année
+# environnement_daily %>%
+#   mutate(Annee = year(Date)) 
+#   # count(Annee)
+# 
+# # les lignes manquantes si il y'en a
+# résumé_jours_NA = environnement_daily %>%
+#   filter(is.na(temperature)) %>%        
+#   mutate(Annee = year(Date)) %>%        
+#   group_by(Annee) %>%                   
+#   summarise(
+#     nb_lignes = n(),                     
+#     nb_jours_uniques = n_distinct(Date)  
+#   )
+
+
+### 3.2 Rajout des moyennes glissantes
+
+# On calcule la variable température et pluie moyenne glissante sur 31 jours 
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_31j = slide_dbl(
+      temperature,
+      mean,
+      .before = 31,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    temp_moy_glissante_7j = slide_dbl(
+      temperature,
+      mean,
+      .before = 7,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_31j = slide_dbl(
+      pluie_1h,
+      mean,
+      .before = 31,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(
+    pluie_moy_glissante_7j = slide_dbl(
+      pluie_1h,
+      mean,
+      .before = 7,
+      .after = 0,
+      .complete = TRUE,
+      na.rm = TRUE
+    )
+  )
+write_csv(
+  environnement_daily,
+  "data/pro/environnement_daily.csv"
+)
+
+
+head(environnement_daily) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+```
+
+```{r}
+#| echo: false
+process_protocole = process_protocole %>%
+  inner_join( environnement_daily,by = c("date_debut"= "Date") )
+
+write_csv(
+  process_protocole,
+  "data/pro/process_protocole.csv"
+)
+```
+
+Dans ce tableau, que certaines variables nous interessent : la pluie, le vent et la température.
+
+```{r}
+#graphique enviro
+
+
+environnement_daily <- environnement_daily %>%
+  mutate(
+    year = year(Date),
+    day_of_year = yday(Date)  # équivalent du jour julien
+  )
+
+ggplot(environnement_daily, aes(x = day_of_year, y = temperature)) +
+  geom_line(color = "red") +
+  facet_wrap(~ year, scales = "free_y") +
+  labs(
+    title = "Évolution journalière des températures (2013–2025)",
+    x = "Jour de l'année",
+    y = "Température (°C)"
+  ) +
+  theme_minimal()
+
+
+```
+
+Ces graphiques montrent l'évolution de la température durant un an pour chaque année d'étude. On voit que les patterns sont les mêmes.
+
+```{r}
+
+ggplot(environnement_daily, aes(x = day_of_year, y = pluie_1h)) +
+  geom_line(color = "steelblue") +
+  facet_wrap(~ year, scales = "free_y") +
+  labs(
+    title = "Évolution journalière de la pluie (2013–2025)",
+    x = "Jour de l'année",
+    y = "Pluie"
+  ) +
+  theme_minimal()
+
+```
+
+Ces graphiques montrent l'évolution de la pluie journalière par année d'étude. On voit qu'il y a des années plus sèches, comme 2019 ou 2021, et des années plus pluvieuses, comme 2023 ou 2025.
+
+# 3. Les données hydrologiques
+
+Les données hydrologiques comportent un grand nombre de variables, mais seules 2 variables nous interessent ici : la profondeur moyenne du grand Bagnas, et les assec totaux ou partiels.
+
+```{r}
+
+### Importe les packages
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+### Importation des données brutes
+HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
+
+### On sélectionne les colonnes qui nous interessent dans le data frame hydro et on remet les données sous le bon format et les données après 2013
+HydrologicDataGrandBagnas <- HydrologicData %>%
+  select(Station, Date.Releve, Heure, Salinite, Temperature, Niveau.Ngf, Niveau.Relatif)%>%
+  mutate(Profondeur = (Niveau.Ngf+0.27),
+         Date.Releve = as.Date(Date.Releve, format = "%d/%m/%Y"),
+         Annee = as.integer(format(Date.Releve, "%Y")),
+         Mois = format(Date.Releve, "%m"),
+         Jour = yday(Date.Releve))%>%
+  filter(Station == "Etangs du Grand Bagnas - TB5 centre",
+         Annee > 2013)
+
+### Calcule la profondeur et l'altitude moyenne (de l'eau) mensuelle
+Hydro_moyenne <- HydrologicDataGrandBagnas %>%
+  group_by(Annee, Mois) %>%
+  summarise(
+    ProfondeurMoyenne = mean(Profondeur, na.rm = TRUE),
+    AltitudeMoyenne = mean(Niveau.Ngf, na.rm = TRUE),
+    .groups = "drop")
+
+### Code une variable Assec (mois par mois) et AssecT (niveau le plus extreme de l'année) 
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
+  mutate(
+    Assec = case_when(
+      is.na(Profondeur) ~ "total",
+      Profondeur < 0.2  ~ "partiel",
+      TRUE                     ~ "non"),
+    Assec_score = case_when(
+      Assec == "non"     ~ 1,
+      Assec == "partiel" ~ 2,
+      Assec == "total"   ~ 3)) %>%
+  group_by(Annee) %>%
+  mutate(
+    AssecT = case_when(
+      max(Assec_score, na.rm = TRUE) == 3 ~ "total",
+      max(Assec_score, na.rm = TRUE) == 2 ~ "partiel",
+      TRUE                                ~ "non")) %>%
+  ungroup() %>%
+  select(-Assec_score)
+
+### Crée une variable AssecT_1 (AssecT de l'année précédente)
+Assec_annuel <- HydrologicDataGrandBagnas %>%
+  distinct(Annee, AssecT) %>%
+  bind_rows(tibble(Annee = 2014, AssecT = "non")) %>%
+  filter(Annee != 2026) %>%                             
+  arrange(Annee) %>%
+  mutate(AssecT_1 = lag(AssecT),
+         AssecT_1 = if_else(Annee == 2014, "non", AssecT_1))%>%
+  group_by(Annee) %>%
+  slice(1) %>%   
+  ungroup()
+
+### Ajoute la variable AssecT_1 au tableau HydrologicDataGrandBagnas
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
+  left_join(
+    Assec_annuel %>% select(Annee, AssecT_1),
+    by = "Annee")
+
+### Conserve que les bonnes variables 
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas[,c(8,9,10,11,14)]
+
+### Remplace les valeurs NA de Profondeur par 0
+HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
+  mutate(Profondeur = if_else(is.na(Profondeur), 0, Profondeur))
+
+### Convertit la variable Mois en numérique  
+HydrologicDataGrandBagnas$Mois <- as.numeric(as.character(HydrologicDataGrandBagnas$Mois))
+
+### Graphique de la profondeur moyenne mensuelle par année
+ggplot(HydrologicDataGrandBagnas, aes(x = Mois, y = Profondeur)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ Annee, ncol = 3) +
+  scale_x_continuous(breaks = 1:12) +
+  theme_bw()
+```
+
+ces graphiques représentent la profondeur de l'eau chaque année. on peut voir en 2016, 2019 et 2022 des assec totaux (profondeur à 0) en septembre.
+
+Pour des raisons écologiques, on utilise les assec de l'année qui précède l'année d'étude. JUSTIFICATION BIBLIO? On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
+
+```{r}
+## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
+
+### On crée une fonction qui génère un data frame avec les jours de l'année
+jours_par_annee <- function(df) {
+  data.frame(Jour = 1:365)}
+
+### On applique la fonction à chaque année pour avoir un tableau avec tous les jours de chaque année
+DataInterpolationProfondeur <- HydrologicDataGrandBagnas %>%
+  group_by(Annee) %>%
+  group_modify(~ {    interp <- approx(
+    x = .x$Jour,
+    y = .x$Profondeur,
+    xout = 1:365,   
+    rule = 2         )
+  tibble(
+    Jour = interp$x,
+    Profondeur = interp$y)}) %>% ungroup()
+
+### Ajoute les colonnes Date, Mois au tableau DataInterpolationProfondeur
+AssecT_1_annee <- HydrologicDataGrandBagnas %>%
+  select(Annee, AssecT_1) %>%
+  distinct()
+
+### Crée la colonne Date
+HydrologicDataGrandBagnas <- DataInterpolationProfondeur %>%
+  left_join(AssecT_1_annee, by = "Annee")
+
+### Enregistre le tableau final dans le fichier processed
+write.csv(HydrologicDataGrandBagnas, file = "data/pro/DataHydroBagnas.csv", row.names = FALSE)
+DataHydroBagnas <- HydrologicDataGrandBagnas
+
+
+
+head(DataHydroBagnas) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE
+  )
+
+
+```
+
+Les données hydro nous interessent pour la profondeur moyenne et les assec. Dans le tableau initial, les données n'étaient que toutes les 2 semaines, on a donc créé des données quotidienne par interpolation linéaire. On a donc pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant.
+
+On rajoute ensuite les variables hydrologiques dans les tableaux de données process_protocole et environnement_daily.
+
+```{r}
+DataHydroBagnas<- DataHydroBagnas%>%
+
+ mutate( date = as.Date(Jour-1 , origin = paste0(Annee, "-01-01")) )
+
+environnement_daily = environnement_daily %>%
+  inner_join( DataHydroBagnas,by = c("Date"= "date") )%>%
+  select(-Annee, -Jour)
+
+process_protocole <- process_protocole %>%
+  inner_join(DataHydroBagnas, by = c("date_debut" = "date")) %>%
+  select(-Annee, -Jour)
+
+write_csv(environnement_daily, "data/pro/environnement_daily.csv")
+
+write_csv(process_protocole, "data/pro/process_protocole.csv")
+
+```
+
+# C. Analyses exploratoires
+
+Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces.
+
+## A. les observateurs Script d'Émile
+
+A FAIRE Ce graphique représente les observations par observateurs.
+
+## B. cartographie des sites protocolés
+
+La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte sont les 9 sites du protocole. En cliquant sur les points rouges les noms des sites apparaissent.
+
+```{r}
+
+
+#1 : les sites du protocole :
+#on va chercher le csv process_protocole dans l'ordinateur
+process_protocole <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_protocole.csv")
+
+#préparer les coordonnées pour que R comprenne 
+sites_protocole <- st_as_sf(process_protocole, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+
+#le package leaflet permet de projeter des coordonnées sur la carte du monde
+leaflet() %>%
+  addTiles() %>%     # fond OSM
+
+  addCircleMarkers(
+    data =sites_protocole, 
+    radius = 5,
+    color = "red",
+    fillOpacity = 0.9,
+    popup = ~nom_lieu  #quand on appuie sur les point de la carte le nom des sites du protocole apparraissent 
+  ) %>%
+  setView(lng = 3.51, lat = 43.31, zoom = 13)
+
+```
 
 
 
