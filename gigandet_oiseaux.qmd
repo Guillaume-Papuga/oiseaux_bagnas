@@ -1,5 +1,5 @@
 
-
+#debut
 ```{r}
 library(tidyverse)
 library(lubridate) 
@@ -25,7 +25,7 @@ write.csv(process_data,
           row.names = FALSE)
 ```
 
-graphe nombre obs par observateur (avec couple trio d'observateurs possible)
+#graphe nombre obs par observateur (avec couple trio d'observateurs possible)
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -151,7 +151,7 @@ p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 print(p)
 
 ```
-graphe avec eclatement des observateurs (mais attention problemes de saisies dans certains couple, A DEMANDER AU BAGNAS)
+#graphe avec eclatement des observateurs (mais attention problemes de saisies dans certains couple, A DEMANDER AU BAGNAS)
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -289,7 +289,7 @@ print(p)
 
 
 
-graphe observateurs fonction des années 
+# graphe observateurs fonction des années 
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -387,8 +387,8 @@ print(observations_par_obs)
 
 ```
 
+#quel glm est le mieux ? 
 ```{r}
----- glm avec effets aléatoires---- 
 library(dplyr)
 library(tidyr)
 library(lubridate)
@@ -400,117 +400,12 @@ library(readr)
 
 process_data <- read.csv("process_protocole.csv")
 
-#---- creer colonne presence ----
-process_data <- process_data %>%
-  mutate(presence = ifelse(nombre_min > 0, 1, 0))
-
-#---- garder que taleve ---- 
-
-process_data <- process_data %>%
-  filter(nom_vernaculaire=="Talève sultane, Poule sultane, Porphyrion bleu")
-
-#---- jours julien ----
-process_data <- process_data %>%
-  mutate(
-    date_debut = as.Date(date_debut),       # convertir en Date
-    annee = year(floor_date(date_debut, "year")),
-    j_julien = yday(date_debut)
-  ) %>%
-  filter(annee > 2013)
-
-#---- ajout colonne mois ----
-
-process_data <- process_data %>%
-  mutate(mois = factor(month(date_debut, label = TRUE, abbr = FALSE),
-                       ordered = FALSE))
-
-
-modele_mois <- glm(presence ~ mois,
-                   data = process_data,
-                   family = binomial)
-
-summary(modele_mois)
-
-
-#----  presence ~ temps ----
-modele_jj <- glm(presence ~ j_julien,
-              data = process_data,
-              family = binomial)
-summary(modele_jj)
-
-#---- modele jour effet aleatoire annee+site ----
-library(lme4)
-modele_mixed <- glmer(
-  presence ~ j_julien + (1 | annee)+ (1 | nom_lieu),   
-  data = process_data,
-  family = binomial
-)
-modele_mixed
-
-#---- modele annee effet aleatoire jour ----
-library(lme4)
-modele_mixed <- glmer(
-  presence ~ annee + (1 | j_julien),   
-  data = process_data,
-  family = binomial
-)
-modele_mixed
-
-#---- par station ---- 
-modele_s <- glm(presence ~ nom_lieu + j_julien,
-              data = process_data,
-              family = binomial)
-summary(modele_s)
-
-#---- modele nul ----
-
-modele_nul <- glmer(
-  presence ~ 1 + (1 | annee) + (1 | nom_lieu),
-  data = process_data,
-  family = binomial
-)
-
-anova(modele_nul, modele_mixed, test = "Chisq")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#========================
-# LIBRAIRIES
-#========================
-library(dplyr)
-library(lubridate)
-
-#========================
-# DONNEES
-#========================
-process_data <- read.csv("process_protocole.csv")
-
 #========================
 # PREPARATION
 #========================
 process_data <- process_data %>%
   mutate(
-    presence = ifelse(nombre_min > 0, 1, 0),
+    presence = ifelse(nombre_min > 0, 1, 0),     # fait que sur presence 
     date_debut = as.Date(date_debut),
     annee = factor(year(date_debut)),
     j_julien = yday(date_debut),
@@ -601,7 +496,152 @@ summary(best_model)
 
 ```
 
+#graphe proba occurence taleve sans inter 
+```{r}
 
+
+```
+
+
+#graphe proba occ taleve avec intervalle 
+```{r}
+#=======================
+# LIBRAIRIES
+#=======================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(tidyr)
+
+#=======================
+# DONNEES
+#=======================
+process_data <- read.csv("process_protocole.csv")
+
+#=======================
+# PREPARATION
+#=======================
+process_data <- process_data %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
+  mutate(
+    presence   = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee      = factor(lubridate::year(date_debut)),  # facteur important
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
+  ) %>%
+  filter(annee != 2018)
+
+#=======================
+# MODELE GLM
+#=======================
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee + nom_lieu,
+  data = process_data,
+  family = binomial
+)
+
+summary(modele_phenologie)
+
+#=======================
+# GRILLE DE PREDICTION
+#=======================
+# Pour avoir une seule ligne par année, on fixe nom_lieu au premier site
+ref_site <- levels(process_data$nom_lieu)[1]
+
+newdat <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    .groups = "drop"
+  ) %>%
+  unnest(j_julien) %>%
+  mutate(
+    j_julien2 = j_julien^2,
+    nom_lieu  = ref_site   # fixer nom_lieu à un niveau de référence
+  )
+
+#=======================
+# PREDICTION AVEC INTERVALLES DE CONFIANCE
+#=======================
+pred <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "link",   # logit
+  se.fit = TRUE
+)
+
+newdat <- newdat %>%
+  mutate(
+    fit         = pred$fit,
+    se_fit      = pred$se.fit,
+    prob_detect = plogis(fit),
+    prob_lower  = plogis(fit - 1.96 * se_fit),
+    prob_upper  = plogis(fit + 1.96 * se_fit)
+  )
+
+#=======================
+# GRAPHE
+#=======================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee, fill = annee)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(aes(ymin = prob_lower, ymax = prob_upper), alpha = 0.2, color = NA) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de détection",
+    color = "Année",
+    fill  = "Année"
+  ) +
+  theme_minimal()
+
+```
+#Verif du graphe 
+```{r}
+library(tidyr)
+
+resume_annuel <- process_data %>%
+  group_by(annee) %>%
+  summarise(
+    nb_sorties = n(),
+    nb_observations = sum(presence, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+print(resume_annuel)
+
+
+resume_long <- resume_annuel %>%
+  pivot_longer(
+    cols = c(nb_sorties, nb_observations),
+    names_to = "type",
+    values_to = "nombre"
+  )
+
+ggplot(resume_long, aes(x = annee, y = nombre, fill = type)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Année",
+    y = "Nombre",
+    fill = ""
+  ) +
+  theme_minimal()
+
+proba_annuelle <- newdat %>%
+  group_by(annee) %>%
+  summarise(
+    proba_detection_moyenne = mean(prob_detect, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+print(proba_annuelle)
+
+
+```
+#graphe proba occurence blongios AVEC inter 
 ```{r}
 #=======================
 # LIBRAIRIES
@@ -622,7 +662,7 @@ process_data <- read.csv("process_protocole.csv")
 process_data <- process_data %>%
   filter(
     grepl("SuiviBlongiosTalève", champs_additionnels),
-    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+    nom_vernaculaire == "Blongios nain, Butor blongios"
   ) %>%
   mutate(
     presence   = ifelse(nombre_min > 0, 1, 0),
@@ -643,68 +683,159 @@ modele_phenologie <- glm(
 
 # ---- GRILLE DE PREDICTION (PAR ANNEE) ----
 newdat <- process_data %>%
+  distinct(annee) %>%
   group_by(annee) %>%
   summarise(
-    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
+    j_julien = list(seq(
+      min(process_data$j_julien),
+      max(process_data$j_julien),
+      by = 1
+    )),
     .groups = "drop"
   ) %>%
-  unnest(j_julien) %>%
+  tidyr::unnest(j_julien) %>%
   mutate(j_julien2 = j_julien^2)
 
 # ---- PREDICTION ----
-newdat$prob_detect <- predict(
-  modele_phenologie,
-  newdata = newdat,
-  type = "response"
-)
-
-# ---- GRAPHE ----
-ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee)) +
+# ---- GRAPHE (SANS 2018 ET 2019) ----
+newdat %>%
+  filter(!annee %in% c("2018", "2019")) %>%   # ⬅️ suppression dans le graphe
+  ggplot(aes(x = j_julien, y = prob_detect, color = annee)) +
   geom_line(linewidth = 1) +
   labs(
     x = "Jour julien",
-    y = "Probabilité de détection",
+    y = "Probabilité de présence",
     color = "Année"
   ) +
   theme_minimal()
 
-
-
 ```
-
-
+#proba occ blongios sans inter 
 ```{r}
 
 
+#=======================
+# LIBRAIRIES
+#=======================
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+library(lme4)
+library(tidyr)
 
-m_glm <- glm(
-  presence ~ j_julien + annee + nom_lieu,
+#========================
+# DONNEES
+#========================
+process_data <- read.csv("process_protocole.csv")
+
+#========================
+# PREPARATION  # garder uniquement les lignes protocolées de talève
+#========================
+process_data <- process_data %>%
+  filter(
+    grepl("SuiviBlongiosTalève", champs_additionnels),
+    nom_vernaculaire == "Blongios nain, Butor blongios"
+  ) %>%
+  mutate(
+    presence   = ifelse(nombre_min > 0, 1, 0),
+    date_debut = as.Date(date_debut),
+    annee      = factor(lubridate::year(date_debut)),  # année en facteur
+    j_julien   = lubridate::yday(date_debut),
+    j_julien2  = j_julien^2,
+    nom_lieu   = factor(nom_lieu)
+  )
+
+#========================
+# MODELE GLM
+#========================
+modele_phenologie <- glm(
+  presence ~ j_julien + j_julien2 + annee,
   data = process_data,
   family = binomial
 )
 
-m_step <- step(
-  m_glm,
-  direction = "both",
-  trace = TRUE
+#========================
+# GRILLE DE PREDICTION (PAR ANNEE)
+#========================
+newdat <- process_data %>%
+  distinct(annee) %>%
+  group_by(annee) %>%
+  summarise(
+    j_julien = list(seq(
+      min(process_data$j_julien),
+      max(process_data$j_julien),
+      by = 1
+    )),
+    .groups = "drop"
+  ) %>%
+  tidyr::unnest(j_julien) %>%
+  mutate(j_julien2 = j_julien^2)
+
+#========================
+# PREDICTION AVEC INTERVALLES DE CONFIANCE
+#========================
+pred <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "link",        # échelle logit
+  se.fit = TRUE
 )
 
-summary(m_step)
+newdat <- newdat %>%
+  mutate(
+    fit         = pred$fit,
+    se_fit      = pred$se.fit,
+    prob_detect = plogis(fit),
+    prob_lower  = plogis(fit - 1.96 * se_fit),
+    prob_upper  = plogis(fit + 1.96 * se_fit)
+  )
+
+#========================
+# GRAPHE AVEC INTERVALLES
+#========================
+newdat %>%
+  filter(!annee %in% c("2018", "2019")) %>%   # suppression de certaines années
+  ggplot(aes(x = j_julien, y = prob_detect, color = annee, fill = annee)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(aes(ymin = prob_lower, ymax = prob_upper), alpha = 0.2, color = NA) +
+  labs(
+    x = "Jour julien",
+    y = "Probabilité de présence",
+    color = "Année",
+    fill  = "Année"
+  ) +
+  theme_minimal()
+
+```
 
 
 
 
-#---- occupancy ----
-# Modèle d'occupancy nul : juste l'intercept
-library(unmarked)
+#occupancy
 
-# Créer un objet unmarkedFrame pour les données d'occurrence
-umf <- unmarkedFrameOccu(y = y_matrix, siteCovs = site_data, obsCovs = obs_data)
+# tableau-site-annee
+```{r}
+process_protocole <- read.csv("process_protocole.csv")
 
-# Modèle d'occupancy nul
-modele_nul <- occu(~1 ~1, data = umf)  # ~1 pour détection, ~1 pour occupancy
-summary(modele_nul)
+Protocole_SuiviBlongios<- process_protocole %>%
+  filter(
+    champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire ==
+        "Blongios nain, Butor blongios"
+      )
 
+tableau_site_annee <- Protocole_SuiviBlongios %>%
+  group_by(annee, nom_lieu) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+  
+Y <- pivot_wider(
+  tableau_site_annee,
+  names_from = nom_lieu,
+  values_from = total_obs
+)
 
 
 ```
@@ -712,6 +843,112 @@ summary(modele_nul)
 
 
 
+#tableau jour de sortie 
+```{r}
+library(dplyr)
+
+Protocole_SuiviBlongios <- Protocole_SuiviBlongios %>%
+  mutate(date_debut = as.Date(date_debut))  # format par défaut YYYY-MM-DD
+
+
+tableau_jours <- Protocole_SuiviBlongios %>%
+  select(nom_lieu, nom_vernaculaire, date_debut, nombre_min) %>%
+  rename(jour = date_debut)
+
+head(tableau_jours)
+
+
+
+library(dplyr)
+library(dplyr)
+library(lubridate)
+library(tidyr)
+
+tableau_2014 <- Protocole_SuiviBlongios %>%
+  mutate(date_debut = as.Date(date_debut)) %>%        # s'assurer que c'est bien un Date
+  filter(year(date_debut) == 2014) %>%               # ne garder que 2014
+  distinct(date_debut) %>%                           # garder seulement les dates uniques
+  arrange(date_debut) %>%                            # trier chronologiquement
+  mutate(sortie = row_number()) %>%                 # numéroter les sorties
+  select(sortie, date_debut)
+
+tableau_2014
+
+
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(slider)
+library(leaflet)
+library(sf)
+library(broom)
+library(ggeffects)
+library(tidyr)
+library(unmarked)
+
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+tableau_addition_site <- Protocole_SuiviTaleve %>%
+  group_by(date_debut) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+  
+  
+Y <- pivot_wider(
+  tableau_site_annee,
+  names_from = nom_lieu,
+  values_from = total_obs
+)
+
+
+```
+
+```{r}
+library(dplyr)
+library(lubridate)
+
+Protocole_SuiviBlongios <- Protocole_SuiviBlongios %>%
+  mutate(date_debut = as.Date(date_debut))
+
+jours_2014 <- Protocole_SuiviBlongios %>%
+  filter(year(date_debut) == 2014) %>%
+  distinct(date_debut) %>%
+  arrange(date_debut) %>%
+  mutate(jour_passage = paste0("J", row_number()))
+
+
+Protocole_2014 <- Protocole_SuiviBlongios %>%
+  filter(year(date_debut) == 2014) %>%
+  left_join(jours_2014, by = "date_debut")
+
+
+
+tableau_site_jour <- Protocole_2014 %>%
+  group_by(nom_lieu, jour_passage) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+Y <- tableau_site_jour %>%
+  pivot_wider(
+    names_from  = jour_passage,
+    values_from = total_obs,
+    values_fill = 0
+  )
 
 
 
@@ -733,8 +970,305 @@ summary(modele_nul)
 
 
 
+library(dplyr)
+library(tidyr)
+library(lubridate)
+
+process_protocole <- read.csv("process_protocole.csv")
+
+Protocole_SuiviBlongios <- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}",
+    nom_vernaculaire == "Blongios nain, Butor blongios"
+  ) %>%
+  mutate(
+    date_debut = as.Date(date_debut),
+    annee = year(date_debut)
+  )
 
 
 
 
+
+
+jours_passage <- Protocole_SuiviBlongios %>%
+  distinct(annee, date_debut) %>%     # dates uniques par année
+  arrange(annee, date_debut) %>%
+  group_by(annee) %>%
+  mutate(jour = paste0("J", row_number())) %>%
+  ungroup()
+
+
+
+
+Protocole_SuiviBlongios <- Protocole_SuiviBlongios %>%
+  left_join(jours_passage, by = c("annee", "date_debut"))
+
+
+
+
+tableau_site_annee_jour <- Protocole_SuiviBlongios %>%
+  group_by(nom_lieu, annee, jour) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+
+tableau_site_annee_jour <- tableau_site_annee_jour %>%
+  mutate(annee_jour = paste0(annee, "_", jour))
+
+
+
+
+Y <- tableau_site_annee_jour %>%
+  pivot_wider(
+    names_from  = annee_jour,
+    values_from = total_obs,
+    values_fill = 0
+  )
+
+
+```
+
+#tableau vrai occupancy 
+```{r}
+library(dplyr)
+library(tidyr)
+library(lubridate)
+
+process_protocole <- read.csv("process_protocole.csv")
+
+Protocole_SuiviBlongios <- process_protocole %>%
+  filter(
+    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}",
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  ) %>%
+  mutate(
+    date_debut = as.Date(date_debut),
+    annee = year(date_debut)
+  )
+
+
+
+
+tableau_annee_date <- Protocole_SuiviBlongios %>%
+  group_by(annee, date_debut) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+
+Y <- tableau_annee_date %>%
+  pivot_wider(
+    names_from  = date_debut,
+    values_from = total_obs,
+    values_fill = 0
+  )
+
+
+
+
+
+
+library(dplyr)
+
+# noms des colonnes
+cols <- colnames(Y)
+
+# colonnes correspondant à 2014 (dates)
+cols_2014 <- cols[grepl("^2014-", cols)]
+
+# trier les dates de 2014
+cols_2014 <- sort(cols_2014)
+
+# colonnes à supprimer : positions 1,3,5,7,9,...
+cols_2014_a_supprimer <- cols_2014[seq(1, length(cols_2014), by = 2)]
+
+# suppression dans Y
+Y_corrige <- Y %>%
+  select(-all_of(cols_2014_a_supprimer))
+
+Y <- Y_corrige
+
+Y <- Y %>%
+  filter(annee != 2018)
+
+```
+
+#modele nul occupancy 
+```{r}
+library(unmarked)
+
+
+
+# enlever la colonne annee
+y_mat <- Y %>%
+  select(-annee) %>%
+  as.matrix()
+
+# transformer en détection / non-détection
+y_det <- ifelse(y_mat > 0, 1, 0)
+
+umf <- unmarkedFrameOccu(y = y_det)
+
+mod_null <- occu(~1 ~1, data = umf)
+
+summary(mod_null)
+
+backTransform(mod_null, type = "state")      # psi
+backTransform(mod_null, type = "det")        # p
+
+
+# nombre de visites par année
+rowSums(!is.na(y_det))
+
+# années avec au moins une détection
+rowSums(y_det)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(dplyr)
+
+# tableau résultat vide
+Y_clean <- data.frame()
+
+for(i in 1:nrow(Y)){
+  annee_ligne <- Y$annee[i]
+  
+  # colonnes correspondant à cette année
+  cols_keep <- grep(paste0("^", annee_ligne, "-"), colnames(Y), value = TRUE)
+  
+  # créer une ligne : annee + valeurs de cette année
+  new_row <- c(annee = annee_ligne, Y[i, cols_keep])
+  
+  # ajouter au tableau
+  Y_clean <- bind_rows(Y_clean, as.data.frame(new_row))
+}
+
+# convertir en numérique après suppression de l’annee
+y_det <- Y_clean %>%
+  mutate(across(-annee, as.numeric)) %>%
+  select(-annee) %>%
+  as.matrix()
+
+# transformer en 0/1 pour unmarked
+y_det <- ifelse(y_det > 0, 1, 0)
+
+library(unmarked)
+
+umf <- unmarkedFrameOccu(y = y_det)
+
+mod_null <- occu(~1 ~1, data = umf)
+
+summary(mod_null)
+
+
+
+
+psi <- backTransform(mod_null, type = "state")    # probabilité d’occupation
+p   <- backTransform(mod_null, type = "det")      # probabilité de détection
+
+# afficher
+psi@estimate
+p@estimate
+
+```
+```{r}
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+
+colnames(environnement)
+
+
+
+
+# Lire le fichier environnement_daily.csv
+environnement <- read.csv("environnement_daily.csv")
+
+# Joindre les données sur une colonne commune, par ex. date_debut
+Protocole_SuiviTaleve_joint <- Protocole_SuiviTaleve %>%
+  left_join(environnement, by = "Date")
+
+# Puis ton group_by et summarise
+tableau_addition_site <- Protocole_SuiviTaleve_joint %>%
+  group_by(date_debut, temp_moy_glissante_7j, pluie_1h, 
+           pluie_moy_glissante_7j, pluie_moy_glissante_31j,
+           AssecT_1, Profondeur, vent_moyen) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+# S'assurer que la colonne date est bien en Date si ce n'est pas déjà le cas
+Protocole_SuiviTaleve$date_debut <- as.Date(Protocole_SuiviTaleve$date_debut)
+environnement$date <- as.Date(environnement$date)
+
+# Joindre les données météo sur la date
+Protocole_SuiviTaleve_joint <- Protocole_SuiviTaleve %>%
+  left_join(environnement, by = c("date_debut" = "date"))
+
+# Maintenant, on peut faire ton group_by
+tableau_addition_site <- Protocole_SuiviTaleve_joint %>%
+  group_by(date_debut, temperature, pluie_1h, vent_moyen) %>% # adapte selon colonnes utiles
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+
+
+
+
+tableau_addition_site <- Protocole_SuiviTaleve %>%
+  group_by(date_debut, temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur, vent_moyen) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y"))
+tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ]
+
+tableau_repet <- tableau_addition_site %>%
+  arrange(annee, date_debut) %>%
+  group_by(annee) %>%
+  mutate(passage = row_number()) %>%
+  ungroup()
+
+
+tableau_ready<- tableau_repet %>%
+  select(annee, passage, total_obs,temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j, AssecT_1, Profondeur, vent_moyen) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = total_obs,
+    names_prefix = "passage_"
+  )
+```
 
