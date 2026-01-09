@@ -65,14 +65,12 @@ Dans chaque tableau, il y a 77 variables et toutes les données d'observations d
 
 #a)  récupérer les tableaux de données brute.
 
-#charger le chemin d'accès : à adapter à votre ordinateur 
-setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas")
 
 #charger les données brutes: 2 tableaux
-raw_data<- read_excel("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
+raw_data<- read_excel("data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
 
 raw_data_2 <- read_delim(
-  "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
+  "data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
   delim = ";",
   locale = locale(encoding = "Latin1", decimal_mark = ".")
 )
@@ -149,7 +147,7 @@ process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <-
 #création du tableau final avec les 3 espèces et les colonnes dans le bon format. C'est ce tableau qui est par la suite utilisé. 
 process_data = process_data_2
 
-write_csv(process_data, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv")
+write_csv(process_data, "data/pro/process_data.csv")
 
 tibble(Variables = names(process_data)) |>
   kbl(caption = "Variables du jeu de données") |>
@@ -174,8 +172,7 @@ Le tableau process_data correspond aux données sur toute la période 1990-2025 
 Il y a deux protocoles mis en place pour les trois espèces : un pour le Butor étoilé et un pour le Blongios et la Talève. Le protocole Butor est réalisé entre le 10 avril et le 16 mai, à raison de deux à quatre visites sur la période. Chaque visite sur un point consiste à écouter pendant 15 minutes 1 fois le soir (entre 30mn avant le coucher du soleil et 1h après) et 1 fois le matin (dans les 2h qui précèdent le lever du soleil).
 
 Le protocole Blongios-Talève est réalisé entre le 1er mai et fin juillet. Il y a une visite toutes les 3 semaines sur les 9 points d'écoute (et d'observation), soit 4 visites annuelles. Chaque visite sur un point consiste à écouter (et observer) pendant 30 minutes 1 fois le soir (entre 1h avant le coucher du soleil et 30mn après) et 1 fois le matin (dans les 1h30 qui suivent le lever du soleil) Chaque visite comporte trois parties : 10 mn d'écoute-observation suivie de 10mn d'écoute-observation avec repasse du chant de Blongios suivi de 10mn d'écoute-observation avec repasse du chant de Talève.
-                                                                                                                                             
-                                                                                                                                             Nous ne gardons par la suite des analyses que les données qui font partie de ces protocoles : donc à partir de 2014 et uniquement sur les 9 points d'écoutes protocolés. Les autres données sont considérées comme opportunistes.
+Nous ne gardons par la suite des analyses que les données qui font partie de ces protocoles : donc à partir de 2014 et uniquement sur les 9 points d'écoutes protocolés. Les autres données sont considérées comme opportunistes.
 
 ```{r}
 ## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
@@ -276,7 +273,7 @@ file_2025 <- file_2025[-1, ]
 data_environnement <- bind_rows(file_2013, file_2014, file_2015, file_2016, file_2017, file_2018, file_2019, file_2020, file_2021, file_2022, file_2023, file_2024, file_2025)
 
 #écrire le CSV avec toutes les données 
-write_csv(data_environnement, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/raw/raw_environnement.csv")
+write_csv(data_environnement, "data/raw/raw_environnement.csv")
 
 #tri et clean des données environnementales : les données sont toutes les 20min depuis 2013.
 data_environnement2=data_environnement
@@ -301,7 +298,7 @@ environnement_daily <- data_environnement2_clean %>%
 
 
 #écriture du csv propre qui sera utilisé par la suite : 1 donnée par jour (moyenne de toutes les variables qui étaient toutes les 20min) -> nommé environnement_daily
-write_csv(environnement_daily, "C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/environnement_daily.csv")
+write_csv(environnement_daily, "data/pro/environnement_daily.csv")
 
 
 
@@ -323,151 +320,116 @@ Par ailleurs, des moyennes glissantes sur 7 et 31 jours ont été réalisées po
 ##### création des lignes pour les jours manquants du tableau environnement_daily
 
 # étape 1 création d'un tableau de 2013 à 2025 avec une variable jour julian
+date_debut <- as.Date("2013-01-01")
+date_fin   <- as.Date("2025-12-31")
+toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
+données_2013_2025 <- data.frame(Date = toutes_dates)
+données_2013_2025$julian = yday(données_2013_2025$Date)
+
+# étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
+environnement_daily <- environnement_daily %>%
+  full_join(données_2013_2025 %>% 
+              select(Date, julian),by = "Date")
+
+# Etape 3 verification du jeu de données
+# 
+# # Nombre de jours par année
+# environnement_daily %>%
+#   mutate(Annee = year(Date)) 
+#   # count(Annee)
+# 
+# # les lignes manquantes si il y'en a
+# résumé_jours_NA = environnement_daily %>%
+#   filter(is.na(temperature)) %>%        
+#   mutate(Annee = year(Date)) %>%        
+#   group_by(Annee) %>%                   
+#   summarise(
+#     nb_lignes = n(),                     
+#     nb_jours_uniques = n_distinct(Date)  
+#   )
+
+### 3.2 Rajout des moyennes glissantes
+
+# On calcule la variable température et pluie moyenne glissante sur 31 jours 
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(temp_moy_glissante_31j = slide_dbl(temperature,mean,
+                                            .before = 31,
+                                            .after = 0,
+                                            .complete = TRUE,
+                                            na.rm = TRUE)
+         )
+
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(temp_moy_glissante_7j = slide_dbl(temperature,
+                                           mean,
+                                           .before = 7,
+                                           .after = 0,
+                                           .complete = TRUE,
+                                           na.rm = TRUE
+                                           )
+         )
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(pluie_moy_glissante_31j = slide_dbl(pluie_1h,
+                                             mean,
+                                             .before = 31,
+                                             .after = 0,
+                                             .complete = TRUE,
+                                             na.rm = TRUE
+                                             )
+         )
+environnement_daily <- environnement_daily %>%
+  arrange(Date) %>%
+  mutate(pluie_moy_glissante_7j = slide_dbl(pluie_1h,
+                                            mean,
+                                            .before = 7,
+                                            .after = 0,
+                                            .complete = TRUE,
+                                            na.rm = TRUE
+                                            )
+         )
+write_csv(environnement_daily,"data/pro/environnement_daily.csv")
+head(environnement_daily) |>
+  kbl(caption = "Aperçu des données") |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = FALSE
+                )
+```
                                                                                                                                              
-                                                                                                                                             date_debut <- as.Date("2013-01-01")
-                                                                                                                                             date_fin   <- as.Date("2025-12-31")
-                                                                                                                                             
-                                                                                                                                             toutes_dates <- seq(from = date_debut, to = date_fin, by = "day")
-                                                                                                                                             
-                                                                                                                                             données_2013_2025 <- data.frame(
-                                                                                                                                               Date = toutes_dates)
-                                                                                                                                             
-                                                                                                                                             données_2013_2025$julian = yday(données_2013_2025$Date)
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             # étape 2 on va forcer le rajout des lignes avec un full.join qui permet de rajouter toutes les lignes du tableau 2 au premier tableau meme si les lignes n'ont pas de jointures
-                                                                                                                                             
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               full_join(
-                                                                                                                                                 données_2013_2025 %>% select(Date, julian),
-                                                                                                                                                 by = "Date"
-                                                                                                                                               )
-                                                                                                                                             
-                                                                                                                                             # Etape 3 verification du jeu de données
-                                                                                                                                             # 
-                                                                                                                                             # # Nombre de jours par année
-                                                                                                                                             # environnement_daily %>%
-                                                                                                                                             #   mutate(Annee = year(Date)) 
-                                                                                                                                             #   # count(Annee)
-                                                                                                                                             # 
-                                                                                                                                             # # les lignes manquantes si il y'en a
-                                                                                                                                             # résumé_jours_NA = environnement_daily %>%
-                                                                                                                                             #   filter(is.na(temperature)) %>%        
-                                                                                                                                             #   mutate(Annee = year(Date)) %>%        
-                                                                                                                                             #   group_by(Annee) %>%                   
-                                                                                                                                             #   summarise(
-                                                                                                                                             #     nb_lignes = n(),                     
-                                                                                                                                             #     nb_jours_uniques = n_distinct(Date)  
-                                                                                                                                             #   )
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             ### 3.2 Rajout des moyennes glissantes
-                                                                                                                                             
-                                                                                                                                             # On calcule la variable température et pluie moyenne glissante sur 31 jours 
-                                                                                                                                             
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               arrange(Date) %>%
-                                                                                                                                               mutate(
-                                                                                                                                                 temp_moy_glissante_31j = slide_dbl(
-                                                                                                                                                   temperature,
-                                                                                                                                                   mean,
-                                                                                                                                                   .before = 31,
-                                                                                                                                                   .after = 0,
-                                                                                                                                                   .complete = TRUE,
-                                                                                                                                                   na.rm = TRUE
-                                                                                                                                                 )
-                                                                                                                                               )
-                                                                                                                                             
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               arrange(Date) %>%
-                                                                                                                                               mutate(
-                                                                                                                                                 temp_moy_glissante_7j = slide_dbl(
-                                                                                                                                                   temperature,
-                                                                                                                                                   mean,
-                                                                                                                                                   .before = 7,
-                                                                                                                                                   .after = 0,
-                                                                                                                                                   .complete = TRUE,
-                                                                                                                                                   na.rm = TRUE
-                                                                                                                                                 )
-                                                                                                                                               )
-                                                                                                                                             
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               arrange(Date) %>%
-                                                                                                                                               mutate(
-                                                                                                                                                 pluie_moy_glissante_31j = slide_dbl(
-                                                                                                                                                   pluie_1h,
-                                                                                                                                                   mean,
-                                                                                                                                                   .before = 31,
-                                                                                                                                                   .after = 0,
-                                                                                                                                                   .complete = TRUE,
-                                                                                                                                                   na.rm = TRUE
-                                                                                                                                                 )
-                                                                                                                                               )
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               arrange(Date) %>%
-                                                                                                                                               mutate(
-                                                                                                                                                 pluie_moy_glissante_7j = slide_dbl(
-                                                                                                                                                   pluie_1h,
-                                                                                                                                                   mean,
-                                                                                                                                                   .before = 7,
-                                                                                                                                                   .after = 0,
-                                                                                                                                                   .complete = TRUE,
-                                                                                                                                                   na.rm = TRUE
-                                                                                                                                                 )
-                                                                                                                                               )
-                                                                                                                                             write_csv(
-                                                                                                                                               environnement_daily,
-                                                                                                                                               "data/pro/environnement_daily.csv"
-                                                                                                                                             )
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             head(environnement_daily) |>
-                                                                                                                                               kbl(caption = "Aperçu des données") |>
-                                                                                                                                               kable_styling(
-                                                                                                                                                 bootstrap_options = c("striped", "hover", "condensed", "responsive"),
-                                                                                                                                                 full_width = FALSE
-                                                                                                                                               )
-                                                                                                                                             
-                                                                                                                                             ```
-                                                                                                                                             
-                                                                                                                                             ```{r}
-                                                                                                                                             #| echo: false
-                                                                                                                                             process_protocole = process_protocole %>%
-                                                                                                                                               inner_join( environnement_daily,by = c("date_debut"= "Date") )
-                                                                                                                                             
-                                                                                                                                             write_csv(
-                                                                                                                                               process_protocole,
-                                                                                                                                               "data/pro/process_protocole.csv"
-                                                                                                                                             )
-                                                                                                                                             ```
-                                                                                                                                             
-                                                                                                                                             Dans ce tableau, les seules variables qui nous interessent sont la pluie, le vent et la température.
-                                                                                                                                             
-                                                                                                                                             ```{r}
-                                                                                                                                             #graphique enviro
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             environnement_daily <- environnement_daily %>%
-                                                                                                                                               mutate(
-                                                                                                                                                 year = year(Date),
-                                                                                                                                                 day_of_year = yday(Date)  # équivalent du jour julien
-                                                                                                                                               )
-                                                                                                                                             
-                                                                                                                                             ggplot(environnement_daily, aes(x = day_of_year, y = temperature)) +
-                                                                                                                                               geom_line(color = "red") +
-                                                                                                                                               facet_wrap(~ year, scales = "free_y") +
-                                                                                                                                               labs(
-                                                                                                                                                 title = "Évolution journalière des températures (2013–2025)",
-                                                                                                                                                 x = "Jour de l'année",
-                                                                                                                                                 y = "Température (°C)"
-                                                                                                                                               ) +
-                                                                                                                                               theme_minimal()
-                                                                                                                                             
-                                                                                                                                             
-                                                                                                                                             ```
-                                                                                                                                             
-                                                                                                                                             Ces graphiques montrent l'évolution de la température durant un an pour chaque année d'étude. On n'observe pas de changement en structure d'une année sur l'autre.
+```{r}
+
+#| echo: false
+process_protocole = process_protocole %>%
+  inner_join( environnement_daily,by = c("date_debut"= "Date") )
+
+write_csv(process_protocole,"data/pro/process_protocole.csv")
+
+```
+
+Dans ce tableau, les seules variables qui nous interessent sont la pluie, le vent et la température.
+
+```{r}
+#graphique enviro
+environnement_daily <- environnement_daily %>%
+  mutate(year = year(Date), day_of_year = yday(Date)  # équivalent du jour julien
+         )
+
+ggplot(environnement_daily, aes(x = day_of_year, y = temperature)) +
+  geom_line(color = "red") +
+  facet_wrap(~ year, scales = "free_y") +
+  labs(
+    title = "Évolution journalière des températures (2013–2025)",
+    x = "Jour de l'année",
+    y = "Température (°C)"
+    ) +
+  theme_minimal()
+
+```
+
+Ces graphiques montrent l'évolution de la température durant un an pour chaque année d'étude. On n'observe pas de changement en structure d'une année sur l'autre.
 
 ```{r}
 
@@ -581,9 +543,9 @@ ggplot(HydrologicDataGrandBagnas, aes(x = Jour, y = Profondeur)) +
 
 ```
 
-Ces graphiques représentent la profondeur de l'eau chaque année. On peut voir en 2016, 2019 et 2022 des assec totaux (profondeur à 0) en septembre.
+Ces graphiques représentent la profondeur de l'eau chaque année. On peut voir en 2016, 2019 et 2022 des assecs totaux (profondeur à 0) en septembre.
 
-Dans les modèles, on utilisera les assec de l'année qui précède l'année d'étude afin de ne pas prédire de phénomènes en fonction d'assec qui n'ont pas eu lieu. On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
+Dans les modèles, on utilisera les assecs de l'année qui précède l'année d'étude afin de ne pas prédire de phénomènes en fonction d'assec qui n'ont pas eu lieu. On crée une variable Assec de l'année précédente avec 3 modalités : non (pas d'assec), partiel et total.
 
 ```{r}
 ## INTERPOLATION LINÉAIRE DE LA PROFONDEUR JOURNALIÈRE
@@ -629,7 +591,7 @@ head(DataHydroBagnas) |>
 
 ```
 
-Les données hydro nous interessent pour la profondeur moyenne et les assec. Dans le tableau initial, les données n'étaient que toutes les 2 semaines, on a donc créé des données quotidienne par interpolation linéaire. On a donc pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant.
+Les données hydrologiques nous intéressent pour la profondeur moyenne et les assecs. Dans le tableau initial, on dispose d'un point toutes les 2 semaines, on créé donc des données quotidienne par interpolation linéaire. On obtiens pour chaque jour la profondeur de l'eau, et la présence ou non d'un assec un an avant.
 
 On rajoute ensuite les variables hydrologiques dans les tableaux de données process_protocole et environnement_daily.
 
@@ -669,7 +631,7 @@ La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte 
 
 #1 : les sites du protocole :
 #on va chercher le csv process_protocole dans l'ordinateur
-process_protocole <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_protocole.csv")
+process_protocole <- read_csv("data/pro/process_protocole.csv")
 
 #préparer les coordonnées pour que R comprenne 
 sites_protocole <- st_as_sf(process_protocole, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)

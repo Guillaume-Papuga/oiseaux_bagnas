@@ -5,7 +5,7 @@ editor: visual
 echo: false
 ---
   
-  ```{css, echo = FALSE}
+```{css, echo = FALSE}
 .justify {
   text-align: justify !important
 }
@@ -46,8 +46,8 @@ library(leaflet)
 library(sf)
 library(slider)
 
-setwd("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro") # modifier le chemin en fonction de l'ordinateur utilisé 
-process_data <- read_csv("C:/Users/LENOVO/Desktop/M2/BIODIV_DATA/oiseaux_bagnas/data/pro/process_data.csv") # charger le jeu de données nettoyé 
+ 
+process_data <- read_csv("data/pro/process_data.csv") # charger le jeu de données nettoyé 
 ```
 
 ## 1 - Graphique de présence des Butors par semaine depuis 1990
@@ -161,7 +161,7 @@ On remarque que la plupart des observations de Butor sont réalisées de manièr
 Cette carte donne la localisation des points d'écoute du protocole Butors et le nombre de Butors contactés (en cliquant sur les points). Les points noirs représentent les sites où aucun Butor n'a été contacté.
 :::
   
-  ```{r}
+```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
 process_protocole <- read_csv("data/pro/process_protocole.csv")
 
@@ -215,7 +215,7 @@ Comme mentionné plus haut, aucun Butor n'a été contacté lors du protocole co
 Ce graphique représente l'effort d'échantillonnage ainsi que le nombre d'obervations cumulés au cours du protocole Butor pour chaque heure de la journée de 2014 à 2025. L'effort d'échantillonnage est représenté par la somme des entrées (lignes) dans le jeu de données.
 :::
   
-  ```{r}
+```{r}
 
 # mettre les dates au bon format 
 process_protocole_butor_h <- process_protocole_butor %>%
@@ -277,15 +277,15 @@ On observe que les sorties se concentrent avant le levé du soleil et au crépus
   
   
   
-  ## 4 - Cumule des observations de Butor
+## 4 - Cumule des observations de Butor
   
-  ::: justify
+::: justify
 Face à l'absence de données protocolées, nous n'avons pas pu effectuer de modélisation de la structure de la population de Butor. Nous avons cependant représenté graphiquement la distribution du nombre de Butors contactés pour obtenir la structure inter-annuelle, intra-annuelle et spatiale.
 :::
   
   #### a - Cumule par année
   
-  ::: justify
+::: justify
 Ce graphique représente le cumul de toutes les observations de Butor entre 1990 et 2025 structurées par année (uniquement des observations opportunistes). Ce graphique permet d'avoir une idée de la structure inter-annuelle des observations.
 :::
 
