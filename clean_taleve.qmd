@@ -1,10 +1,10 @@
 ---
-title: "clean_taleve"
+  title: "clean_taleve"
 format: html
 editor: visual
 ---
-
-```{r setup}
+  
+  ```{r setup}
 knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE, 
@@ -43,7 +43,7 @@ process_data <- read_csv("data/pro/process_data.csv")
 
 #A- Graphique de présence des Talèves par semaine depuis 1990
 
-Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s’il s’agit d’observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où la talève n’a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d’écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.
+Le graphique suivant représente pour chaque année (en ligne), au court de quelle semaine (en colonne) la talève a été observé et s'il s'agit d'observations opportunistes ou protocolées. Le graphique indique aussi les sorties protocolées où la talève n'a pas été observé. La ligne pointillée bleue correspond à 2014, début du protocole de point d'écoute de la talève. Celui-ci se déroule du 10 avril au 16 mai, période favorable pour la détection de mâles chanteurs.
 
 ```{r}
 ## 1 : graphique des semaines de la vie, on regarde les présences de l'espèce chaque semaine depuis 1990. 
@@ -80,10 +80,10 @@ data_taleve_summarized <- data_taleve %>%
       any(is_obs) & any(is_protocole & is_obs) & any(!is_protocole & is_obs)   ~ "obs_mixte", # si dans une semaine il y a eu au moins 1 observation protocole ET 1 opportuniste, alors on définit ça en observation mixte 
       any(is_obs) & any(is_protocole & is_obs)  ~ "obs_protocole",  #si dans 1 semaine il y a eu au moins 1 observation protocolée (et aucune opportuniste) on définit en observation protocolée 
       any(is_obs) & any(!is_protocole & is_obs)  ~ "obs_hors_protocole", #si dans 1 semaine il y a eu au moins 1 observation opportuniste (et aucune protocolée) on définit en observation hors protocole
-
+      
       # sorties protocolées sans observation = aucun oiseau vu
       any(is_protocole) & any(nombre_min == 0) ~ "sortie_sans_observation",
-
+      
       TRUE ~ NA_character_
     ),
     .groups = "drop"
@@ -144,7 +144,7 @@ on voit que le protocole est réalisé pendant la periode historique d'écoute e
 
 #B- Cartographie de la présence des Butors sur les sites d'écoute du protocole
 
-Cette carte donne la localisation des points d’écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).
+Cette carte donne la localisation des points d'écoute du protocole talève et le nombre de talèves contactés (en cliquant sur les points).
 
 ```{r}
 # on prend le dataframe des données uniquement protocolées (cf document clean_data pour sa création)
@@ -172,10 +172,10 @@ leaflet() %>%
   addCircleMarkers(
     data =sites_protocole_taleve, #on prend les data frame résumé avec 1 ligne par site
     radius = ~somme_nombre_min,#la taille des points est proportionnelle au nombre d'oiseaux entendus
-    color = "red",
-    fillOpacity = 0.9,
-    popup = ~paste ((nom_lieu), ", Talèves entendues :" ,(somme_nombre_min), sep = "")
-  ) %>%
+color = "red",
+fillOpacity = 0.9,
+popup = ~paste ((nom_lieu), ", Talèves entendues :" ,(somme_nombre_min), sep = "")
+) %>%
   setView(lng = 3.51, lat = 43.31, zoom = 13)
 
 
@@ -184,7 +184,7 @@ leaflet() %>%
 
 #C- Effort journalier des données protocoles Talève
 
-Ce graphique représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole talève pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
+Ce graphique représente l'effort d'échantillonnage ainsi que le nombre d'obervations cumulés au cours du protocole talève pour chaque heure de la journée de 2014 à 2025. L'effort d'échantillonnage est représenté par la somme des sorties effectuées.
 
 ```{r}
 # Données 
@@ -262,7 +262,7 @@ En orange l'effort d'échantillonngage et en bleu le nombre de talèves observé
 
 #D- Effort journalier des données opportunistes Talève
 
-Ce graphique représente le nombre cumulé d’observations opportunistes ainsi que le nombre cumulé de talèves observés de cette manière pour chaque heure de la journée entre 1997 et 2023. Les observations pour lesquelles l’heure n’était pas disponible ont été enlevées, expliquant l’intervalle temporel réduit.
+Ce graphique représente le nombre cumulé d'observations opportunistes ainsi que le nombre cumulé de talèves observés de cette manière pour chaque heure de la journée entre 1997 et 2023. Les observations pour lesquelles l'heure n'était pas disponible ont été enlevées, expliquant l'intervalle temporel réduit.
 
 ```{r}
 # Données 
@@ -341,9 +341,9 @@ LA couleur orange représente les observations protocolées et le bleu représen
 
 ## 2 Preparation du jeu de données et des variables
 
-Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé *Protocole_SuiviTaleve*.\*\*
-
-```{r}
+Pour les analyses de présence et d'abondance, nous utilisons uniquement les données d'observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé *Protocole_SuiviTaleve*.\*\*
+  
+  ```{r}
 #| echo: false
 #| message: false
 #| warning: false
@@ -351,7 +351,7 @@ process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
 # Filtrer les relevés pour Talève sultane
 Protocole_SuiviTaleve <- process_protocole %>%
   filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+            nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   )
 
 datatable(head(Protocole_SuiviTaleve, 10), 
@@ -360,14 +360,14 @@ datatable(head(Protocole_SuiviTaleve, 10),
 #Protocole_SuiviTaleve2<- process_protocole %>%
 #  filter(
 #    champs_additionnels  != "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
- #     nom_vernaculaire ==
- #       "Talève sultane, Poule sultane, Porphyrion bleu"
+#     nom_vernaculaire ==
+#       "Talève sultane, Poule sultane, Porphyrion bleu"
 #      )
 ```
 
-Le tableau résulte de la fusion d’un tableau contenant les variables environnementales (*environnement_daily*) et d’un tableau regroupant les observations de talèves.
+Le tableau résulte de la fusion d'un tableau contenant les variables environnementales (*environnement_daily*) et d'un tableau regroupant les observations de talèves.
 
-Nous allons préparer les variables environnementales, c’est‑à‑dire les standardiser afin qu’elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.
+Nous allons préparer les variables environnementales, c'est‑à‑dire les standardiser afin qu'elles ne soient pas influencées par leur unité et pour éviter une sur‑ ou sous‑dispersion.
 
 ```{r}
 Protocole_SuiviTaleve$annee <- as.numeric(Protocole_SuiviTaleve$annee)
@@ -398,9 +398,9 @@ Protocole_SuiviTaleve$Occurence <- ifelse(Protocole_SuiviTaleve$nombre_min > 0, 
 
 
 modele_null <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu ,
-                    data = Protocole_SuiviTaleve, 
-                      family = binomial )
-                   
+                   data = Protocole_SuiviTaleve, 
+                   family = binomial )
+
 modele_complet <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu +  temp_moy_glissante_7j + pluie_moy_glissante_7j + pluie_moy_glissante_31j+ pluie_1h + AssecT_1+ Profondeur,
                       data = Protocole_SuiviTaleve, 
                       family = binomial )
@@ -424,11 +424,11 @@ kable(
 
 ```
 
-La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques n'améliore pas l’ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet.
+La sélection de modèles selon le critère d'information d'Akaike (AIC) indique que l'intégration des variables environnementales et hydrologiques n'améliore pas l'ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l'abondance de la population de talèves. L'analyse est poursuivie à l'aide du modèle complet.
 
 Les parametres estimés indiquent que :
-
-```{r}
+  
+  ```{r}
 # Nous transformons les resultats par la l'inverse de sa fonction lien (logit) afin de pouvoir les interpreter biologiquement
 transformation_logit=odds.ratio (modele_complet)
 ```
@@ -445,7 +445,7 @@ extract_coef <- function(modele, var){
 annee_res <- extract_coef(modele_complet, "annee")
 ```
 
--   Année a un effet positif significatif sur l’abondance des talèves (β = `r annee_res$beta`, p = `r annee_res$p`. Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne la chance qu'un site soit occupé par la talève augmente de `r round(((transformation_logit["annee", 'OR']-1)*100),2)`% d'une année sur l'autre
+-   Année a un effet positif significatif sur l'abondance des talèves (β = `r annee_res$beta`, p = `r annee_res$p`. Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne la chance qu'un site soit occupé par la talève augmente de `r round(((transformation_logit["annee", 'OR']-1)*100),2)`% d'une année sur l'autre
 
 Le graphique présente l'évolution de la population de la talèves au cours du temps
 
@@ -454,16 +454,16 @@ p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
 p1
 ```
 
--   Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
+-   Le site a un effet significatif sur l'abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n'ont pas d'observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
 
     Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
+  
+  ```{r}
+p2 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
+p2
+```
 
-    ```{r}
-    p2 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
-    p2
-    ```
-
-Les graphiques suivants illustrent les effets des variables pour lesquelles aucun effet significatif n’a été détecté, dans le but d’évaluer l’existence de tendances potentielles.
+Les graphiques suivants illustrent les effets des variables pour lesquelles aucun effet significatif n'a été détecté, dans le but d'évaluer l'existence de tendances potentielles.
 
 ```{r}
 p3 = plot(ggeffect(modele_complet, terms= "temp_moy_glissante_7j", residual = T))
@@ -481,7 +481,7 @@ p7
 p8
 ```
 
-À travers ces derniers graphiques, nous observons une tendance positive de la température : lorsque celle-ci augmente, l’occurrence des talèves tend également à augmenter. À l’inverse, les variables de pluviométrie moyenne sur 31 et 7 jours montrent une tendance négative, une augmentation des précipitations étant associée à une diminution de l’occurrence des talèves. En revanche, pour la pluviométrie journalière, la profondeur et l’assec, aucun effet clair ni tendance marquée sur l’occurrence des talèves ne se dégage.
+À travers ces derniers graphiques, nous observons une tendance positive de la température : lorsque celle-ci augmente, l'occurrence des talèves tend également à augmenter. À l'inverse, les variables de pluviométrie moyenne sur 31 et 7 jours montrent une tendance négative, une augmentation des précipitations étant associée à une diminution de l'occurrence des talèves. En revanche, pour la pluviométrie journalière, la profondeur et l'assec, aucun effet clair ni tendance marquée sur l'occurrence des talèves ne se dégage.
 
 ```{r}
 null_dev <- modele_complet$null.deviance
@@ -490,7 +490,7 @@ resid_dev <- modele_complet$deviance
 pseudo_R2 <- (null_dev - resid_dev) / null_dev
 ```
 
-Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 29% de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
+Globalement, Le modèle indique que l'abondance des talèves est significativement influencée par le site et l'assec partiel et le temps.Le modèle explique environ 29% de la variation de l'abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d'autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l'abondance de cette espèce.
 
 ## 4 . Modèle d'abondance
 
@@ -500,9 +500,9 @@ Nous réalisons cette analyse sur seulement les observations qui proviennent du 
 
 ```{r}
 modele_null <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu ,
-                    data = Protocole_SuiviTaleve, 
-                      family = poisson )
-                   
+                   data = Protocole_SuiviTaleve, 
+                   family = poisson )
+
 modele_complet <- glm(nombre_min~ annee + julian + I(julian^2)+ nom_lieu +  temp_moy_glissante_7j + pluie_moy_glissante_7j + pluie_moy_glissante_31j+ pluie_1h + AssecT_1+ Profondeur,
                       data = Protocole_SuiviTaleve, 
                       family = poisson )
@@ -525,11 +525,11 @@ kable(
 )
 ```
 
-La sélection de modèles selon le critère d’information d’Akaike (AIC) indique que l’intégration des variables environnementales et hydrologiques améliore significativement l’ajustement du modèle. Ces résultats suggèrent que ces facteurs jouent un rôle important dans la variation de l’abondance de la population de talèves. L’analyse est poursuivie à l’aide du modèle complet afin d’explorer les effets prédictifs des paramètres sur cette population.
+La sélection de modèles selon le critère d'information d'Akaike (AIC) indique que l'intégration des variables environnementales et hydrologiques améliore significativement l'ajustement du modèle. Ces résultats suggèrent que ces facteurs jouent un rôle important dans la variation de l'abondance de la population de talèves. L'analyse est poursuivie à l'aide du modèle complet afin d'explorer les effets prédictifs des paramètres sur cette population.
 
 Les parametres estimés indiquent que :
-
-```{r}
+  
+  ```{r}
 extract_coef <- function(modele, var){
   c <- summary(modele)$coefficients[var, ]
   tibble(
@@ -541,7 +541,7 @@ extract_coef <- function(modele, var){
 annee_res <- extract_coef(modele_complet, "annee")
 ```
 
--   Année a un effet positif significatif sur l’abondance des talèves. L’effet de l’assec sur l’abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
+-   Année a un effet positif significatif sur l'abondance des talèves. L'effet de l'assec sur l'abondance est négatif (β = `r annee_res$beta`, p = `r annee_res$p`). Donc nous avons une augmentation de l'abondance de talèves au cours des années. Le modele nous donne une augmentaion par année d'environ `r exp(annee_res$beta)`de talèves dans la reserve independamment des facteurs etudiés dans le modèle
 
 Le graphique présente l'évolution de la population de la talèves au cours du temps
 
@@ -562,9 +562,9 @@ extract_coef <- function(modele, var){
 assec_res <- extract_coef(modele_complet, "AssecT_1total")
 ```
 
--   L’effet de l’assec sur l’abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). Donc les evenements d'assec ont un impact négatif qui fait diminuer la popualtion de taleves d'environ `r exp(assec_res$beta)` par rapport à l'année précedente.
+-   L'effet de l'assec sur l'abondance est négatif (β = `r assec_res$beta`, p = `r assec_res$p`). Donc les evenements d'assec ont un impact négatif qui fait diminuer la popualtion de taleves d'environ `r exp(assec_res$beta)` par rapport à l'année précedente.
 
-    Nous ne pouvons pas mettre en évidence un effet de l’assec partiel sur la population de talèves, celui-ci n’ayant eu lieu qu’en 2022. De plus, le protocole de suivi n’a pas été appliqué selon la périodicité habituelle de deux ans, ce qui limite la capacité à détecter un effet éventuel.
+    Nous ne pouvons pas mettre en évidence un effet de l'assec partiel sur la population de talèves, celui-ci n'ayant eu lieu qu'en 2022. De plus, le protocole de suivi n'a pas été appliqué selon la périodicité habituelle de deux ans, ce qui limite la capacité à détecter un effet éventuel.
 
 Le graphique présente l'évolution de la population de la talèves en fonction au cours des années
 
@@ -573,11 +573,11 @@ p2 = plot(ggeffect(modele_complet, terms= "AssecT_1", residual = T))
 p2
 ```
 
--   Le site a un effet significatif sur l’abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n’ont pas d’observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
+-   Le site a un effet significatif sur l'abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n'ont pas d'observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
 
 -   Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
-
-```{r}
+  
+  ```{r}
 p3 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
 p3
 ```
@@ -589,7 +589,7 @@ resid_dev <- modele_complet$deviance
 pseudo_R2 <- (null_dev - resid_dev) / null_dev
 ```
 
-Globalement, Le modèle indique que l’abondance des talèves est significativement influencée par le site et l’assec partiel et le temps.Le modèle explique environ 43 % de la variation de l’abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d’autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l’abondance de cette espèce.
+Globalement, Le modèle indique que l'abondance des talèves est significativement influencée par le site et l'assec partiel et le temps.Le modèle explique environ 43 % de la variation de l'abondance des talèves (pseudo-R² = `r pseudo_R2`), ce qui suggère que d'autres facteurs non inclus dans le protocole pourraient également jouer un rôle important dans la distribution et l'abondance de cette espèce.
 
 ------------------------------------------------------------------------
 
@@ -604,20 +604,23 @@ Ce graphique permet de déterminer la probabilité d'occurence de la talève sur
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(tidyr)
 library(lme4)
 
 #========================
 # DONNEES
 #========================
-process_data <- read.csv("process_protocole.csv")
+#process_data <- read.csv("process_protocole.csv")
 
 #========================
-# PREPARATION  # garder uniquement les lignes protocolées de talève
+# PREPARATION
+# Garder uniquement les lignes protocolées de Talève
+# ET supprimer l'année 2018
 #========================
 process_data <- process_data %>%
   filter(
     grepl("SuiviBlongiosTalève", champs_additionnels),
-    nom_vernaculaire == "Blongios nain, Butor blongios"
+    nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
   ) %>%
   mutate(
     presence   = ifelse(nombre_min > 0, 1, 0),
@@ -626,45 +629,64 @@ process_data <- process_data %>%
     j_julien   = lubridate::yday(date_debut),
     j_julien2  = j_julien^2,
     nom_lieu   = factor(nom_lieu)
-  )
+  ) %>%
+  filter(annee != 2018)   # suppression définitive de 2018
 
-
-# ---- MODELE GLM ----
+#========================
+# MODELE GLM
+#========================
 modele_phenologie <- glm(
   presence ~ j_julien + j_julien2 + annee,
   data = process_data,
   family = binomial
 )
 
-# ---- GRILLE DE PREDICTION (PAR ANNEE) ----
+summary(modele_phenologie)
+
+#========================
+# GRILLE DE PREDICTION
+#========================
 newdat <- process_data %>%
-  distinct(annee) %>%
   group_by(annee) %>%
   summarise(
-    j_julien = list(seq(
-      min(process_data$j_julien),
-      max(process_data$j_julien),
-      by = 1
-    )),
+    j_julien = list(seq(min(j_julien), max(j_julien), by = 1)),
     .groups = "drop"
   ) %>%
-  tidyr::unnest(j_julien) %>%
+  unnest(j_julien) %>%
   mutate(j_julien2 = j_julien^2)
 
-# ---- PREDICTION ----
-# ---- GRAPHE (SANS 2018 ET 2019) ----
-newdat %>%
-  filter(!annee %in% c("2018", "2019")) %>%   
-  ggplot(aes(x = j_julien, y = prob_detect, color = annee)) +
+#========================
+# PREDICTION AVEC INTERVALLES DE CONFIANCE
+#========================
+pred <- predict(
+  modele_phenologie,
+  newdata = newdat,
+  type = "link",        # échelle logit
+  se.fit = TRUE
+)
+
+newdat <- newdat %>%
+  mutate(
+    fit         = pred$fit,
+    se_fit      = pred$se.fit,
+    prob_detect = plogis(fit),
+    prob_lower  = plogis(fit - 1.96 * se_fit),
+    prob_upper  = plogis(fit + 1.96 * se_fit)
+  )
+
+#========================
+# GRAPHE AVEC INTERVALLES
+#========================
+ggplot(newdat, aes(x = j_julien, y = prob_detect, color = annee, fill = annee)) +
   geom_line(linewidth = 1) +
+  geom_ribbon(aes(ymin = prob_lower, ymax = prob_upper), alpha = 0.2, color = NA) +
   labs(
     x = "Jour julien",
     y = "Probabilité de présence",
-    color = "Année"
+    color = "Année",
+    fill  = "Année"
   ) +
   theme_minimal()
-
-
 
 ```
 
