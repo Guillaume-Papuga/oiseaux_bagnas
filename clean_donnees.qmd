@@ -618,13 +618,183 @@ write_csv(process_protocole, "data/pro/process_protocole.csv")
 
 Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces.
 
-## A. les observateurs Script d'Émile
+## A. Investissements des observateurs
 
-A FAIRE Ce graphique représente les observations par observateurs.
+### 1. Nombre d'observations par observateur
 
-## B. cartographie des sites protocolés
+Le graphique suivant représente le nombre d'observation par observateur ou groupe d'observateur. Les observations dont l'observateur est noté "ADENA" ont été enlevées.
 
-La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte sont les 9 sites du protocole. En cliquant sur les points rouges les noms des sites apparaissent.
+```{r}
+
+library(ggplot2)
+library(dplyr)
+library(forcats)
+library(stringr)
+library(stringi)
+
+# ==============================
+# 0) Diagnostic initial
+# ==============================
+cat("Aperçu de process_data (5 premières lignes) :\n")
+print(utils::head(process_data, 5))
+cat("\nStructure de process_data :\n")
+print(str(process_data))
+
+# ==============================
+# 1) Nettoyage et normalisation des observateurs
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = as.character(observateurs)) %>%
+  
+  mutate(observateurs = sapply(observateurs, function(x) {
+    
+    if (is.na(x)) return(NA)
+    
+    # Séparer les observateurs multiples
+    noms <- strsplit(x, "/")[[1]]
+    
+    noms_clean <- noms %>%
+      trimws() %>%
+      tolower() %>%
+      stringi::stri_trans_general("Latin-ASCII") %>%
+      sapply(function(y) {
+        mots <- unlist(strsplit(y, " +"))
+        mots <- mots[mots != ""]
+        paste(sort(mots), collapse = " ")
+      })
+    
+    paste(noms_clean, collapse = " / ")
+  }))
+
+# ==============================
+# 2) Corrections manuelles des noms
+# ==============================
+process_data <- process_data %>%
+  mutate(observateurs = case_when(
+    observateurs == "clara rondeau" ~ "rondeau clara",
+    observateurs == "antoine cornet" ~ "cornet antoine",
+    observateurs == "salvarelli benjamin" ~ "salvarelli benjamin",
+    observateurs == "benjamin salvarelli" ~ "salvarelli benjamin",
+    observateurs == "pascale pt tabouriech" ~ "tabouriech pascale",
+    observateurs == "al anthony labouille" ~ "labouille anthony",
+    observateurs == "benoit vibarel" ~ "vibarel benoit",
+    observateurs == "claude gleise" ~ "gleise claude",
+    TRUE ~ observateurs
+  ))
+
+# ==============================
+# 3) Filtrage (exclusion ADENA)
+# ==============================
+data_filtered <- process_data %>%
+  mutate(observateurs = str_trim(observateurs)) %>%
+  filter(
+    !is.na(observateurs),
+    str_to_upper(observateurs) != "ADENA"
+  )
+
+cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
+
+# ==============================
+# 4) Agrégation des observations
+# ==============================
+data_summarized <- data_filtered %>%
+  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  group_by(observateurs) %>%
+  summarise(
+    total_min = sum(nombre_min, na.rm = TRUE),
+    n_rows = n(),
+    .groups = "drop"
+  )
+
+# ==============================
+# 5) Suppression des observateurs sans observations
+# ==============================
+data_summarized <- data_summarized %>%
+  filter(!is.na(total_min), total_min > 0)
+
+cat("\nTable agrégée (top 20) :\n")
+print(utils::head(arrange(data_summarized, desc(total_min)), 20))
+
+# Sécurité
+if (nrow(data_summarized) == 0) {
+  stop("Aucun observateur avec des observations (> 0).")
+}
+
+# ==============================
+# 6) Réorganisation pour le graphique
+# ==============================
+data_summarized <- data_summarized %>%
+  arrange(desc(total_min)) %>%
+  mutate(observateurs = factor(observateurs, levels = observateurs))
+
+# ==============================
+# 7) Graphique
+# ==============================
+p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
+  geom_col() +
+  geom_text(
+    aes(label = round(total_min, 1)),
+    vjust = -0.3,
+    size = 3
+  ) +
+  labs(
+    title = "Nombre total d'observations par observateur\n(sans ADENA)",
+    x = "Observateur",
+    y = "Nombre total d'observations"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+print(p)
+
+```
+Il existe une grande diversité des observateurs et des groupes d'observateurs. Cependant, la majorité des observations ont été réalisées par un petit nombre de personnes ou groupes de personnes.
+
+### 2. Distribution des observateurs au cours du temps
+
+Le graphique suivant représente la distribution temporelle des observateurs ou groupes d'observateurs.
+
+```{r}
+
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+# Vérifie que la colonne "date_debut" est bien au format Date
+process_data <- process_data %>%
+  mutate(date_debut = as.Date(date_debut))  
+
+#  enlever "ADENA" 
+process_data <- process_data %>%
+  filter(observateurs != "")
+
+#  trier les observateurs par fréquence
+process_data <- process_data %>%
+  mutate(observateurs = forcats::fct_infreq(observateurs))
+
+# --- Graphe de présence ---
+ggplot(process_data, aes(x = date_debut, y = observateurs)) +
+  geom_point(alpha = 0.7, color = "steelblue", size = 3) +
+  labs(
+    title = "Distribution des observateurs dans le temps",
+    x = "Date de l'observation", 
+    y = "Observateurs"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+```
+
+Pour un grand nombre d'observations, l'observateur est inconnu (noté ADENA). La notation des observateurs a débuté aux alentours de 2014. Certains observateurs ou groupes d'observateurs ont eu un rôle plus régulier dans l'échantillonnage. On observe aussi un remplacement des observateurs au cours du temps. 
+
+## B. Cartographie des sites protocolés
+
+La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte sont les 9 sites du protocole. En cliquant sur les points rouges, les noms des sites apparaissent.
 
 ```{r}
 
