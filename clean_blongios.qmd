@@ -1,25 +1,44 @@
 ---
-title: "clean_blongios"
+title: "Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas"
 format: html
 editor: visual
+css: styles.css
 ---
 
-# Analyse des observations de Blongios nain (Ixobrychus minutus) dans la Reserve Naturelle du Bagnas
+```{css, echo=FALSE}
 
-## 1. Introduction
+body {
+    text-align: justify}
+    
+```
 
-::: justify
-Le Blongios nain (Ixobrychus minutus) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne. L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021. L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.
-:::
+```{r setup}
+#| include: false
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE, 
+  echo = FALSE)
+#ce code permet de n'afficher aucun message parasite ni les warnings. 
+```
 
-## 2. Importation des packages
+# 1. Introduction
+
+Le Blongios nain (*Ixobrychus minutus*) est une espèce emblématique des zones humides, inféodée aux roselières inondées, aux berges de lacs et de cours d’eau ainsi qu’aux marais, qui lui fournissent à la fois des ressources alimentaires et des sites favorables à la nidification. Particulièrement discret, il demeure le plus souvent dissimulé au sein de la végétation, ce qui rend son observation difficile. Il s’agit d’une espèce migratrice, quittant les sites de reproduction européens à la fin de l’été pour hiverner principalement en Afrique subsaharienne.
+
+L’Inventaire national du patrimoine naturel réalisé entre 2013 et 2015, indique que l’espèce est présente dans une cinquantaine de départements de France métropolitaine, notamment dans le nord du territoire (Hauts-de-France, Île-de-France), l’est (Grand Est, Auvergne-Rhône-Alpes), les départements littoraux du sud le long de la Méditerranée, ainsi que dans quelques départements du centre du pays. Toutefois, un déclin des populations est observé depuis les années 1970, principalement lié à la raréfaction et à la dégradation de ses habitats de reproduction. En conséquence, le Blongios nain est classé « En danger » (EN) sur la Liste rouge nationale, tandis qu’il est considéré en « Préoccupation mineure » (LC) à l’échelle européenne. Dans ce contexte, la réserve naturelle du Bagnas a exprimé le besoin de disposer d’une analyse approfondie des données d’observation du Blongios nain collectées sur le site entre 1990 et 2021.
+
+L’objectif est, dans un premier temps, de comparer les données opportunistes à celles issues de protocoles standardisés de suivi — notamment les points d’écoute visant la détection des mâles chanteurs — afin d’évaluer l’efficacité et la pertinence des différents dispositifs de suivi. Dans un second temps, il s’agit de caractériser la structure spatio-temporelle de la présence du Blongios nain au sein de la réserve. Nous nous sommes ainsi interrogés sur la structure de l’effort de prospection au cours du temps, tant à l’échelle annuelle que journalière, ainsi que sur les facteurs influençant la détection de l’espèce lors des prospections, en lien avec sa phénologie et les modalités d’échantillonnage.
+
+# 2. Analyses
 
 ```{r}
-
+## Importation des packages nécessaires
+library(dplyr)
 library(tidyverse) 
+library(tidyr)
 library(lubridate) 
 library(readxl) 
-library(ggplot2) 
+library(ggplot2)
 library(dplyr)
 library(gridExtra)
 library(readr)
@@ -28,24 +47,29 @@ library(lme4)
 library(leaflet)
 library(sf)
 library(ggeffects)
+library(tibble)
+library(glmmTMB)
+library(broom)  
+library(dplyr)    
+library(knitr)    
+library(kableExtra)
+library(gt)
+library(logistf)
+library(patchwork)
 
 ```
-
-## 3. Definition du répertoire de travail et importation des données
 
 ```{r}
 
 # A changer selon votre chemin d'accès personnel 
 
-setwd("~/Desktop/M2/projet biodiversite/oiseaux_bagnas/data/pro")
-process_data <- read.csv("process_data.csv")
-
+# Importation des données
 process_data <- read.csv("data/pro/process_data.csv")
 process_protocole <- read.csv("data/pro/process_protocole.csv")
 
 ```
 
-## 4. Analyses exploratoires
+## 2.1 Analyses exploratoires
 
 ### A) Répartition temporelle des observations de Blongios nain depuis 1990
 
@@ -79,7 +103,7 @@ data_blongios_summarized <- data_blongios %>%
     is_protocole = grepl("SuiviBlongiosTalève", champs_additionnels)) %>%
   group_by(annee_suivi, semaine) %>%
   summarise(
-    statut = case_when(
+    Type = case_when(
        # sorties avec observations 
       any(is_obs) & any(is_protocole & is_obs) & any(!is_protocole & is_obs) ~ "obs_mixte", # au moins 1 observation protocole ET 1 opportuniste = observation mixte 
       any(is_obs) & any(is_protocole & is_obs) ~ "obs_protocole", # au moins 1 observation protocolée (et aucune opportuniste) = observation protocolée 
@@ -98,14 +122,14 @@ grille <- expand.grid(
     data_blongios_summarized,
     by = c("annee_suivi", "semaine")
   ) %>%
-  mutate(statut = ifelse(is.na(statut), "pas_de_sortie", statut)) # semaines sans sortie
+  mutate(Type = ifelse(is.na(Type), "pas_de_sortie", Type)) # semaines sans sortie
 grille <- grille %>%
-  mutate(statut = factor(statut,
+  mutate(Type = factor(Type,
                          levels = c("obs_protocole", "obs_hors_protocole", "obs_mixte",
                                     "sortie_sans_observation", "pas_de_sortie")))
 
 # Visualisation graphique
-ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
+ggplot(grille, aes(x = semaine, y = annee_reelle, fill = Type)) +
   geom_tile(color = "white", linewidth = 0.2) +
   geom_hline(yintercept = 2014, color = "blue", linetype = "dashed", size = 0.4)+
   scale_y_reverse() +
@@ -117,16 +141,16 @@ ggplot(grille, aes(x = semaine, y = annee_reelle, fill = statut)) +
       "sortie_sans_observation" = "black",
       "pas_de_sortie" = "grey85"),
     labels = c(
-      "Observation (protocole)",
-      "Observation (hors protocole)",
-      "Observation (mixte)",
+      "Observation protocolée",
+      "Observation hors protocole",
+      "Observation mixte",
       "Sortie sans observation",
       "Pas de sortie")) +
   labs(
-    title = paste("Observations de", esp_blongios),
+    title = paste("Observations hebdomadaires de Blongios nain depuis 1990"),
     subtitle = paste("Suivi de", annee_min, "à", annee_max),
     x = "Semaine de l'année",
-    y = "Année") +
+    y = "Années") +
   theme_minimal() +
   theme(panel.grid = element_blank())
 
@@ -141,11 +165,14 @@ Ensuite, nous voulions visualiser la répartition spatiale des observations de B
 ```{r}
 
 # Filtre uniquement les données du blongios nain protocolé
-process_protocole_blongios <- process_protocole %>%
-  filter(nom_vernaculaire=="Blongios nain, Butor blongios")
+Protocole_SuiviBlongios<- process_protocole %>%
+  filter(
+    champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire ==
+        "Blongios nain, Butor blongios")  
 
 # Préparer le format des coordonnées pour R 
-sites_protocole_blongios <- st_as_sf(process_protocole_blongios, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
+sites_protocole_blongios <- st_as_sf(Protocole_SuiviBlongios, coords = c("x_centroid_4326", "y_centroid_4326"), crs = 4326)
 
 # On rassemble les données pour avoir un dataframe avec 1 ligne par site d'étude. L'objectif est d'avoir le nombre d'écoute de Blongios par site (somme depuis 2014)
 
@@ -176,7 +203,7 @@ Sur cette carte on peut voir que certains sites semblent plus propice à l'obser
 
 Ici, nous voulions comprendre à quel moment de la journée était réalisé le protocole, et quelles étaient les horaires qui permettaient une meilleure détection de l'espèce. Pour cela, nous avons réalisé un graphique qui représente l’effort d’échantillonnage ainsi que le nombre d’obervations cumulés au cours du protocole blongios pour chaque heure de la journée de 2014 à 2025. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
 
-```{r}
+```{r, include=FALSE}
 # Données 
 process_protocole <- read_csv("data/pro/process_protocole.csv")
 
@@ -185,20 +212,18 @@ Protocole_SuiviBlongiosTaleve <- process_protocole %>%
     champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
       nom_vernaculaire %in% c(
         "Blongios nain, Butor blongios",
-        "Talève sultane, Poule sultane, Porphyrion bleu"
-      )
-  )
+        "Talève sultane, Poule sultane, Porphyrion bleu"))
+
 Protocole_Blongios <- Protocole_SuiviBlongiosTaleve %>%
   mutate(
-    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S"),
     heure_debut_tronc = hour(heure_debut),
-    date = as.Date(heure_debut)
-  )
+    date = as.Date(heure_debut))
 
 Protocole_Blongios <- Protocole_Blongios %>% filter( nom_vernaculaire == "Blongios nain, Butor blongios")
 
 Protocole_Blongios <- Protocole_Blongios  %>%
-  mutate(heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S")) %>%
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S")) %>%
   filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
 
 # Table des 24 heures
@@ -210,7 +235,7 @@ heures_jour <- tibble(heure_debut_tronc = 0:23)
 obs_heure <- Protocole_Blongios %>%
   group_by(heure_debut_tronc) %>%
   summarize(sum(nombre_min)) 
-obs_heure
+
 
 ### Frequence horaire
 freq_heure <- Protocole_Blongios %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
@@ -222,8 +247,11 @@ data_plot_h <- heures_jour %>%
   mutate(
     freq = replace_na(freq, 0),
     `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
-    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23)
-  )
+    heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23))
+
+```
+
+```{r,echo=FALSE}
 
 ### Barplot
 
@@ -240,51 +268,50 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Heure de la journée") +
   ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
-  ggtitle("Effort d'échantillonnage et nombre d'observations\n par heure pour le protocole Blongios (2014-2018)")
+  ggtitle("Effort d'échantillonnage en fonction du nombre d'observations")
+
 ```
 
-Ici, on observe que les sorties protocolées sont majoritairement réalisées entre 6 h et 7 h du matin ainsi qu’entre 20 h et 21 h, ce qui correspond aux plages horaires du protocole standardisé et aux périodes d’activité maximale du Blongios nain. Ces créneaux apparaissent pertinents, puisque c’est durant ces périodes que l’espèce est le plus fréquemment détectée
+Ici, on observe que les sorties protocolées sont majoritairement réalisées entre 6 h et 7 h du matin ainsi qu’entre 20 h et 21 h, ce qui correspond aux plages horaires du protocole standardisé et aux périodes d’activité maximale du Blongios nain. Ces créneaux apparaissent pertinents, puisque c’est durant ces périodes que l’espèce est le plus fréquemment détectée.
 
 ### D) Effort d'échantillonnage journalier et répartition temporelle journalière des observations opportunistes de Blongios nain
 
-Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties opportunistes, et quelles étaient les horaires qui permettaient une meilleure détection de l'espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente l’effort d’échantillonnage ainsi que le nombre d’obervations opportunistes cumulés pour chaque heure de la journée de 1997 à 2023. L’effort d’échantillonnage est représenté par la somme des sorties effectuées.
+Similairement, ici nous voulions comprendre à quel moment de la journée était faites les sorties hors protocole standardisé, et quelles étaient les horaires qui permettaient une meilleure détection de l'espèce sur ce type de données. Pour cela, nous avons réalisé un graphique qui représente le nombre d’obervations hors protocole cumulés pour chaque heure de la journée de 1997 à 2023. Il est important de préciser que les sorties hors protocole où l'heure d'observation est identifiée sont très rares (n=46), et correspondent en majorité à des données produites lors d'autres protocoles non dédiés à cette espèce.
 
-```{r}
-# Données 
+```{r, include=FALSE}
 
-head(process_data$heure_debut, 10)
-str(process_data$heure_debut)
-
-
+## Filtrage des données opportunistes
 Opportuniste_Blongios<- process_data %>%
-  filter(
-    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiostaleve'}" &
-      nom_vernaculaire == "Blongios nain, Butor blongios")
+  filter( nom_vernaculaire == "Blongios nain, Butor blongios" &
+    !champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" )
+     
 
+## Preparation des données
 Opportuniste_Blongios <- Opportuniste_Blongios %>%
   mutate(
-    heure_debut = as.POSIXct(heure_debut, format = "%d/%m/%Y %H:%M:%S"),
+    heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S"),
     heure_debut_tronc = hour(heure_debut),
     date = as.Date(heure_debut))
 
 Opportuniste_Blongios <- Opportuniste_Blongios %>%
-  filter(!(hour(heure_debut) == 0 & minute(heure_debut) == 0))
+  mutate(heure_debut = as.POSIXct(heure_debut, format = "%H:%M:%S")) %>%
+  filter(format(heure_debut, "%H:%M:%S") != "00:00:00")
 
-# Table des 24 heures
+## Table des 24 heures
 
 heures_jour <- tibble(heure_debut_tronc = 0:23)
 
-### Sommer les obs par heure
+## Additionner les observations par heure
 
 obs_heure <- Opportuniste_Blongios %>%
   group_by(heure_debut_tronc) %>%
   summarize(sum(nombre_min)) 
 obs_heure
 
-### Frequence horaire
+## Frequence horaire
 freq_heure <- Opportuniste_Blongios %>% group_by(heure_debut_tronc) %>% summarise(freq = n()) %>% mutate(freq_rel = freq / sum(freq))
 
-# Compléter les heures manquantes avec 0
+## Compléter les heures manquantes avec 0
 data_plot_h <- heures_jour %>%
   left_join(freq_heure, by = "heure_debut_tronc") %>%
   left_join(obs_heure, by = "heure_debut_tronc") %>%
@@ -293,13 +320,13 @@ data_plot_h <- heures_jour %>%
     `sum(nombre_min)` = replace_na(`sum(nombre_min)`, 0),
     heure_debut_tronc = factor(heure_debut_tronc, levels = 0:23))
 
-### Barplot
+```
+
+```{r}
+
+## Barplot
 
 ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
-  geom_bar(aes(y = freq),
-           stat = "identity",
-           width = 0.8,
-           fill = "orange") +
   geom_bar(aes(y = `sum(nombre_min)`),
            stat = "identity",
            width = 0.4,
@@ -307,269 +334,302 @@ ggplot(data_plot_h, aes(x = heure_debut_tronc)) +
   theme_classic() +
   scale_y_continuous(expand = c(0, 0)) +
   xlab("Heure de la journée") +
-  ylab("Nombre de prospections (orange)\n et d'observations (bleu)") +
-  ggtitle("Effort d'échantillonnage et nombre d'observations opportuniste\n par heure pour le Blongios (2014-2018)")
-
-
-```
-
-On observe que les sorties opportunistes coïncident également assez bien avec les périodes d’activité maximale du Blongios nain, avec une détéction de l'oiseau sur les mêmes plages horaires (7-8h et 20-21h).
-
-##2 . Modèle de présence/absence
-
-```{r}
-
-
-## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
-Protocole_Blongios$Occurence <- ifelse(Protocole_Blongios$nombre_min > 0, 1, 0)
-
-### Modeles emboités 
-
-modele_julian2_annee <- glm(Occurence ~ julian + I(julian^2)+annee,
-                   data = Protocole_Blongios, 
-                   family = binomial)
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_anneesite <- glm(Occurence~ annee*nom_lieu + julian + I(julian^2),
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_site <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_vent <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_temp_31 <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_temp_7j <- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_temp_1j<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_temp_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_pluie_31j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-modele_complet_pluie_1j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
-                        data = Protocole_Blongios, 
-                   family = binomial )
-
-
-AIC(modele_complet_site, modele_complet_anneesite, modele_complet_vent , modele_complet_temp_31, modele_complet_temp_7j, 
-modele_complet_temp_1j, modele_complet_temp_1j_vent, modele_complet_pluie_31j_vent, modele_complet_pluie_7j_vent, modele_complet_pluie_1j_vent)
-
+  ylab("Nombre d'observations") +
+  ggtitle("Nombre d'observations hors protocole par heure pour le Blongios")
 
 ```
 
-le tableau d'AIC des différents modèles de présence/absence permet de choisir le modèle qui fit le plus les données. On choisit donc le modele_complet_pluie_7j_vent. Il contient : annee + julian + I(julian\^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen
+On remarque que hors protocole standardisé, le Blonios nain est essentiellement entre 6 et 11h du matin et entre 19 et 21h du soir, ce qui correspond bien à son pic d'activité (aube et crépuscule), et au horaires de prospections choisies pour le protocole dédié au Blongios nain.
 
-```{r}
+## 2.2. Modèles statistiques
 
-## meilleur modèle selon AIC
+Maintenant que nous avons mieux compris la structure et la provenance des données, nous avons construit différent modèles statistiques pour voir si il y a des tendances temporelles (intra- et inter- annuelles) significatives dans la présence et l'abondance du Blongios nain dans la réserve.
 
-modele_complet_pluie_7j_vent<- glm(Occurence~ annee + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
-                        data = Protocole_Blongios, 
-                        family = binomial)
+Pour les analyses de présence et d’abondance, nous utilisons uniquement les données d’observation du blongios provenant des observations protocolées. Ce jeu de données sera nommé **Protocole_SuiviBlongios.**
 
-summary(modele_complet_pluie_7j_vent)
-```
+```{r, echo=FALSE}
 
-Ce summary du modèle choisi nous montre s'il y a des variables significatives. Ici il n'y en a pas.
+##La première étape consiste à reprendre le jeu de données comprenant les données protocolées de Blongios nain.
 
-##2.1 interpretation
-
-Le modèle GLM examinant la présence du Blongios nain en fonction du temps, de la profondeur et de l’assec de l’année précédente montre plusieurs résultats intéressants. La date julienne sur plusieurs années et son terme quadratique sont toutes deux significatifs (p ≈ 0,0015), suggérant une évolution non linéaire et négative de la probabilité de présence au cours de la période 2014–2024. La profondeur moyenne n’a pas d’effet significatif (p = 0,34), ce qui indique que la présence de l’espèce n’est pas fortement liée aux variations de profondeur dans ce dataset. En revanche, l’assec de l’année précédente influence fortement la probabilité de présence: un assec partiel réduit la probabilité (Estimate = -2,19, p = 0,03) et un assec total encore davantage (Estimate = -4,27, p = 0,002)
-
-## 3 . Modèle d'abondance
-
-Cette analyse vise à caractériser la dynamique de la population de blongios et à déterminer l'influence relative des variables temporelles (année, date julienne) et environnementales (précipitations et temperatures) sur l'abondance observée.
-
-## 3.1 Modèle d'abondance en fonction du temps
-
-Nous réalisons cette analyse sur seulement les observations qui proviennent du protocole (donc pas les observations opportunistes)
-
-```{r}
-process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
-Protocole_SuiviBlongios <- process_protocole %>%
-  filter(
-      nom_vernaculaire == "Blongios nain, Butor blongios"
-  )
-
-```
-
-```{r}
-# Preparation des variables ( standardisation )
 process_protocole <- read_csv("data/pro/process_protocole.csv")
 
 Protocole_SuiviBlongios<- process_protocole %>%
   filter(
-    champs_additionnels == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-      nom_vernaculaire %in% c(
-        "Blongios nain, Butor blongios",
-        "Talève sultane, Poule sultane, Porphyrion bleu"
-      )
-  )
+    champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire ==
+        "Blongios nain, Butor blongios")
+```
 
+```{r, echo=FALSE}
 
-#standardidation
+# Pour commencer, nous ajustons le format de toutes les variables explicatives potentielles
+
+# variables temporelles et spatiales
 Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
 Protocole_SuiviBlongios$julian <- as.numeric(Protocole_SuiviBlongios$julian)
-Protocole_SuiviBlongios$annee2 <- as.numeric(as.character(Protocole_SuiviBlongios$annee)) - 2013
-Protocole_SuiviBlongios$nom_lieu<- as.character (Protocole_SuiviBlongios$nom_lieu)
+Protocole_SuiviBlongios$annee <- as.numeric(Protocole_SuiviBlongios$annee)
+Protocole_SuiviBlongios$nom_lieu<- as.factor (Protocole_SuiviBlongios$nom_lieu)
 
-# enviro 
-Protocole_SuiviBlongios$temp_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j))
-Protocole_SuiviBlongios$temp_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_7j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j))
-Protocole_SuiviBlongios$pluie_moy_glissante_31j <- scale(as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j))
-Protocole_SuiviBlongios$vent_moyen <- scale(as.numeric(Protocole_SuiviBlongios$vent_moyen))
-Protocole_SuiviBlongios$temperature = scale (as.numeric(Protocole_SuiviBlongios$temperature))
-Protocole_SuiviBlongios$pluie_1h = scale (as.numeric(Protocole_SuiviBlongios$pluie_1h))
+# variables climatiques 
+Protocole_SuiviBlongios$temp_moy_glissante_31j <- as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_31j)
+Protocole_SuiviBlongios$temp_moy_glissante_7j <- as.numeric(Protocole_SuiviBlongios$temp_moy_glissante_7j)
+Protocole_SuiviBlongios$pluie_moy_glissante_7j <- as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_7j)
+Protocole_SuiviBlongios$pluie_moy_glissante_31j <- as.numeric(Protocole_SuiviBlongios$pluie_moy_glissante_31j)
+Protocole_SuiviBlongios$vent_moyen <- as.numeric(Protocole_SuiviBlongios$vent_moyen)
+Protocole_SuiviBlongios$temperature <-as.numeric(Protocole_SuiviBlongios$temperature)
+Protocole_SuiviBlongios$pluie_1h <- as.numeric(Protocole_SuiviBlongios$pluie_1h)
 
-#hydro 
+# variables hydrologiques 
+Protocole_SuiviBlongios$Profondeur <-  as.numeric(Protocole_SuiviBlongios$Profondeur )
+Protocole_SuiviBlongios$AssecT_1 <- as.factor(Protocole_SuiviBlongios$AssecT_1)
 
-Protocole_SuiviBlongios$Profondeur <- scale( as.numeric(Protocole_SuiviBlongios$Profondeur ))
-Protocole_SuiviBlongios$AssecT_1 <- as.factor(Protocole_SuiviBlongios$AssecT_1 )
+```
+
+### A) Modèles de présence/absence du Blongios Nain
+
+En premier lieu, nous réalisons un modèle pour essayer d'expliquer la variabilité de l'absence et présence du Blongios nain sur les 10 années de suivi protocolé. Pour cela nous utilisons la variable Occurence qui notifie la présence ou l'absence d'une observation de Blongios à chaque sortie.
+
+```{r, echo=FALSE}
+
+## création de la variable Occurence (1 si au moins un individu observé, 0 sinon)
+Protocole_SuiviBlongios$Occurence <- ifelse(Protocole_SuiviBlongios$nombre_min > 0, 1, 0)
+
+```
+
+Nous commençons par vérifier la structure et la dispersion de la variable réponse.
+
+```{r}
+## création d'un histogramme pour visualiser les données d'occurence
+Protocole_SuiviBlongiosGraph <- Protocole_SuiviBlongios
+Protocole_SuiviBlongiosGraph$Occurence <- ifelse(Protocole_SuiviBlongiosGraph$nombre_min > 0, 1, 0)
+Protocole_SuiviBlongiosGraph$Occurence <- factor(
+  Protocole_SuiviBlongiosGraph$Occurence,
+  levels = c(0, 1),
+  labels = c("Absence", "Présence"))
+
+ggplot(Protocole_SuiviBlongiosGraph, aes(x = Occurence)) +
+  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_text(
+    stat = "count",
+    aes(label = after_stat(count)),
+    vjust = -0.5,
+    size = 4
+  ) +
+  labs(
+    x = "",
+    y = "Nombre d'observations",
+    title = "Occurrence du Blongios (absence / présence)"
+  ) +
+  theme_classic(base_size = 13) +
+  expand_limits(y = 0)
 
 
+```
 
+On peut voir que la majorité des observations sont des absence de l’espèce (n=203) pour seulement quelques présences (n=33).
+
+Par conséquent, nous avons utilisé un modèle ***logistf*** (régression logistique pénalisée de Firth) qui permet de fournir des estimations stables et des intervalles de confiance fiables lorsqu'il y a de très rares présences. Cependant, nous réduisons le nombre de variables explicatives par modèle, et nous nous limitons à une estimation d'une tendance temporelle interanuelle (variable annee).
+
+Modele : Occurence \~ Annee
+
+```{r}
+## Modèle logistf avec uniquement l'effet interanuel de l'année
+ModeleOccurenceInterAnnee <- logistf(Occurence ~ annee, data = Protocole_SuiviBlongios)
+```
+
+```{r}
+
+## Données de prédiction
+annees <- data.frame(
+  annee = sort(unique(Protocole_SuiviBlongios$annee)))
+
+## Prédictions sur l’échelle du lien (logit)
+pred <- predict(
+  ModeleOccurenceInterAnnee,
+  newdata = annees,
+  type = "link",
+  se.fit = TRUE)
+
+## Ajout des prédictions et IC (95 %)
+annees$predicted_prob <- plogis(pred$fit)
+annees$lower_ci <- plogis(pred$fit - 1.96 * pred$se.fit)
+annees$upper_ci <- plogis(pred$fit + 1.96 * pred$se.fit)
+
+## graphique
+
+ggplot(annees, aes(x = annee)) +
+  geom_ribbon(
+    aes(ymin = lower_ci, ymax = upper_ci),
+    fill = "steelblue",
+    alpha = 0.25
+  ) +
+  geom_line(
+    aes(y = predicted_prob),
+    color = "steelblue",
+    size = 1
+  ) +
+  geom_point(
+    data = Protocole_SuiviBlongios,
+    aes(x = annee, y = Occurence),
+    color = "black",
+    alpha = 0.6,
+    position = position_jitter(height = 0.03)
+  ) +
+  labs(
+    x = "Années",
+    y = "Probabilité de présence du Blongios",
+    title = "Probabilité de présence au cours du temps",
+  ) +
+  theme_classic(base_size = 14)
+
+```
+
+```{r, include=FALSE}
+# Calculer les valeurs à insérer dynamiquement
+SummaryModeleOccurenceInterAnnee <- summary(ModeleOccurenceInterAnnee)
+
+# Transformer en data.frame
+coef_df <- as.data.frame(SummaryModeleOccurenceInterAnnee$coefficients)
+pvalue_df <- as.data.frame(SummaryModeleOccurenceInterAnnee$prob)
+ResultatsModeleOccurence <- cbind(coef_df, pvalue_df)
+
+# Récupérer le coefficient et p-value pour "annee"
+beta_annee <- round(ResultatsModeleOccurence["annee", "SummaryModeleOccurenceInterAnnee$coefficients"], 3)
+p_annee <- round(ResultatsModeleOccurence["annee", "SummaryModeleOccurenceInterAnnee$prob"], 3)
+
+```
+
+L’effet de l’année sur la probabilité de présence du Blongios est négatif mais non significatif (β = `r beta_annee`, p = `r p_annee`). Cela signifie qu’il n’y a pas de tendance prononcée au cours du temps. On peut toutefois remarquer qu’en visualisant l’effet graphiquement, on observe une tendance légèrement négative de la probabilité de présence du Blongios nain sur la réserve.
+
+### B) Modèles d'abondance du Blongios nain
+
+Ensuite, nous réalisons un modèle pour essayer d'expliquer la variabilité de l'abondance du Blongios nain sur les 10 années de suivi protocolé. Nous commençons également par vérifier la structure et la dispersion de la variable réponse abondance.
+
+```{r}
+
+Protocole_SuiviBlongiosGraph_abond <- Protocole_SuiviBlongios %>%
+  mutate(
+    Abondance_f = factor(nombre_min))
+
+ggplot(Protocole_SuiviBlongiosGraph_abond, aes(x = Abondance_f)) +
+  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_text(
+    stat = "count",
+    aes(label = after_stat(count)),
+    vjust = -0.5,
+    size = 4
+  ) +
+  labs(
+    x = "Abondance (nombre d'individus observés)",
+    y = "Nombre d'observations",
+    title = "Distribution des abondances de Blongios"
+  ) +
+  theme_classic(base_size = 13) +
+  expand_limits(y = 0)
+
+ZeroProportion <- round(mean(Protocole_SuiviBlongios$nombre_min == 0),2)
+
+```
+
+On observe un nombre important de zéros dans la variable réponse d'abondance (proportion = `r ZeroProportion`). Par conséquent, nous avons choisi d'utiliser un modèle GLM avec une loi de distribution en Binomiale négative (avec le package *glmmTMB*). Cette distribution permet de prendre en compte la surdispersion des données liée à la forte proportion de zéros.
+
+Et similairement au modèle de présence, nous allons seulement essayer de détecter une tendance temporelle, car l'estimation de trop de paramètres peut être instable avec un jeu de données comprenant autant de zéros.
+
+Modèle : Abondance \~ Annee
+
+```{r}
+# Contruction du modèle avec une bionômiale négative
+
+ModeleAbondanceAnnee <- glmmTMB(
+  nombre_min ~ annee,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
 
 ```
 
 ```{r}
-#  Modèle dans le temps 
-# y ~ Pois ( lambda)
+# Extraction des coefficients du modèle
 
-modele_annee <- glm(nombre_min ~ annee2, 
-                    family = poisson, 
-                    data = Protocole_SuiviBlongios)
+# Extraire les coefficients du modèle
+coef_est <- summary(ModeleAbondanceAnnee)$coefficients$cond
+intercept <- coef_est["(Intercept)","Estimate"]
+slope <- coef_est["annee","Estimate"]
+se_slope <- coef_est["annee","Std. Error"]
 
+# Calculer la variation annuelle et IC 95 %
+# log link : log(mu) = intercept + slope*annee
+annual_change <- exp(slope) - 1
 
-modele_jour <- glm(nombre_min ~ julian, 
-                   data = Protocole_SuiviBlongios, 
-                   family = poisson)
+# Intervalle de confiance
+lower_slope <- slope - 1.96*se_slope
+upper_slope <- slope + 1.96*se_slope
 
+lower_change <- exp(lower_slope) - 1
+upper_change <- exp(upper_slope) - 1
 
-modele_annee_jour <- glm(nombre_min ~ annee2 + julian, 
-                         data = Protocole_SuiviBlongios, 
-                         family = poisson)
-
-modele_anneejour <- glm(nombre_min ~ annee2 * julian, 
-                         data = Protocole_SuiviBlongios, 
-                         family = poisson)
-
-#modèle complet 
-modeleB_complet_site <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu,
-                           data = Protocole_SuiviBlongios, 
-                           family = poisson )
-
-# summary(modele_annee)
-# summary(modele_jour)
-# summary(modele_annee_jour)
-# summary(modele_anneejour)
-
-AIC(modele_annee, modele_jour, modele_annee_jour, modele_anneejour)
+# Convertir en pourcentage et arrondir
+annual_loss <- round(-annual_change*100,1)
+annual_loss_lower <- round(-upper_change*100,1) # attention à l'ordre pour la perte
+annual_loss_upper <- round(-lower_change*100,1)
 
 ```
 
-## Interprétation
+Selon le modèle binomial négatif, il n'y a pas de tendance temporelle significative de l'abondance (p = `r signif(coef_est["annee","Pr(>|z|)"],3)`), mais on note toutefois que la tendance est négative : l'abondance moyenne de Blongios diminue en moyenne de `r annual_loss`% par an (IC 95 % : `r annual_loss_lower` – `r annual_loss_upper`% ; β = `r round(slope,3)`).
 
-La sélection par l'AIC indique que le modèle incluant l'effet du jour julien est le plus performant. Nous retenons cette structure de base pour la suite des analyses, afin d'y intégrer et de tester l'influence des variables environnementales.
-
-## 3.2 Modèle d'abondance en fonction du temps et de l'environnement
+Ensuite, nous avons réalisé les prédictions du modèle précédent pour pouvoir visualiser l'effet de l'année graphiquement. De plus, pour pouvoir mieux comprendre cette dynamique légèrement dynamique nous avons représenté les données brutes de comptage journalier sur les 10 années du suivi protocolé.
 
 ```{r}
-modeleB_complet_vent <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen,
-                           data = Protocole_SuiviBlongios, 
-                           family = poisson )
+# Création d'un data frame pour toutes les années observées
+annees <- data.frame(annee = sort(unique(Protocole_SuiviBlongios$annee)))
 
+# Prédictions sur l'échelle du lien (log)
+preds <- predict(ModeleAbondanceAnnee, newdata = annees, type = "link", se.fit = TRUE)
 
-modeleB_complet_temp_31 <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_31j+ vent_moyen,
-                              data = Protocole_SuiviBlongios, 
-                              family = poisson )
+# Transformer sur l'échelle originale et ajouter l'IC 95%
+annees <- annees %>%
+  mutate(
+    fit = exp(preds$fit),                         # valeur prédite
+    lower = exp(preds$fit - 1.96 * preds$se.fit), # borne inférieure IC 95%
+    upper = exp(preds$fit + 1.96 * preds$se.fit))  # borne supérieure IC 95%)
 
-modeleB_complet_temp_7j <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen,
-                              data = Protocole_SuiviBlongios, 
-                              family = poisson )
+# Graphique de l'abondance prédite
+GraphiqueAbondancePredite <- ggplot(annees, aes(x = annee, y = fit)) +
+  geom_line(color = "black", size = 1) +
+  geom_ribbon(aes(ymin = lower, ymax = upper),
+              alpha = 0.2, fill = "steelblue") +
+  labs(
+    x = "Années",
+    y = "Abondance prédite de Blongios",
+    title = "Figure 1: Abondance prédite du Blongios"
+  ) +
+  theme_classic(base_size = 14)
 
+# 3) Graphique 2 : abondance réelle
+Abondance_suivi <- Protocole_SuiviBlongios %>%
+  arrange(date_debut) %>%
+  group_by(date_debut) %>%
+  summarise(total_abondance = sum(nombre_min, na.rm = TRUE)) %>%
+  ungroup()
 
-modeleB_complet_temp_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + temperature + vent_moyen,
-                                  data = Protocole_SuiviBlongios, 
-                                  family = poisson )
+GraphiqueAbondanceReelle <- ggplot(Abondance_suivi, aes(x = date_debut, y = total_abondance)) +
+  geom_point(color = "black", size = 2, alpha = 0.6) +
+  geom_smooth(method = "loess", se = TRUE,
+              color = "steelblue", fill = "steelblue", alpha = 0.2) +
+  labs(
+    x = "Années",
+    y = "Abondance totale de Blongios",
+    title = "Figure 2: Abondance de Blongios pour chaque journée de comptage"
+  ) +
+  theme_classic(base_size = 14)
 
-modeleB_complet_pluie_31j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_31j + vent_moyen,
-                                    data = Protocole_SuiviBlongios, 
-                                    family = poisson )
-
-modeleB_complet_pluie_7j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_moy_glissante_7j + vent_moyen,
-                                   data = Protocole_SuiviBlongios, 
-                                   family = poisson )
-
-modeleB_complet_pluie_1j_vent<- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + pluie_1h + vent_moyen,
-                                   data = Protocole_SuiviBlongios, 
-                                   family = poisson )
-
-
-
-
-# avec hydro 
-
-modeleB_complet_assec <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + AssecT_1,
-                           data = Protocole_SuiviBlongios, 
-                           family = poisson )
-                           
-modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom_lieu + vent_moyen + Profondeur,
-                           data = Protocole_SuiviBlongios, 
-                           family = poisson )
-
-AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
-
-```
-
-L'aic nous indique que l'on choisit le modeleB_complet_temp_7j. il contient : annee2 + julian + I(julian\^2)+ nom_lieu + temp_moy_glissante_7j+ vent_moyen
-
-```{r}
-
-
-
-summary(modeleB_complet_assec)
-```
-
-> La comparaison des modèles par l’AIC montre que l’intégration de la température moyenne glissante sur 7 jours améliore légèrement la capacité prédictive du modèle. En revanche, les variables de pluie n'apportent aucune amélioration supplémentaire et n'ont donc pas été retenues.
-
-```{r}
-#je ne sais pas ce que c'est il faut regarder plus tard. 
-
-# Les paramètres estimés indiquent que :
-# 
-# -   La pluie moyenne glissante sur 7 jours a un effet négatif significatif sur l’abondance des talèves (β = -0.566, p =0.014). Donc uneaugemtation de la quantité de pluie engendre une diminution ou du nombre d’individus de blongios dans la reserve
-# 
-# -   Le jour julien présente un effet négatif significatif (β = −0.357 p = 0.039), indiquant une diminution de l’abondance au cours de la saison ( ce qui est logique car le protocole n'est pas effectué en fin d'année )
-# 
-#     Globalement, le modèle permet d’expliquer une part substantielle de la variabilité observée (déviance résiduelle = 166,96 contre une déviance nulle de 166.96), avec un AIC de 252.79.
-# 
-# -   La fonction pour trouver l'abondance du blongios en fonction de la pluie et des jours est :
-# 
-#     log(y) = -1.9136 -03572(julian\[i\]) - 0.5659(pluie\[i\])
+GraphiqueAbondancePredite 
+GraphiqueAbondanceReelle
 
 ```
 
-#plot
+Sur le graphique de l'abondance prédite (Figure 1), on observe une légère tendance négative de l'abondance du Blongios nain au cours des 10 années de suivi protocolé.\
+Cette tendance peut être mieux comprise en regardant le graphique des données brutes (Figure 2) : au début du suivi (2014), les comptages journaliers montrent un nombre relativement élevé de Blongios. Lors du suivi deux ans plus tard, le nombre d'individus observés diminue, et les deux campagnes suivantes n'ont permis de détecter aucun individu. Ce n’est qu’en 2022 et 2024 que des individus sont de nouveau observés, mais toujours en quantité moindre par rapport au début du suivi.
 
-```{r}
-p1 <- plot(ggeffect(modeleB_complet_temp_7j, terms= "temp_moy_glissante_7j", residual = T))
-p1
+# 3. Discussion
 
-
-
-```
-
-Pour les blongios, la température a le pus d;effet. On voit que plus il fait chaud, plus on voit de Blongios. (les Températures sont standardisées)
+# 4. Bibliographie
