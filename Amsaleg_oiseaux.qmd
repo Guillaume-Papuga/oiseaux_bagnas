@@ -778,3 +778,585 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
 
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
 ```
+
+
+## n-mixture 
+
+```{r}
+
+library(tidyverse) 
+library(lubridate) 
+library(readxl) 
+library(ggplot2) 
+library(dplyr)
+library(gridExtra)
+library(readr)
+library(knitr)
+library(lme4)
+library(slider)
+library(leaflet)
+library(sf)
+library(broom)
+library(ggeffects)
+library(tidyr)
+library(unmarked)
+
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+
+
+```
+
+
+```{r}
+# #propre pour faire le tableau ready que abondance
+# Protocole_SuiviTaleve <- process_protocole %>%
+#   filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+#       nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+#   )
+# 
+# 
+# tableau_addition_site <- Protocole_SuiviTaleve %>%
+#   group_by(date_debut) %>%
+#   summarise(
+#     total_obs = sum(nombre_min, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+#   
+# 
+# tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y"))
+# tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ]
+# 
+# tableau_repet <- tableau_addition_site %>%
+#   arrange(annee, date_debut) %>%
+#   group_by(annee) %>%
+#   mutate(passage = row_number()) %>%
+#   ungroup()
+# 
+# 
+# tableau_ready<- tableau_repet %>%
+#   select(annee, passage, total_obs) %>%
+#   pivot_wider(
+#     names_from = passage,
+#     values_from = total_obs,
+#     names_prefix = "passage_"
+#   )
+```
+
+
+
+```{r}
+
+
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+tableau_addition_site <- Protocole_SuiviTaleve %>%
+  group_by(date_debut, temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur, vent_moyen) %>%
+  summarise(
+    total_obs = sum(nombre_min, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y"))
+tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ]
+
+tableau_repet <- tableau_addition_site %>%
+  arrange(annee, date_debut) %>%
+  group_by(annee) %>%
+  mutate(passage = row_number()) %>%
+  ungroup()
+
+
+tableau_ready<- tableau_repet %>%
+  select(annee, passage, total_obs,temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j, AssecT_1, Profondeur, vent_moyen) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = total_obs,
+    names_prefix = "passage_"
+  )
+  
+```
+
+```{r}
+#test tableau complet 
+
+df_long <- tableau_ready %>% 
+  pivot_longer(
+    cols = starts_with("passage_"),
+    names_to = "passage",
+    values_to = "count"
+  ) %>%
+  filter(!is.na(count)) %>%
+  mutate(
+    passage = as.numeric(gsub("passage_", "", passage))
+  )
+  
+  
+counts <- df_long %>%
+  select(annee, passage, count) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = count,
+    names_prefix = "passage_"
+  ) %>%
+  arrange(annee)
+  
+counts_mat <- as.matrix(counts[, -1])
+rownames(counts_mat) <- counts$annee
+  
+  
+obs_covs <- df_long %>%
+  select(annee, passage,
+         temp_moy_glissante_7j,
+         pluie_1h,
+         pluie_moy_glissante_7j,
+         pluie_moy_glissante_31j,
+         Profondeur,
+         AssecT_1, 
+         vent_moyen) %>%
+  pivot_wider(
+    names_from = passage,
+    values_from = c(
+      temp_moy_glissante_7j,
+      pluie_1h,
+      pluie_moy_glissante_7j,
+      pluie_moy_glissante_31j, 
+      Profondeur, 
+      AssecT_1,
+      vent_moyen
+    ),
+    names_sep = "_passage_"
+  ) %>%
+  arrange(annee)
+
+
+df_final <- counts %>%
+  left_join(obs_covs, by = "annee")
+
+df_final <- df_final[-c(3), ] #on enlève l'année 2018 car il n'y a qu'1 passage
+df_final <- df_final [, -c(27,28,29)]
+
+
+df_final <- df_final %>%
+  rename(assec = AssecT_1_passage_1)
+```
+
+```{r}
+
+#n-mixture essai des var enviro en cov site : ECHEC
+comptage <- df_final[,2:5]				
+
+#Les covariables qui dépendent du temps.
+# temp<-df_final[,6:9]			# recuperer les covariables de session
+# pluie_1h<-df_final[,10:13]
+# pluie_7j<-df_final[,14:17]
+# pluie_31j<-df_final[,18:21]
+# profondeur<-df_final[,22:25]
+# assec <- df_final[,26:29]
+# vent <- df_final[, 30:33]
+
+# faire une liste avec les covariables de sessions
+#covsite<-list(temp=temp,pluie_1h=pluie_1h,pluie_7j=pluie_7j,pluie_31j=pluie_31j,profondeur=profondeur, assec=assec)
+covsite_temp <-df_final[,6:9]
+covsite_pluie1<-df_final[,10:13]
+covsite_pluie7<-df_final[,14:17]
+covsite_pluie31<-df_final[,18:21]
+covsite_prof<-df_final[,22:25]
+covsite_assec<- df_final[,26:29]
+
+obscov<-list(vent=vent)
+
+
+
+#On refait le jeu de données.
+taleve_nmixture_temp<-unmarkedFramePCount(comptage,siteCovs=covsite_temp,obsCovs=obscov)
+taleve_nmixture_pluie1<-unmarkedFramePCount(comptage,siteCovs=covsite_pluie1,obsCovs=obscov)
+taleve_nmixture_pluie7<-unmarkedFramePCount(comptage,siteCovs=covsite_pluie7,obsCovs=obscov)
+taleve_nmixture_pluie31<-unmarkedFramePCount(comptage,siteCovs=covsite_pluie31,obsCovs=obscov)
+taleve_nmixture_prof<-unmarkedFramePCount(comptage,siteCovs=covsite_prof,obsCovs=obscov)
+taleve_nmixture_assec<-unmarkedFramePCount(comptage,siteCovs=covsite_assec,obsCovs=obscov)
+
+
+
+
+summary(taleve_nmixture_temp)
+summary(taleve_nmixture_pluie1)
+summary(taleve_nmixture_pluie7)
+summary(taleve_nmixture_pluie31)
+summary(taleve_nmixture_prof)
+summary(taleve_nmixture_assec)
+```
+
+
+
+```{r}
+
+#n-mixture essai des var enviro en cov site : ECHEC 
+
+#1. mettre en matrice 
+
+#' 1. Ajuste modèle null pcount(~p ~abondance, dataset, K).
+## ------------------------------------------------------------------------------------------------------
+T_count_null <- pcount(~ 1 ~ 1, taleve_nmixture_temp, K = 100) # detection, then abundance
+summary(T_count_null)
+#' 
+#' On back-transforme la détection et l'abondance (valeurs moyennes). 
+## ------------------------------------------------------------------------------------------------------
+names(T_count_null)
+backTransform(T_count_null, "state")
+backTransform(T_count_null, "det")
+
+predict(T_count_null, type="state")
+predict(T_count_null, type="det")
+#' 
+#' Abondance sur chaque site.
+## ------------------------------------------------------------------------------------------------------
+ranef(T_count_null) # abondance corrigé par la detection
+
+#' 
+#'2. On fait tourner qqs modèles avec le même jeu de données.
+## ------------------------------------------------------------------------------------------------------
+T_count_null <- pcount(~ 1 ~ 1, taleve_nmixture_temp, K = 100)         #p(.)lambda(.)
+T_count_temp <- pcount(~ 1 ~ temp_moy_glissante_7j , taleve_nmixture_temp, K = 100)    #p(temp)lambda(.)
+T_count_assec <- pcount(~ assec~ 1, taleve_nmixture, K = 100)    #p(.)lambda(terlapin)
+T_count_pluie1h <- pcount(~ pluie_1h ~ 1, taleve_nmixture, K = 100)
+T_count_pluie7j <- pcount(~ pluie_7j~ 1, taleve_nmixture, K = 100)
+T_count_pluie31j <- pcount(~ pluie_31j~ 1, taleve_nmixture, K = 100)
+T_count_prof <- pcount(~ profondeur~ 1, taleve_nmixture, K = 100)
+
+T_count_List <- fitList('{lambda, p}' = T_count_null, 
+                  '{lambda, p(temp)}' = T_count_temp, 
+                  '{lambda, p(assec)}' = T_count_assec, 
+                  '{lambda, p(pluie_1h)}' = T_count_pluie1h,
+                  '{lambda, p(pluie_7j)}' = T_count_pluie7j,
+                  '{lambda, p(pluie_31j)}' = T_count_pluie31j
+                  )
+
+modSel(T_count_List)
+
+
+
+predict(T_count_pluie1h, type = 'det')
+
+
+nd1 <- data.frame(passage = c('p1','p2','p3', 'p4', 'p5', 'p6'))
+predict(T_count_pluie1h, type = 'det', newdata = nd1)
+
+names(T_count_pluie1h)
+
+backTransform(T_count_pluie1h, "det")
+
+predict(T_count_pluie1h, type="det")
+
+```
+
+```{r}
+#n-mixture avec var enviro en cov observation : 
+comptage <- df_final[,2:5]			
+
+#Les covariables qui dépendent du temps.
+temp<-df_final[,6:9]			# recuperer les covariables de session
+pluie_1h<-df_final[,10:13]
+pluie_7j<-df_final[,14:17]
+pluie_31j<-df_final[,18:21]
+profondeur<-df_final[,22:25]
+assec <- df_final[,26]
+vent <- df_final[, 27:30]
+
+# faire une liste avec les covariables de sessions
+
+
+obscov<-list(temp=temp,pluie_1h=pluie_1h, pluie_7j=pluie_7j,pluie_31j=pluie_31j, profondeur=profondeur)
+covsite= assec <- df_final[,26]
+
+
+#On refait le jeu de données.
+taleve_nmixture<-unmarkedFramePCount(comptage,siteCovs=covsite,obsCovs=obscov)
+
+
+summary(taleve_nmixture)
+
+
+#1 : modèle null : pas de covariables
+T_count_null <- pcount(~ 1 ~1 , taleve_nmixture, K = 100) # detection, then abundance
+summary(T_count_null)
+
+#' 
+#' On back-transforme la détection et l'abondance (valeurs moyennes). 
+## ------------------------------------------------------------------------------------------------------
+names(T_count_null)
+backTransform(T_count_null, "state")
+backTransform(T_count_null, "det")
+
+predict(T_count_null, type="state")
+predict(T_count_null, type="det")
+
+
+#' 
+#' Abondance sur chaque site.
+## ------------------------------------------------------------------------------------------------------
+ranef(T_count_null) # abondance corrigée par la detection
+
+
+
+
+#' 
+#'2. On fait tourner qqs modèles avec le même jeu de données.
+## ------------------------------------------------------------------------------------------------------
+T_count_null <- pcount(~ 1 ~ 1, taleve_nmixture, K = 100)         #p(.)lambda(.)
+T_count_temp <- pcount(~ temp ~ 1 , taleve_nmixture, K = 100)    #p(temp)lambda(.)
+T_count_assec <- pcount(~ 1 ~ assec, taleve_nmixture, K = 100)    #p(.)lambda(terlapin)
+T_count_pluie1h <- pcount(~ pluie_1h ~ 1, taleve_nmixture, K = 100)
+T_count_pluie7j <- pcount(~ pluie_7j~ 1, taleve_nmixture, K = 100)
+T_count_pluie31j <- pcount(~ pluie_31j~ 1, taleve_nmixture, K = 100)
+T_count_prof <- pcount(~ profondeur~ 1, taleve_nmixture, K = 100)
+
+T_count_complet <- pcount(~ temp + pluie_1h + profondeur ~ assec, taleve_nmixture, K = 100)
+
+T_count_List <- fitList('{lambda, p}' = T_count_null, 
+                  '{lambda, p(temp)}' = T_count_temp, 
+                  '{lambda(assec), p}' = T_count_assec, 
+                  '{lambda, p(pluie_1h)}' = T_count_pluie1h,
+                  '{lambda, p(pluie_7j)}' = T_count_pluie7j,
+                  '{lambda, p(pluie_31j)}' = T_count_pluie31j, 
+                  '{lambda, p(profondeur)}' = T_count_prof,
+                  '{lambda(assec), p(complet)}' = T_count_complet)
+
+modSel(T_count_List)
+
+
+names(T_count_null)
+backTransform(T_count_null, "state")
+backTransform(T_count_null, "det")
+
+predict(T_count_null, type="state")
+predict(T_count_null, type="det")
+
+ranef(T_count_null) # abondance corrigée par la detection du modèle null. 
+ranef(T_count_complet) #abondance corrigée par la detection : est-ce que c'est possible sur un modèle complet  sans faire backtransfo et predict ? 
+
+ranef(T_count_complet, condVar= TRUE ) #jsp ce que ça veut dire : "l’incertitude associée à chaque effet aléatoire estimé"
+
+
+
+
+
+# 
+# extract_coef <- function(modele, var){
+#   c <- summary(modele)$coefficients[var, ]
+#   tibble(
+#     beta = round(c["Estimate"], 3),
+#     p    = round(c["Pr(>|z|)"], 3)
+#   )
+# }
+# 
+# annee_res <- extract_coef(T_count_complet, "temp")
+
+plogis(coef(T_count_complet, type="det")) 
+
+
+
+# données : 
+
+#modèle null
+names(T_count_null)
+backTransform(T_count_null, "state")
+backTransform(T_count_null, "det")
+
+predict(T_count_null, type="state")
+predict(T_count_null, type="det")
+
+
+
+coef(T_count_complet)
+
+# coef : 
+p_temps 
+
+vcov(T_count_complet,type="det")
+vcov(T_count_complet,type="state")
+
+
+
+# 
+# 
+# nd1 <- data.frame(cov = c('temp_moy_glissante_7j_passage_1','temp_moy_glissante_7j_passage_2','temp_moy_glissante_7j_passage_3','temp_moy_glissante_7j_passage_4','pluie_1h_passage_1','pluie_1h_passage_2', 'pluie_1h_passage_3', 'pluie_1h_passage_4', 'Profondeur_passage_1','Profondeur_passage_2','Profondeur_passage_3','Profondeur_passage_4'))
+# predict(T_count_complet, type = 'det', newdata = nd1)
+# 
+
+
+
+
+
+
+
+
+# modele_lineaire_complet=linearComb(T_count_complet, type="det", coefficients = c(1,0.5, 0.5, 0.5))
+# summary(modele_lineaire_complet)
+# modele_lineaire_complet@parentEstimate
+
+
+
+# predict(T_count_complet, type="state") # ca c'est bg
+# predict(T_count_complet, type="det")
+
+#predict 
+# 
+# temp_range_passage1 <- seq(min(df_final$temp_moy_glissante_7j_passage_1, na.rm=TRUE),
+#                    max(df_final$temp_moy_glissante_7j_passage_4, na.rm=TRUE),
+#                    lenght=5))
+# 
+# temp_range_passage2 <- seq(min(df_final$temp_moy_glissante_7j_passage_2, na.rm=TRUE),
+#                   max(df_final$temp_moy_glissante_7j_passage_2, na.rm=TRUE))
+# 
+# temp_range_passage3 <- seq(min(df_final$temp_moy_glissante_7j_passage_3, na.rm=TRUE),
+#                   max(df_final$temp_moy_glissante_7j_passage_3, na.rm=TRUE))
+# 
+# temp_range_passage4 <- seq(min(df_final$temp_moy_glissante_7j_passage_4, na.rm=TRUE),
+#                   max(df_final$temp_moy_glissante_7j_passage_4, na.rm=TRUE))
+# 
+# pluie_range_passage1 <- seq(min(df_final$pluie_1h_passage_1, na.rm=TRUE),
+#                    max(df_final$pluie_1h_passage_1, na.rm=TRUE))
+# 
+# pluie_range_passage2 <- seq(min(df_final$pluie_1h_passage_2, na.rm=TRUE),
+#                    max(df_final$pluie_1h_passage_2, na.rm=TRUE))
+# 
+# pluie_range_passage3 <- seq(min(df_final$pluie_1h_passage_3, na.rm=TRUE),
+#                    max(df_final$pluie_1h_passage_3, na.rm=TRUE))
+# 
+# pluie_range_passage4 <- seq(min(df_final$pluie_1h_passage_4, na.rm=TRUE),
+#                    max(df_final$pluie_1h_passage_4, na.rm=TRUE))
+# 
+# 
+# profondeur_range_passage1 <- seq(min(df_final$Profondeur_passage_1, na.rm=TRUE),
+#                         max(df_final$Profondeur_passage_1, na.rm=TRUE))
+# 
+# 
+# profondeur_range_passage2 <- seq(min(df_final$Profondeur_passage_2, na.rm=TRUE),
+#                         max(df_final$Profondeur_passage_2, na.rm=TRUE))
+# 
+# 
+# profondeur_range_passage3 <- seq(min(df_final$Profondeur_passage_3, na.rm=TRUE),
+#                         max(df_final$Profondeur_passage_3, na.rm=TRUE))
+# 
+# profondeur_range_passage4 <- seq(min(df_final$Profondeur_passage_4, na.rm=TRUE),
+#                         max(df_final$Profondeur_passage_4, na.rm=TRUE))
+# 
+# nd_grid <- expand.grid(
+#   temp1 = temp_range_passage1,
+#   temp2 = temp_range_passage2, 
+#   temp3 = temp_range_passage3, 
+#   temp4 = temp_range_passage4,
+#   
+#   pluie_1h_1 = pluie_range_passage1,
+#   pluie_1h_2 = pluie_range_passage2,
+#   pluie_1h_3 = pluie_range_passage3,
+#   pluie_1h_4 = pluie_range_passage4,
+# 
+#   profondeur_1 = profondeur_range_passage1, 
+#   profondeur_2 = profondeur_range_passage2,
+#   profondeur_3 = profondeur_range_passage3,
+#   profondeur_4 = profondeur_range_passage4
+# )
+# predict(T_count_complet, type = 'det', newdata = nd_grid)
+
+temp_min <- min(df_final$temp_moy_glissante_7j_passage_1,
+                df_final$temp_moy_glissante_7j_passage_2,
+                df_final$temp_moy_glissante_7j_passage_3,
+                df_final$temp_moy_glissante_7j_passage_4,
+                na.rm = TRUE)
+
+temp_max <- max(df_final$temp_moy_glissante_7j_passage_1,
+                df_final$temp_moy_glissante_7j_passage_2,
+                df_final$temp_moy_glissante_7j_passage_3,
+                df_final$temp_moy_glissante_7j_passage_4,
+                na.rm = TRUE)
+
+temp_range <- seq(temp_min, temp_max, length.out = 50)
+
+pluie_min <- min(df_final$pluie_1h_passage_1,
+                df_final$pluie_1h_passage_2,
+                df_final$pluie_1h_passage_3,
+                df_final$pluie_1h_passage_4,
+                na.rm = TRUE)
+
+pluie_max <- max(df_final$pluie_1h_passage_1,
+                df_final$pluie_1h_passage_2,
+                df_final$pluie_1h_passage_3,
+                df_final$pluie_1h_passage_4,
+                na.rm = TRUE)
+
+pluie_range <- seq(pluie_min, pluie_max, length.out = 50)
+
+profondeur_min <- min(df_final$Profondeur_passage_1,
+                  df_final$Profondeur_passage_2,
+                  df_final$Profondeur_passage_3,
+                  df_final$Profondeur_passage_4,
+                  na.rm = TRUE)
+
+profondeur_max <- max(df_final$Profondeur_passage_1,
+                  df_final$Profondeur_passage_2,
+                  df_final$Profondeur_passage_3,
+                  df_final$Profondeur_passage_4,
+                  na.rm = TRUE)
+
+profondeur_range <- seq(profondeur_min, profondeur_max, length.out = 50)
+
+nouveau_data <- data.frame(pluie_range,temp_range, profondeur_range)
+
+predict(T_count_complet, type="det", newdata=nouveau_data)
+
+
+p_pred <- predict(T_count_complet, type="det", newdata=taleve_nmixture)
+head(p_pred)
+
+lambda_pred <- predict(T_count_complet, type="state", newdata=taleve_nmixture)
+head(lambda_pred)
+
+exp(coef(T_count_complet, type="state"))
+
+##prédiction : 
+
+nd1 <- data.frame(temp = c(15,20,30)) # a nous de renseigner des valeurs tests 
+predict(T_count_temp, type = 'det', newdata = nd1)
+
+nd2 <- data.frame(pluie_1h = c(0,0.5,1,1.5,2)) # a nous de renseigner des valeurs tests 
+predict(T_count_pluie1h, type = 'det', newdata = nd2)
+
+nd3 <- data.frame(pluie_7j = c(0,0.5,1,1.5,2)) # a nous de renseigner des valeurs tests 
+predict(T_count_pluie7j, type = 'det', newdata = nd3)
+
+nd4 <- data.frame(pluie_31j = c(0,0.5,1,1.5,2)) # a nous de renseigner des valeurs tests 
+predict(T_count_pluie31j, type = 'det', newdata = nd4)
+
+nd5 <- data.frame(assec = c('non', 'total')) # a nous de renseigner des valeurs tests 
+predict(T_count_assec, type = 'det', newdata = nd5)
+
+nd6 <- data.frame(profondeur = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)) # a nous de renseigner des valeurs tests 
+predict(T_count_prof, type = 'det', newdata = nd6)
+
+```
+
+# tableau nmixture pour chaque annee , chaque site protocolé est une ligne 
+```{r}
+
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+Protocole_SuiviTaleve <- process_protocole %>%
+  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+  )
+
+
+
+
+```
+
+
+
+
