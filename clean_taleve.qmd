@@ -1,14 +1,14 @@
 ---
-  title: "clean_taleve"
+title: "clean_taleve"
 format: html
 editor: visual
 ---
-  
-  ```{r setup}
+
+```{r setup}
 knitr::opts_chunk$set(
-  warning = FALSE,
-  message = FALSE, 
-  echo = FALSE
+warning = FALSE,
+message = FALSE, 
+echo = FALSE
 )
 #ce code permet de n'afficher aucun message parasite ni les warnings. 
 ```
@@ -342,20 +342,20 @@ LA couleur orange représente les observations protocolées et le bleu représen
 ## 2 Preparation du jeu de données et des variables
 
 Pour les analyses de présence et d'abondance, nous utilisons uniquement les données d'observation de la talève provenant des observations protocolées. Ce jeu de données sera nommé *Protocole_SuiviTaleve*.\*\*
-  
-  ```{r}
+
+```{r}
 #| echo: false
 #| message: false
 #| warning: false
 process_protocole <- read.csv("data/pro/process_protocole.csv", sep = ",")
 # Filtrer les relevés pour Talève sultane
 Protocole_SuiviTaleve <- process_protocole %>%
-  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-            nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
+filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+          nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
+)
 
 datatable(head(Protocole_SuiviTaleve, 10), 
-          options = list(scrollX = TRUE, pageLength = 5))
+        options = list(scrollX = TRUE, pageLength = 5))
 
 #Protocole_SuiviTaleve2<- process_protocole %>%
 #  filter(
@@ -427,8 +427,8 @@ kable(
 La sélection de modèles selon le critère d'information d'Akaike (AIC) indique que l'intégration des variables environnementales et hydrologiques n'améliore pas l'ajustement du modèle. Ces résultats suggèrent que ces facteurs ne jouent pas un rôle important dans la variation de l'abondance de la population de talèves. L'analyse est poursuivie à l'aide du modèle complet.
 
 Les parametres estimés indiquent que :
-  
-  ```{r}
+
+```{r}
 # Nous transformons les resultats par la l'inverse de sa fonction lien (logit) afin de pouvoir les interpreter biologiquement
 transformation_logit=odds.ratio (modele_complet)
 ```
@@ -450,16 +450,26 @@ annee_res <- extract_coef(modele_complet, "annee")
 Le graphique présente l'évolution de la population de la talèves au cours du temps
 
 ```{r}
-p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
+p1 <- plot(
+  ggeffect(modele_complet, terms = "annee"), 
+  colors = "Okabe-Ito"
+) + 
+  ggtitle("Évolution temporelle de l'occurrence des talèves")
 p1
 ```
 
 -   Le site a un effet significatif sur l'abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n'ont pas d'observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
 
     Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
-  
-  ```{r}
-p2 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
+
+```{r}
+p2 <- plot(
+  ggeffect(modele_complet, terms = "nom_lieu"),
+  colors = "Okabe-Ito"
+) +
+  ggtitle("Évolution spatiale de l'occurrence des talèves") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
 p2
 ```
 
@@ -528,14 +538,14 @@ kable(
 La sélection de modèles selon le critère d'information d'Akaike (AIC) indique que l'intégration des variables environnementales et hydrologiques améliore significativement l'ajustement du modèle. Ces résultats suggèrent que ces facteurs jouent un rôle important dans la variation de l'abondance de la population de talèves. L'analyse est poursuivie à l'aide du modèle complet afin d'explorer les effets prédictifs des paramètres sur cette population.
 
 Les parametres estimés indiquent que :
-  
-  ```{r}
+
+```{r}
 extract_coef <- function(modele, var){
-  c <- summary(modele)$coefficients[var, ]
-  tibble(
-    beta = round(c["Estimate"], 3),
-    p    = round(c["Pr(>|z|)"], 7)
-  )
+c <- summary(modele)$coefficients[var, ]
+tibble(
+  beta = round(c["Estimate"], 3),
+  p    = round(c["Pr(>|z|)"], 7)
+)
 }
 
 annee_res <- extract_coef(modele_complet, "annee")
@@ -569,15 +579,21 @@ assec_res <- extract_coef(modele_complet, "AssecT_1total")
 Le graphique présente l'évolution de la population de la talèves en fonction au cours des années
 
 ```{r}
-p2 = plot(ggeffect(modele_complet, terms= "AssecT_1", residual = T))
+p2 <- plot(
+  ggeffect(modele_complet, terms = "AssecT_1"),
+  colors = "Okabe-Ito"
+) +
+  ggtitle("Évolution de l'abondance des talèves en fonction des assec") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
 p2
 ```
 
 -   Le site a un effet significatif sur l'abondance des talèves. Les sites 3, 4, 5 et 7 sont significativement différents du site de référence, le site 1. Sur le graphique (fig. X), nous pouvons constater que ces sites n'ont pas d'observations. On peut supposer que ces sites ne présentent pas les conditions favorables pour accueillir la talève.
 
 -   Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
-  
-  ```{r}
+
+```{r}
 p3 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
 p3
 ```
