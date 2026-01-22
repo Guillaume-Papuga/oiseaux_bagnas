@@ -408,20 +408,31 @@ Protocole_SuiviBlongiosGraph$Occurence <- factor(
   labels = c("Absence", "Présence"))
 
 ggplot(Protocole_SuiviBlongiosGraph, aes(x = Occurence)) +
-  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_bar(
+    aes(fill = Occurence),
+    alpha = 0.8
+  ) +
   geom_text(
     stat = "count",
     aes(label = after_stat(count)),
-    vjust = -0.5,
-    size = 4
+    vjust = 2,
+    size = 7
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Absence" = "red",
+      "Présence" = "darkgreen"
+    )
   ) +
   labs(
     x = "",
     y = "Nombre d'observations",
     title = "Occurrence du Blongios (absence / présence)"
   ) +
-  theme_classic(base_size = 13) +
-  expand_limits(y = 0)
+  theme_minimal(base_size = 13) +
+  expand_limits(y = 0) +
+  guides(fill = "none")
+
 
 
 ```
@@ -512,7 +523,7 @@ Protocole_SuiviBlongiosGraph_abond <- Protocole_SuiviBlongios %>%
     Abondance_f = factor(nombre_min))
 
 ggplot(Protocole_SuiviBlongiosGraph_abond, aes(x = Abondance_f)) +
-  geom_bar(fill = "steelblue", alpha = 0.8) +
+  geom_bar(fill = "darkblue", alpha = 0.8) +
   geom_text(
     stat = "count",
     aes(label = after_stat(count)),
@@ -544,6 +555,7 @@ ModeleAbondanceAnnee <- glmmTMB(
   nombre_min ~ annee,
   family = nbinom2,
   data = Protocole_SuiviBlongios)
+summary(ModeleAbondanceAnnee)
 
 ```
 
@@ -629,6 +641,156 @@ GraphiqueAbondanceReelle
 
 Sur le graphique de l'abondance prédite (Figure 1), on observe une légère tendance négative de l'abondance du Blongios nain au cours des 10 années de suivi protocolé.\
 Cette tendance peut être mieux comprise en regardant le graphique des données brutes (Figure 2) : au début du suivi (2014), les comptages journaliers montrent un nombre relativement élevé de Blongios. Lors du suivi deux ans plus tard, le nombre d'individus observés diminue, et les deux campagnes suivantes n'ont permis de détecter aucun individu. Ce n’est qu’en 2022 et 2024 que des individus sont de nouveau observés, mais toujours en quantité moindre par rapport au début du suivi.
+
+Ajout des variables climatiques une par une pour voir si elles ont un effet significatif sur l'abondance du Blongios nain.
+
+```{r}
+
+mod_pois <- glmmTMB(
+  nombre_min ~ scale(annee, center = TRUE, scale = FALSE),
+  family = poisson,
+  data = Protocole_SuiviBlongios
+)
+
+disp <- sum(residuals(mod_pois, type = "pearson")^2) / df.residual(mod_pois)
+disp
+
+
+
+Protocole_SuiviBlongios$nom_lieu <-
+  factor(
+    Protocole_SuiviBlongios$nom_lieu,
+    labels = paste("Site", seq_along(levels(Protocole_SuiviBlongios$nom_lieu))))
+
+
+ModeleAbondanceAnneePluie <- glmmTMB(
+  nombre_min ~ annee + pluie_moy_glissante_7j,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
+
+ModeleAbondanceAnneeTemperature <- glmmTMB(
+  nombre_min ~ annee + temp_moy_glissante_7j,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
+
+ModeleAbondanceAnneeProfondeur <- glmmTMB(
+  nombre_min ~ annee + Profondeur,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
+
+ModeleAbondanceAnneeAssec <- glmmTMB(
+  nombre_min ~ annee + AssecT_1,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
+
+ModeleAbondanceAnneeSite <- glmmTMB(
+  nombre_min ~ nom_lieu,
+  family = nbinom2,
+  data = Protocole_SuiviBlongios)
+
+summary(ModeleAbondanceAnneePluie)
+summary(ModeleAbondanceAnneeTemperature)
+summary(ModeleAbondanceAnneeProfondeur)
+summary(ModeleAbondanceAnneeAssec)
+
+summary(ModeleAbondanceAnneeSite)
+
+```
+
+on voit que la pluie effet légèrement significatif
+
+Plot
+
+```{r}
+
+### P¨LUIE
+# prédire l'effet de pluie en gardant année fixe (moyenne ou médiane)
+pred_pluie <- ggpredict(ModeleAbondanceAnneePluie, 
+                        terms = c("pluie_moy_glissante_7j [all]", "annee [mean]"))
+
+ggplot(pred_pluie, aes(x = x, y = predicted)) +
+  geom_line(color = "darkblue", size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              fill = "lightblue", alpha = 0.3) +
+  labs(
+    x = "Pluie moyenne glissante 7j",
+    y = "Abondance prédite du Blongios",
+    title = "Effet de la pluie sur l'abondance prédite (glmmTMB)"
+  ) +
+  theme_classic(base_size = 13)
+
+
+### TEMPERATURE
+# prédiction en gardant l'année fixe à sa moyenne
+pred_temp <- ggpredict(ModeleAbondanceAnneeTemperature, 
+                       terms = c("temp_moy_glissante_7j [all]", "annee [mean]"))
+
+ggplot(pred_temp, aes(x = x, y = predicted)) +
+  geom_line(color = "darkred", size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              fill = "pink", alpha = 0.3) +
+  labs(x = "Température", y = "Abondance prédite",
+       title = "Effet de la température sur l'abondance prédite") +
+  theme_classic(base_size = 13)
+
+
+### PROFONDEUR
+pred_prof <- ggpredict(ModeleAbondanceAnneeProfondeur, 
+                       terms = c("Profondeur [all]", "annee [mean]"))
+
+ggplot(pred_prof, aes(x = x, y = predicted)) +
+  geom_line(color = "darkblue", size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
+              fill = "lightblue", alpha = 0.3) +
+  labs(x = "Profondeur (m)", y = "Abondance prédite",
+       title = "Effet de la profondeur sur l'abondance prédite") +
+  theme_classic(base_size = 13)
+
+
+pred_assec <- ggpredict(ModeleAbondanceAnneeAssec, 
+                       terms = c("AssecT_1 [all]", "annee [mean]"))
+
+### ASSEC
+ggplot(pred_assec, aes(x = x, y = predicted)) +
+  geom_col(fill = "darkgreen", alpha = 0.8) +  # barres pour chaque catégorie
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) + # IC
+  labs(x = "Nombre de jours d'assec", 
+       y = "Abondance prédite",
+       title = "Effet des jours d'assec (catégoriel) sur l'abondance prédite") +
+  theme_classic(base_size = 13)
+
+pred_site <- ggpredict(
+  ModeleAbondanceAnneeSite,
+  terms = "nom_lieu")
+
+
+levels(Protocole_SuiviBlongiosGraph$nom_lieu)
+
+ggplot(pred_site, aes(x = x, y = predicted)) +
+  geom_col(fill = "steelblue") +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high),
+    width = 0.2
+  ) +
+  labs(
+    x = "Site",
+    y = "Abondance prédite"
+  ) +
+  theme_minimal()
+
+
+summary(ModeleAbondanceAnneeSite)
+
+library(emmeans)
+emm_site <- emmeans(
+  ModeleAbondanceAnneeSite,
+  ~ nom_lieu,
+  type = "response"   # résultats sur l’échelle de l’abondance
+)
+
+pairs(emm_site)
+
+```
 
 # 3. Discussion
 
