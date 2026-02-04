@@ -822,6 +822,7 @@ summary(best_model)
 ```
 
 Modèle N-Mixture
+
 ```{r}
 
 Protocole_SuiviTaleve <- process_protocole %>%
@@ -936,4 +937,3 @@ ranef(T_count_null) # abondance corrigée par la detection
 
 
 ```
-
