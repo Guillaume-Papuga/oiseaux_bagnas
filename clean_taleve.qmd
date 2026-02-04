@@ -556,8 +556,14 @@ annee_res <- extract_coef(modele_complet, "annee")
 Le graphique présente l'évolution de la population de la talèves au cours du temps
 
 ```{r}
-p1 <- plot(ggeffect(modele_complet, terms= "annee", residual = T))
+p1 <- plot(
+  ggeffect(modele_complet, terms = "annee", residual = TRUE),
+  colors = "Okabe-Ito"
+) +
+  ggtitle("Prédiction du nombre de Talève par visite")
 p1
+
+
 ```
 
 ```{r}
@@ -594,7 +600,14 @@ p2
 -   Le graphique montre le nombre d'observations de talèves sur chaque site du protocole :
 
 ```{r}
-p3 = plot(ggeffect(modele_complet, terms= "nom_lieu", residual = T))
+
+p3 <- plot(
+  ggeffect(modele_complet, terms = "nom_lieu", residual =T),
+  colors = "Okabe-Ito"
+) +
+  ggtitle("Abondance des talèves en fonction des sites") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
 p3
 ```
 
