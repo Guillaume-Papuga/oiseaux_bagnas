@@ -1,12 +1,17 @@
 ---
-  title: "Document introductif"
+title: "Document introductif"
 format: html
 editor: visual
 ---
-  
-  # A. Introduction
-  
-  ::: justify
+<style>
+p {
+  text-align: justify;
+}
+</style>
+
+
+# A. Introduction
+
 La réserve du Bagnas est un espace naturel protégé situé entre Agde et Marseillan. Classée Réserve Naturelle Nationale depuis 1983, elle abrite une remarquable diversité de milieux : étang, lagunes, roselières, prés salés, sansouïres et dunes. La réserve abrite une biodiversité d'une grande richesse.
 
 La réserve est d'importance majeure à l'échelle régionale, notamment comme site de nidification, comme pour la Talève sultane qui niche dans les roselières, et halte migratoire pour de nombreuses espèces d'oiseaux. On y observe une importante population de hérons, dont le Blongios nain, le Butor étoilé et le Héron pourpré.
@@ -17,8 +22,7 @@ Le projet se base sur des données d'observation fournies par la réserve du Bag
 
 Ce document comprend deux parties : la première est la préparation des données et la deuxième présente des figures générales sur la structure des données.
 
-Les analyses spécifiques pour chaque espèce d'oiseau se trouvent dans des documents séparés, joints avec celui-ci.
-:::
+Les analyses spécifiques pour chaque espèce d'oiseau se trouvent dans des documents séparés, joints avec celui-ci. 
 
 # B. Préparation des données
 
@@ -29,12 +33,15 @@ knitr::opts_chunk$set(
   message = FALSE, 
   echo = FALSE
 )
+
+
 #ce code permet de n'afficher aucun message parasite ni les warnings. 
 ```
 
 ```{r}
-#1. Il faut charger les données et les library
-#charger les library 
+#1. Il faut charger les données et les libraries pour pouvoir faire tourner le code. 
+#Toujours faire tourner cette partie avant le code. 
+
 library(leaflet)
 library(sf)
 library(RColorBrewer) 
@@ -51,23 +58,35 @@ library(knitr)
 library(lme4)
 library(kableExtra)
 library(slider)
+library(forcats)
+library(stringr)
+library(stringi)
 ```
 
 # 1. Mise en forme du tableau de données
+
+Cette partie n'a besoin d'être faite qu'une seule fois, une fois que le data frame final est créé, la partie mise en forme peut être ignorée
 
 Nous partons des tableaux bruts de données d'observations pour les 3 espèces.
 
 Dans chaque tableau, il y a 77 variables et toutes les données d'observations du Butor, du Blongios et de la Talève de 1990 à 2025. Dans ces tableaux, de nombreuses variables ne nous seront pas utiles pour la suite. On construit donc un nouveau tableau synthétique, fusion des 2 tableaux de données brutes et comprenant uniquement les variables d'intérêt.
 
+```{r}
+# tout le code entre ici et le C concerne la création de tableaux propres et prets à être utilisés. Il doit tourner une fois, mais une fois que les tab;eaux sont créés, il n'est pas necessaire de les refaire tourner. 
+```
+
+
+
 ```{r recup, message=FALSE, warning=FALSE}
+
 
 ## 1. Rassembler les deux tableaux de données
 
 #a)  récupérer les tableaux de données brute.
 
 
-#charger les données brutes: 2 tableaux
-raw_data<- read_excel("data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx")
+#charger les données brutes: la première étape est d'appeller les tableaux bruts
+raw_data<- read_excel("data/raw/synthese_observations_2025-09-09T13_30_50.994Z.xlsx") 
 
 raw_data_2 <- read_delim(
   "data/raw/synthese_observations_2025-11-24T07_38_00.302Z (2).csv",
@@ -79,6 +98,8 @@ raw_data_2 <- read_delim(
 
 ```{r}
 #Nous conservons uniquement les colonnes pertinentes pour la suite de l'analyse, en supprimant les colonnes vides ainsi que celles dont l'information est redondante, notamment les noms latins.
+#on crée de nouveaux tableaux pour ne pas modifier les fichiers bruts. 
+
 
 process_data_1= raw_data %>%
   select(id_synthese,date_debut,date_fin,heure_debut,heure_fin,
@@ -91,32 +112,34 @@ process_data_2 <- raw_data_2 %>%
          x_centroid_4326, y_centroid_4326,
          nom_lieu, champs_additionnels)
 
-# On garde uniquement l'heure (HH:MM:SS) dans heure_debut / heure_fin
-# car le fichier original contenait une date + une heure
+
+# Dans les colonnes heure_debut et heure_fin du tableau 1, il y a une date et une heure, on ne garde que l'heure sous format heure-minute-seconde (HH:MM:SS) dans heure_debut / heure_fin
+
 process_data_1 <- process_data_1 %>%
   mutate(
     heure_debut = format(heure_debut, "%H:%M:%S"),
     heure_fin   = format(heure_fin,   "%H:%M:%S")
   )
 
-# mettre en format date les dates de debut et de fin 
+# mettre en format "date" les dates de debut et de fin sous forme jour-mois-année pour les 2 tableaux
 process_data_1 <- process_data_1 %>%
   mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
           date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
-
 
 
 process_data_2 <- process_data_2 %>%
   mutate( date_debut = as.Date(date_debut, format = "%d/%m/%Y"),
           date_fin = as.Date(date_fin, format = "%d/%m/%Y") )
 
-#correction des formats de certaines colonnes
+#Dans la colonne des coordonnées du tableau 2, le format n'est pas le bon
+
 process_data_2 <- process_data_2 %>%
   mutate(
     x_centroid_4326 = as.character(x_centroid_4326),
     y_centroid_4326 = as.character(y_centroid_4326)
   )
 
+#arrondir les coordonnées à 6 unités. 
 process_data_1<- process_data_1 %>%
   mutate(
     x_centroid_4326 = round(as.numeric(x_centroid_4326), 6),
@@ -147,7 +170,7 @@ process_data_2$champs_additionnels[ process_data_2$id_synthese == 124571 ] <-
 #création du tableau final avec les 3 espèces et les colonnes dans le bon format. C'est ce tableau qui est par la suite utilisé. 
 process_data = process_data_2
 
-write_csv(process_data, "data/pro/process_data.csv")
+write_csv(process_data, "data/pro/process_data.csv") #le nouveau dataframe qui contient toutes les donnés est rangé dans le dossier data/ process. De cette manière on ne travaille que sur ce tableau et pas sur les tableaux bruts. 
 
 tibble(Variables = names(process_data)) |>
   kbl(caption = "Variables du jeu de données") |>
@@ -157,7 +180,7 @@ tibble(Variables = names(process_data)) |>
 Les 13 variables conservées sont présentées dans la liste ci-dessus.
 
 ```{r}
-
+#permet de montrer les variables du tableau. 
 head(process_data) |>
   kbl(caption = "Aperçu des données") |>
   kable_styling(
@@ -171,13 +194,14 @@ Le tableau process_data correspond aux données sur toute la période 1990-2025 
 
 Il y a deux protocoles mis en place pour les trois espèces : un pour le Butor étoilé et un pour le Blongios et la Talève. Le protocole Butor est réalisé entre le 10 avril et le 16 mai, à raison de deux à quatre visites sur la période. Chaque visite sur un point consiste à écouter pendant 15 minutes 1 fois le soir (entre 30mn avant le coucher du soleil et 1h après) et 1 fois le matin (dans les 2h qui précèdent le lever du soleil).
 
-Le protocole Blongios-Talève est réalisé entre le 1er mai et fin juillet. Il y a une visite toutes les 3 semaines sur les 9 points d'écoute (et d'observation), soit 4 visites annuelles. Chaque visite sur un point consiste à écouter (et observer) pendant 30 minutes 1 fois le soir (entre 1h avant le coucher du soleil et 30mn après) et 1 fois le matin (dans les 1h30 qui suivent le lever du soleil) Chaque visite comporte trois parties : 10 mn d'écoute-observation suivie de 10mn d'écoute-observation avec repasse du chant de Blongios suivi de 10mn d'écoute-observation avec repasse du chant de Talève.
-Nous ne gardons par la suite des analyses que les données qui font partie de ces protocoles : donc à partir de 2014 et uniquement sur les 9 points d'écoutes protocolés. Les autres données sont considérées comme opportunistes.
+Le protocole Blongios-Talève est réalisé entre le 1er mai et fin juillet. Il y a une visite toutes les 3 semaines sur les 9 points d'écoute (et d'observation), soit 4 visites annuelles. Chaque visite sur un point consiste à écouter (et observer) pendant 30 minutes 1 fois le soir (entre 1h avant le coucher du soleil et 30mn après) et 1 fois le matin (dans les 1h30 qui suivent le lever du soleil) Chaque visite comporte trois parties : 10 mn d'écoute-observation suivie de 10mn d'écoute-observation avec repasse du chant de Blongios suivi de 10mn d'écoute-observation avec repasse du chant de Talève. Nous ne gardons par la suite des analyses que les données qui font partie de ces protocoles : donc à partir de 2014 et uniquement sur les 9 points d'écoutes protocolés. Les autres données sont considérées comme opportunistes.
 
 ```{r}
-## 2. Créer le tableau de données utilisé dans les analyses sur le protocole
+## 2. Créer le tableau de données utilisé dans les analyses sur le protocole 
 
-#floor date permet de récuperer l'année et de créer une nouvelle colonne uniquement avec l'année
+#cette partie n'a besoin d'être executée qu'une seule fois, une fois le tableau final créé, le code n'a plus besoin de tourner.
+
+#floor date permet de récuperer l'année dans la colonne date_debut et de créer une nouvelle colonne uniquement avec l'année
 process_data$annee = year(floor_date(process_data$date_debut, "year"))
 
 #on filtre pour enlever toutes les données avant 2014 (le début des protocoles)
@@ -211,6 +235,8 @@ Les données météorologiques ont été fournies par InfoClimat. A partir des t
 ```{r data_enviro, message=FALSE, warning=FALSE}
 #| echo: false
 #il faut aller chercher les données environnementales
+
+#cette partie n'a besoin d'être executée qu'une seule fois, une fois le tableau final créé, le code n'a plus besoin de tourner.
 
 #récuperer les csv bruts pour chaque année 
 file_2013 <- read_delim("data/raw/2013.csv", delim = ";", 
@@ -331,22 +357,6 @@ environnement_daily <- environnement_daily %>%
   full_join(données_2013_2025 %>% 
               select(Date, julian),by = "Date")
 
-# Etape 3 verification du jeu de données
-# 
-# # Nombre de jours par année
-# environnement_daily %>%
-#   mutate(Annee = year(Date)) 
-#   # count(Annee)
-# 
-# # les lignes manquantes si il y'en a
-# résumé_jours_NA = environnement_daily %>%
-#   filter(is.na(temperature)) %>%        
-#   mutate(Annee = year(Date)) %>%        
-#   group_by(Annee) %>%                   
-#   summarise(
-#     nb_lignes = n(),                     
-#     nb_jours_uniques = n_distinct(Date)  
-#   )
 
 ### 3.2 Rajout des moyennes glissantes
 
@@ -398,8 +408,9 @@ head(environnement_daily) |>
                 full_width = FALSE
                 )
 ```
-                                                                                                                                             
+
 ```{r}
+
 
 #| echo: false
 process_protocole = process_protocole %>%
@@ -408,6 +419,8 @@ process_protocole = process_protocole %>%
 write_csv(process_protocole,"data/pro/process_protocole.csv")
 
 ```
+
+
 
 Dans ce tableau, les seules variables qui nous interessent sont la pluie, le vent et la température.
 
@@ -612,6 +625,8 @@ write_csv(environnement_daily, "data/pro/environnement_daily.csv")
 
 write_csv(process_protocole, "data/pro/process_protocole.csv")
 
+# le tableau process_protocole est le tableau utilisé pour les analyses des données protocolées. 
+
 ```
 
 # C. Analyses exploratoires
@@ -626,24 +641,12 @@ Le graphique suivant représente le nombre d'observation par observateur ou grou
 
 ```{r}
 
-library(ggplot2)
-library(dplyr)
-library(forcats)
-library(stringr)
-library(stringi)
 
-# ==============================
-# 0) Diagnostic initial
-# ==============================
-cat("Aperçu de process_data (5 premières lignes) :\n")
-print(utils::head(process_data, 5))
-cat("\nStructure de process_data :\n")
-print(str(process_data))
+#objectif : nettoyer la colonne observateurs pour que les mêmes personnes mais avec des noms écrits dans des sens différents, avec ou sans accents ou majuscules soient notés comme une seule personne : éviter les doublons. 
 
-# ==============================
 # 1) Nettoyage et normalisation des observateurs
-# ==============================
-process_data <- process_data %>%
+
+process_data_obs <- process_data %>%
   mutate(observateurs = as.character(observateurs)) %>%
   
   mutate(observateurs = sapply(observateurs, function(x) {
@@ -654,22 +657,22 @@ process_data <- process_data %>%
     noms <- strsplit(x, "/")[[1]]
     
     noms_clean <- noms %>%
-      trimws() %>%
-      tolower() %>%
-      stringi::stri_trans_general("Latin-ASCII") %>%
+      trimws() %>% #supprime les espaces au début/fin 
+      tolower() %>% #tout en minuscule : enlever le biais de la casse
+      stringi::stri_trans_general("Latin-ASCII") %>% #supprime les accents
       sapply(function(y) {
-        mots <- unlist(strsplit(y, " +"))
-        mots <- mots[mots != ""]
-        paste(sort(mots), collapse = " ")
+        mots <- unlist(strsplit(y, " +")) #sépare les mots dans une même case
+        mots <- mots[mots != ""] #enlève les chaines vides
+        paste(sort(mots), collapse = " ") #recolle les noms prénom+nom
       })
     
-    paste(noms_clean, collapse = " / ")
+    paste(noms_clean, collapse = " / ") #recolle les noms, 
   }))
 
-# ==============================
-# 2) Corrections manuelles des noms
-# ==============================
-process_data <- process_data %>%
+
+# 2) Corrections manuelles des noms pour les cas inversions prénom/nom, abréviations
+
+process_data_obs <- process_data_obs %>%
   mutate(observateurs = case_when(
     observateurs == "clara rondeau" ~ "rondeau clara",
     observateurs == "antoine cornet" ~ "cornet antoine",
@@ -682,54 +685,55 @@ process_data <- process_data %>%
     TRUE ~ observateurs
   ))
 
-# ==============================
+
 # 3) Filtrage (exclusion ADENA)
-# ==============================
-data_filtered <- process_data %>%
+
+data_filtered <- process_data_obs %>%
   mutate(observateurs = str_trim(observateurs)) %>%
   filter(
-    !is.na(observateurs),
-    str_to_upper(observateurs) != "ADENA"
+    !is.na(observateurs), #enlève les NA
+    str_to_upper(observateurs) != "ADENA" #enlève l'observateur ADENA
   )
 
 cat("\nNombre de lignes après filtre :", nrow(data_filtered), "\n")
 
-# ==============================
+
 # 4) Agrégation des observations
-# ==============================
+
 data_summarized <- data_filtered %>%
-  mutate(nombre_min = as.numeric(nombre_min)) %>%
+  mutate(nombre_min = as.numeric(nombre_min)) %>% #corrige eventuellement le type de nombre_min
   group_by(observateurs) %>%
   summarise(
-    total_min = sum(nombre_min, na.rm = TRUE),
+    total_min = sum(nombre_min, na.rm = TRUE), #somme des observations
     n_rows = n(),
     .groups = "drop"
   )
 
-# ==============================
+
 # 5) Suppression des observateurs sans observations
-# ==============================
+
 data_summarized <- data_summarized %>%
-  filter(!is.na(total_min), total_min > 0)
+  filter(!is.na(total_min), total_min > 0) #ne garde que les observateurs avec >0 obs
 
 cat("\nTable agrégée (top 20) :\n")
 print(utils::head(arrange(data_summarized, desc(total_min)), 20))
 
-# Sécurité
+# Sécurité : vérifier qu'il reste des données valides avant de continuer 
 if (nrow(data_summarized) == 0) {
   stop("Aucun observateur avec des observations (> 0).")
 }
 
-# ==============================
+
 # 6) Réorganisation pour le graphique
-# ==============================
+
 data_summarized <- data_summarized %>%
   arrange(desc(total_min)) %>%
   mutate(observateurs = factor(observateurs, levels = observateurs))
 
-# ==============================
+
 # 7) Graphique
-# ==============================
+
+
 p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
   geom_col() +
   geom_text(
@@ -750,6 +754,7 @@ p <- ggplot(data_summarized, aes(x = observateurs, y = total_min)) +
 print(p)
 
 ```
+
 Il existe une grande diversité des observateurs et des groupes d'observateurs. Cependant, la majorité des observations ont été réalisées par un petit nombre de personnes ou groupes de personnes.
 
 ### 2. Distribution des observateurs au cours du temps
@@ -790,7 +795,7 @@ ggplot(process_data, aes(x = date_debut, y = observateurs)) +
 
 ```
 
-Pour un grand nombre d'observations, l'observateur est inconnu (noté ADENA). La notation des observateurs a débuté aux alentours de 2014. Certains observateurs ou groupes d'observateurs ont eu un rôle plus régulier dans l'échantillonnage. On observe aussi un remplacement des observateurs au cours du temps. 
+Pour un grand nombre d'observations, l'observateur est inconnu (noté ADENA). La notation des observateurs a débuté aux alentours de 2014. Certains observateurs ou groupes d'observateurs ont eu un rôle plus régulier dans l'échantillonnage. On observe aussi un remplacement des observateurs au cours du temps.
 
 ## B. Cartographie des sites protocolés
 
