@@ -3,14 +3,15 @@ title: "Document introductif"
 format: html
 editor: visual
 ---
+
+```{=html}
 <style>
 p {
   text-align: justify;
 }
 </style>
-
-
-# A. Introduction
+```
+# 1. Introduction
 
 La réserve du Bagnas est un espace naturel protégé situé entre Agde et Marseillan. Classée Réserve Naturelle Nationale depuis 1983, elle abrite une remarquable diversité de milieux : étang, lagunes, roselières, prés salés, sansouïres et dunes. La réserve abrite une biodiversité d'une grande richesse.
 
@@ -22,9 +23,9 @@ Le projet se base sur des données d'observation fournies par la réserve du Bag
 
 Ce document comprend deux parties : la première est la préparation des données et la deuxième présente des figures générales sur la structure des données.
 
-Les analyses spécifiques pour chaque espèce d'oiseau se trouvent dans des documents séparés, joints avec celui-ci. 
+Les analyses spécifiques pour chaque espèce d'oiseau se trouvent dans des documents séparés, joints avec celui-ci.
 
-# B. Préparation des données
+# 2. Préparation des données
 
 ```{r setup}
 #| include: false
@@ -63,7 +64,7 @@ library(stringr)
 library(stringi)
 ```
 
-# 1. Mise en forme du tableau de données
+## 1. Mise en forme du tableau de données
 
 Cette partie n'a besoin d'être faite qu'une seule fois, une fois que le data frame final est créé, la partie mise en forme peut être ignorée
 
@@ -74,8 +75,6 @@ Dans chaque tableau, il y a 77 variables et toutes les données d'observations d
 ```{r}
 # tout le code entre ici et le C concerne la création de tableaux propres et prets à être utilisés. Il doit tourner une fois, mais une fois que les tab;eaux sont créés, il n'est pas necessaire de les refaire tourner. 
 ```
-
-
 
 ```{r recup, message=FALSE, warning=FALSE}
 
@@ -228,7 +227,7 @@ head(process_protocole) |>
 
 Ce tableau est celui qui sera utilisé pour les analyses dans la suite du projet. Il ne contient que les données qui appartiennent aux protocoles BlongiosTalève et Butor.
 
-# 2. Les données météorologiques
+## 2. Les données météorologiques
 
 Les données météorologiques ont été fournies par InfoClimat. A partir des tableaux par année de 2013 à 2025, on créé un nouveau dataframe qui rassemble toutes les données.
 
@@ -410,9 +409,6 @@ head(environnement_daily) |>
 ```
 
 ```{r}
-
-
-#| echo: false
 process_protocole = process_protocole %>%
   inner_join( environnement_daily,by = c("date_debut"= "Date") )
 
@@ -420,12 +416,12 @@ write_csv(process_protocole,"data/pro/process_protocole.csv")
 
 ```
 
+Dans ce tableau, les seules variables qui nous intéressent sont la pluie, le vent et la température, on ne garde donc que les colonnes correspondantes.
 
-
-Dans ce tableau, les seules variables qui nous interessent sont la pluie, le vent et la température.
+#### Représentation des données météorologiques
 
 ```{r}
-#graphique enviro
+#représetation 
 environnement_daily <- environnement_daily %>%
   mutate(year = year(Date), day_of_year = yday(Date)  # équivalent du jour julien
          )
@@ -460,16 +456,11 @@ ggplot(environnement_daily, aes(x = day_of_year, y = pluie_1h)) +
 
 Ces graphiques montrent l'évolution de la pluie journalière par année d'étude. On observe des différences de distribution avec des années plus sèches, comme 2019 ou 2021, et des années plus pluvieuses, comme 2023 ou 2025.
 
-# 3. Les données hydrologiques
+## 3. Les données hydrologiques
 
 Les données hydrologiques comportent un grand nombre de variables, mais seules 2 variables nous intéressent : la profondeur moyenne du grand Bagnas, et les assecs totaux ou partiels.
 
 ```{r}
-
-### Importe les packages
-library(ggplot2)
-library(dplyr)
-library(lubridate)
 
 ### Importation des données brutes
 HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
@@ -477,7 +468,7 @@ HydrologicData <- read.csv("data/raw/DataHydro.csv", sep = ";")
 ### On sélectionne les colonnes qui nous interessent dans le data frame hydro et on remet les données sous le bon format et les données après 2013
 HydrologicDataGrandBagnas <- HydrologicData %>%
   select(Station, Date.Releve, Heure, Salinite, Temperature, Niveau.Ngf, Niveau.Relatif)%>%
-  mutate(Profondeur = (Niveau.Ngf+0.27),
+  mutate(Profondeur = (Niveau.Ngf+0.27), #on recrée une variable profondeur réelle 
          Date.Releve = as.Date(Date.Releve, format = "%d/%m/%Y"),
          Annee = as.integer(format(Date.Releve, "%Y")),
          Mois = format(Date.Releve, "%m"),
@@ -497,9 +488,9 @@ Hydro_moyenne <- HydrologicDataGrandBagnas %>%
 HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
   mutate(
     Assec = case_when(
-      is.na(Profondeur) ~ "total",
+      is.na(Profondeur) ~ "total", #assec total si pas de valeur dans la colonne profondeur (réelle)
       Profondeur < 0.2  ~ "partiel",
-      TRUE                     ~ "non"),
+      TRUE                     ~ "non"), 
     Assec_score = case_when(
       Assec == "non"     ~ 1,
       Assec == "partiel" ~ 2,
@@ -513,7 +504,8 @@ HydrologicDataGrandBagnas <- HydrologicDataGrandBagnas %>%
   ungroup() %>%
   select(-Assec_score)
 
-### Crée une variable AssecT_1 (AssecT de l'année précédente)
+### Crée une variable AssecT_1 (AssecT de l'année précédente) : l'état assec (total, partiel ou non) du jour de l'année n-1 s'applique au jour n. Exemple : si le 12 février 2018 il y a un assec total, alors le 12 février 2019 sera codé en assec total. 
+
 Assec_annuel <- HydrologicDataGrandBagnas %>%
   distinct(Annee, AssecT) %>%
   bind_rows(tibble(Annee = 2014, AssecT = "non")) %>%
@@ -545,6 +537,12 @@ HydrologicDataGrandBagnas$Mois <- as.numeric(as.character(HydrologicDataGrandBag
 HydrologicDataGrandBagnas = HydrologicDataGrandBagnas[-c(193,325),]
 
 
+```
+
+#### Représentation des données hydrologiques
+
+```{r}
+
 ### Graphique de la profondeur moyenne mensuelle par année
 
 ggplot(HydrologicDataGrandBagnas, aes(x = Jour, y = Profondeur)) +
@@ -552,7 +550,6 @@ ggplot(HydrologicDataGrandBagnas, aes(x = Jour, y = Profondeur)) +
   geom_point() +
   facet_wrap(~ Annee, ncol = 2) +
   theme_bw()
-
 
 ```
 
@@ -623,17 +620,17 @@ process_protocole <- process_protocole %>%
 
 write_csv(environnement_daily, "data/pro/environnement_daily.csv")
 
-write_csv(process_protocole, "data/pro/process_protocole.csv")
+#écriture du dataframe qui sera utilisé tout au long des analyses protocolées (Blongios et Talève) 
 
-# le tableau process_protocole est le tableau utilisé pour les analyses des données protocolées. 
+write_csv(process_protocole, "data/pro/process_protocole.csv")
 
 ```
 
-# C. Analyses exploratoires
+# 3. Analyses exploratoires
 
 Les premières analyses des données sont exploratoires. Cette partie présente les analyses exploratoires communes aux 3 espèces.
 
-## A. Investissements des observateurs
+## 1. Investissements des observateurs
 
 ### 1. Nombre d'observations par observateur
 
@@ -797,7 +794,7 @@ ggplot(process_data, aes(x = date_debut, y = observateurs)) +
 
 Pour un grand nombre d'observations, l'observateur est inconnu (noté ADENA). La notation des observateurs a débuté aux alentours de 2014. Certains observateurs ou groupes d'observateurs ont eu un rôle plus régulier dans l'échantillonnage. On observe aussi un remplacement des observateurs au cours du temps.
 
-## B. Cartographie des sites protocolés
+## 2. Cartographie des sites protocolés
 
 La cartographie des sites d'écoute pour les 3 espèces. Les sites sur la carte sont les 9 sites du protocole. En cliquant sur les points rouges, les noms des sites apparaissent.
 
