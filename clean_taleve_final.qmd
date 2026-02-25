@@ -20,7 +20,6 @@ p {
 }
 </style>
 ```
-
 #Charger les données et les library
 
 ```{r}
@@ -856,121 +855,15 @@ summary(best_model)
 
 ```
 
-Modèle N-Mixture : on dégage ?
 
-```{r}
-#| eval: false
-#| include: false
+## Discussion et recommandations
 
-Protocole_SuiviTaleve <- process_protocole %>%
-  filter( champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
-      nom_vernaculaire == "Talève sultane, Poule sultane, Porphyrion bleu"
-  )
+::: justify
+Les analyses ont montré qu'il y avait une augmentation significative des Talèves dans la réserve. La distribution des Talèves sur les points sites d'écoute du protocole est significativement hétérogène. L'assec de l'année précédente explique aussi la variation de présence des Talèves mais les données sont trop peu robustes pour l'affirmer. Comme le protocole est réalisé tous les deux ans et que les Assec (partiels ou totaux) sont tombés là même année en grande majorité, nous n'avons réellement qu'une année utilisable dans le modèle. Il serait intéressant de faire des relevés plus réguliers (ou d'utiliser les données des autres protocoles) afin d'avoir une idée du vrai impact des Assec. 
 
+Il serait peut être intéressant de regarder les vriables qui diffèrent entre chaque site d'écoute, que ce soit la qualité de la roselière ou la distance au chemin. De cette manière les modèles pourraient être plus complets et donner plus d'informations concernant la repartition des Talèves sur la réserves. 
 
-tableau_addition_site <- Protocole_SuiviTaleve %>%
-  group_by(date_debut, temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur, vent_moyen) %>%
-  summarise(
-    total_obs = sum(nombre_min, na.rm = TRUE),
-    .groups = "drop"
-  )
+Les données d'absence étant indispensables pour mener des analyses statistiques robustes, celles-ci peuvent aussi être notées lors des suivis d'autres espèces si cela est jugé pertinent.
+:::
 
 
-tableau_addition_site$annee <- as.numeric(format(tableau_addition_site$date_debut, "%Y"))
-tableau_addition_site <- tableau_addition_site[-c(1,3,5,7,9), ]
-
-tableau_repet <- tableau_addition_site %>%
-  arrange(annee, date_debut) %>%
-  group_by(annee) %>%
-  mutate(passage = row_number()) %>%
-  ungroup()
-
-
-tableau_ready<- tableau_repet %>%
-  select(annee, passage, total_obs,temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j, AssecT_1, Profondeur, vent_moyen) %>%
-  pivot_wider(
-    names_from = passage,
-    values_from = total_obs,
-    names_prefix = "passage_"
-  )
-
-df_long <- tableau_ready %>% 
-  pivot_longer(
-    cols = starts_with("passage_"),
-    names_to = "passage",
-    values_to = "count"
-  ) %>%
-  filter(!is.na(count)) %>%
-  mutate(
-    passage = as.numeric(gsub("passage_", "", passage))
-  )
-  
-  
-counts <- df_long %>%
-  select(annee, passage, count) %>%
-  pivot_wider(
-    names_from = passage,
-    values_from = count,
-    names_prefix = "passage_"
-  ) %>%
-  arrange(annee)
-  
-counts_mat <- as.matrix(counts[, -1])
-rownames(counts_mat) <- counts$annee
-  
-  
-obs_covs <- df_long %>%
-  select(annee, passage,
-         temp_moy_glissante_7j,
-         pluie_1h,
-         pluie_moy_glissante_7j,
-         pluie_moy_glissante_31j,
-         Profondeur,
-         AssecT_1, 
-         vent_moyen) %>%
-  pivot_wider(
-    names_from = passage,
-    values_from = c(
-      temp_moy_glissante_7j,
-      pluie_1h,
-      pluie_moy_glissante_7j,
-      pluie_moy_glissante_31j, 
-      Profondeur, 
-      AssecT_1,
-      vent_moyen
-    ),
-    names_sep = "_passage_"
-  ) %>%
-  arrange(annee)
-
-
-df_final <- counts %>%
-  left_join(obs_covs, by = "annee")
-
-df_final <- df_final[-c(3), ] #on enlève l'année 2018 car il n'y a qu'1 passage
-df_final <- df_final [, -c(27,28,29)]
-
-
-df_final <- df_final %>%
-  rename(assec = AssecT_1_passage_1)
-
-
-taleve_nmixture<-unmarkedFramePCount(comptage)
-
-#1 : modèle null : pas de covariables
-T_count_null <- pcount(~ 1 ~1 , taleve_nmixture, K = 100) # detection, then abundance
-summary(T_count_null)
-
-
-names(T_count_null)
-backTransform(T_count_null, "state")
-backTransform(T_count_null, "det")
-
-predict(T_count_null, type="state")
-predict(T_count_null, type="det")
-
-ranef(T_count_null) # abondance corrigée par la detection
-
-
-
-```
