@@ -859,9 +859,9 @@ summary(best_model)
 ## Discussion et recommandations
 
 ::: justify
-Les analyses ont montré qu'il y avait une augmentation significative des Talèves dans la réserve. La distribution des Talèves sur les points sites d'écoute du protocole est significativement hétérogène. L'assec de l'année précédente explique aussi la variation de présence des Talèves mais les données sont trop peu robustes pour l'affirmer. Comme le protocole est réalisé tous les deux ans et que les Assec (partiels ou totaux) sont tombés là même année en grande majorité, nous n'avons réellement qu'une année utilisable dans le modèle. Il serait intéressant de faire des relevés plus réguliers (ou d'utiliser les données des autres protocoles) afin d'avoir une idée du vrai impact des Assec. 
+Les analyses ont montré qu'il y avait une augmentation significative des Talèves dans la réserve. La distribution des Talèves sur les points sites d'écoute du protocole est significativement hétérogène. L'assec total de l'année précédente explique aussi la variation de présence des Talèves mais les données sont trop peu robustes pour l'affirmer. Comme le protocole est réalisé tous les deux ans et que les Assec (partiels ou totaux) sont tombés là même année en grande majorité, nous n'avons réellement qu'une année utilisable dans le modèle. Il serait intéressant de faire des relevés plus réguliers (ou d'utiliser les données des autres protocoles) afin d'avoir une idée du vrai impact des Assec. 
 
-Il serait peut être intéressant de regarder les vriables qui diffèrent entre chaque site d'écoute, que ce soit la qualité de la roselière ou la distance au chemin. De cette manière les modèles pourraient être plus complets et donner plus d'informations concernant la repartition des Talèves sur la réserves. 
+Il serait peut être intéressant de regarder les variables qui diffèrent entre chaque site d'écoute, que ce soit la qualité de la roselière ou la distance au chemin par exemple. De cette manière les modèles pourraient être plus complets et donner plus d'informations concernant la repartition des Talèves sur la réserve. 
 
 Les données d'absence étant indispensables pour mener des analyses statistiques robustes, celles-ci peuvent aussi être notées lors des suivis d'autres espèces si cela est jugé pertinent.
 :::
