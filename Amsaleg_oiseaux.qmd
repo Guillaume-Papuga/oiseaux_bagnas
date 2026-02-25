@@ -779,8 +779,7 @@ modeleB_complet_profondeur <- glm(nombre_min~ annee2 + julian + I(julian^2)+ nom
 AIC(modeleB_complet_site, modeleB_complet_vent,modeleB_complet_temp_31,modeleB_complet_temp_7j,modeleB_complet_temp_1j_vent,modeleB_complet_pluie_31j_vent,modeleB_complet_pluie_7j_vent,modeleB_complet_pluie_1j_vent,modeleB_complet_assec,modeleB_complet_profondeur)
 ```
 
-
-## n-mixture 
+## n-mixture
 
 ```{r}
 
@@ -806,7 +805,6 @@ process_protocole <- read_csv("data/pro/process_protocole.csv")
 
 
 ```
-
 
 ```{r}
 # #propre pour faire le tableau ready que abondance
@@ -843,8 +841,6 @@ process_protocole <- read_csv("data/pro/process_protocole.csv")
 #   )
 ```
 
-
-
 ```{r}
 
 
@@ -855,7 +851,7 @@ Protocole_SuiviTaleve <- process_protocole %>%
 
 
 tableau_addition_site <- Protocole_SuiviTaleve %>%
-  group_by(date_debut, temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur, vent_moyen) %>%
+  group_by(temp_moy_glissante_7j, pluie_1h, pluie_moy_glissante_7j, pluie_moy_glissante_31j,AssecT_1, Profondeur, vent_moyen) %>%
   summarise(
     total_obs = sum(nombre_min, na.rm = TRUE),
     .groups = "drop"
@@ -886,7 +882,7 @@ tableau_ready<- tableau_repet %>%
 #test tableau complet 
 
 df_long <- tableau_ready %>% 
-  pivot_longer(
+  pivot_wider(
     cols = starts_with("passage_"),
     names_to = "passage",
     values_to = "count"
@@ -991,8 +987,6 @@ summary(taleve_nmixture_pluie31)
 summary(taleve_nmixture_prof)
 summary(taleve_nmixture_assec)
 ```
-
-
 
 ```{r}
 
@@ -1342,7 +1336,8 @@ predict(T_count_prof, type = 'det', newdata = nd6)
 
 ```
 
-# tableau nmixture pour chaque annee , chaque site protocolé est une ligne 
+# tableau nmixture pour chaque annee , chaque site protocolé est une ligne
+
 ```{r}
 
 process_protocole <- read_csv("data/pro/process_protocole.csv")
@@ -1359,4 +1354,241 @@ Protocole_SuiviTaleve <- process_protocole %>%
 
 
 
+## occupancy blongios 
+
+```{r}
+process_protocole <- read_csv("data/pro/process_protocole.csv")
+
+Protocole_SuiviBlongios<- process_protocole %>%
+  filter(
+    champs_additionnels  == "{'RELV_NOM': 'SuiviBlongiosTalève'}" &
+      nom_vernaculaire ==
+        "Blongios nain, Butor blongios")
+
+
+library(unmarked)	# charger le package unmarked
+library(AICcmodavg)	# charger le package AICcmodavg
+library(boot)
+
+```
+
+
+```{r}
+
+
+
+dates_a_supprimer <- as.Date(c("2014-05-12", "2014-06-11", "2014-06-23", 
+                               "2014-06-30", "2014-08-01"))
+
+Protocole_SuiviBlongios_occ <- Protocole_SuiviBlongios %>% 
+  filter(!date_debut %in% dates_a_supprimer)
+
+
+
+Protocole_SuiviBlongios_occ <- Protocole_SuiviBlongios_occ %>%
+  group_by(date_debut, nom_lieu) %>%
+  mutate(nombre_min = sum(nombre_min, na.rm = TRUE)) %>%
+  slice_head(n = 1) %>%  # Garde 1 ligne par groupe
+  ungroup()
+
+Protocole_SuiviBlongios_occ <- Protocole_SuiviBlongios_occ %>% 
+  filter(annee != "2018")
+
+tableau_repet <- Protocole_SuiviBlongios_occ %>%
+  arrange(annee, date_debut) %>%
+  group_by(annee, nom_lieu) %>%
+  mutate(passage = row_number()) %>%
+  ungroup()
+
+tableau_repet <- tableau_repet %>%
+  mutate(annee_passage = paste0(annee, "_p", passage))
+
+abond_wide <- tableau_repet %>%
+  select(nom_lieu, annee_passage, nombre_min) %>%
+  pivot_wider(
+    names_from = annee_passage,
+    values_from = nombre_min
+  )
+
+
+
+cov_wide <- tableau_repet %>%
+  select(nom_lieu, annee_passage,
+         temp_moy_glissante_7j,
+         pluie_1h,
+         pluie_moy_glissante_7j,
+         pluie_moy_glissante_31j,
+         vent_moyen,
+         AssecT_1, 
+         Profondeur,) %>%
+  pivot_wider(
+    names_from = annee_passage,
+    values_from = c(temp_moy_glissante_7j,
+                    pluie_1h,
+                    pluie_moy_glissante_7j,
+                    pluie_moy_glissante_31j,
+                    vent_moyen,
+                    AssecT_1,
+                    Profondeur),
+    names_glue = "{.value}_{annee_passage}"
+  )
+
+table_final <- abond_wide %>%
+  left_join(cov_wide, by = "nom_lieu")
+
+#comme les assec sont communs à tous les passages, on les regroupe pour avoir 1 colonne par année (il faut rajouter les nouvelles années à la main. il suffit de changer l'année dans le nom de la colonne "AssecT_1_2014_" dans le script )
+
+#2014
+table_final <- table_final %>%
+  rowwise() %>%
+  mutate(
+    AssecT_1_2014 = first(na.omit(c_across(starts_with("AssecT_1_2014_"))))
+  ) %>%
+  ungroup()
+
+table_final <- table_final %>%
+  select(-starts_with("AssecT_1_2014_p"))
+
+
+
+#2016
+table_final <- table_final %>%
+  rowwise() %>%
+  mutate(
+    AssecT_1_2016 = first(na.omit(c_across(starts_with("AssecT_1_2016_"))))
+  ) %>%
+  ungroup()
+
+table_final <- table_final %>%
+  select(-starts_with("AssecT_1_2016_p"))
+
+
+#2019
+table_final <- table_final %>%
+  rowwise() %>%
+  mutate(
+    AssecT_1_2019 = first(na.omit(c_across(starts_with("AssecT_1_2019_"))))
+  ) %>%
+  ungroup()
+
+table_final <- table_final %>%
+  select(-starts_with("AssecT_1_2019_p"))
+
+
+
+#2021
+table_final <- table_final %>%
+  rowwise() %>%
+  mutate(
+    AssecT_1_2021 = first(na.omit(c_across(starts_with("AssecT_1_2021_"))))
+  ) %>%
+  ungroup()
+
+table_final <- table_final %>%
+  select(-starts_with("AssecT_1_2021_p"))
+
+#2023
+table_final <- table_final %>%
+  rowwise() %>%
+  mutate(
+    AssecT_1_2023 = first(na.omit(c_across(starts_with("AssecT_1_2023_"))))
+  ) %>%
+  ungroup()
+
+table_final <- table_final %>%
+  select(-starts_with("AssecT_1_2023_p"))
+
+#rajouter une colonne année à la main. 
+table_final$annee1="2014"
+table_final$annee2="2016"
+table_final$annee3="2019"
+table_final$annee4="2021"
+table_final$annee5="2023"
+
+view(table_final)
+```
+
+```{r}
+#nombre de "saisons" d'échantillonnage 
+numPrimary=5 # 2014, 2016, 2019, 2021, 2023
+
+# recuperer les donnees de prospection
+
+y<-table_final[,2:21]	
+yp<-y			# les passer en presence-absence
+yp[yp>0]<-1
+
+#covariables
+year<-table_final[,147:151]
+temperature_7j<-table_final[,22:41]
+pluie1h <- table_final[,42:61]
+pluie7j <- table_final[,62:81]
+pluie31j <- table_final[, 82:101]
+vent <- table_final[, 102:121]
+profondeur<- table_final[, 122:141]
+assec <- table_final[, 142:146]
+
+
+yearcov= list(year=year, assec=assec)
+  
+obscov=list(temperature_7j=temperature_7j,pluie1h=pluie1h,pluie7j=pluie7j,pluie31j=pluie31j , vent=vent , profondeur=profondeur)
+
+blongios_multi<-unmarkedMultFrame(y=yp, obsCovs=obscov, numPrimary=numPrimary, yearlySiteCovs=yearcov) 
+
+colext_null<-colext(~1, ~1, ~1, ~1,blongios_multi)
+summary(colext_null)
+
+
+predict(colext_null, type="psi") # et plus 'state' comme precedemment : proba d'occupation
+predict(colext_null, type="det")
+predict(colext_null, type="ext")
+predict(colext_null, type="col")
+
+           
+
+modele_colonisation_Year <- colext(~1, ~year, ~1, ~1, blongios_multi)                   #'Psi(.)gamma(year)epsilon(.)p(.)
+modele_extinction_Year <- colext(~1, ~1, ~year, ~1, blongios_multi)
+modele_colonisation_extinction_Year <- colext(~1, ~year, ~year, ~1, blongios_multi)
+predict(modele_extinction_Year, type="col")
+
+#modeleAssec <- colext(~1, ~assec, ~1, ~1, blongios_multi) : a faire quand plus de données d'assec. 
+
+
+modele_det_temp <- colext(~1, ~1, ~1, ~temperature_7j, blongios_multi)
+modele_det_pluie1h <- colext(~1, ~1, ~1, ~pluie1h, blongios_multi)
+modele_det_pluie7j <- colext(~1, ~1, ~1, ~pluie7j, blongios_multi)
+modele_det_pluie31j <- colext(~1, ~1, ~1, ~pluie31j, blongios_multi)
+modele_det_vent <- colext(~1, ~1, ~1, ~vent, blongios_multi)
+modele_det_profondeur <- colext(~1, ~1, ~1, ~profondeur, blongios_multi)
+
+modelecomplet <- colext(~1, ~1, ~year, ~temperature_7j+pluie1h+pluie7j+pluie31j+vent+profondeur, blongios_multi)
+
+
+colext_List <- fitList('{psi, col, ext, det}' = colext_null, 
+                  '{psi, col(year), ext, det}' = modele_colonisation_Year, 
+                  '{psi, col, ext(year), det}' = modele_extinction_Year, 
+                  '{psi, col(year), ext(year), det}' = modele_colonisation_extinction_Year,
+                  '{psi, col, ext, det(temp)}' = modele_det_temp,
+                  '{psi, col, ext, det(pluie1h)}' = modele_det_pluie1h,
+                  '{psi, col, ext, det(pluie7j)}' = modele_det_pluie7j,
+                  '{psi, col, ext, det(pluie31j)}' = modele_det_pluie31j,
+                  '{psi, col, ext, det(vent)}' = modele_det_vent,
+                  '{psi, col, ext, det(profondeur)}' = modele_det_profondeur,
+                  '{psi, col, ext, det(tout)}' =modelecomplet)
+
+
+#' selection de modeles de la liste.
+modSel(colext_List)
+
+#le meilleur est celui du temps en extinction . 
+
+predict(modele_extinction_Year, type="psi") # et plus 'state' comme precedemment
+predict(modele_extinction_Year, type="det")
+predict(modele_extinction_Year, type="ext")
+predict(modele_extinction_Year, type="col")
+
+```
+
+
+#faire un modele par année + faire que des modèles null et après une fois qu'on a la proba de présence on fait de la correlation 
 
