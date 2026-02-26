@@ -2,7 +2,7 @@ Description et explication du dossier GitHub
 
 
 Le dossier data contient toutes les données nécéssaires pour faire tourner les 4 scripts. Deux sous dossier sont présents : 
-raw = données brutes
+raw = données brutes ;
 processed = données nettoyées
 
 
