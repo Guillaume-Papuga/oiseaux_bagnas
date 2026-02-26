@@ -194,7 +194,6 @@ addCircleMarkers(
   ) %>%  # cela nous donne le nom du lieu suivi du nombre de blongios entendu sur le site depuis 2014 
   setView(lng = 3.51, lat = 43.31, zoom = 13)
 
-
 ```
 
 Sur cette carte on peut voir que certains sites semblent plus propice à l'observation d'individus de Blongios nain que d'autres. Notamment les sites n°5 et 6 semblent être les plus favorables à l'observation de cette espèce.
@@ -441,7 +440,7 @@ On peut voir que la majorité des observations sont des absence de l’espèce (
 
 Par conséquent, nous avons utilisé un modèle ***logistf*** (régression logistique pénalisée de Firth) qui permet de fournir des estimations stables et des intervalles de confiance fiables lorsqu'il y a de très rares présences. Cependant, nous réduisons le nombre de variables explicatives par modèle, et nous nous limitons à une estimation d'une tendance temporelle interanuelle (variable annee).
 
-Modele : Occurence \~ Annee
+***Modele : Occurence \~ Annee***
 
 ```{r}
 ## Modèle logistf avec uniquement l'effet interanuel de l'année
@@ -546,9 +545,9 @@ On observe un nombre important de zéros dans la variable réponse d'abondance (
 
 Et similairement au modèle de présence, nous allons seulement essayer de détecter une tendance temporelle, car l'estimation de trop de paramètres peut être instable avec un jeu de données comprenant autant de zéros.
 
-Modèle : Abondance \~ Annee
+***Modèle : Abondance \~ Annee***
 
-```{r}
+```{r, include=FALSE}
 # Contruction du modèle avec une bionômiale négative
 
 ModeleAbondanceAnnee <- glmmTMB(
@@ -642,26 +641,27 @@ GraphiqueAbondanceReelle
 Sur le graphique de l'abondance prédite (Figure 1), on observe une légère tendance négative de l'abondance du Blongios nain au cours des 10 années de suivi protocolé.\
 Cette tendance peut être mieux comprise en regardant le graphique des données brutes (Figure 2) : au début du suivi (2014), les comptages journaliers montrent un nombre relativement élevé de Blongios. Lors du suivi deux ans plus tard, le nombre d'individus observés diminue, et les deux campagnes suivantes n'ont permis de détecter aucun individu. Ce n’est qu’en 2022 et 2024 que des individus sont de nouveau observés, mais toujours en quantité moindre par rapport au début du suivi.
 
-Ajout des variables climatiques une par une pour voir si elles ont un effet significatif sur l'abondance du Blongios nain.
+Une fois avoir essayé l'effet de la temporalité sur l'abondance de Blongios, nous essayons les variables climatiques et environnementales. Nous faisons à chaque fois des modèles simples à une variable explicative pour limiter le nombre de paramètres à calculer.
+
+***Modèle : Abondance \~ Pluie Moyenne sur 7 jours***
+
+***Modèle : Abondance \~ Température Moyenne sur 7 jours***
+
+***Modèle : Abondance \~ Profondeur grand Bagnas***
+
+***Modèle : Abondance \~ Assec à n-1***
+
+***Modèle : Abondance \~ Site***
 
 ```{r}
 
-mod_pois <- glmmTMB(
-  nombre_min ~ scale(annee, center = TRUE, scale = FALSE),
-  family = poisson,
-  data = Protocole_SuiviBlongios
-)
-
-disp <- sum(residuals(mod_pois, type = "pearson")^2) / df.residual(mod_pois)
-disp
-
-
-
+## Transformation de la variable nom lieu (site) en facteur
 Protocole_SuiviBlongios$nom_lieu <-
   factor(
     Protocole_SuiviBlongios$nom_lieu,
     labels = paste("Site", seq_along(levels(Protocole_SuiviBlongios$nom_lieu))))
 
+## Ajustement des modèles avec variable environnementales/climatiques
 
 ModeleAbondanceAnneePluie <- glmmTMB(
   nombre_min ~ annee + pluie_moy_glissante_7j,
@@ -688,18 +688,11 @@ ModeleAbondanceAnneeSite <- glmmTMB(
   family = nbinom2,
   data = Protocole_SuiviBlongios)
 
-summary(ModeleAbondanceAnneePluie)
-summary(ModeleAbondanceAnneeTemperature)
-summary(ModeleAbondanceAnneeProfondeur)
-summary(ModeleAbondanceAnneeAssec)
-
-summary(ModeleAbondanceAnneeSite)
-
 ```
 
-on voit que la pluie effet légèrement significatif
+Les modèles de régression binomiale négative indiquent qu’aucune des variables testées n’a d’effet significatif sur l’abondance du Blongios nain (*Ixobrychus minutus*), à l’exception de la pluie moyenne glissante sur 7 jours, qui présente une tendance proche du seuil de significativité (estimate = `r round(summary(ModeleAbondanceAnneePluie)$coefficients$cond["pluie_moy_glissante_7j","Estimate"], 3)`, valeur de z = `r round(summary(ModeleAbondanceAnneePluie)$coefficients$cond["pluie_moy_glissante_7j","z value"], 2)`, p-value = `r round(summary(ModeleAbondanceAnneePluie)$coefficients$cond["pluie_moy_glissante_7j","Pr(>|z|)"], 3)`).
 
-Plot
+Ensuite, nous avons réalisé les prédictions des 5 modèle précédent pour pouvoir visualiser graphiquement les effets des variables.
 
 ```{r}
 
@@ -764,8 +757,6 @@ pred_site <- ggpredict(
   terms = "nom_lieu")
 
 
-levels(Protocole_SuiviBlongiosGraph$nom_lieu)
-
 ggplot(pred_site, aes(x = x, y = predicted)) +
   geom_col(fill = "steelblue") +
   geom_errorbar(
@@ -779,19 +770,24 @@ ggplot(pred_site, aes(x = x, y = predicted)) +
   theme_minimal()
 
 
-summary(ModeleAbondanceAnneeSite)
-
-library(emmeans)
-emm_site <- emmeans(
-  ModeleAbondanceAnneeSite,
-  ~ nom_lieu,
-  type = "response"   # résultats sur l’échelle de l’abondance
-)
-
-pairs(emm_site)
-
 ```
+
+On peut voir que plus le cumul de précipitation moyen sur 7 jours avant le suivi est élevé, plus l'abondance prédite de Blongiso nain est faible. En renvanche, aucune tendance n'est visible pour l'effet de la température, de la profondeur, de l'assec à n-1, ou encore du site d'écoute.
 
 # 3. Discussion
 
+Cette analyse des données collectées au sein de la Réserve naturelle nationale du Bagnas met en évidence une tendance globalement négative (bien que non significative) de la présence et de l’abondance du Blongios nain (Ixobrychus minutus) au cours des dix années de suivi protocolé. Cette dynamique est cohérente avec les tendances observées à plus large échelle en France, où l’espèce est classée « En danger » sur la Liste rouge nationale de l’Union internationale pour la conservation de la nature, en raison notamment de la régression et de la dégradation des habitats paludicoles.
+
+L’absence de tendance statistiquement significative doit toutefois être interprétée avec prudence. Le faible nombre de présences et la forte proportion de zéros limitent la puissance statistique des modèles. Il serait pertinent de compléter cette approche par des modèles d’occupancy multi-saison (MacKenzie et al., 2003), qui prennent en compte la probabilité de détection. En effet, cette espèce est assez discrète (Pardo-Cervera et al., 2010), et les absences observées pourraient correspondre à des fausses absences, où l’oiseau est présent mais non détecté. Dans ce contexte, l’estimation d’une tendance interannuelle pourrait être biaisée. L’effet quasi significatif des précipitations cumulées sur 7 jours vient appuyer cette hypothèse, suggérant que des conditions météorologiques défavorables pourraient réduire la détectabilité de l’espèce.
+
+Il est également notable de ne trouver aucune variable environnementale expliquant significativement la présence ou l’abondance du Blongios nain. La littérature montre pourtant que la présence d’assec influence négativement la présence de Blongios, tandis que la profondeur de l’eau tend à l’augmenter (Flis et al., 2023). Cette absence d’effet significatif pourrait résulter d’un manque de données sur des paramètres réellement déterminants pour la sélection de l’habitat, notamment la structure des roselières. De nombreuses études soulignent que la qualité structurelle des roselières et la dynamique hydrologique à fine échelle sont des facteurs clés pour la reproduction de l’espèce (Flis et al., 2023).
+
+En conclusion, bien qu’aucune tendance statistiquement significative ne soit mise en évidence, les résultats suggèrent une possible diminution locale de l’abondance du Blongios nain au Bagnas. Le suivi doit être poursuivi, idéalement avec une répétition temporelle accrue pour obtenir des dynamiques plus fines, et d’autres méthodes (Occupancy) ainsi que des variables supplémentaires (structure de l’habitat) pourraient être intégrées afin de mieux comprendre la présence spatio-temporelle du Blongios nain sur la réserve.
+
 # 4. Bibliographie
+
+Flis A, Skórka P, Król W (2024) Habitat preferences of a secretive marsh bird using a man-made habitat: the case of Little Bittern (Ixobrychus minutus minutus). The European Zoological Journal 91:21–30. https://doi.org/10.1080/24750263.2023.2291458
+
+MacKenzie DI, Nichols JD, Royle JA, et al (2006) Occupancy Estimation and Modeling : Inferring Patterns and Dynamics of Species Occurrence
+
+Pardo-Cervera F, Sørensen I, Jensen C, et al (2010) BREEDING BIOLOGY OF THE LITTLE BITTERN IXOBRYCHUS MINUTUS IN THE EBRO DELTA (NE SPAIN). Ardeola: revista ibérica de ornitología 57:407–416
